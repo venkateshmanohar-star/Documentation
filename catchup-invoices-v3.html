@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<title>Rec 4.1 - SystemMigration-Create Catchup Invoices | Integration Documentation</title>
+<style>
+:root {
+  --orange: #F5A623;
+  --orange-bg: #FFF5E6;
+  --blue: #29B5E8;
+  --blue-bg: #E8F4FD;
+  --purple: #6B4C9A;
+  --purple-bg: #F0EBF8;
+  --green: #2E7D32;
+  --green-bg: #E8F5E9;
+  --gray: #9E9E9E;
+  --gray-bg: #F5F5F5;
+  --text: #333;
+  --text-light: #666;
+  --bg: #FAFAFA;
+  --card-bg: #FFFFFF;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+}
+a { color: var(--purple); }
+a:hover { color: var(--orange); }
+
+/* Back to Index */
+.back-to-index {
+  position: fixed; top: 8px; right: 16px; z-index: 1001;
+  background: var(--purple); color: white; padding: 6px 16px;
+  border-radius: 20px; text-decoration: none; font-size: 0.85em;
+  font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+.back-to-index:hover { background: var(--orange); color: white; }
+
+/* Fixed Left Sidebar TOC */
+nav#toc {
+  position: fixed; top: 0; left: 0; width: 266px; height: 100vh;
+  overflow-y: auto; background: white; padding: 20px 16px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+  border-right: 3px solid var(--purple); z-index: 1000;
+}
+nav#toc h3 {
+  font-size: 0.95em; color: var(--purple); margin-bottom: 12px;
+  padding-bottom: 8px; border-bottom: 2px solid var(--purple-bg);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+nav#toc a {
+  color: #555; text-decoration: none; font-weight: 500; font-size: 0.85em;
+  display: block; padding: 5px 8px; border-radius: 6px;
+  transition: all 0.15s ease; margin-bottom: 2px;
+}
+nav#toc a:hover { background: var(--purple-bg); color: var(--purple); }
+nav#toc a.active { background: var(--purple); color: white; }
+
+.main-content { max-width: 1100px; }
+
+/* Headers */
+h1 { font-size: 2em; color: var(--purple); margin-bottom: 8px; }
+h2 {
+  font-size: 1.5em; color: var(--purple); margin-top: 48px; margin-bottom: 16px;
+  padding-bottom: 8px; border-bottom: 2px solid var(--purple-bg);
+}
+h3 { font-size: 1.15em; color: var(--text); margin-top: 24px; margin-bottom: 10px; }
+h4 { font-size: 1em; color: var(--text-light); margin-top: 16px; margin-bottom: 8px; }
+
+/* Meta */
+.meta { color: var(--text-light); font-size: 0.9em; margin-bottom: 32px; }
+.meta span { margin-right: 20px; }
+.badge {
+  display: inline-block; padding: 2px 10px; border-radius: 12px;
+  font-size: 0.8em; font-weight: 600;
+}
+.badge-stopped { background: #FFEBEE; color: #C62828; }
+.badge-active { background: #E8F5E9; color: #2E7D32; }
+
+/* Cards */
+.card {
+  background: var(--card-bg); border-radius: 12px; padding: 24px;
+  margin: 16px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--purple);
+}
+.card.orange { border-left-color: var(--orange); }
+.card.blue { border-left-color: var(--blue); }
+.card.green { border-left-color: var(--green); }
+.card.gray { border-left-color: var(--gray); }
+
+/* Tables */
+table {
+  width: 100%; border-collapse: collapse; margin: 16px 0;
+  background: white; border-radius: 8px; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+th {
+  background: var(--purple); color: white; padding: 10px 14px;
+  text-align: left; font-weight: 600; font-size: 0.9em;
+}
+td { padding: 10px 14px; border-bottom: 1px solid #eee; font-size: 0.9em; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--purple-bg); }
+
+/* Code */
+code {
+  background: var(--gray-bg); padding: 2px 6px; border-radius: 4px;
+  font-size: 0.88em; font-family: 'SF Mono', 'Fira Code', monospace;
+}
+pre {
+  background: #1e1e2e; color: #cdd6f4; padding: 16px; border-radius: 8px;
+  overflow-x: auto; font-size: 0.85em; line-height: 1.5;
+  margin: 12px 0;
+}
+pre code { background: none; color: inherit; padding: 0; }
+
+/* Collapsible */
+details { margin: 8px 0; }
+details summary {
+  cursor: pointer; font-weight: 600; color: var(--purple);
+  padding: 8px 0; user-select: none;
+}
+details summary:hover { color: var(--orange); }
+
+/* Diagram container */
+.diagram-container { text-align: center; margin: 24px 0; overflow-x: auto; }
+.diagram-container svg { max-width: 100%; height: auto; }
+
+/* Two-layer boxes */
+.layer-box { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; }
+.layer-business, .layer-technical {
+  padding: 16px; border-radius: 8px; font-size: 0.92em;
+}
+.layer-business { background: var(--orange-bg); border: 1px solid var(--orange); }
+.layer-business h4 { color: var(--orange); margin-top: 0; }
+.layer-technical { background: var(--blue-bg); border: 1px solid var(--blue); }
+.layer-technical h4 { color: var(--blue); margin-top: 0; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 3px solid var(--purple); }
+  body { padding: 24px; }
+  .layer-box { grid-template-columns: 1fr; }
+}
+/* Print */
+@media print {
+  nav#toc { display: none; }
+  .back-to-index { display: none; }
+  body { padding: 0; }
+  h2 { page-break-before: always; }
+  .card { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<a href="netsuite-integration-index.html" class="back-to-index">&larr; Back to Index</a>
+
+<nav id="toc">
+  <h3>Contents</h3>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#e2e-flow" data-section="e2e-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#component-overview" data-section="component-overview">8. Component Overview</a>
+  <a href="#business-logic" data-section="business-logic">9. Key Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<div class="main-content">
+
+<!-- HEADER -->
+<h1>Rec 4.1 &mdash; SystemMigration-Create Catchup Invoices</h1>
+<div class="meta">
+  <span>Recipe ID: <strong>64257157</strong></span>
+  <span>Status: <span class="badge badge-stopped">Stopped</span></span>
+  <span>Author: venkatesh.manohar</span>
+  <span>Last Run: 2025-12-03</span>
+  <span>Generated: 2026-04-01</span>
+</div>
+
+<!-- 1. EXECUTIVE SUMMARY -->
+<h2 id="executive-summary">1. Executive Summary</h2>
+<div class="card">
+  <p><strong>What it does:</strong> This recipe automatically creates "catchup invoices" in NetSuite for customers who have been migrated from a legacy billing system. When a customer's sales order has been successfully created in NetSuite but the corresponding invoice has not yet been generated, this recipe identifies the gap and creates the missing invoice.</p>
+  <p style="margin-top:12px"><strong>Why it exists:</strong> During Intercom's system migration from its legacy billing platform, sales orders were created in NetSuite for existing contracts. However, invoices -- the actual billing documents customers receive -- were not always generated. This recipe closes that gap by running daily to detect unmatched contracts and producing the corresponding NetSuite invoices with correct line items, billing schedules, and revenue recognition dates.</p>
+  <p style="margin-top:12px"><strong>High-level flow:</strong> Every day at 11:15 AM, the recipe queries Snowflake to find Salesforce contracts that have a completed sales order in NetSuite but no corresponding catchup invoice. For each contract found, it calls a child recipe that looks up the sales order in NetSuite, creates an invoice from it, computes billing frequency for each line item, and updates the invoice with the correct detail lines.</p>
+</div>
+
+<!-- 2. BUSINESS OVERVIEW -->
+<h2 id="business-overview">2. Business Overview</h2>
+<div class="card orange">
+  <h3>The Problem</h3>
+  <p>When Intercom migrated customers from its legacy billing system to NetSuite, the migration process created sales orders (the internal record of what was sold) but did not always create invoices (the billing document sent to customers). Without invoices, revenue cannot be properly recognized in NetSuite, and customers may not be billed correctly for their ongoing subscriptions.</p>
+</div>
+<div class="card green" style="margin-top:12px">
+  <h3>The Solution</h3>
+  <p>This integration acts as a daily "safety net" that:</p>
+  <ul style="margin:8px 0 0 20px">
+    <li>Identifies all migrated contracts that have a sales order but no catchup invoice</li>
+    <li>For each contract, looks up the NetSuite sales order and creates a matching invoice</li>
+    <li>Computes the correct billing frequency (monthly, quarterly, annual) for each line item</li>
+    <li>Updates the invoice with properly computed line items including amounts, rev-rec dates, and billing schedules</li>
+  </ul>
+</div>
+<div class="card blue" style="margin-top:12px">
+  <h3>Business Impact</h3>
+  <p>This recipe ran <strong>91 successful jobs</strong> with only <strong>1 failure</strong> over its active lifetime (July 2025 - December 2025), processing <strong>19,422 tasks</strong>. The child recipe (RF 4.1a) processed <strong>9,610 contracts</strong> with zero failures, generating <strong>123,333 tasks</strong>. It was stopped on December 4, 2025, indicating the migration backlog was cleared.</p>
+</div>
+
+<!-- 3. SYSTEM OVERVIEW -->
+<h2 id="system-overview">3. System Overview</h2>
+<table>
+  <tr><th>System</th><th>Role</th><th>Technical Detail</th></tr>
+  <tr>
+    <td><strong>Snowflake</strong></td>
+    <td>Data warehouse that stores the migration staging data -- sales orders and processing logs</td>
+    <td>Schema: <code>INTERCOM_PROD.SHARED_EXTERNAL_WORKATO</code>. Tables: <code>NETSUITE_EXPORT_SALES_ORDER</code> (180K rows), <code>WORKATO_LOGS</code> (66M rows). Queried via custom SQL to find unprocessed contracts.</td>
+  </tr>
+  <tr>
+    <td><strong>Workato</strong></td>
+    <td>Orchestration engine that schedules, coordinates, and executes the invoice creation workflow</td>
+    <td>3 recipes in a parent-child hierarchy. Parent (Rec 4.1) schedules and iterates; child (RF 4.1a) handles NetSuite CRUD; grandchild (RF 4.1b) computes billing frequency.</td>
+  </tr>
+  <tr>
+    <td><strong>NetSuite</strong></td>
+    <td>Target ERP system where invoices are created for revenue recognition and customer billing</td>
+    <td>Actions: Search Sales Orders, Search Invoices, Create Invoice, Update Invoice. Uses Salesforce Contract ID as the linking key.</td>
+  </tr>
+  <tr>
+    <td><strong>Salesforce</strong></td>
+    <td>Source of contract and opportunity data (referenced indirectly via Snowflake staging tables)</td>
+    <td>Contract IDs and Opportunity IDs flow from Salesforce through the staging tables. Not directly connected.</td>
+  </tr>
+</table>
+
+<!-- 4. ARCHITECTURE OVERVIEW -->
+<h2 id="architecture-overview">4. Architecture Overview</h2>
+
+<div class="layer-box">
+  <div class="layer-business">
+    <h4>Business View</h4>
+    <p><strong>Source Layer:</strong> Salesforce contract data, already staged in Snowflake during the migration process, represents the "what was sold" records.</p>
+    <p style="margin-top:8px"><strong>Data Layer:</strong> Snowflake holds the staging tables that track which contracts have been processed and which still need invoices.</p>
+    <p style="margin-top:8px"><strong>Orchestration Layer:</strong> Workato runs a daily check, identifies gaps, and coordinates the invoice creation process across multiple recipes.</p>
+    <p style="margin-top:8px"><strong>Target Layer:</strong> NetSuite receives the completed invoices, enabling proper revenue recognition and customer billing.</p>
+  </div>
+  <div class="layer-technical">
+    <h4>Technical View</h4>
+    <p><strong>Source:</strong> <code>NETSUITE_EXPORT_SALES_ORDER</code> table filtered by <code>data_type='legacy_migration'</code>. Joined with <code>WORKATO_LOGS</code> to check processing status.</p>
+    <p style="margin-top:8px"><strong>Data:</strong> CTE-based SQL with deduplication via <code>ROW_NUMBER()</code> windowing. Checks both sales order logs and catchup invoice logs.</p>
+    <p style="margin-top:8px"><strong>Orchestration:</strong> Clock trigger (daily 11:15 AM) &rarr; SQL query &rarr; For-Each loop over distinct contracts &rarr; Recipe Function call.</p>
+    <p style="margin-top:8px"><strong>Target:</strong> NetSuite API via Workato connector: <code>search_object_v2</code> (Sales Order, Invoice), <code>add_object</code> (Invoice), <code>update_object</code> (Invoice lines).</p>
+  </div>
+</div>
+
+<!-- 5. ARCHITECTURE DIAGRAM -->
+<h2 id="architecture-diagram">5. Architecture Diagram</h2>
+<div class="diagram-container">
+<svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1200px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="arr-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F5A623"/></marker>
+    <marker id="arr-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#29B5E8"/></marker>
+    <marker id="arr-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6B4C9A"/></marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2E7D32"/></marker>
+    <filter id="shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+
+  <!-- Column backgrounds -->
+  <rect x="10" y="55" width="275" height="650" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.5"/>
+  <rect x="305" y="55" width="275" height="650" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.5"/>
+  <rect x="600" y="55" width="295" height="650" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.5"/>
+  <rect x="915" y="55" width="275" height="650" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.5"/>
+
+  <!-- Column headers -->
+  <rect x="10" y="8" width="275" height="42" rx="8" fill="#F5A623"/>
+  <text x="147" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Salesforce (Source)</text>
+
+  <rect x="305" y="8" width="275" height="42" rx="8" fill="#29B5E8"/>
+  <text x="442" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Snowflake (Data)</text>
+
+  <rect x="600" y="8" width="295" height="42" rx="8" fill="#6B4C9A"/>
+  <text x="747" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Workato (Orchestration)</text>
+
+  <rect x="915" y="8" width="275" height="42" rx="8" fill="#2E7D32"/>
+  <text x="1052" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="15">NetSuite (Target)</text>
+
+  <!-- Salesforce boxes -->
+  <rect x="30" y="80" width="235" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="147" y="103" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Contract Data</text>
+  <text x="147" y="120" text-anchor="middle" fill="#666" font-size="10">Salesforce Contract IDs</text>
+
+  <rect x="30" y="155" width="235" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="147" y="178" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Opportunity Data</text>
+  <text x="147" y="195" text-anchor="middle" fill="#666" font-size="10">SFDC Opportunity IDs, Pricebooks</text>
+
+  <!-- Snowflake boxes -->
+  <rect x="325" y="80" width="235" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="442" y="103" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">NETSUITE_EXPORT_SALES_ORDER</text>
+  <text x="442" y="120" text-anchor="middle" fill="#666" font-size="10">180K rows | Migration staging</text>
+
+  <rect x="325" y="155" width="235" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="442" y="178" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">WORKATO_LOGS</text>
+  <text x="442" y="195" text-anchor="middle" fill="#666" font-size="10">66M rows | Processing audit trail</text>
+
+  <rect x="325" y="230" width="235" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="442" y="250" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_CATCHUP_INVOICE</text>
+  <text x="442" y="268" text-anchor="middle" fill="#666" font-size="10">(log source) Dedup check</text>
+
+  <!-- Workato boxes -->
+  <rect x="620" y="80" width="255" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="747" y="100" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 4.1 Master (64257157)</text>
+  <text x="747" y="118" text-anchor="middle" fill="#666" font-size="10">Daily scheduler + SQL + For-Each</text>
+
+  <rect x="620" y="170" width="255" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="747" y="190" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">RF 4.1a Sales Led v2 (64257158)</text>
+  <text x="747" y="208" text-anchor="middle" fill="#666" font-size="10">Search SO &rarr; Create Invoice &rarr; Update</text>
+
+  <rect x="620" y="260" width="255" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="747" y="280" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">RF 4.1b BillingFreq (64257159)</text>
+  <text x="747" y="298" text-anchor="middle" fill="#666" font-size="10">Compute billing frequency per line</text>
+
+  <!-- NetSuite boxes -->
+  <rect x="935" y="80" width="235" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1052" y="103" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Search Sales Orders</text>
+  <text x="1052" y="120" text-anchor="middle" fill="#666" font-size="10">By SFDC Contract ID</text>
+
+  <rect x="935" y="155" width="235" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1052" y="178" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Search Invoices</text>
+  <text x="1052" y="195" text-anchor="middle" fill="#666" font-size="10">Check for existing catchup invoice</text>
+
+  <rect x="935" y="240" width="235" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1052" y="263" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Create Invoice</text>
+  <text x="1052" y="280" text-anchor="middle" fill="#666" font-size="10">From Sales Order data</text>
+
+  <rect x="935" y="315" width="235" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1052" y="338" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Update Invoice</text>
+  <text x="1052" y="355" text-anchor="middle" fill="#666" font-size="10">Add computed line items</text>
+
+  <!-- Arrows: Source -> Snowflake -->
+  <line x1="265" y1="107" x2="323" y2="107" stroke="#F5A623" stroke-width="2" marker-end="url(#arr-orange)"/>
+  <line x1="265" y1="182" x2="323" y2="182" stroke="#F5A623" stroke-width="2" marker-end="url(#arr-orange)"/>
+
+  <!-- Arrows: Snowflake -> Workato -->
+  <line x1="560" y1="107" x2="618" y2="107" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <text x="589" y="100" text-anchor="middle" fill="#29B5E8" font-size="9">SQL Query</text>
+
+  <!-- Arrows: Workato internal vertical -->
+  <line x1="747" y1="135" x2="747" y2="168" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <text x="770" y="155" fill="#6B4C9A" font-size="9">For Each</text>
+  <line x1="747" y1="225" x2="747" y2="258" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <text x="770" y="245" fill="#6B4C9A" font-size="9">Per Line</text>
+
+  <!-- Arrows: Workato -> NetSuite -->
+  <line x1="875" y1="190" x2="933" y2="107" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <line x1="875" y1="197" x2="933" y2="172" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <line x1="875" y1="200" x2="933" y2="257" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+  <line x1="875" y1="205" x2="933" y2="335" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+  <!-- Decision diamond -->
+  <polygon points="747,370 787,400 747,430 707,400" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="747" y="403" text-anchor="middle" fill="#333" font-size="10">SO Found?</text>
+
+  <!-- Decision outcomes -->
+  <line x1="787" y1="400" x2="860" y2="400" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="823" y="393" text-anchor="middle" fill="#2E7D32" font-size="9">Yes</text>
+
+  <line x1="707" y1="400" x2="640" y2="400" stroke="#9E9E9E" stroke-width="1.5"/>
+  <text x="673" y="393" text-anchor="middle" fill="#9E9E9E" font-size="9">No: Log</text>
+
+  <!-- Processing result box -->
+  <rect x="862" y="380" width="140" height="40" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="932" y="404" text-anchor="middle" fill="#333" font-size="10">Create + Update</text>
+
+  <!-- Logging box -->
+  <rect x="620" y="460" width="255" height="45" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5"/>
+  <text x="747" y="480" text-anchor="middle" fill="#666" font-size="11" font-weight="bold">WORKATO_LOGS</text>
+  <text x="747" y="495" text-anchor="middle" fill="#999" font-size="10">Deduplication + Audit Trail</text>
+
+  <!-- Arrow to logging -->
+  <line x1="747" y1="430" x2="747" y2="458" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#arr-purple)"/>
+
+  <!-- Stats at bottom -->
+  <rect x="30" y="540" width="1150" height="120" rx="10" fill="white" stroke="#ddd" stroke-width="1" filter="url(#shadow)"/>
+  <text x="60" y="570" fill="#333" font-size="13" font-weight="bold">Runtime Statistics</text>
+  <text x="60" y="595" fill="#666" font-size="11">Master (Rec 4.1): 91 succeeded, 1 failed | 19,422 tasks | Daily at 11:15 AM</text>
+  <text x="60" y="615" fill="#666" font-size="11">Child (RF 4.1a): 9,610 succeeded, 0 failed | 123,333 tasks | Called per contract</text>
+  <text x="60" y="635" fill="#666" font-size="11">Grandchild (RF 4.1b): 16,894 succeeded, 0 failed | 219,501 tasks | Called per line item</text>
+  <text x="60" y="655" fill="#999" font-size="10">Active: Jul 18, 2025 - Dec 4, 2025 | Stopped after migration backlog cleared</text>
+</svg>
+</div>
+
+<!-- 6. END-TO-END FLOW -->
+<h2 id="e2e-flow">6. End-to-End Flow</h2>
+
+<h3>Level 0 -- Simple View</h3>
+<div class="card">
+  <p>Every day, the system checks Snowflake for migrated contracts that have a sales order in NetSuite but no corresponding invoice. For each missing invoice, it creates one in NetSuite using data from the sales order, then updates it with properly computed line items.</p>
+</div>
+
+<h3>Level 1 -- Detailed View</h3>
+<div class="card blue">
+  <ol style="margin-left:20px">
+    <li><strong>Extraction:</strong> A SQL query joins <code>NETSUITE_EXPORT_SALES_ORDER</code> with <code>WORKATO_LOGS</code> to find contracts where the sales order succeeded (<code>wl.netsuite_internal_id IS NOT NULL</code>) but the catchup invoice log entry does not exist (<code>ci.netsuite_internal_id IS NULL</code>). Only <code>data_type='legacy_migration'</code> rows are considered.</li>
+    <li><strong>Grouping:</strong> Results are grouped by distinct <code>salesforce_contract_id</code>, <code>migration_date</code>, and <code>pricebook_name</code>.</li>
+    <li><strong>Iteration:</strong> The parent recipe iterates over each returned row, passing the <code>salesforce_contract_id</code> to the child recipe.</li>
+    <li><strong>Processing (Child RF 4.1a):</strong>
+      <ul style="margin-left:16px; margin-top:4px">
+        <li>Searches NetSuite for the sales order matching the SFDC Contract ID</li>
+        <li>Checks if a catchup invoice already exists (deduplication)</li>
+        <li>Creates a new invoice from the sales order header data</li>
+        <li>Retrieves the newly created invoice to get its internal ID</li>
+        <li>For each line item, calls the grandchild recipe to compute billing frequency</li>
+        <li>Updates the invoice with computed line items</li>
+      </ul>
+    </li>
+    <li><strong>Output:</strong> A fully-formed invoice in NetSuite with correct line items, amounts, billing schedules, and revenue recognition dates. Processing status is logged to <code>WORKATO_LOGS</code>.</li>
+  </ol>
+</div>
+
+<h3>Level 2 -- Processing Detail</h3>
+<div class="card">
+  <p>The child recipe (RF 4.1a) follows a strict sequence:</p>
+  <ol style="margin-left:20px">
+    <li>Search for Sales Order by SFDC Contract ID</li>
+    <li>If found, check if a catchup invoice already exists (prevents duplicates)</li>
+    <li>If no existing invoice, create the invoice from the sales order</li>
+    <li>Use custom Ruby code to extract and transform line item data</li>
+    <li>For each line item, call RF 4.1b to compute billing frequency (monthly/quarterly/annual) based on the subscription term and billing schedule</li>
+    <li>Accumulate all computed line items into a list</li>
+    <li>Update the invoice with the complete line item list</li>
+  </ol>
+  <p style="margin-top:8px">All errors are caught by try/catch blocks and logged via Workato's mapper action for audit trail purposes.</p>
+</div>
+
+<h3>Data Flow Diagram</h3>
+<div class="diagram-container">
+<svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1100px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="df-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2196F3"/></marker>
+    <marker id="df-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#FF9800"/></marker>
+    <marker id="df-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#4CAF50"/></marker>
+    <marker id="df-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#9E9E9E"/></marker>
+    <filter id="sh2"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/></filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="550" y="25" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Data Flow: Contract to Invoice</text>
+
+  <!-- Source Data (Left) -->
+  <rect x="20" y="50" width="200" height="70" rx="10" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" filter="url(#sh2)"/>
+  <text x="120" y="78" text-anchor="middle" fill="#E65100" font-size="12" font-weight="bold">Sales Order Data</text>
+  <text x="120" y="95" text-anchor="middle" fill="#666" font-size="10">NETSUITE_EXPORT_SALES_ORDER</text>
+  <text x="120" y="110" text-anchor="middle" fill="#999" font-size="9">data_type = 'legacy_migration'</text>
+
+  <rect x="20" y="140" width="200" height="60" rx="10" fill="#E3F2FD" stroke="#2196F3" stroke-width="2" filter="url(#sh2)"/>
+  <text x="120" y="165" text-anchor="middle" fill="#1565C0" font-size="12" font-weight="bold">Workato Logs</text>
+  <text x="120" y="182" text-anchor="middle" fill="#666" font-size="10">Processing status + dedup</text>
+
+  <rect x="20" y="220" width="200" height="60" rx="10" fill="#FFF3E0" stroke="#FF9800" stroke-width="2" filter="url(#sh2)"/>
+  <text x="120" y="245" text-anchor="middle" fill="#E65100" font-size="12" font-weight="bold">Catchup Invoice Log</text>
+  <text x="120" y="262" text-anchor="middle" fill="#666" font-size="10">LEFT JOIN: ci.ns_id IS NULL</text>
+
+  <!-- Transformation (Middle) -->
+  <rect x="290" y="50" width="200" height="55" rx="10" fill="#F3E5F5" stroke="#6B4C9A" stroke-width="2" filter="url(#sh2)"/>
+  <text x="390" y="73" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">CTE Query + Dedup</text>
+  <text x="390" y="90" text-anchor="middle" fill="#666" font-size="10">ROW_NUMBER() OVER(...)</text>
+
+  <!-- Decision -->
+  <polygon points="390,140 430,170 390,200 350,170" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="390" y="173" text-anchor="middle" fill="#333" font-size="10">Gap Found?</text>
+
+  <rect x="290" y="230" width="200" height="55" rx="10" fill="#F3E5F5" stroke="#6B4C9A" stroke-width="2" filter="url(#sh2)"/>
+  <text x="390" y="253" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">For Each Contract</text>
+  <text x="390" y="268" text-anchor="middle" fill="#666" font-size="10">Pass SFDC Contract ID</text>
+
+  <rect x="290" y="310" width="200" height="55" rx="10" fill="#F3E5F5" stroke="#6B4C9A" stroke-width="2" filter="url(#sh2)"/>
+  <text x="390" y="333" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Search NS Sales Order</text>
+  <text x="390" y="350" text-anchor="middle" fill="#666" font-size="10">By SFDC Contract ID</text>
+
+  <rect x="290" y="390" width="200" height="55" rx="10" fill="#F3E5F5" stroke="#6B4C9A" stroke-width="2" filter="url(#sh2)"/>
+  <text x="390" y="413" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Ruby: Transform Lines</text>
+  <text x="390" y="430" text-anchor="middle" fill="#666" font-size="10">Extract + compute fields</text>
+
+  <!-- Target Records (Right) -->
+  <rect x="570" y="50" width="220" height="65" rx="10" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" filter="url(#sh2)"/>
+  <text x="680" y="75" text-anchor="middle" fill="#2E7D32" font-size="12" font-weight="bold">NetSuite Invoice (Header)</text>
+  <text x="680" y="92" text-anchor="middle" fill="#666" font-size="10">Customer, Date, PO, Memo, Terms</text>
+  <text x="680" y="107" text-anchor="middle" fill="#999" font-size="9">1:1 per Sales Order</text>
+
+  <rect x="570" y="140" width="220" height="65" rx="10" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" filter="url(#sh2)"/>
+  <text x="680" y="165" text-anchor="middle" fill="#2E7D32" font-size="12" font-weight="bold">Invoice Line Items</text>
+  <text x="680" y="182" text-anchor="middle" fill="#666" font-size="10">Item, Qty, Amount, Rev-Rec Dates</text>
+  <text x="680" y="197" text-anchor="middle" fill="#999" font-size="9">1:N per Invoice</text>
+
+  <rect x="570" y="230" width="220" height="55" rx="10" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2" filter="url(#sh2)"/>
+  <text x="680" y="253" text-anchor="middle" fill="#2E7D32" font-size="12" font-weight="bold">Billing Schedule</text>
+  <text x="680" y="268" text-anchor="middle" fill="#666" font-size="10">Monthly / Quarterly / Annual</text>
+
+  <!-- Audit -->
+  <rect x="570" y="320" width="220" height="55" rx="10" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="2" filter="url(#sh2)"/>
+  <text x="680" y="343" text-anchor="middle" fill="#666" font-size="12" font-weight="bold">Audit Log Entry</text>
+  <text x="680" y="360" text-anchor="middle" fill="#999" font-size="10">WORKATO_LOGS + Error tracking</text>
+
+  <!-- Billing Frequency -->
+  <rect x="570" y="400" width="220" height="55" rx="10" fill="#F3E5F5" stroke="#6B4C9A" stroke-width="1.5" filter="url(#sh2)"/>
+  <text x="680" y="423" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">RF 4.1b: Compute Frequency</text>
+  <text x="680" y="440" text-anchor="middle" fill="#666" font-size="10">Term + Schedule &rarr; Freq</text>
+
+  <!-- Arrows -->
+  <line x1="220" y1="85" x2="288" y2="75" stroke="#FF9800" stroke-width="2" marker-end="url(#df-orange)"/>
+  <line x1="220" y1="170" x2="288" y2="75" stroke="#2196F3" stroke-width="1.5" marker-end="url(#df-blue)"/>
+  <line x1="220" y1="250" x2="288" y2="80" stroke="#FF9800" stroke-width="1.5" marker-end="url(#df-orange)"/>
+
+  <line x1="390" y1="105" x2="390" y2="138" stroke="#6B4C9A" stroke-width="2" marker-end="url(#df-gray)"/>
+  <line x1="390" y1="200" x2="390" y2="228" stroke="#4CAF50" stroke-width="2" marker-end="url(#df-green)"/>
+  <text x="435" y="218" fill="#4CAF50" font-size="9">Yes</text>
+  <line x1="390" y1="285" x2="390" y2="308" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-gray)"/>
+  <line x1="390" y1="365" x2="390" y2="388" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-gray)"/>
+
+  <line x1="490" y1="75" x2="568" y2="75" stroke="#4CAF50" stroke-width="2" marker-end="url(#df-green)"/>
+  <text x="529" y="68" text-anchor="middle" fill="#4CAF50" font-size="9">Create</text>
+
+  <line x1="490" y1="410" x2="568" y2="172" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-green)"/>
+  <text x="520" y="290" fill="#4CAF50" font-size="9" transform="rotate(-55,520,290)">Update Lines</text>
+
+  <line x1="490" y1="425" x2="568" y2="425" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-gray)"/>
+
+  <line x1="680" y1="197" x2="680" y2="228" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-green)"/>
+  <line x1="680" y1="285" x2="680" y2="318" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#df-gray)"/>
+
+  <!-- Field mapping callout -->
+  <rect x="840" y="75" width="240" height="160" rx="8" fill="#FFFDE7" stroke="#FBC02D" stroke-width="1" filter="url(#sh2)"/>
+  <text x="960" y="95" text-anchor="middle" fill="#F57F17" font-size="11" font-weight="bold">Key Field Mappings</text>
+  <text x="855" y="115" fill="#333" font-size="10">SO.customer &rarr; Invoice.entity</text>
+  <text x="855" y="132" fill="#333" font-size="10">SO.date &rarr; Invoice.tran_date</text>
+  <text x="855" y="149" fill="#333" font-size="10">SO.po_number &rarr; Invoice.other_ref</text>
+  <text x="855" y="166" fill="#333" font-size="10">SO.terms &rarr; Invoice.terms</text>
+  <text x="855" y="183" fill="#333" font-size="10">Line.item &rarr; Invoice.item</text>
+  <text x="855" y="200" fill="#333" font-size="10">Line.amount &rarr; Invoice.rate</text>
+  <text x="855" y="217" fill="#333" font-size="10">Line.rev_rec_* &rarr; Invoice.rev_rec_*</text>
+</svg>
+</div>
+
+<!-- 7. PROCESSING STAGES -->
+<h2 id="processing-stages">7. Processing Stages</h2>
+
+<div class="card">
+  <h3>Stage 1: Ingestion (Master Recipe)</h3>
+  <div class="layer-box">
+    <div class="layer-business"><h4>What Happens</h4><p>The system runs a daily query against the data warehouse to find contracts that still need catchup invoices. It looks for contracts where a sales order was successfully created but no invoice exists yet.</p></div>
+    <div class="layer-technical"><h4>How It Works</h4><p>A CTE-based SQL query joins <code>NETSUITE_EXPORT_SALES_ORDER</code> (filtered to <code>data_type='legacy_migration'</code>) with two instances of <code>WORKATO_LOGS</code>: one checking for completed sales orders (<code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_SALES_ORDER'</code>) and one for catchup invoices (<code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_CATCHUP_INVOICE'</code>). The <code>ROW_NUMBER()</code> window function deduplicates logs by taking the most recent per <code>external_id</code>. The WHERE clause requires <code>wl.netsuite_internal_id IS NOT NULL AND ci.netsuite_internal_id IS NULL</code>.</p></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Stage 2: Grouping &amp; Iteration</h3>
+  <div class="layer-box">
+    <div class="layer-business"><h4>What Happens</h4><p>The results are grouped by contract, and the system processes each contract one at a time.</p></div>
+    <div class="layer-technical"><h4>How It Works</h4><p>The SQL returns <code>DISTINCT(salesforce_contract_id), migration_date, pricebook_name</code>. A For-Each loop iterates over the result set, passing each <code>salesforce_contract_id</code> to the child recipe via a synchronous Recipe Function call.</p></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Stage 3: Sales Order Lookup (Child RF 4.1a)</h3>
+  <div class="layer-box">
+    <div class="layer-business"><h4>What Happens</h4><p>For each contract, the system looks up the corresponding sales order in NetSuite and verifies that no invoice already exists.</p></div>
+    <div class="layer-technical"><h4>How It Works</h4><p>NetSuite <code>search_object_v2</code> finds the sales order by SFDC Contract ID. A second search checks for existing invoices to prevent duplicates. Custom Ruby code extracts and transforms the line item data from the sales order.</p></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Stage 4: Invoice Creation &amp; Line Computation</h3>
+  <div class="layer-box">
+    <div class="layer-business"><h4>What Happens</h4><p>The system creates a new invoice in NetSuite, then computes the correct billing frequency for each line item and updates the invoice with the full detail.</p></div>
+    <div class="layer-technical"><h4>How It Works</h4><p><code>add_object</code> creates the invoice header. The newly created invoice is then retrieved via <code>search_object_v2</code> to get its internal ID. For each line item, RF 4.1b is called to compute the billing frequency based on subscription term and billing schedule. The accumulated line items are written back via <code>update_object</code>.</p></div>
+  </div>
+</div>
+
+<div class="card gray">
+  <h3>Stage 5: Logging &amp; Error Handling</h3>
+  <div class="layer-box">
+    <div class="layer-business"><h4>What Happens</h4><p>Every action is logged for audit purposes. Errors are caught and recorded without stopping the overall process.</p></div>
+    <div class="layer-technical"><h4>How It Works</h4><p>Try/catch blocks wrap each major operation. The catch handlers use Workato's mapper action to format error details and logger to record them. The master recipe has its own try/catch with 0 retries and a 2-second retry interval, ensuring failures in one contract do not block processing of others.</p></div>
+  </div>
+</div>
+
+<!-- 8. COMPONENT OVERVIEW -->
+<h2 id="component-overview">8. Component Overview</h2>
+
+<table>
+  <tr><th>Recipe</th><th>ID</th><th>Role</th><th>Trigger</th><th>Status</th><th>Success Rate</th></tr>
+  <tr>
+    <td><strong>Rec 4.1</strong> - Create Catchup Invoices</td>
+    <td>64257157</td>
+    <td>Master scheduler and iterator</td>
+    <td>Clock: Daily at 11:15 AM</td>
+    <td><span class="badge badge-stopped">Stopped</span></td>
+    <td>91/92 (98.9%)</td>
+  </tr>
+  <tr>
+    <td><strong>RF 4.1a</strong> - Catch up Invoice Sales Led v2</td>
+    <td>64257158</td>
+    <td>NetSuite invoice creation and update</td>
+    <td>Recipe Function (called by parent)</td>
+    <td><span class="badge badge-stopped">Stopped</span></td>
+    <td>9,610/9,610 (100%)</td>
+  </tr>
+  <tr>
+    <td><strong>RF 4.1b</strong> - ComputeBillingFreq</td>
+    <td>64257159</td>
+    <td>Billing frequency calculation utility</td>
+    <td>Recipe Function (called by RF 4.1a)</td>
+    <td><span class="badge badge-active">Active</span></td>
+    <td>16,894/16,894 (100%)</td>
+  </tr>
+</table>
+
+<h3>Recipe Hierarchy Diagram</h3>
+<div class="diagram-container">
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:900px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="rh-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6B4C9A"/></marker>
+    <marker id="rh-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2E7D32"/></marker>
+    <marker id="rh-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#29B5E8"/></marker>
+    <filter id="sh3"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="25" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Recipe Hierarchy: Catchup Invoice Pipeline</text>
+
+  <!-- Master Recipe (Root) -->
+  <rect x="250" y="45" width="400" height="80" rx="12" fill="white" stroke="#6B4C9A" stroke-width="2.5" filter="url(#sh3)"/>
+  <rect x="250" y="45" width="400" height="28" rx="12" fill="#6B4C9A"/>
+  <rect x="250" y="60" width="400" height="13" fill="#6B4C9A"/>
+  <text x="450" y="65" text-anchor="middle" fill="white" font-size="12" font-weight="bold">MASTER RECIPE</text>
+  <text x="450" y="95" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">Rec 4.1 - Create Catchup Invoices</text>
+  <text x="450" y="115" text-anchor="middle" fill="#666" font-size="11">ID: 64257157 | Clock Trigger: Daily 11:15 AM | Stopped</text>
+
+  <!-- Connector line down -->
+  <line x1="450" y1="125" x2="450" y2="170" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-purple)"/>
+  <text x="465" y="150" fill="#6B4C9A" font-size="10" font-weight="bold">For Each Contract (sync)</text>
+
+  <!-- Child Recipe (RF 4.1a) -->
+  <rect x="180" y="175" width="540" height="80" rx="12" fill="white" stroke="#2E7D32" stroke-width="2.5" filter="url(#sh3)"/>
+  <rect x="180" y="175" width="540" height="28" rx="12" fill="#2E7D32"/>
+  <rect x="180" y="190" width="540" height="13" fill="#2E7D32"/>
+  <text x="450" y="195" text-anchor="middle" fill="white" font-size="12" font-weight="bold">CHILD RECIPE (NetSuite CRUD)</text>
+  <text x="450" y="225" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">RF 4.1a - Catch up Invoice - Sales Led v2</text>
+  <text x="450" y="245" text-anchor="middle" fill="#666" font-size="11">ID: 64257158 | Recipe Function | 9,610 jobs | 100% success</text>
+
+  <!-- Connector line down -->
+  <line x1="450" y1="255" x2="450" y2="300" stroke="#2E7D32" stroke-width="2" marker-end="url(#rh-green)"/>
+  <text x="465" y="280" fill="#2E7D32" font-size="10" font-weight="bold">For Each Line Item (sync)</text>
+
+  <!-- Grandchild Recipe (RF 4.1b) -->
+  <rect x="220" y="305" width="460" height="80" rx="12" fill="white" stroke="#29B5E8" stroke-width="2.5" filter="url(#sh3)"/>
+  <rect x="220" y="305" width="460" height="28" rx="12" fill="#29B5E8"/>
+  <rect x="220" y="320" width="460" height="13" fill="#29B5E8"/>
+  <text x="450" y="325" text-anchor="middle" fill="white" font-size="12" font-weight="bold">UTILITY RECIPE (Computation)</text>
+  <text x="450" y="355" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">RF 4.1b - Utilities-ComputeBillingFreq</text>
+  <text x="450" y="375" text-anchor="middle" fill="#666" font-size="11">ID: 64257159 | Recipe Function | 16,894 jobs | 100% success | Active</text>
+
+  <!-- Actions summary boxes -->
+  <rect x="30" y="175" width="130" height="80" rx="8" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="95" y="195" text-anchor="middle" fill="#29B5E8" font-size="10" font-weight="bold">Snowflake</text>
+  <text x="95" y="213" text-anchor="middle" fill="#333" font-size="9">SQL Query</text>
+  <text x="95" y="228" text-anchor="middle" fill="#333" font-size="9">Find gaps</text>
+  <text x="95" y="243" text-anchor="middle" fill="#999" font-size="8">Step 2</text>
+  <line x1="160" y1="215" x2="178" y2="215" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <rect x="740" y="175" width="140" height="80" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="810" y="195" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">NetSuite</text>
+  <text x="810" y="213" text-anchor="middle" fill="#333" font-size="9">Search SO + Invoice</text>
+  <text x="810" y="228" text-anchor="middle" fill="#333" font-size="9">Create Invoice</text>
+  <text x="810" y="243" text-anchor="middle" fill="#333" font-size="9">Update Lines</text>
+  <line x1="720" y1="215" x2="738" y2="215" stroke="#2E7D32" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- Legend -->
+  <rect x="30" y="410" width="840" height="55" rx="8" fill="#FAFAFA" stroke="#ddd" stroke-width="1"/>
+  <text x="50" y="432" fill="#333" font-size="11" font-weight="bold">Legend:</text>
+  <line x1="120" y1="428" x2="160" y2="428" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="170" y="432" fill="#333" font-size="10">Sync call (blocking)</text>
+  <line x1="300" y1="428" x2="340" y2="428" stroke="#6B4C9A" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="350" y="432" fill="#333" font-size="10">System interaction</text>
+  <rect x="500" y="420" width="12" height="12" rx="2" fill="#6B4C9A"/><text x="520" y="432" fill="#333" font-size="10">Workato</text>
+  <rect x="590" y="420" width="12" height="12" rx="2" fill="#2E7D32"/><text x="610" y="432" fill="#333" font-size="10">NetSuite</text>
+  <rect x="690" y="420" width="12" height="12" rx="2" fill="#29B5E8"/><text x="710" y="432" fill="#333" font-size="10">Snowflake</text>
+  <text x="50" y="455" fill="#666" font-size="10">All recipe function calls are synchronous (solid arrows). Parent waits for child to complete before processing next contract.</text>
+</svg>
+</div>
+
+<details>
+  <summary>Child Recipe RF 4.1a -- Step-by-Step Breakdown</summary>
+  <table>
+    <tr><th>#</th><th>Step</th><th>Provider</th><th>Purpose</th></tr>
+    <tr><td>1</td><td>Create variable Log_name</td><td>Variable</td><td>Initialize logging context</td></tr>
+    <tr><td>2</td><td>Log message</td><td>Logger</td><td>Log the incoming SFDC Contract ID</td></tr>
+    <tr><td>3</td><td>Search Sales Orders</td><td>NetSuite</td><td>Find SO by Salesforce Contract ID</td></tr>
+    <tr><td>4</td><td>If SO exists</td><td>Conditional</td><td>Branch: proceed only if SO found</td></tr>
+    <tr><td>5</td><td>Log SO details</td><td>Logger</td><td>Log the found sales order details</td></tr>
+    <tr><td>6</td><td>Create Catchup Invoice lines list</td><td>Variable</td><td>Initialize list to accumulate line items</td></tr>
+    <tr><td>7</td><td>Search Invoices (dedup)</td><td>NetSuite</td><td>Check if catchup invoice already exists</td></tr>
+    <tr><td>8</td><td>Custom Ruby code</td><td>Code</td><td>Extract/transform line item data from SO</td></tr>
+    <tr><td>9</td><td>If no existing invoice</td><td>Conditional</td><td>Only create if not already invoiced</td></tr>
+    <tr><td>10</td><td>Create Invoice</td><td>NetSuite</td><td>Create invoice header from SO data</td></tr>
+    <tr><td>11</td><td>Custom Ruby code</td><td>Code</td><td>Parse the created invoice response</td></tr>
+    <tr><td>12</td><td>Search Invoices</td><td>NetSuite</td><td>Retrieve newly created invoice by ID</td></tr>
+    <tr><td>13</td><td>Custom Ruby code</td><td>Code</td><td>Extract invoice details for line update</td></tr>
+    <tr><td>14</td><td>For each line item</td><td>Loop</td><td>Iterate over SO line items</td></tr>
+    <tr><td>15</td><td>Call ComputeBillingFreq</td><td>Recipe Function</td><td>Calculate billing frequency for line</td></tr>
+    <tr><td>16</td><td>Add to line list</td><td>Variable</td><td>Accumulate computed line item</td></tr>
+    <tr><td>17</td><td>Log line items</td><td>Logger</td><td>Log accumulated lines for debugging</td></tr>
+    <tr><td>18</td><td>Update Invoice</td><td>NetSuite</td><td>Write all line items to the invoice</td></tr>
+    <tr><td>19</td><td>Log completion</td><td>Logger</td><td>Record successful processing</td></tr>
+  </table>
+</details>
+
+<!-- 9. KEY BUSINESS LOGIC -->
+<h2 id="business-logic">9. Key Business Logic</h2>
+
+<div class="card orange">
+  <h3>Gap Detection Logic</h3>
+  <p>The core business logic identifies contracts that need catchup invoices. A contract qualifies if:</p>
+  <ol style="margin-left:20px">
+    <li>It is a <strong>legacy migration</strong> record (<code>data_type='legacy_migration'</code>)</li>
+    <li>Its sales order has been <strong>successfully processed</strong> (the sales order log entry has a <code>netsuite_internal_id</code>)</li>
+    <li>Its catchup invoice has <strong>NOT been processed</strong> (no catchup invoice log entry with a <code>netsuite_internal_id</code>)</li>
+  </ol>
+  <details>
+    <summary>View the SQL Query</summary>
+    <pre><code>WITH stg_workato_log AS (
+    SELECT external_id,
+           job_run_completed_at AS last_successful_job_run_completed_at,
+           netsuite_internal_id, source_table_name,
+           error_type, error_message
+    FROM SHARED_EXTERNAL_WORKATO.WORKATO_LOGS
+    WHERE external_id IS NOT NULL
+      AND source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_SALES_ORDER'
+      AND environment_type = 'prod'
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY external_id
+                               ORDER BY job_run_completed_at DESC) = 1
+),
+catchup_invoice AS (
+    SELECT external_id,
+           job_run_completed_at AS last_successful_job_run_completed_at,
+           netsuite_internal_id, source_table_name,
+           error_type, error_message
+    FROM SHARED_EXTERNAL_WORKATO.WORKATO_LOGS
+    WHERE external_id IS NOT NULL
+      AND source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_CATCHUP_INVOICE'
+      AND environment_type = 'prod'
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY external_id
+                               ORDER BY job_run_completed_at DESC) = 1
+)
+SELECT DISTINCT(salesforce_contract_id), migration_date, pricebook_name
+FROM SHARED_EXTERNAL_WORKATO.netsuite_export_sales_order so
+LEFT JOIN stg_workato_log wl ON so.external_id = wl.external_id
+LEFT JOIN catchup_invoice ci ON so.salesforce_contract_id = ci.external_id
+WHERE data_type = 'legacy_migration'
+  AND wl.netsuite_internal_id IS NOT NULL
+  AND ci.netsuite_internal_id IS NULL
+ORDER BY 2;</code></pre>
+  </details>
+</div>
+
+<div class="card blue">
+  <h3>Billing Frequency Computation (RF 4.1b)</h3>
+  <p>The grandchild recipe computes the billing frequency for each line item based on:</p>
+  <ul style="margin-left:20px">
+    <li><strong>Subscription term</strong> (from the sales order line item)</li>
+    <li><strong>Billing schedule</strong> (monthly, quarterly, annual)</li>
+    <li><strong>Default subscription term</strong></li>
+  </ul>
+  <p style="margin-top:8px">This recipe is shared across multiple integration flows (it remains Active even though the parent is Stopped), indicating it is a <strong>reusable utility</strong> used by other NetSuite integration recipes.</p>
+  <p style="margin-top:8px"><em>Reference spreadsheet:</em> The recipe description links to a Google Sheets document containing the calculation rules.</p>
+</div>
+
+<div class="card green">
+  <h3>Deduplication Strategy</h3>
+  <p>The system prevents duplicate invoice creation at two levels:</p>
+  <ol style="margin-left:20px">
+    <li><strong>SQL-level dedup:</strong> The master recipe's query checks <code>WORKATO_LOGS</code> for existing catchup invoice entries. Only contracts WITHOUT a log entry are returned.</li>
+    <li><strong>NetSuite-level dedup:</strong> The child recipe searches NetSuite for existing invoices matching the sales order before creating a new one.</li>
+  </ol>
+</div>
+
+<!-- 10. DATA MODEL -->
+<h2 id="data-model">10. Data Model</h2>
+
+<h3>NETSUITE_EXPORT_SALES_ORDER</h3>
+<div class="card">
+  <p>The primary source table containing sales order data staged for NetSuite integration. Each row represents a line item within a sales order.</p>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>EXTERNAL_ID</code></td><td>TEXT</td><td>Unique identifier for the sales order line (used for log joins)</td></tr>
+    <tr><td><code>SALESFORCE_CONTRACT_ID</code></td><td>TEXT</td><td>The SFDC Contract ID -- primary grouping key for this recipe</td></tr>
+    <tr><td><code>SALESFORCE_OPPORTUNITY_ID</code></td><td>TEXT</td><td>Related Salesforce Opportunity</td></tr>
+    <tr><td><code>CUSTOMER</code></td><td>TEXT</td><td>Stripe customer identifier, used to look up NetSuite entity</td></tr>
+    <tr><td><code>DATE</code></td><td>DATE</td><td>Transaction date for the invoice</td></tr>
+    <tr><td><code>ITEM</code></td><td>TEXT</td><td>Billing plan ID for the product item</td></tr>
+    <tr><td><code>AMOUNT</code></td><td>NUMBER</td><td>Line item amount</td></tr>
+    <tr><td><code>ACTUAL_QTY</code></td><td>FLOAT</td><td>Actual quantity for the line item</td></tr>
+    <tr><td><code>REV_REC_START_DATE</code></td><td>DATE</td><td>Revenue recognition start date</td></tr>
+    <tr><td><code>REV_REC_END_DATE</code></td><td>DATE</td><td>Revenue recognition end date</td></tr>
+    <tr><td><code>BILLING_SCHEDULE</code></td><td>TEXT</td><td>Billing frequency (Monthly, Quarterly, Annual)</td></tr>
+    <tr><td><code>MIGRATION_DATE</code></td><td>DATE</td><td>When the contract was migrated</td></tr>
+    <tr><td><code>PRICEBOOK_NAME</code></td><td>TEXT</td><td>Salesforce pricebook used for pricing</td></tr>
+    <tr><td><code>ORDER_TYPE</code></td><td>TEXT</td><td>Type of order (New, Renewal, Amendment)</td></tr>
+    <tr><td><code>DATA_TYPE</code></td><td>TEXT</td><td>Record category; this recipe filters to <code>'legacy_migration'</code></td></tr>
+  </table>
+  <p style="margin-top:8px; color:#666; font-size:0.9em"><strong>Table stats:</strong> 180,504 rows | 11.9 MB | Schema: INTERCOM_PROD.SHARED_EXTERNAL_WORKATO | Popularity: 50/100</p>
+</div>
+
+<h3>WORKATO_LOGS</h3>
+<div class="card">
+  <p>Centralized audit log for all Workato-NetSuite integration activities. Used for deduplication and status tracking.</p>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>EXTERNAL_ID</code></td><td>TEXT</td><td>Matches to source table external IDs or SFDC Contract IDs</td></tr>
+    <tr><td><code>SOURCE_TABLE_NAME</code></td><td>TEXT</td><td>Which export table was processed (e.g., <code>'SHARED_EXTERNAL_WORKATO.NETSUITE_CATCHUP_INVOICE'</code>)</td></tr>
+    <tr><td><code>NETSUITE_INTERNAL_ID</code></td><td>TEXT</td><td>The NetSuite record ID created; NULL if not yet processed</td></tr>
+    <tr><td><code>JOB_RUN_COMPLETED_AT</code></td><td>TIMESTAMP_TZ</td><td>When the job completed -- used for ordering in dedup logic</td></tr>
+    <tr><td><code>ENVIRONMENT_TYPE</code></td><td>TEXT</td><td>Prod vs sandbox -- filtered to <code>'prod'</code> in queries</td></tr>
+    <tr><td><code>ERROR_TYPE</code></td><td>TEXT</td><td>Type of error if the job failed</td></tr>
+    <tr><td><code>ERROR_MESSAGE</code></td><td>TEXT</td><td>Detailed error description</td></tr>
+    <tr><td><code>IS_SUCCESSFUL_WRITE_TO_NETSUITE</code></td><td>BOOLEAN</td><td>Whether the NetSuite write succeeded</td></tr>
+  </table>
+  <p style="margin-top:8px; color:#666; font-size:0.9em"><strong>Table stats:</strong> 66,185,583 rows | 10.8 GB | Schema: INTERCOM_PROD.SHARED_EXTERNAL_WORKATO | Popularity: 42/100</p>
+</div>
+
+<!-- 11. EDGE CASES -->
+<h2 id="edge-cases">11. Edge Cases &amp; Special Scenarios</h2>
+
+<div class="card">
+  <h3>Sales Order Not Found in NetSuite</h3>
+  <p>If the child recipe searches NetSuite for a sales order using the SFDC Contract ID and finds no match, the recipe logs the missing sales order and skips invoice creation. This can happen if the sales order creation failed or was never initiated.</p>
+</div>
+
+<div class="card">
+  <h3>Catchup Invoice Already Exists</h3>
+  <p>The child recipe performs a second NetSuite search to check if a catchup invoice already exists for the contract. If found, the recipe skips creation. This provides NetSuite-side deduplication in addition to the Snowflake log-based check in the master recipe.</p>
+</div>
+
+<div class="card">
+  <h3>Zero-Amount Line Items</h3>
+  <p>The parent recipe's SQL query does not filter out zero-amount lines at the SQL level; however, the child recipe's custom Ruby code handles line item transformation and may exclude or handle zero-amount lines during the invoice update step.</p>
+</div>
+
+<div class="card">
+  <h3>Error in Invoice Update</h3>
+  <p>If the invoice header is created successfully but the line item update fails, the try/catch block in RF 4.1a catches the error, logs it via the mapper and logger, and the process continues to the next contract. The invoice may exist in NetSuite with incomplete lines -- this would need manual remediation.</p>
+</div>
+
+<div class="card">
+  <h3>Multiple Line Items per Contract</h3>
+  <p>A single SFDC Contract can have many line items (different products, quantities). The child recipe handles this via a For-Each loop over the sales order lines, calling RF 4.1b for each to compute billing frequency, then batching all lines into a single invoice update.</p>
+</div>
+
+<!-- 12. OPERATIONAL NOTES -->
+<h2 id="operational-notes">12. Operational Notes</h2>
+
+<div class="card">
+  <h3>Deduplication Mechanism</h3>
+  <p>Deduplication happens at two layers:</p>
+  <ul style="margin-left:20px">
+    <li><strong>Snowflake (pre-processing):</strong> The SQL query's LEFT JOIN on <code>WORKATO_LOGS</code> with <code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_CATCHUP_INVOICE'</code> ensures only unprocessed contracts are returned. The <code>ROW_NUMBER()</code> window function takes the most recent log entry per external_id.</li>
+    <li><strong>NetSuite (in-processing):</strong> RF 4.1a searches for existing invoices before creating a new one, preventing duplicates even if a log entry was missed.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Error Handling</h3>
+  <p>Each recipe level has its own error handling:</p>
+  <ul style="margin-left:20px">
+    <li><strong>Master (Rec 4.1):</strong> Try/catch with 0 retries, 2-second interval. Errors in one contract iteration do not stop others.</li>
+    <li><strong>Child (RF 4.1a):</strong> Nested try/catch blocks around the invoice creation and update steps. Errors are formatted via mapper and logged.</li>
+    <li><strong>Grandchild (RF 4.1b):</strong> Pure computation; errors in billing frequency calculation would propagate up to the child's catch block.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Performance Characteristics</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Typical job duration</td><td>3 minutes (when few contracts pending)</td></tr>
+    <tr><td>Peak job duration</td><td>~1.5 hours (Sep 12, 2025 -- initial backlog processing)</td></tr>
+    <tr><td>Average daily run time</td><td>3-20 minutes</td></tr>
+    <tr><td>Contracts processed per run</td><td>Varies: 0 (when caught up) to hundreds (during initial migration)</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Current Status &amp; Limitations</h3>
+  <ul style="margin-left:20px">
+    <li><strong>Recipe is STOPPED</strong> as of December 4, 2025, indicating the migration backlog has been fully processed.</li>
+    <li>RF 4.1b (ComputeBillingFreq) remains <strong>Active</strong> because it is a shared utility used by other recipes.</li>
+    <li>The recipe only processes <code>data_type='legacy_migration'</code> records -- it does not handle ongoing billing.</li>
+    <li>Last modified by: diana.sy@intercom.io (version 20)</li>
+    <li>Some steps in the master recipe are marked as <strong>skipped</strong> (steps 4-6), suggesting that the unique contract list building was replaced by a simpler For-Each over the SQL results.</li>
+  </ul>
+</div>
+
+<!-- Footer -->
+<div style="margin-top:48px; padding:20px 0; border-top:2px solid var(--purple-bg); color:var(--text-light); font-size:0.85em;">
+  <p>Generated by venkatesh.manohar | Workato Integration Documentor | April 1, 2026</p>
+  <p>Recipe: Rec 4.1 - SystemMigration-Create Catchup Invoices (64257157)</p>
+</div>
+
+</div><!-- /.main-content -->
+
+<!-- Scroll Spy -->
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a[data-section]');
+  var sections = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    var current = sections[0];
+    var scrollY = window.scrollY + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

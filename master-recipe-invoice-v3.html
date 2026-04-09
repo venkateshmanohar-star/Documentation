@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<meta name="generator" content="Claude4Data Workato Documentor">
+<meta name="date" content="2026-04-01">
+<title>1.0 Master Recipe - Invoice (ID: 58628331) | Integration Documentation</title>
+<style>
+  :root { --orange: #F5A623; --blue: #29B5E8; --purple: #6B4C9A; --green: #2E7D32; --bg: #FAFBFC; --card: #FFFFFF; --text: #2D3748; --muted: #718096; --border: #E2E8F0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding-left: 290px; }
+  nav#toc { position: fixed; top: 0; left: 0; width: 266px; height: 100vh; overflow-y: auto; background: white; padding: 20px 16px; box-shadow: 2px 0 12px rgba(0,0,0,0.08); border-right: 3px solid #6B4C9A; z-index: 1000; }
+  nav#toc .toc-title { font-size: 1.1em; font-weight: 700; color: var(--purple); margin-bottom: 6px; padding-bottom: 8px; border-bottom: 2px solid var(--purple); }
+  nav#toc .toc-subtitle { font-size: 0.72em; color: var(--muted); margin-bottom: 14px; display: block; }
+  nav#toc a { color: #555; text-decoration: none; font-weight: 500; font-size: 0.88em; display: block; padding: 4px 8px; border-radius: 6px; transition: all 0.2s; margin-bottom: 2px; }
+  nav#toc a:hover { background: #F0EBF8; color: #6B4C9A; }
+  nav#toc a.active { background: #6B4C9A; color: white; }
+  .main-content { max-width: 960px; margin: 0 auto; padding: 24px 32px 80px; }
+  header.doc-header { background: linear-gradient(135deg, var(--purple) 0%, #4A2D7A 100%); color: white; padding: 36px 40px; border-radius: 16px; margin-bottom: 32px; }
+  header.doc-header h1 { font-size: 1.8em; font-weight: 800; margin-bottom: 8px; }
+  header.doc-header .meta { display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.88em; opacity: 0.9; }
+  header.doc-header .meta span { display: flex; align-items: center; gap: 6px; }
+  section.doc-section { background: var(--card); border-radius: 12px; padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--border); }
+  section.doc-section h2 { font-size: 1.35em; font-weight: 700; color: var(--purple); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  section.doc-section h2::after { content: '\25B2'; font-size: 0.6em; color: var(--muted); transition: transform 0.3s; }
+  section.doc-section.collapsed h2::after { transform: rotate(180deg); }
+  section.doc-section.collapsed .section-body { display: none; }
+  h3 { font-size: 1.1em; font-weight: 600; color: var(--text); margin: 18px 0 10px; }
+  p, li { font-size: 0.95em; }
+  ul, ol { padding-left: 24px; margin-bottom: 12px; }
+  li { margin-bottom: 6px; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88em; }
+  th { background: var(--purple); color: white; padding: 10px 14px; text-align: left; font-weight: 600; }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: #F7F5FC; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.78em; font-weight: 600; }
+  .badge-active { background: #E8F5E9; color: var(--green); }
+  .badge-stopped { background: #FFF3E0; color: #E65100; }
+  .badge-orange { background: #FFF3E0; color: #E65100; }
+  .badge-blue { background: #E1F5FE; color: #0277BD; }
+  .badge-purple { background: #F3E5F5; color: var(--purple); }
+  .badge-green { background: #E8F5E9; color: var(--green); }
+  code { background: #EDF2F7; padding: 2px 6px; border-radius: 4px; font-size: 0.88em; font-family: 'SF Mono', 'Fira Code', monospace; }
+  pre { background: #1A202C; color: #E2E8F0; padding: 18px 22px; border-radius: 10px; overflow-x: auto; font-size: 0.84em; line-height: 1.6; margin: 12px 0; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 16px 0; }
+  .kpi-card { background: var(--bg); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid var(--border); }
+  .kpi-card .kpi-value { font-size: 1.6em; font-weight: 800; }
+  .kpi-card .kpi-label { font-size: 0.78em; color: var(--muted); margin-top: 4px; }
+  .svg-container { background: var(--bg); border-radius: 10px; padding: 16px; margin: 16px 0; overflow-x: auto; border: 1px solid var(--border); }
+  .callout { background: #F0EBF8; border-left: 4px solid var(--purple); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 0.9em; }
+  .callout-warn { background: #FFF8E1; border-left-color: var(--orange); }
+  .callout-info { background: #E3F2FD; border-left-color: var(--blue); }
+  footer { text-align: center; padding: 24px; font-size: 0.8em; color: var(--muted); border-top: 1px solid var(--border); margin-top: 40px; }
+  @media (max-width: 900px) {
+    nav#toc { position: static; width: 100%; height: auto; border-right: none; border-bottom: 3px solid var(--purple); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    body { padding-left: 0; }
+    .main-content { padding: 16px; }
+  }
+  @media print {
+    nav#toc { display: none !important; }
+    body { padding-left: 0 !important; }
+    .main-content { max-width: 100%; padding: 0; }
+    section.doc-section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    section.doc-section.collapsed .section-body { display: block !important; }
+    header.doc-header { background: var(--purple) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .svg-container { break-inside: avoid; }
+    a.back-to-index { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<a href="netsuite-integration-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#6B4C9A;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.15);" class="back-to-index">&larr; Back to Index</a>
+
+<nav id="toc">
+  <div class="toc-title">Table of Contents</div>
+  <span class="toc-subtitle">1.0 Master Recipe - Invoice</span>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#end-to-end-flow" data-section="end-to-end-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#components" data-section="components">8. Components</a>
+  <a href="#business-logic" data-section="business-logic">9. Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<div class="main-content">
+
+<header class="doc-header">
+  <h1>1.0 Master Recipe &mdash; Invoice</h1>
+  <p style="opacity:0.85;margin-bottom:12px;">NetSuite ARM Integration &mdash; Stripe-to-NetSuite Transaction Orchestrator</p>
+  <div class="meta">
+    <span>Recipe ID: 58628331</span>
+    <span>Status: <span class="badge badge-active">Active</span></span>
+    <span>Project: 9891293</span>
+    <span>Author: diana.sy</span>
+    <span>Last Run: 2026-04-01</span>
+  </div>
+</header>
+
+<!-- Section 1: Executive Summary -->
+<section class="doc-section" id="executive-summary">
+  <h2>1. Executive Summary</h2>
+  <div class="section-body">
+    <p>The <strong>1.0 Master Recipe &mdash; Invoice</strong> is the top-level orchestrator for Intercom's NetSuite ARM (Accounts Receivable Management) integration. It coordinates the automated creation and synchronization of financial transactions from Stripe billing data (staged in Snowflake) into NetSuite ERP. The recipe operates as a three-branch parallel pipeline handling invoices, credit memos, CBAs, payments, refunds, voided invoices, uncollectible invoices, and cancelled sales orders.</p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-value" style="color:var(--green)">706</div><div class="kpi-label">Successful Jobs</div></div>
+      <div class="kpi-card"><div class="kpi-value" style="color:#E53E3E">53</div><div class="kpi-label">Failed Jobs</div></div>
+      <div class="kpi-card"><div class="kpi-value" style="color:var(--purple)">2,167</div><div class="kpi-label">Lifetime Tasks</div></div>
+      <div class="kpi-card"><div class="kpi-value" style="color:var(--blue)">93.0%</div><div class="kpi-label">Success Rate</div></div>
+    </div>
+
+    <div class="callout">
+      <strong>Key Insight:</strong> This recipe orchestrates 13+ sub-recipes across 3 master branches, processing invoices (self-serve and sales-led), credit memos, CBAs, customer payments, refunds, voided invoices, uncollectible invoices, and cancelled sales orders &mdash; all from Snowflake staging tables into NetSuite.
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: Business Overview -->
+<section class="doc-section" id="business-overview">
+  <h2>2. Business Overview</h2>
+  <div class="section-body">
+    <h3>Purpose</h3>
+    <p>This integration automates Intercom's order-to-cash financial operations by synchronizing Stripe billing events with NetSuite ERP. Without this automation, the Finance team would need to manually create thousands of invoices, credit memos, payments, refunds, and journal entries in NetSuite each day.</p>
+
+    <h3>Business Value</h3>
+    <ul>
+      <li><strong>Revenue Recognition:</strong> Ensures timely and accurate creation of invoices with rev-rec schedules in NetSuite ARM</li>
+      <li><strong>Cash Application:</strong> Automates matching of Stripe payments to NetSuite invoices</li>
+      <li><strong>Credit Management:</strong> Handles credit memos, CBAs (Customer Balance Adjustments), and refunds automatically</li>
+      <li><strong>Compliance:</strong> Maintains audit trail via WORKATO_LOGS with idempotent processing (checks for prior successful writes)</li>
+      <li><strong>Multi-subsidiary Support:</strong> Routes transactions to correct NetSuite subsidiaries based on customer entity mapping</li>
+    </ul>
+
+    <h3>Stakeholders</h3>
+    <table>
+      <thead><tr><th>Role</th><th>Contact</th><th>Responsibility</th></tr></thead>
+      <tbody>
+        <tr><td>Integration Engineer</td><td>diana.sy@intercom.io</td><td>Recipe development and maintenance</td></tr>
+        <tr><td>Finance Operations</td><td>danny.mcgean@intercom.io</td><td>Business owner, error notifications</td></tr>
+        <tr><td>Finance Analyst</td><td>nan.lu@intercom.io</td><td>Data validation, error notifications</td></tr>
+        <tr><td>External Consultant</td><td>chase.clark@connorgp.com</td><td>NetSuite configuration support</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section 3: System Overview -->
+<section class="doc-section" id="system-overview">
+  <h2>3. System Overview</h2>
+  <div class="section-body">
+    <h3>Connected Systems</h3>
+    <table>
+      <thead><tr><th>System</th><th>Role</th><th>Connection</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-blue">Snowflake</span></td><td>Source of truth &mdash; staging tables with Stripe billing data</td><td>Account ID: 13171882</td></tr>
+        <tr><td><span class="badge badge-orange">NetSuite</span></td><td>Target ERP &mdash; receives invoices, payments, credit memos, JEs</td><td>Via sub-recipe RF actions (SOAP/REST)</td></tr>
+        <tr><td><span class="badge badge-purple">Workato</span></td><td>Orchestration engine &mdash; recipe functions, logging, error handling</td><td>Native</td></tr>
+        <tr><td><span class="badge badge-green">Email</span></td><td>Error notification delivery</td><td>Workato Email connector</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Trigger Mechanism</h3>
+    <p>Triggered via <strong>Workato Recipe Function</strong> with a required <code>Date</code> parameter (date_time type). This parameter controls the lookback window for all downstream queries: each sub-recipe queries Snowflake for records where <code>created >= {Date}</code> and <code>created &lt;= DATEADD(day, -1, CURRENT_DATE)</code>.</p>
+
+    <h3>Key Snowflake Schema</h3>
+    <p>All staging tables reside in <code>INTERCOM_PROD.SHARED_EXTERNAL_WORKATO</code>:</p>
+    <table>
+      <thead><tr><th>Table</th><th>Purpose</th><th>Used By</th></tr></thead>
+      <tbody>
+        <tr><td><code>NETSUITE_EXPORT_INVOICE</code></td><td>Invoice line items from Stripe</td><td>Rec 4.0</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_SALES_ORDER</code></td><td>Sales orders for sales-led deals</td><td>Rec 4.0</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_CUSTOMER</code></td><td>Customer entity mapping</td><td>Multiple recipes</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_ITEM</code></td><td>Item/product mapping with NS IDs</td><td>Multiple recipes</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_CREDIT_MEMO</code></td><td>Credit memo data</td><td>Rec 5.0</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_CUSTOMER_CREDIT_ADJUSTMENTS</code></td><td>CBA (Credit Balance Adjustment) records</td><td>Rec 8.0</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_PAYMENT</code></td><td>Stripe payment records</td><td>Rec 6.0</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_REFUNDS</code></td><td>Stripe refund records</td><td>Rec 7.0</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_VOIDED_INVOICE</code></td><td>Voided invoice line items</td><td>Rec 10.1</td></tr>
+        <tr><td><code>NETSUITE_EXPORT_CONTRACTS</code></td><td>Salesforce contract cancellations</td><td>Rec 9.0</td></tr>
+        <tr><td><code>WORKATO_LOGS</code></td><td>Idempotency tracking &mdash; records successful writes</td><td>All recipes</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section 4: Architecture Overview -->
+<section class="doc-section" id="architecture-overview">
+  <h2>4. Architecture Overview</h2>
+  <div class="section-body">
+    <p>The integration uses a <strong>three-tier master-recipe orchestration pattern</strong>:</p>
+
+    <h3>Tier 1: Top-Level Orchestrator</h3>
+    <p><strong>Recipe 58628331 (1.0 Master Recipe - Invoice)</strong> accepts a Date parameter and dispatches work to two branches:</p>
+    <ul>
+      <li><strong>Synchronous call</strong> to Rec 4.0 (Invoice Master) &mdash; must complete before CBAs/Payments branch starts</li>
+      <li><strong>Asynchronous call</strong> to Recipe 58628332 (2.0 Master Recipe - Credit Memo CBAs and Payments)</li>
+    </ul>
+
+    <h3>Tier 2: Domain Masters</h3>
+    <ul>
+      <li><strong>Rec 4.0 (54665262)</strong> &mdash; Invoice creation (self-serve + sales-led)</li>
+      <li><strong>Recipe 58628332 (2.0)</strong> &mdash; Credit Memos, CBAs, Payments, then async to Recipe 58628333</li>
+      <li><strong>Recipe 58628333 (3.0)</strong> &mdash; Refunds, Voided Invoices, Uncollectible Invoices, Cancelled Sales Orders</li>
+    </ul>
+
+    <h3>Tier 3: Processing Recipes</h3>
+    <p>Each domain master queries Snowflake for unprocessed records (using WORKATO_LOGS for idempotency), then iterates and dispatches to RF (Recipe Function) sub-recipes that perform the actual NetSuite API calls.</p>
+
+    <div class="callout callout-info">
+      <strong>Execution Order:</strong> Invoices must be created first (sync) because credit memos, CBAs, and payments reference invoice IDs. Once invoices are done, the remaining transaction types can process in parallel.
+    </div>
+  </div>
+</section>
+
+<!-- Section 5: Architecture Diagram (SVG) -->
+<section class="doc-section" id="architecture-diagram">
+  <h2>5. Architecture Diagram</h2>
+  <div class="section-body">
+    <div class="svg-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" style="width:100%;max-width:900px;">
+        <!-- Swimlane backgrounds -->
+        <rect x="0" y="0" width="900" height="60" fill="#6B4C9A" rx="8"/>
+        <text x="450" y="38" text-anchor="middle" fill="white" font-size="16" font-weight="700">NetSuite ARM Integration - Architecture Swimlane</text>
+
+        <!-- Stripe/Snowflake Lane -->
+        <rect x="10" y="70" width="880" height="80" fill="#E3F2FD" rx="6" opacity="0.5"/>
+        <text x="25" y="95" fill="#0277BD" font-size="11" font-weight="700">SNOWFLAKE (Source)</text>
+        <rect x="100" y="100" width="120" height="36" fill="#29B5E8" rx="6"/>
+        <text x="160" y="123" text-anchor="middle" fill="white" font-size="10" font-weight="600">Export Invoice</text>
+        <rect x="240" y="100" width="120" height="36" fill="#29B5E8" rx="6"/>
+        <text x="300" y="123" text-anchor="middle" fill="white" font-size="10" font-weight="600">Export Credit Memo</text>
+        <rect x="380" y="100" width="100" height="36" fill="#29B5E8" rx="6"/>
+        <text x="430" y="123" text-anchor="middle" fill="white" font-size="10" font-weight="600">Export CBA</text>
+        <rect x="500" y="100" width="110" height="36" fill="#29B5E8" rx="6"/>
+        <text x="555" y="123" text-anchor="middle" fill="white" font-size="10" font-weight="600">Export Payment</text>
+        <rect x="630" y="100" width="110" height="36" fill="#29B5E8" rx="6"/>
+        <text x="685" y="123" text-anchor="middle" fill="white" font-size="10" font-weight="600">Export Refunds</text>
+        <rect x="760" y="100" width="110" height="36" fill="#29B5E8" rx="6"/>
+        <text x="815" y="123" text-anchor="middle" fill="white" font-size="10" font-weight="600">Workato Logs</text>
+
+        <!-- Workato Orchestration Lane -->
+        <rect x="10" y="160" width="880" height="200" fill="#F3E5F5" rx="6" opacity="0.4"/>
+        <text x="25" y="185" fill="#6B4C9A" font-size="11" font-weight="700">WORKATO (Orchestration)</text>
+
+        <!-- Master Recipe 1.0 -->
+        <rect x="350" y="190" width="200" height="40" fill="#6B4C9A" rx="8"/>
+        <text x="450" y="215" text-anchor="middle" fill="white" font-size="11" font-weight="700">1.0 Master Recipe - Invoice</text>
+
+        <!-- Branch 1: Invoices -->
+        <line x1="390" y1="230" x2="180" y2="270" stroke="#F5A623" stroke-width="2"/>
+        <rect x="80" y="270" width="200" height="35" fill="#F5A623" rx="6"/>
+        <text x="180" y="293" text-anchor="middle" fill="white" font-size="10" font-weight="600">Rec 4.0 Invoice Master (sync)</text>
+        <rect x="30" y="320" width="140" height="28" fill="#F5A623" rx="5" opacity="0.8"/>
+        <text x="100" y="339" text-anchor="middle" fill="white" font-size="9">RF 4.01 Self-Serve</text>
+        <rect x="190" y="320" width="140" height="28" fill="#F5A623" rx="5" opacity="0.8"/>
+        <text x="260" y="339" text-anchor="middle" fill="white" font-size="9">RF 4.00 Sales-Led</text>
+
+        <!-- Branch 2: CBAs, Credit Memos, Payments -->
+        <line x1="450" y1="230" x2="450" y2="270" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="6,3"/>
+        <rect x="350" y="270" width="200" height="35" fill="#6B4C9A" rx="6" opacity="0.85"/>
+        <text x="450" y="293" text-anchor="middle" fill="white" font-size="10" font-weight="600">2.0 Master - CM/CBA/Pay (async)</text>
+        <rect x="340" y="320" width="90" height="28" fill="#6B4C9A" rx="5" opacity="0.7"/>
+        <text x="385" y="339" text-anchor="middle" fill="white" font-size="9">Rec 5.0 CM</text>
+        <rect x="440" y="320" width="90" height="28" fill="#6B4C9A" rx="5" opacity="0.7"/>
+        <text x="485" y="339" text-anchor="middle" fill="white" font-size="9">Rec 8.0 CBA</text>
+        <rect x="540" y="320" width="90" height="28" fill="#2E7D32" rx="5" opacity="0.8"/>
+        <text x="585" y="339" text-anchor="middle" fill="white" font-size="9">Rec 6.0 Pay</text>
+
+        <!-- Branch 3: Refunds etc -->
+        <line x1="510" y1="230" x2="720" y2="270" stroke="#2E7D32" stroke-width="2" stroke-dasharray="6,3"/>
+        <rect x="620" y="270" width="250" height="35" fill="#2E7D32" rx="6"/>
+        <text x="745" y="293" text-anchor="middle" fill="white" font-size="10" font-weight="600">3.0 Master - Refunds/Void/Cancel (async)</text>
+        <rect x="620" y="320" width="80" height="28" fill="#2E7D32" rx="5" opacity="0.7"/>
+        <text x="660" y="339" text-anchor="middle" fill="white" font-size="9">Rec 7.0</text>
+        <rect x="710" y="320" width="80" height="28" fill="#2E7D32" rx="5" opacity="0.7"/>
+        <text x="750" y="339" text-anchor="middle" fill="white" font-size="9">Rec 10.1</text>
+        <rect x="800" y="320" width="70" height="28" fill="#2E7D32" rx="5" opacity="0.7"/>
+        <text x="835" y="339" text-anchor="middle" fill="white" font-size="9">Rec 9.0</text>
+
+        <!-- NetSuite Lane -->
+        <rect x="10" y="370" width="880" height="80" fill="#FFF3E0" rx="6" opacity="0.5"/>
+        <text x="25" y="395" fill="#E65100" font-size="11" font-weight="700">NETSUITE (Target ERP)</text>
+        <rect x="50" y="400" width="100" height="36" fill="#F5A623" rx="6"/>
+        <text x="100" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Invoices</text>
+        <rect x="170" y="400" width="100" height="36" fill="#F5A623" rx="6"/>
+        <text x="220" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Sales Orders</text>
+        <rect x="290" y="400" width="100" height="36" fill="#6B4C9A" rx="6"/>
+        <text x="340" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Credit Memos</text>
+        <rect x="410" y="400" width="80" height="36" fill="#6B4C9A" rx="6"/>
+        <text x="450" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">CBAs</text>
+        <rect x="510" y="400" width="100" height="36" fill="#2E7D32" rx="6"/>
+        <text x="560" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Payments</text>
+        <rect x="630" y="400" width="80" height="36" fill="#2E7D32" rx="6"/>
+        <text x="670" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Refunds</text>
+        <rect x="730" y="400" width="140" height="36" fill="#2E7D32" rx="6"/>
+        <text x="800" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">JEs / Cancellations</text>
+
+        <!-- Arrows from processing to NetSuite -->
+        <line x1="100" y1="348" x2="100" y2="400" stroke="#F5A623" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+        <line x1="260" y1="348" x2="220" y2="400" stroke="#F5A623" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+        <line x1="385" y1="348" x2="340" y2="400" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+        <line x1="485" y1="348" x2="450" y2="400" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+        <line x1="585" y1="348" x2="560" y2="400" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+        <line x1="660" y1="348" x2="670" y2="400" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+        <line x1="835" y1="348" x2="800" y2="400" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+        <!-- Error notification -->
+        <rect x="350" y="465" width="200" height="35" fill="#E53E3E" rx="6"/>
+        <text x="450" y="488" text-anchor="middle" fill="white" font-size="10" font-weight="600">Error Email Notifications</text>
+        <line x1="450" y1="230" x2="450" y2="465" stroke="#E53E3E" stroke-width="1" stroke-dasharray="4,4" opacity="0.3"/>
+
+        <defs>
+          <marker id="arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="#F5A623" fill="#F5A623" d="M0,0 L8,3 L0,6 Z"/></marker>
+          <marker id="arrow-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#6B4C9A" d="M0,0 L8,3 L0,6 Z"/></marker>
+          <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#2E7D32" d="M0,0 L8,3 L0,6 Z"/></marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Section 6: End-to-End Flow + Data Flow Diagram -->
+<section class="doc-section" id="end-to-end-flow">
+  <h2>6. End-to-End Flow &amp; Data Flow Diagram</h2>
+  <div class="section-body">
+    <h3>Execution Sequence</h3>
+    <ol>
+      <li><strong>Trigger:</strong> Recipe 1.0 is called with a <code>Date</code> parameter (lookback start date)</li>
+      <li><strong>Log Date:</strong> The input date is logged to the job report</li>
+      <li><strong>Branch A (Sync):</strong> Calls Rec 4.0 Invoice Master, which queries <code>NETSUITE_EXPORT_INVOICE</code> and <code>NETSUITE_EXPORT_SALES_ORDER</code>, groups invoice lines by <code>stripe_invoice_id</code>, and dispatches to RF 4.01 (self-serve) or RF 4.00 (sales-led) for NetSuite invoice creation</li>
+      <li><strong>Branch B (Async):</strong> Calls Recipe 2.0, which sequentially runs:
+        <ul>
+          <li>Rec 5.0 &mdash; Credit Memo creation from <code>NETSUITE_EXPORT_CREDIT_MEMO</code></li>
+          <li>Rec 8.0 &mdash; CBA creation from <code>NETSUITE_EXPORT_CUSTOMER_CREDIT_ADJUSTMENTS</code></li>
+          <li>Rec 6.0 &mdash; Customer Payment creation from <code>NETSUITE_EXPORT_PAYMENT</code></li>
+          <li>Then async to Recipe 3.0</li>
+        </ul>
+      </li>
+      <li><strong>Branch C (Async from 2.0):</strong> Recipe 3.0 runs:
+        <ul>
+          <li>Rec 7.0 &mdash; Refund creation from <code>NETSUITE_EXPORT_REFUNDS</code></li>
+          <li>Rec 10.1 &mdash; Voided Invoice handling from <code>NETSUITE_EXPORT_VOIDED_INVOICE</code></li>
+          <li>Rec 10.0 &mdash; Uncollectible Invoice JE from <code>NETSUITE_EXPORT_INVOICE</code> (currently skipped)</li>
+          <li>Rec 9.0 &mdash; Cancelled Sales Order from <code>NETSUITE_EXPORT_CONTRACTS</code></li>
+        </ul>
+      </li>
+      <li><strong>Error Handling:</strong> Each master recipe has a try/catch block that sends email alerts to the finance team on timeout errors</li>
+    </ol>
+
+    <h3>Data Flow Diagram</h3>
+    <div class="svg-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 400" style="width:100%;max-width:860px;">
+        <rect x="0" y="0" width="860" height="45" fill="#29B5E8" rx="8"/>
+        <text x="430" y="30" text-anchor="middle" fill="white" font-size="15" font-weight="700">Data Flow: Stripe &rarr; Snowflake &rarr; Workato &rarr; NetSuite</text>
+
+        <!-- Stripe -->
+        <rect x="30" y="70" width="140" height="50" fill="#29B5E8" rx="8"/>
+        <text x="100" y="100" text-anchor="middle" fill="white" font-size="12" font-weight="700">Stripe Billing</text>
+        <text x="100" y="135" text-anchor="middle" fill="var(--muted)" font-size="9">Invoices, Payments,</text>
+        <text x="100" y="147" text-anchor="middle" fill="var(--muted)" font-size="9">Refunds, Credit Notes</text>
+
+        <!-- Arrow -->
+        <line x1="170" y1="95" x2="220" y2="95" stroke="#29B5E8" stroke-width="2.5" marker-end="url(#df-arrow-blue)"/>
+        <text x="195" y="88" text-anchor="middle" fill="var(--muted)" font-size="8">dbt</text>
+
+        <!-- Snowflake staging -->
+        <rect x="220" y="60" width="200" height="80" fill="white" rx="8" stroke="#29B5E8" stroke-width="2"/>
+        <text x="320" y="85" text-anchor="middle" fill="#29B5E8" font-size="11" font-weight="700">Snowflake Staging</text>
+        <text x="320" y="102" text-anchor="middle" fill="var(--muted)" font-size="9">SHARED_EXTERNAL_WORKATO</text>
+        <text x="320" y="116" text-anchor="middle" fill="var(--muted)" font-size="8">NETSUITE_EXPORT_INVOICE</text>
+        <text x="320" y="128" text-anchor="middle" fill="var(--muted)" font-size="8">...+ 9 more tables</text>
+
+        <!-- Arrow -->
+        <line x1="420" y1="95" x2="470" y2="95" stroke="#6B4C9A" stroke-width="2.5" marker-end="url(#df-arrow-purple)"/>
+        <text x="445" y="88" text-anchor="middle" fill="var(--muted)" font-size="8">SQL</text>
+
+        <!-- Workato -->
+        <rect x="470" y="60" width="180" height="80" fill="white" rx="8" stroke="#6B4C9A" stroke-width="2"/>
+        <text x="560" y="85" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="700">Workato Recipes</text>
+        <text x="560" y="102" text-anchor="middle" fill="var(--muted)" font-size="9">1.0 Master Orchestrator</text>
+        <text x="560" y="116" text-anchor="middle" fill="var(--muted)" font-size="8">Query, Transform, Iterate</text>
+        <text x="560" y="128" text-anchor="middle" fill="var(--muted)" font-size="8">Idempotency via WORKATO_LOGS</text>
+
+        <!-- Arrow -->
+        <line x1="650" y1="95" x2="700" y2="95" stroke="#F5A623" stroke-width="2.5" marker-end="url(#df-arrow-orange)"/>
+        <text x="675" y="88" text-anchor="middle" fill="var(--muted)" font-size="8">API</text>
+
+        <!-- NetSuite -->
+        <rect x="700" y="60" width="140" height="80" fill="white" rx="8" stroke="#F5A623" stroke-width="2"/>
+        <text x="770" y="85" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="700">NetSuite ERP</text>
+        <text x="770" y="102" text-anchor="middle" fill="var(--muted)" font-size="9">Invoices, CMs, JEs</text>
+        <text x="770" y="116" text-anchor="middle" fill="var(--muted)" font-size="8">Payments, Sales Orders</text>
+        <text x="770" y="128" text-anchor="middle" fill="var(--muted)" font-size="8">Customer Records</text>
+
+        <!-- Data volume rows -->
+        <text x="430" y="175" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="700">Transaction Type Volumes</text>
+
+        <rect x="30" y="190" width="800" height="28" fill="#F5A623" rx="4" opacity="0.15"/>
+        <text x="40" y="209" fill="var(--text)" font-size="10" font-weight="600">Invoices (Rec 4.0)</text>
+        <rect x="250" y="195" width="340" height="18" fill="#F5A623" rx="3" opacity="0.7"/>
+        <text x="600" y="209" fill="var(--muted)" font-size="10">886 succeeded | 141 failed | Self-serve + Sales-led</text>
+
+        <rect x="30" y="224" width="800" height="28" fill="#6B4C9A" rx="4" opacity="0.1"/>
+        <text x="40" y="243" fill="var(--text)" font-size="10" font-weight="600">Credit Memos (Rec 5.0)</text>
+        <rect x="250" y="229" width="330" height="18" fill="#6B4C9A" rx="3" opacity="0.6"/>
+        <text x="600" y="243" fill="var(--muted)" font-size="10">833 succeeded | 0 failed | 15,246 tasks</text>
+
+        <rect x="30" y="258" width="800" height="28" fill="#6B4C9A" rx="4" opacity="0.1"/>
+        <text x="40" y="277" fill="var(--text)" font-size="10" font-weight="600">CBAs (Rec 8.0)</text>
+        <rect x="250" y="263" width="330" height="18" fill="#6B4C9A" rx="3" opacity="0.6"/>
+        <text x="600" y="277" fill="var(--muted)" font-size="10">839 succeeded | 9 failed | 63,773 tasks</text>
+
+        <rect x="30" y="292" width="800" height="28" fill="#2E7D32" rx="4" opacity="0.1"/>
+        <text x="40" y="311" fill="var(--text)" font-size="10" font-weight="600">Payments (Rec 6.0)</text>
+        <rect x="250" y="297" width="350" height="18" fill="#2E7D32" rx="3" opacity="0.6"/>
+        <text x="620" y="311" fill="var(--muted)" font-size="10">876 succeeded | 0 failed | 823,698 tasks</text>
+
+        <rect x="30" y="326" width="800" height="28" fill="#2E7D32" rx="4" opacity="0.1"/>
+        <text x="40" y="345" fill="var(--text)" font-size="10" font-weight="600">Refunds (Rec 7.0)</text>
+        <rect x="250" y="331" width="160" height="18" fill="#2E7D32" rx="3" opacity="0.6"/>
+        <text x="430" y="345" fill="var(--muted)" font-size="10">824 succeeded | 0 failed</text>
+
+        <rect x="30" y="360" width="800" height="28" fill="#2E7D32" rx="4" opacity="0.1"/>
+        <text x="40" y="379" fill="var(--text)" font-size="10" font-weight="600">Voided Inv / Cancelled SO</text>
+        <rect x="250" y="365" width="200" height="18" fill="#2E7D32" rx="3" opacity="0.6"/>
+        <text x="470" y="379" fill="var(--muted)" font-size="10">205 + 825 succeeded</text>
+
+        <defs>
+          <marker id="df-arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#29B5E8" d="M0,0 L8,3 L0,6 Z"/></marker>
+          <marker id="df-arrow-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#6B4C9A" d="M0,0 L8,3 L0,6 Z"/></marker>
+          <marker id="df-arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#F5A623" d="M0,0 L8,3 L0,6 Z"/></marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Processing Stages -->
+<section class="doc-section" id="processing-stages">
+  <h2>7. Processing Stages</h2>
+  <div class="section-body">
+    <h3>Stage 1: Initialization &amp; Date Logging</h3>
+    <p>The master recipe receives the <code>Date</code> parameter and logs it. This date serves as the lower bound for all downstream Snowflake queries.</p>
+
+    <h3>Stage 2: Invoice Processing (Synchronous)</h3>
+    <p><strong>Rec 4.0 Invoice Master Recipe (54665262)</strong> is the most complex sub-recipe:</p>
+    <ul>
+      <li>Queries <code>NETSUITE_EXPORT_INVOICE</code> joined with <code>NETSUITE_EXPORT_ITEM</code> and <code>NETSUITE_EXPORT_CUSTOMER</code></li>
+      <li>Groups line items by <code>stripe_invoice_id</code> using Workato list variables</li>
+      <li>Routes to <strong>RF 4.01</strong> (self-serve) or <strong>RF 4.00</strong> (sales-led) based on <code>sales_channel</code></li>
+      <li>Each RF recipe creates the invoice in NetSuite with line items, rev-rec dates, discounts, and tax amounts</li>
+    </ul>
+
+    <h3>Stage 3: Credit Memos (Sequential in Branch B)</h3>
+    <p><strong>Rec 5.0 Credit Memo Master Recipe (54665263)</strong>:</p>
+    <ul>
+      <li>Queries <code>NETSUITE_EXPORT_CREDIT_MEMO</code> for unprocessed credit memos</li>
+      <li>Groups line items by invoice and dispatches to RF sub-recipes for NetSuite credit memo creation</li>
+    </ul>
+
+    <h3>Stage 4: Customer Balance Adjustments</h3>
+    <p><strong>Rec 8.0 Create CBA (54665266)</strong>:</p>
+    <ul>
+      <li>Queries <code>NETSUITE_EXPORT_CUSTOMER_CREDIT_ADJUSTMENTS</code> joined with customer data</li>
+      <li>Filters using WORKATO_LOGS for idempotency</li>
+      <li>Iterates each CBA record and calls RF 8.0 to create in NetSuite</li>
+    </ul>
+
+    <h3>Stage 5: Customer Payments</h3>
+    <p><strong>Rec 6.0 Create Customer Payment (54665264)</strong>:</p>
+    <ul>
+      <li>Queries <code>NETSUITE_EXPORT_PAYMENT</code> for unprocessed payments</li>
+      <li>Excludes "Bank Transfer Payment" check references</li>
+      <li>Dispatches each payment <strong>asynchronously</strong> to RF 6.0 for NetSuite payment creation</li>
+      <li>Highest task volume: 823,698 lifetime tasks</li>
+    </ul>
+
+    <h3>Stage 6: Refunds, Voided Invoices, Cancellations (Branch C)</h3>
+    <ul>
+      <li><strong>Rec 7.0 (54665265):</strong> Queries <code>NETSUITE_EXPORT_REFUNDS</code>, creates customer refunds in NetSuite</li>
+      <li><strong>Rec 10.1 (69929323):</strong> Queries <code>NETSUITE_EXPORT_VOIDED_INVOICE</code>, groups by invoice, creates void credit memos</li>
+      <li><strong>Rec 10.0 (54665260):</strong> Uncollectible invoices &mdash; currently <span class="badge badge-stopped">Stopped</span></li>
+      <li><strong>Rec 9.0 (54665267):</strong> Queries <code>NETSUITE_EXPORT_CONTRACTS</code> for cancelled contracts, closes sales orders in NetSuite</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Section 8: Components + Recipe Hierarchy SVG -->
+<section class="doc-section" id="components">
+  <h2>8. Components &amp; Recipe Hierarchy</h2>
+  <div class="section-body">
+    <h3>Complete Recipe Inventory</h3>
+    <table>
+      <thead><tr><th>Recipe ID</th><th>Name</th><th>Status</th><th>Succeeded</th><th>Failed</th><th>Lifetime Tasks</th></tr></thead>
+      <tbody>
+        <tr><td>58628331</td><td>1.0 Master Recipe - Invoice</td><td><span class="badge badge-active">Active</span></td><td>706</td><td>53</td><td>2,167</td></tr>
+        <tr><td>54665262</td><td>Rec 4.0 Invoice Master Recipe</td><td><span class="badge badge-active">Active</span></td><td>886</td><td>141</td><td>N/A</td></tr>
+        <tr><td>54665272</td><td>RF 4.01 Create Invoice - Self Serve</td><td><span class="badge badge-active">Active</span></td><td colspan="3">Leaf recipe (NetSuite API)</td></tr>
+        <tr><td>54665271</td><td>RF 4.00 Create Invoice - Sales Led</td><td><span class="badge badge-active">Active</span></td><td colspan="3">Leaf recipe (NetSuite API)</td></tr>
+        <tr><td>58628332</td><td>2.0 Master - Credit Memo CBAs and Payments</td><td><span class="badge badge-active">Active</span></td><td>700</td><td>3</td><td>3,483</td></tr>
+        <tr><td>54665263</td><td>Rec 5.0 Credit Memo Master Recipe</td><td><span class="badge badge-active">Active</span></td><td>833</td><td>0</td><td>15,246</td></tr>
+        <tr><td>54665266</td><td>Rec 8.0 Create CBA</td><td><span class="badge badge-active">Active</span></td><td>839</td><td>9</td><td>63,773</td></tr>
+        <tr><td>54665264</td><td>Rec 6.0 Create Customer Payment</td><td><span class="badge badge-active">Active</span></td><td>876</td><td>0</td><td>823,698</td></tr>
+        <tr><td>58628333</td><td>3.0 Master - Refunds/Void/Cancel</td><td><span class="badge badge-active">Active</span></td><td>687</td><td>0</td><td>2,686</td></tr>
+        <tr><td>54665265</td><td>Rec 7.0 Refunds Master Recipe</td><td><span class="badge badge-active">Active</span></td><td>824</td><td>0</td><td>2,824</td></tr>
+        <tr><td>69929323</td><td>Rec 10.1 Voided Invoice Master Recipe</td><td><span class="badge badge-active">Active</span></td><td>205</td><td>0</td><td>5,725</td></tr>
+        <tr><td>54665260</td><td>Rec 10.0 Uncollectible Invoice Master</td><td><span class="badge badge-stopped">Stopped</span></td><td>561</td><td>0</td><td>522,237</td></tr>
+        <tr><td>54665267</td><td>Rec 9.0 Cancelled Sales Orders Master</td><td><span class="badge badge-active">Active</span></td><td>825</td><td>1</td><td>15,954</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Recipe Hierarchy Diagram</h3>
+    <div class="svg-container">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 480" style="width:100%;max-width:860px;">
+        <rect x="0" y="0" width="860" height="40" fill="#6B4C9A" rx="8"/>
+        <text x="430" y="27" text-anchor="middle" fill="white" font-size="14" font-weight="700">Recipe Hierarchy Tree</text>
+
+        <!-- Level 0: Master -->
+        <rect x="310" y="55" width="240" height="38" fill="#6B4C9A" rx="8"/>
+        <text x="430" y="79" text-anchor="middle" fill="white" font-size="11" font-weight="700">1.0 Master Recipe - Invoice (58628331)</text>
+
+        <!-- Lines to Level 1 -->
+        <line x1="370" y1="93" x2="140" y2="120" stroke="#F5A623" stroke-width="2"/>
+        <line x1="430" y1="93" x2="430" y2="120" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="370" y="110" fill="#F5A623" font-size="8" font-weight="600">sync</text>
+        <text x="445" y="110" fill="#6B4C9A" font-size="8" font-weight="600">async</text>
+
+        <!-- Level 1: Rec 4.0 -->
+        <rect x="30" y="120" width="220" height="34" fill="#F5A623" rx="6"/>
+        <text x="140" y="142" text-anchor="middle" fill="white" font-size="10" font-weight="600">Rec 4.0 Invoice Master (54665262)</text>
+
+        <!-- Level 1: Recipe 2.0 -->
+        <rect x="320" y="120" width="220" height="34" fill="#6B4C9A" rx="6" opacity="0.85"/>
+        <text x="430" y="142" text-anchor="middle" fill="white" font-size="10" font-weight="600">2.0 CM/CBA/Pay Master (58628332)</text>
+
+        <!-- Level 2 from Rec 4.0 -->
+        <line x1="90" y1="154" x2="60" y2="175" stroke="#F5A623" stroke-width="1.5"/>
+        <line x1="190" y1="154" x2="220" y2="175" stroke="#F5A623" stroke-width="1.5"/>
+        <rect x="10" y="175" width="130" height="28" fill="#F5A623" rx="5" opacity="0.75"/>
+        <text x="75" y="194" text-anchor="middle" fill="white" font-size="9">RF 4.01 Self-Serve</text>
+        <rect x="160" y="175" width="130" height="28" fill="#F5A623" rx="5" opacity="0.75"/>
+        <text x="225" y="194" text-anchor="middle" fill="white" font-size="9">RF 4.00 Sales-Led</text>
+
+        <!-- Level 2 from Recipe 2.0 -->
+        <line x1="370" y1="154" x2="340" y2="225" stroke="#6B4C9A" stroke-width="1.5"/>
+        <line x1="430" y1="154" x2="470" y2="225" stroke="#6B4C9A" stroke-width="1.5"/>
+        <line x1="490" y1="154" x2="600" y2="225" stroke="#2E7D32" stroke-width="1.5"/>
+        <line x1="500" y1="154" x2="730" y2="225" stroke="#2E7D32" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="510" y="200" fill="#2E7D32" font-size="8" font-weight="600">async</text>
+
+        <rect x="285" y="225" width="140" height="28" fill="#6B4C9A" rx="5" opacity="0.7"/>
+        <text x="355" y="244" text-anchor="middle" fill="white" font-size="9">Rec 5.0 Credit Memo</text>
+        <rect x="440" y="225" width="110" height="28" fill="#6B4C9A" rx="5" opacity="0.7"/>
+        <text x="495" y="244" text-anchor="middle" fill="white" font-size="9">Rec 8.0 CBA</text>
+        <rect x="565" y="225" width="120" height="28" fill="#2E7D32" rx="5" opacity="0.8"/>
+        <text x="625" y="244" text-anchor="middle" fill="white" font-size="9">Rec 6.0 Payment</text>
+
+        <!-- Recipe 3.0 -->
+        <rect x="690" y="225" width="155" height="28" fill="#2E7D32" rx="6"/>
+        <text x="768" y="244" text-anchor="middle" fill="white" font-size="9" font-weight="600">3.0 Refund/Void/Cancel</text>
+
+        <!-- Sub-recipes for CBA and Payment -->
+        <line x1="495" y1="253" x2="495" y2="275" stroke="#6B4C9A" stroke-width="1"/>
+        <rect x="440" y="275" width="110" height="24" fill="#6B4C9A" rx="4" opacity="0.5"/>
+        <text x="495" y="292" text-anchor="middle" fill="white" font-size="8">RF 8.0 Create CBA</text>
+
+        <line x1="625" y1="253" x2="625" y2="275" stroke="#2E7D32" stroke-width="1"/>
+        <rect x="565" y="275" width="120" height="24" fill="#2E7D32" rx="4" opacity="0.5"/>
+        <text x="625" y="292" text-anchor="middle" fill="white" font-size="8">RF 6.0 Create Pay</text>
+
+        <!-- Level 3 from Recipe 3.0 -->
+        <line x1="720" y1="253" x2="100" y2="340" stroke="#2E7D32" stroke-width="1.5"/>
+        <line x1="750" y1="253" x2="300" y2="340" stroke="#2E7D32" stroke-width="1.5"/>
+        <line x1="780" y1="253" x2="500" y2="340" stroke="#2E7D32" stroke-width="1.5"/>
+        <line x1="810" y1="253" x2="700" y2="340" stroke="#2E7D32" stroke-width="1.5"/>
+
+        <rect x="20" y="340" width="160" height="28" fill="#2E7D32" rx="5" opacity="0.7"/>
+        <text x="100" y="359" text-anchor="middle" fill="white" font-size="9">Rec 7.0 Refunds</text>
+        <rect x="220" y="340" width="170" height="28" fill="#2E7D32" rx="5" opacity="0.7"/>
+        <text x="305" y="359" text-anchor="middle" fill="white" font-size="9">Rec 10.1 Voided Invoice</text>
+        <rect x="420" y="340" width="180" height="28" fill="#2E7D32" rx="5" opacity="0.35"/>
+        <text x="510" y="359" text-anchor="middle" fill="white" font-size="9">Rec 10.0 Uncollectible (STOPPED)</text>
+        <rect x="630" y="340" width="180" height="28" fill="#2E7D32" rx="5" opacity="0.7"/>
+        <text x="720" y="359" text-anchor="middle" fill="white" font-size="9">Rec 9.0 Cancelled SO</text>
+
+        <!-- Leaf recipes -->
+        <line x1="100" y1="368" x2="100" y2="390" stroke="#2E7D32" stroke-width="1"/>
+        <rect x="30" y="390" width="140" height="22" fill="#2E7D32" rx="4" opacity="0.45"/>
+        <text x="100" y="405" text-anchor="middle" fill="white" font-size="8">RF 7.0 Create Refund</text>
+
+        <line x1="305" y1="368" x2="305" y2="390" stroke="#2E7D32" stroke-width="1"/>
+        <rect x="235" y="390" width="140" height="22" fill="#2E7D32" rx="4" opacity="0.45"/>
+        <text x="305" y="405" text-anchor="middle" fill="white" font-size="8">RF 10.1 Voided Inv</text>
+
+        <line x1="510" y1="368" x2="510" y2="390" stroke="#2E7D32" stroke-width="1"/>
+        <rect x="440" y="390" width="140" height="22" fill="#2E7D32" rx="4" opacity="0.35"/>
+        <text x="510" y="405" text-anchor="middle" fill="white" font-size="8">RF 10.0 Uncoll JE</text>
+
+        <line x1="720" y1="368" x2="720" y2="390" stroke="#2E7D32" stroke-width="1"/>
+        <rect x="650" y="390" width="140" height="22" fill="#2E7D32" rx="4" opacity="0.45"/>
+        <text x="720" y="405" text-anchor="middle" fill="white" font-size="8">RF 9.0 Cancel SO</text>
+
+        <!-- Legend -->
+        <rect x="30" y="430" width="800" height="40" fill="#F8F9FA" rx="6" stroke="#E2E8F0"/>
+        <text x="50" y="455" fill="var(--text)" font-size="10" font-weight="600">Legend:</text>
+        <rect x="110" y="442" width="14" height="14" fill="#F5A623" rx="2"/>
+        <text x="130" y="454" fill="var(--text)" font-size="9">Invoice Branch</text>
+        <rect x="230" y="442" width="14" height="14" fill="#6B4C9A" rx="2"/>
+        <text x="250" y="454" fill="var(--text)" font-size="9">Credit/CBA Branch</text>
+        <rect x="370" y="442" width="14" height="14" fill="#2E7D32" rx="2"/>
+        <text x="390" y="454" fill="var(--text)" font-size="9">Refund/Void/Cancel Branch</text>
+        <line x1="560" y1="449" x2="590" y2="449" stroke="#333" stroke-width="2"/>
+        <text x="600" y="454" fill="var(--text)" font-size="9">Sync call</text>
+        <line x1="660" y1="449" x2="690" y2="449" stroke="#333" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="700" y="454" fill="var(--text)" font-size="9">Async call</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- Section 9: Business Logic -->
+<section class="doc-section" id="business-logic">
+  <h2>9. Business Logic</h2>
+  <div class="section-body">
+    <h3>Idempotency Pattern</h3>
+    <p>Every processing recipe uses the same idempotency pattern via a CTE against <code>WORKATO_LOGS</code>:</p>
+    <pre>WITH stg_workato_log AS (
+    SELECT external_id,
+           netsuite_internal_id,
+           source_table_name
+    FROM SHARED_EXTERNAL_WORKATO.WORKATO_LOGS
+    WHERE external_id IS NOT NULL
+      AND source_table_name = '{table_name}'
+      AND environment_type = 'prod'
+    QUALIFY ROW_NUMBER() OVER (
+        PARTITION BY external_id
+        ORDER BY job_run_completed_at DESC
+    ) = 1
+)
+SELECT ...
+FROM {source_table}
+LEFT JOIN stg_workato_log wl ON ...
+WHERE wl.netsuite_internal_id IS NULL  -- Only unprocessed records</pre>
+
+    <h3>Invoice Routing Logic</h3>
+    <p>Rec 4.0 routes invoices based on the <code>sales_channel</code> field:</p>
+    <ul>
+      <li><strong>Self-Serve:</strong> Dispatches to RF 4.01 &mdash; creates standalone NetSuite invoices</li>
+      <li><strong>Sales-Led:</strong> Dispatches to RF 4.00 &mdash; creates invoices linked to existing sales orders</li>
+    </ul>
+
+    <h3>Date Filtering</h3>
+    <p>All queries use the pattern: <code>created &gt;= '{Date}' AND created &lt;= DATEADD(day, -1, CURRENT_DATE)</code>. This ensures same-day records (which may still be updating in Stripe) are not processed prematurely.</p>
+
+    <h3>Payment Exclusion</h3>
+    <p>Rec 6.0 excludes bank transfer payments: <code>check_reference_number IS NULL OR check_reference_number &lt;&gt; 'Bank Transfer Payment'</code>. These are handled through a separate process.</p>
+
+    <h3>Multi-Subsidiary Routing</h3>
+    <p>Customer subsidiary information flows from <code>NETSUITE_EXPORT_CUSTOMER</code> through to each NetSuite transaction, ensuring transactions are created in the correct legal entity.</p>
+
+    <h3>Invoice Line Grouping</h3>
+    <p>Recipes 4.0, 5.0, 10.0, and 10.1 group individual line items into invoice-level batches using Workato's list variables. The pattern:</p>
+    <ol>
+      <li>Query returns all line items ordered by date</li>
+      <li>Extract unique invoice IDs: <code>.pluck('stripe_invoice_id').uniq</code></li>
+      <li>Create a list sized to the unique count</li>
+      <li>For each unique invoice, filter and batch-insert matching lines</li>
+      <li>Call the RF recipe with the complete invoice + line items</li>
+    </ol>
+  </div>
+</section>
+
+<!-- Section 10: Data Model -->
+<section class="doc-section" id="data-model">
+  <h2>10. Data Model</h2>
+  <div class="section-body">
+    <h3>Invoice Data Model (Rec 4.0)</h3>
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>stripe_invoice_id</code></td><td>VARCHAR</td><td>Primary key from Stripe</td></tr>
+        <tr><td><code>customer</code></td><td>VARCHAR</td><td>Stripe customer ID (joins to NETSUITE_EXPORT_CUSTOMER)</td></tr>
+        <tr><td><code>subsidiary</code></td><td>VARCHAR</td><td>NetSuite subsidiary for multi-entity routing</td></tr>
+        <tr><td><code>sales_channel</code></td><td>VARCHAR</td><td>Self-serve vs sales-led routing</td></tr>
+        <tr><td><code>invoice_total</code></td><td>NUMBER(38,2)</td><td>Total invoice amount</td></tr>
+        <tr><td><code>item</code></td><td>VARCHAR</td><td>Billing plan ID (joins to NETSUITE_EXPORT_ITEM)</td></tr>
+        <tr><td><code>amount</code></td><td>DOUBLE</td><td>Line item amount</td></tr>
+        <tr><td><code>rev_rec_start_date</code></td><td>TIMESTAMP_TZ</td><td>Revenue recognition start</td></tr>
+        <tr><td><code>rev_rec_end_date</code></td><td>TIMESTAMP_TZ</td><td>Revenue recognition end</td></tr>
+        <tr><td><code>discount_percentage</code></td><td>DOUBLE</td><td>Line discount rate</td></tr>
+        <tr><td><code>total_tax</code></td><td>NUMBER(38,2)</td><td>Invoice-level tax</td></tr>
+        <tr><td><code>line_type</code></td><td>VARCHAR</td><td>Categorization of the line item</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Payment Data Model (Rec 6.0)</h3>
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>stripe_payment_id</code></td><td>VARCHAR</td><td>External ID / idempotency key</td></tr>
+        <tr><td><code>stripe_invoice_id</code></td><td>VARCHAR</td><td>Links payment to invoice</td></tr>
+        <tr><td><code>stripe_payout_id</code></td><td>VARCHAR</td><td>Stripe payout reference</td></tr>
+        <tr><td><code>payment_amount</code></td><td>NUMBER(38,2)</td><td>Payment amount</td></tr>
+        <tr><td><code>payment_method</code></td><td>VARCHAR</td><td>Card, ACH, wire, etc.</td></tr>
+        <tr><td><code>fee_amount</code></td><td>NUMBER</td><td>Stripe processing fee</td></tr>
+        <tr><td><code>check_reference_number</code></td><td>VARCHAR</td><td>Check ref (used for bank transfer exclusion)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>CBA Data Model (Rec 8.0)</h3>
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>external_id</code></td><td>VARCHAR</td><td>Unique CBA identifier</td></tr>
+        <tr><td><code>entity</code></td><td>VARCHAR</td><td>Customer entity reference</td></tr>
+        <tr><td><code>amount</code></td><td>NUMBER(38,2)</td><td>CBA amount</td></tr>
+        <tr><td><code>type</code></td><td>VARCHAR</td><td>CBA type classification</td></tr>
+        <tr><td><code>credit_note</code></td><td>VARCHAR</td><td>Associated credit note ID</td></tr>
+        <tr><td><code>invoice_id</code></td><td>VARCHAR</td><td>Associated invoice</td></tr>
+        <tr><td><code>category</code></td><td>VARCHAR</td><td>Customer category from NETSUITE_EXPORT_CUSTOMER</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Section 11: Edge Cases -->
+<section class="doc-section" id="edge-cases">
+  <h2>11. Edge Cases &amp; Error Handling</h2>
+  <div class="section-body">
+    <h3>Known Edge Cases</h3>
+    <table>
+      <thead><tr><th>Scenario</th><th>Handling</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Timeout on high-volume days</td>
+          <td>Try/catch sends email to finance team with error message</td>
+          <td>Partial processing; requires manual rerun with adjusted date</td>
+        </tr>
+        <tr>
+          <td>Duplicate processing attempt</td>
+          <td>WORKATO_LOGS CTE filters out previously processed records</td>
+          <td>None &mdash; idempotent by design</td>
+        </tr>
+        <tr>
+          <td>Missing customer in NetSuite</td>
+          <td>RF sub-recipes handle customer lookup; may fail if customer doesn't exist</td>
+          <td>Individual record failure; logged in WORKATO_LOGS with error</td>
+        </tr>
+        <tr>
+          <td>Bank transfer payments</td>
+          <td>Explicitly excluded from Rec 6.0 via WHERE clause</td>
+          <td>Processed through separate workflow</td>
+        </tr>
+        <tr>
+          <td>CBAs from manual invoices</td>
+          <td>Known gap: CBAs may not process if originating invoice was manual (proration/downgrade)</td>
+          <td>Requires manual intervention; routing debug string in NS ID prevents RF 8.0 from parsing</td>
+        </tr>
+        <tr>
+          <td>Uncollectible invoices (Rec 10.0)</td>
+          <td>Recipe currently stopped; query hardcoded to specific invoice ID for testing</td>
+          <td>Uncollectible invoices not being auto-processed</td>
+        </tr>
+        <tr>
+          <td>50,000 row query limit</td>
+          <td>All Snowflake queries have <code>LIMIT 50000</code></td>
+          <td>If more than 50K records accumulate, some will be missed until next run</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Error Notification</h3>
+    <p>All three master recipes (1.0, 2.0, 3.0) have identical error handling:</p>
+    <div class="callout callout-warn">
+      <strong>On Error:</strong> Email sent to danny.mcgean@intercom.io, nan.lu@intercom.io, chase.clark@connorgp.com, diana.sy@intercom.io with subject "NetSuite ARM Integration Timeout Error" and the caught error message.
+    </div>
+  </div>
+</section>
+
+<!-- Section 12: Operational Notes -->
+<section class="doc-section" id="operational-notes">
+  <h2>12. Operational Notes</h2>
+  <div class="section-body">
+    <h3>Monitoring &amp; Alerting</h3>
+    <ul>
+      <li><strong>Job History:</strong> Monitor via Workato dashboard &mdash; Recipe 58628331 shows 93% success rate</li>
+      <li><strong>Error Emails:</strong> Timeout alerts go to 4 recipients</li>
+      <li><strong>WORKATO_LOGS:</strong> Central audit table tracks every write attempt with external_id, netsuite_internal_id, error details</li>
+    </ul>
+
+    <h3>Execution Schedule</h3>
+    <p>The recipe runs daily (triggered externally). Last run: 2026-04-01 at 10:30 AM PT. The Date parameter typically points to several days back to catch any lagging records.</p>
+
+    <h3>Rerun Procedure</h3>
+    <ol>
+      <li>Navigate to Recipe 58628331 in Workato</li>
+      <li>Trigger manually with the desired lookback Date</li>
+      <li>Idempotency ensures already-processed records are skipped</li>
+      <li>Monitor child recipe jobs for failures</li>
+    </ol>
+
+    <h3>Performance Characteristics</h3>
+    <table>
+      <thead><tr><th>Metric</th><th>Value</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Total lifetime tasks (all recipes)</td><td>~1,455,000+</td><td>Dominated by payment processing</td></tr>
+        <tr><td>Highest volume recipe</td><td>Rec 6.0 Customer Payment</td><td>823,698 lifetime tasks</td></tr>
+        <tr><td>Most reliable recipe</td><td>Rec 5.0, 6.0, 7.0</td><td>0 failures each</td></tr>
+        <tr><td>Highest failure rate</td><td>Rec 4.0 Invoice Master</td><td>141 failures (13.7% failure rate)</td></tr>
+        <tr><td>Query row limit</td><td>50,000 per recipe</td><td>Snowflake LIMIT clause</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Version History</h3>
+    <table>
+      <thead><tr><th>Recipe</th><th>Version</th><th>Last Updated</th><th>Author</th></tr></thead>
+      <tbody>
+        <tr><td>1.0 Master</td><td>v5</td><td>2026-01-21</td><td>diana.sy</td></tr>
+        <tr><td>2.0 Master</td><td>v9</td><td>2026-01-21</td><td>diana.sy</td></tr>
+        <tr><td>3.0 Master</td><td>v6</td><td>2026-01-28</td><td>diana.sy</td></tr>
+        <tr><td>Rec 4.0</td><td>N/A</td><td>N/A</td><td>diana.sy</td></tr>
+        <tr><td>Rec 6.0</td><td>v45</td><td>2026-03-05</td><td>diana.sy</td></tr>
+        <tr><td>Rec 8.0</td><td>v23</td><td>2026-02-28</td><td>diana.sy</td></tr>
+        <tr><td>Rec 10.1</td><td>v10</td><td>2026-02-28</td><td>diana.sy</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Dependencies &amp; Prerequisites</h3>
+    <ul>
+      <li>Snowflake staging tables must be populated by upstream dbt models before recipe runs</li>
+      <li>NetSuite customer records must exist before invoices/payments can be created</li>
+      <li>Item mapping table (<code>NETSUITE_EXPORT_ITEM</code>) must have current billing_plan_id to netsuite_internal_id mappings</li>
+      <li>Workato connection to Snowflake (Account 13171882) must be active</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>Generated by Claude4Data Workato Documentor | Author: venkatesh.manohar | Date: 2026-04-01</p>
+  <p>Recipe: 1.0 Master Recipe - Invoice (ID: 58628331) | Intercom NetSuite ARM Integration</p>
+</footer>
+
+</div><!-- end main-content -->
+
+<script>
+// Collapsible sections
+document.querySelectorAll('section.doc-section h2').forEach(h2 => {
+  h2.addEventListener('click', () => {
+    h2.parentElement.classList.toggle('collapsed');
+  });
+});
+
+// Scroll spy
+const tocLinks = document.querySelectorAll('nav#toc a[data-section]');
+const sections = [];
+tocLinks.forEach(link => {
+  const id = link.getAttribute('data-section');
+  const el = document.getElementById(id);
+  if (el) sections.push({ el, link });
+});
+
+function updateActiveLink() {
+  let current = null;
+  const scrollTop = window.scrollY + 120;
+  sections.forEach(({ el, link }) => {
+    if (el.offsetTop <= scrollTop) current = link;
+  });
+  tocLinks.forEach(l => l.classList.remove('active'));
+  if (current) current.classList.add('active');
+}
+
+window.addEventListener('scroll', updateActiveLink);
+updateActiveLink();
+
+// Smooth scroll on TOC click
+tocLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const id = link.getAttribute('data-section');
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>

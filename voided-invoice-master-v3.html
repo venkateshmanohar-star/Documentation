@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<title>Rec 10.1 - Voided Invoice Master Recipe | Integration Documentation</title>
+<style>
+:root {
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --purple: #6B4C9A;
+  --green: #2E7D32;
+  --gray: #9E9E9E;
+  --orange-bg: #FFF5E6;
+  --blue-bg: #E8F4FD;
+  --purple-bg: #F0EBF8;
+  --green-bg: #E8F5E9;
+  --gray-bg: #F5F5F5;
+  --text: #333;
+  --text-light: #666;
+  --border: #E0E0E0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.7;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  background: #FAFAFA;
+}
+
+/* Fixed left sidebar TOC */
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: white;
+  padding: 20px 16px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+  border-right: 3px solid var(--purple);
+  z-index: 1000;
+}
+
+nav#toc .toc-header {
+  font-size: 0.78em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--purple);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--purple-bg);
+}
+
+nav#toc .toc-recipe-name {
+  font-size: 0.82em;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 16px;
+  padding: 8px;
+  background: var(--purple-bg);
+  border-radius: 6px;
+  line-height: 1.4;
+}
+
+nav#toc a {
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.84em;
+  display: block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  margin-bottom: 2px;
+}
+nav#toc a:hover { background: var(--purple-bg); color: var(--purple); }
+nav#toc a.active { background: var(--purple); color: white; }
+
+/* Back to Index */
+a.back-to-index {
+  position: fixed;
+  top: 8px;
+  right: 16px;
+  z-index: 1001;
+  background: var(--purple);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.85em;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+a.back-to-index:hover { background: #5a3d85; }
+
+/* Main content */
+.main-content { max-width: 1100px; }
+
+h1 {
+  font-size: 2em;
+  color: var(--purple);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.doc-meta {
+  font-size: 0.88em;
+  color: var(--text-light);
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border);
+}
+.doc-meta span { margin-right: 20px; }
+.doc-meta .badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.82em;
+  font-weight: 600;
+}
+.badge-active { background: var(--green-bg); color: var(--green); }
+.badge-stopped { background: #FFEBEE; color: #C62828; }
+
+h2 {
+  font-size: 1.5em;
+  color: var(--purple);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--purple-bg);
+}
+
+h3 {
+  font-size: 1.15em;
+  color: var(--text);
+  margin: 24px 0 12px;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 1em;
+  color: var(--text-light);
+  margin: 16px 0 8px;
+  font-weight: 600;
+}
+
+p { margin-bottom: 12px; }
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--purple);
+}
+
+.card.orange { border-left-color: var(--orange); }
+.card.blue { border-left-color: var(--blue); }
+.card.green { border-left-color: var(--green); }
+.card.gray { border-left-color: var(--gray); }
+
+.card-title {
+  font-weight: 700;
+  font-size: 1.05em;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.two-layer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 12px 0;
+}
+
+.layer-box {
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 0.92em;
+}
+.layer-biz { background: var(--purple-bg); border: 1px solid #D1C4E9; }
+.layer-tech { background: var(--blue-bg); border: 1px solid #B3E5FC; }
+.layer-label {
+  font-weight: 700;
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+.layer-biz .layer-label { color: var(--purple); }
+.layer-tech .layer-label { color: var(--blue); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.92em;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+th {
+  background: var(--purple);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) { background: #FAFAFA; }
+tr:hover { background: var(--purple-bg); }
+
+code {
+  background: #F5F5F5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.88em;
+  color: #C62828;
+}
+
+pre {
+  background: #263238;
+  color: #ECEFF1;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.6;
+  margin: 12px 0;
+}
+pre code { background: none; color: inherit; padding: 0; }
+
+.diagram-container {
+  text-align: center;
+  margin: 24px 0;
+  overflow-x: auto;
+}
+
+.flow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 12px 0;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  border-left: 3px solid var(--purple);
+}
+.flow-step .step-num {
+  background: var(--purple);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82em;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.flow-step .step-body { flex: 1; }
+
+ul, ol { margin: 8px 0 12px 20px; }
+li { margin-bottom: 6px; }
+
+details {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+details summary {
+  padding: 10px 16px;
+  background: var(--gray-bg);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.92em;
+}
+details[open] summary { border-bottom: 1px solid var(--border); }
+details .detail-content { padding: 14px 16px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 3px solid var(--purple); }
+  body { padding: 24px; }
+  .two-layer { grid-template-columns: 1fr; }
+}
+
+/* Print */
+@media print {
+  nav#toc { display: none; }
+  a.back-to-index { display: none; }
+  body { padding: 0; background: white; }
+  .card { box-shadow: none; border: 1px solid #ddd; }
+  h2 { page-break-before: always; }
+  h2:first-of-type { page-break-before: avoid; }
+  pre { white-space: pre-wrap; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back to Index -->
+<a href="netsuite-integration-index.html" class="back-to-index">&larr; Back to Index</a>
+
+<!-- Fixed Left Sidebar TOC -->
+<nav id="toc">
+  <div class="toc-header">Table of Contents</div>
+  <div class="toc-recipe-name">Rec 10.1 &mdash; Voided Invoice Master Recipe</div>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#end-to-end-flow" data-section="end-to-end-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#component-overview" data-section="component-overview">8. Component Overview</a>
+  <a href="#business-logic" data-section="business-logic">9. Key Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+
+<h1>Rec 10.1 &mdash; Voided Invoice Master Recipe</h1>
+<div class="doc-meta">
+  <span><strong>Recipe ID:</strong> 69929323</span>
+  <span><strong>Status:</strong> <span class="badge badge-active">Active</span></span>
+  <span><strong>Author:</strong> venkatesh.manohar</span>
+  <span><strong>Last Run:</strong> 2026-04-01</span>
+  <span><strong>Version:</strong> 10</span>
+  <span><strong>Jobs Succeeded:</strong> 205</span>
+  <span><strong>Jobs Failed:</strong> 0</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: EXECUTIVE SUMMARY -->
+<!-- ============================================================ -->
+<h2 id="executive-summary">1. Executive Summary</h2>
+
+<div class="card">
+  <p>
+    The <strong>Voided Invoice Master Recipe</strong> (Rec 10.1) automates the creation of <strong>Credit Memos in NetSuite</strong> whenever an invoice is voided in Stripe. When a customer's invoice is voided (typically due to bad debt or billing errors), this recipe reads the voided invoice data from Snowflake, groups line items by Stripe invoice ID, and calls a child recipe that creates a corresponding Credit Memo in NetSuite to reverse the original charge.
+  </p>
+  <p>
+    This integration ensures that voided invoices in the billing system (Stripe) are properly reflected as credit memos in the financial system of record (NetSuite), maintaining accurate revenue recognition and financial reporting.
+  </p>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">Business View</div>
+      When Stripe voids an invoice, NetSuite automatically gets a Credit Memo created against that invoice. This keeps the books balanced and ensures bad-debt write-offs are properly recorded.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">Technical View</div>
+      A Workato Recipe Function queries Snowflake for unprocessed voided invoices (filtering against the WORKATO_LOGS deduplication table), groups line items by invoice, then iterates and calls child RF 10.1 which searches NetSuite for the original invoice and creates a Credit Memo with matching line details.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: BUSINESS OVERVIEW -->
+<!-- ============================================================ -->
+<h2 id="business-overview">2. Business Overview</h2>
+
+<div class="card">
+  <h3>What Problem Does This Solve?</h3>
+  <p>
+    When a customer's invoice is voided in Stripe (the billing platform), the corresponding financial record in NetSuite must be adjusted. Without automation, the Finance team would need to manually create credit memos in NetSuite for every voided invoice &mdash; a time-consuming and error-prone process.
+  </p>
+
+  <h3>What Happens from a Business Perspective?</h3>
+  <ol>
+    <li>A Stripe invoice is voided (e.g., bad debt, billing error, customer dispute)</li>
+    <li>The voided invoice data lands in a Snowflake staging table via the ETL pipeline (Fivetran + dbt)</li>
+    <li>This Workato recipe picks up unprocessed voided invoices</li>
+    <li>For each voided invoice, it creates a <strong>Credit Memo</strong> in NetSuite that reverses the original invoice</li>
+    <li>The Credit Memo includes all original line items (products, quantities, amounts, rev-rec dates)</li>
+  </ol>
+
+  <h3>Key Terminology</h3>
+  <table>
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td>Voided Invoice</td><td>A Stripe invoice that has been cancelled/voided after finalization. The customer owes nothing.</td></tr>
+    <tr><td>Credit Memo</td><td>A NetSuite transaction that reduces the amount owed by a customer, effectively reversing an invoice.</td></tr>
+    <tr><td>Bad Debt Expense</td><td>An accounting entry for receivables deemed uncollectable. Voided invoices often represent bad debt.</td></tr>
+    <tr><td>Subsidiary</td><td>The legal entity (US or IE) under which the customer is billed.</td></tr>
+    <tr><td>Rev Rec Dates</td><td>Revenue Recognition start/end dates that control when revenue is recognized on the books.</td></tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: SYSTEM OVERVIEW -->
+<!-- ============================================================ -->
+<h2 id="system-overview">3. System Overview</h2>
+
+<div class="card">
+  <table>
+    <tr>
+      <th>System</th>
+      <th>Role</th>
+      <th>Technical Details</th>
+    </tr>
+    <tr>
+      <td><strong>Stripe</strong></td>
+      <td>Source billing platform where invoices are created and voided</td>
+      <td>Stripe invoice events are captured via Fivetran and loaded into Snowflake</td>
+    </tr>
+    <tr>
+      <td><strong>Snowflake</strong></td>
+      <td>Data warehouse that stages voided invoice data for processing</td>
+      <td>
+        Key tables:<br>
+        <code>SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_VOIDED_INVOICE</code><br>
+        <code>SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_ITEM</code><br>
+        <code>SHARED_EXTERNAL_WORKATO.WORKATO_LOGS</code>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Workato</strong></td>
+      <td>Integration platform that orchestrates the data flow between Snowflake and NetSuite</td>
+      <td>Recipe Function pattern: master recipe (69929323) calls child RF 10.1 (69929324)</td>
+    </tr>
+    <tr>
+      <td><strong>NetSuite</strong></td>
+      <td>Financial system of record where Credit Memos are created</td>
+      <td>Creates CreditMemo records linked to the original invoice via Stripe Invoice ID custom field</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: ARCHITECTURE OVERVIEW -->
+<!-- ============================================================ -->
+<h2 id="architecture-overview">4. Architecture Overview</h2>
+
+<div class="card">
+  <h3>Layered Architecture</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">Source Layer &mdash; Stripe</div>
+      Stripe is the origin of truth for invoice lifecycle events. When an invoice is voided, this event flows through the ETL pipeline into Snowflake. The recipe does not connect directly to Stripe.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">Data Layer &mdash; Snowflake</div>
+      The <code>NETSUITE_EXPORT_VOIDED_INVOICE</code> table is a dbt-built staging table containing voided invoice line items with customer, item, amount, and rev-rec details. Joined with <code>NETSUITE_EXPORT_ITEM</code> for item mapping and <code>WORKATO_LOGS</code> for deduplication.
+    </div>
+  </div>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">Orchestration Layer &mdash; Workato</div>
+      Two recipes work together: the Master Recipe (10.1) extracts and groups data, then the child Recipe Function (RF 10.1) handles the NetSuite search-and-create logic for each individual invoice.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">Target Layer &mdash; NetSuite</div>
+      Credit Memos are created with: matching subsidiary, customer (via external ID), Stripe Invoice ID (custom field), memo "Voided Invoice", custom form 114, and line items with quantities, amounts, discounts, and rev-rec dates.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: ARCHITECTURE DIAGRAM (SVG) -->
+<!-- ============================================================ -->
+<h2 id="architecture-diagram">5. Architecture Diagram</h2>
+
+<div class="diagram-container">
+<svg viewBox="0 0 1200 780" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1200px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="arr-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F5A623"/></marker>
+    <marker id="arr-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#29B5E8"/></marker>
+    <marker id="arr-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6B4C9A"/></marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2E7D32"/></marker>
+    <filter id="shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+
+  <!-- Column backgrounds -->
+  <rect x="10" y="60" width="270" height="700" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.5"/>
+  <rect x="300" y="60" width="270" height="700" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.5"/>
+  <rect x="590" y="60" width="290" height="700" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.5"/>
+  <rect x="900" y="60" width="290" height="700" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.5"/>
+
+  <!-- Column headers -->
+  <rect x="10" y="10" width="270" height="45" rx="8" fill="#F5A623"/>
+  <text x="145" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Stripe (Source)</text>
+
+  <rect x="300" y="10" width="270" height="45" rx="8" fill="#29B5E8"/>
+  <text x="435" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Snowflake (Data)</text>
+
+  <rect x="590" y="10" width="290" height="45" rx="8" fill="#6B4C9A"/>
+  <text x="735" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Workato (Orchestration)</text>
+
+  <rect x="900" y="10" width="290" height="45" rx="8" fill="#2E7D32"/>
+  <text x="1045" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">NetSuite (Target)</text>
+
+  <!-- STRIPE COLUMN -->
+  <rect x="35" y="100" width="220" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="145" y="122" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Invoice Created</text>
+  <text x="145" y="140" text-anchor="middle" fill="#666" font-size="10">Customer billed in Stripe</text>
+
+  <line x1="145" y1="155" x2="145" y2="190" stroke="#F5A623" stroke-width="2" marker-end="url(#arr-orange)"/>
+
+  <rect x="35" y="195" width="220" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="145" y="217" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Invoice Voided</text>
+  <text x="145" y="235" text-anchor="middle" fill="#666" font-size="10">Bad debt / billing error</text>
+
+  <line x1="145" y1="250" x2="145" y2="290" stroke="#F5A623" stroke-width="2" marker-end="url(#arr-orange)"/>
+
+  <rect x="35" y="295" width="220" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="145" y="317" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Fivetran ETL</text>
+  <text x="145" y="335" text-anchor="middle" fill="#666" font-size="10">Syncs to Snowflake</text>
+
+  <!-- Arrow from Stripe to Snowflake -->
+  <line x1="255" y1="322" x2="320" y2="322" stroke="#F5A623" stroke-width="2" marker-end="url(#arr-orange)"/>
+
+  <!-- SNOWFLAKE COLUMN -->
+  <rect x="325" y="100" width="220" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="435" y="120" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
+  <text x="435" y="136" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">VOIDED_INVOICE</text>
+
+  <rect x="325" y="195" width="220" height="50" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="435" y="216" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_ITEM</text>
+  <text x="435" y="233" text-anchor="middle" fill="#666" font-size="10">Item/billing plan mapping</text>
+
+  <rect x="325" y="285" width="220" height="65" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="435" y="307" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">WORKATO_LOGS</text>
+  <text x="435" y="325" text-anchor="middle" fill="#666" font-size="10">Deduplication check:</text>
+  <text x="435" y="340" text-anchor="middle" fill="#666" font-size="10">netsuite_internal_id IS NULL</text>
+
+  <rect x="325" y="390" width="220" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="435" y="412" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">SQL Query + JOIN</text>
+  <text x="435" y="430" text-anchor="middle" fill="#666" font-size="10">3-table join, filter amt != 0</text>
+
+  <!-- Arrow from Snowflake to Workato -->
+  <line x1="545" y1="417" x2="615" y2="417" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-blue)"/>
+  <text x="580" y="410" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="600">Query</text>
+
+  <!-- WORKATO COLUMN -->
+  <rect x="620" y="100" width="230" height="60" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="735" y="120" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 10.1 Master Recipe</text>
+  <text x="735" y="138" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="600">ID: 69929323</text>
+  <text x="735" y="152" text-anchor="middle" fill="#666" font-size="9">Recipe Function trigger</text>
+
+  <line x1="735" y1="160" x2="735" y2="190" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+  <rect x="620" y="195" width="230" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="735" y="216" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Extract Unique Invoice IDs</text>
+  <text x="735" y="234" text-anchor="middle" fill="#666" font-size="10">pluck + uniq on stripe_invoice_id</text>
+
+  <line x1="735" y1="245" x2="735" y2="275" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+  <rect x="620" y="280" width="230" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="735" y="301" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Group Lines by Invoice</text>
+  <text x="735" y="319" text-anchor="middle" fill="#666" font-size="10">Build Invoices list per ID</text>
+
+  <line x1="735" y1="330" x2="735" y2="360" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+  <!-- For Each loop -->
+  <rect x="610" y="365" width="250" height="30" rx="6" fill="#6B4C9A" opacity="0.15" stroke="#6B4C9A" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="735" y="385" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="700">FOR EACH Unique Invoice</text>
+
+  <line x1="735" y1="395" x2="735" y2="420" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+  <rect x="620" y="425" width="230" height="60" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow)"/>
+  <text x="735" y="446" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Call RF 10.1 Voided Invoice</text>
+  <text x="735" y="463" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="600">ID: 69929324</text>
+  <text x="735" y="478" text-anchor="middle" fill="#666" font-size="9">Pass invoice header + lines</text>
+
+  <!-- RF 10.1 Internal Steps -->
+  <line x1="735" y1="485" x2="735" y2="510" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arr-purple)"/>
+
+  <!-- Decision diamond: invoice_total > 0? -->
+  <polygon points="735,515 775,545 735,575 695,545" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="735" y="543" text-anchor="middle" fill="#333" font-size="9" font-weight="600">total &gt; 0?</text>
+
+  <line x1="775" y1="545" x2="810" y2="545" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="793" y="538" text-anchor="middle" fill="#6B4C9A" font-size="8">Yes</text>
+
+  <!-- Search NS Invoice -->
+  <rect x="815" y="525" width="55" height="40" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <text x="843" y="543" text-anchor="middle" fill="#333" font-size="8" font-weight="bold">Search</text>
+  <text x="843" y="555" text-anchor="middle" fill="#333" font-size="8">Invoice</text>
+
+  <!-- Decision: CM exists? -->
+  <line x1="735" y1="575" x2="735" y2="605" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arr-purple)"/>
+
+  <polygon points="735,610 770,635 735,660 700,635" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="735" y="633" text-anchor="middle" fill="#333" font-size="8" font-weight="600">CM</text>
+  <text x="735" y="645" text-anchor="middle" fill="#333" font-size="8">exists?</text>
+
+  <text x="685" y="645" text-anchor="middle" fill="#2E7D32" font-size="8" font-weight="600">No</text>
+  <line x1="700" y1="635" x2="665" y2="635" stroke="#6B4C9A" stroke-width="1.5"/>
+  <line x1="665" y1="635" x2="665" y2="690" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arr-purple)"/>
+
+  <rect x="620" y="695" width="230" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="2" filter="url(#shadow)"/>
+  <text x="735" y="716" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Create Credit Memo</text>
+  <text x="735" y="734" text-anchor="middle" fill="#666" font-size="10">in NetSuite</text>
+
+  <!-- Arrow to NetSuite -->
+  <line x1="850" y1="720" x2="920" y2="720" stroke="#2E7D32" stroke-width="2" marker-end="url(#arr-green)"/>
+  <text x="885" y="712" text-anchor="middle" fill="#2E7D32" font-size="9" font-weight="600">Create</text>
+
+  <!-- Skip if CM exists -->
+  <text x="785" y="645" text-anchor="middle" fill="#C62828" font-size="8" font-weight="600">Yes = Skip</text>
+  <line x1="770" y1="635" x2="810" y2="635" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- NETSUITE COLUMN -->
+  <rect x="925" y="100" width="240" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1045" y="122" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Search Invoice</text>
+  <text x="1045" y="140" text-anchor="middle" fill="#666" font-size="10">By Stripe Invoice ID custom field</text>
+
+  <line x1="1045" y1="155" x2="1045" y2="200" stroke="#2E7D32" stroke-width="2" marker-end="url(#arr-green)"/>
+
+  <rect x="925" y="205" width="240" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1045" y="227" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Search Credit Memo</text>
+  <text x="1045" y="245" text-anchor="middle" fill="#666" font-size="10">By externalId: VOID_{invoice_id}</text>
+
+  <line x1="1045" y1="260" x2="1045" y2="340" stroke="#2E7D32" stroke-width="2" marker-end="url(#arr-green)"/>
+
+  <polygon points="1045,345 1085,375 1045,405 1005,375" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="1045" y="373" text-anchor="middle" fill="#333" font-size="9" font-weight="600">Already</text>
+  <text x="1045" y="385" text-anchor="middle" fill="#333" font-size="9" font-weight="600">exists?</text>
+
+  <text x="1105" y="370" fill="#C62828" font-size="9" font-weight="600">Yes</text>
+  <line x1="1085" y1="375" x2="1130" y2="375" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <rect x="1133" y="360" width="50" height="30" rx="6" fill="#FFEBEE" stroke="#C62828" stroke-width="1"/>
+  <text x="1158" y="379" text-anchor="middle" fill="#C62828" font-size="9" font-weight="bold">Skip</text>
+
+  <text x="990" y="408" fill="#2E7D32" font-size="9" font-weight="600">No</text>
+  <line x1="1045" y1="405" x2="1045" y2="450" stroke="#2E7D32" stroke-width="2" marker-end="url(#arr-green)"/>
+
+  <rect x="925" y="455" width="240" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1045" y="477" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Create Credit Memo</text>
+  <text x="1045" y="495" text-anchor="middle" fill="#666" font-size="10">With line items, rev-rec dates</text>
+
+  <line x1="1045" y1="510" x2="1045" y2="555" stroke="#2E7D32" stroke-width="2" marker-end="url(#arr-green)"/>
+
+  <rect x="925" y="560" width="240" height="50" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="1045" y="582" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Log to WORKATO_LOGS</text>
+  <text x="1045" y="598" text-anchor="middle" fill="#666" font-size="10">Via mapper + logger</text>
+</svg>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: END-TO-END FLOW -->
+<!-- ============================================================ -->
+<h2 id="end-to-end-flow">6. End-to-End Flow</h2>
+
+<div class="card">
+  <h3>Level 0: Simple View</h3>
+  <p>
+    <strong>Stripe voids an invoice</strong> &rarr; data flows to <strong>Snowflake</strong> via ETL &rarr; <strong>Workato</strong> picks up unprocessed records &rarr; creates a <strong>Credit Memo in NetSuite</strong> for each voided invoice.
+  </p>
+
+  <h3>Level 1: Detailed View</h3>
+
+  <div class="flow-step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <strong>Extraction</strong> &mdash; The master recipe executes a SQL query against Snowflake that joins three tables: <code>NETSUITE_EXPORT_VOIDED_INVOICE</code> (voided invoice line items), <code>NETSUITE_EXPORT_ITEM</code> (item/billing plan mapping), and <code>WORKATO_LOGS</code> (deduplication). Only rows with <code>amount != 0</code> and no existing <code>netsuite_internal_id</code> in the logs are returned.
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <strong>Deduplication &amp; Grouping</strong> &mdash; The recipe extracts unique Stripe invoice IDs using <code>.pluck('stripe_invoice_id').uniq</code>. It then iterates over each unique invoice ID and filters the full result set to get all line items belonging to that invoice.
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <strong>List Building</strong> &mdash; For each unique invoice, line items are collected into an "Invoices" list with all relevant fields: customer, subsidiary, item, amount, qty, rev-rec dates, discount percentage, tax amounts, and item descriptions.
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <strong>Child Recipe Call</strong> &mdash; The master calls RF 10.1 (ID 69929324) for each invoice, passing header data (customer, subsidiary, stripe_invoice_id, invoice_total, invoice_voided_at) and an array of invoice_lines.
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <strong>NetSuite Processing</strong> &mdash; RF 10.1 checks if <code>invoice_total &gt; 0</code>, searches NetSuite for the original invoice (by Stripe Invoice ID), checks if a Credit Memo already exists (by external ID <code>VOID_{stripe_invoice_id}</code>), and if not found, creates a new Credit Memo with all matching line items.
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">6</div>
+    <div class="step-body">
+      <strong>Logging</strong> &mdash; Every outcome (success, skip, or error) is logged to the <code>NetSuite_Integration_Log</code> mapper schema (ID 78962) and written via the Workato logger, which feeds back into the <code>WORKATO_LOGS</code> table for future deduplication.
+    </div>
+  </div>
+
+  <h3>Level 2: Branching Logic</h3>
+  <table>
+    <tr><th>Condition</th><th>Path</th><th>Outcome</th></tr>
+    <tr><td><code>invoice_total &gt; 0</code></td><td>Primary path</td><td>Search for invoice in NS, check for existing CM, create CM if none found</td></tr>
+    <tr><td><code>invoice_total &lt; 0</code></td><td>Elsif branch</td><td>Negative total handling (currently passes through to logging)</td></tr>
+    <tr><td><code>CM already exists</code></td><td>Else branch</td><td>Skip creation, log as "already processed"</td></tr>
+    <tr><td><code>Invoice not found in NS</code></td><td>Concurrency wait + retry</td><td>Wait, re-search with status filter, then create CM</td></tr>
+  </table>
+</div>
+
+<!-- DATA FLOW DIAGRAM (SVG) -->
+<h3>Data Flow Diagram</h3>
+<div class="diagram-container">
+<svg viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1100px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="df-arr-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#29B5E8"/></marker>
+    <marker id="df-arr-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6B4C9A"/></marker>
+    <marker id="df-arr-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2E7D32"/></marker>
+    <marker id="df-arr-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F5A623"/></marker>
+    <marker id="df-arr-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#9E9E9E"/></marker>
+    <filter id="df-shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="550" y="30" text-anchor="middle" fill="#333" font-size="16" font-weight="bold">Data Flow: Voided Invoice to Credit Memo</text>
+
+  <!-- SOURCE DATA (left) -->
+  <rect x="20" y="60" width="180" height="70" rx="10" fill="#FFF5E6" stroke="#F5A623" stroke-width="2" filter="url(#df-shadow)"/>
+  <text x="110" y="88" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="bold">STRIPE</text>
+  <text x="110" y="105" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Voided Invoice</text>
+  <text x="110" y="120" text-anchor="middle" fill="#666" font-size="9">invoice_id, customer, items</text>
+
+  <!-- Arrow to Snowflake -->
+  <line x1="200" y1="95" x2="250" y2="95" stroke="#F5A623" stroke-width="2" marker-end="url(#df-arr-orange)"/>
+  <text x="225" y="88" text-anchor="middle" fill="#F5A623" font-size="8" font-weight="600">ETL</text>
+
+  <!-- STAGING TABLE -->
+  <rect x="255" y="50" width="200" height="90" rx="10" fill="#E8F4FD" stroke="#29B5E8" stroke-width="2" filter="url(#df-shadow)"/>
+  <text x="355" y="74" text-anchor="middle" fill="#29B5E8" font-size="10" font-weight="bold">SNOWFLAKE STAGING</text>
+  <text x="355" y="92" text-anchor="middle" fill="#333" font-size="10">NETSUITE_EXPORT_</text>
+  <text x="355" y="106" text-anchor="middle" fill="#333" font-size="10">VOIDED_INVOICE</text>
+  <text x="355" y="125" text-anchor="middle" fill="#666" font-size="9">6,606 rows | line-level grain</text>
+
+  <!-- Item lookup -->
+  <rect x="255" y="160" width="200" height="50" rx="8" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1.5" filter="url(#df-shadow)"/>
+  <text x="355" y="182" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">NETSUITE_EXPORT_ITEM</text>
+  <text x="355" y="198" text-anchor="middle" fill="#666" font-size="9">JOIN on billing_plan_id</text>
+
+  <!-- Dedup table -->
+  <rect x="255" y="230" width="200" height="50" rx="8" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1.5" filter="url(#df-shadow)"/>
+  <text x="355" y="252" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">WORKATO_LOGS</text>
+  <text x="355" y="268" text-anchor="middle" fill="#9E9E9E" font-size="9">LEFT JOIN for dedup</text>
+
+  <!-- Arrow from staging to processing -->
+  <line x1="455" y1="95" x2="510" y2="95" stroke="#29B5E8" stroke-width="2" marker-end="url(#df-arr-blue)"/>
+  <text x="483" y="88" text-anchor="middle" fill="#29B5E8" font-size="8" font-weight="600">SQL</text>
+
+  <!-- PROCESSING (middle) -->
+  <rect x="515" y="50" width="210" height="55" rx="10" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2" filter="url(#df-shadow)"/>
+  <text x="620" y="72" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">GROUPING</text>
+  <text x="620" y="90" text-anchor="middle" fill="#333" font-size="10">Group lines by stripe_invoice_id</text>
+
+  <line x1="620" y1="105" x2="620" y2="135" stroke="#6B4C9A" stroke-width="2" marker-end="url(#df-arr-purple)"/>
+
+  <rect x="515" y="140" width="210" height="55" rx="10" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2" filter="url(#df-shadow)"/>
+  <text x="620" y="162" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">FIELD MAPPING</text>
+  <text x="620" y="180" text-anchor="middle" fill="#333" font-size="9">Map Stripe fields to NS fields</text>
+
+  <line x1="620" y1="195" x2="620" y2="225" stroke="#6B4C9A" stroke-width="2" marker-end="url(#df-arr-purple)"/>
+
+  <!-- Decision -->
+  <polygon points="620,230 665,260 620,290 575,260" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="620" y="258" text-anchor="middle" fill="#333" font-size="9" font-weight="600">total &gt; 0?</text>
+  <text x="620" y="270" text-anchor="middle" fill="#333" font-size="9">CM exists?</text>
+
+  <!-- Arrow right to Create CM -->
+  <line x1="665" y1="260" x2="770" y2="260" stroke="#6B4C9A" stroke-width="2" marker-end="url(#df-arr-purple)"/>
+  <text x="718" y="253" text-anchor="middle" fill="#2E7D32" font-size="8" font-weight="600">Create</text>
+
+  <!-- Arrow down to Skip -->
+  <line x1="620" y1="290" x2="620" y2="320" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#df-arr-gray)"/>
+  <rect x="570" y="325" width="100" height="30" rx="6" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1"/>
+  <text x="620" y="344" text-anchor="middle" fill="#9E9E9E" font-size="10" font-weight="bold">Skip / Log</text>
+
+  <!-- TARGET RECORDS (right) -->
+  <rect x="775" y="60" width="200" height="80" rx="10" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2" filter="url(#df-shadow)"/>
+  <text x="875" y="84" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">NETSUITE</text>
+  <text x="875" y="102" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Credit Memo</text>
+  <text x="875" y="120" text-anchor="middle" fill="#666" font-size="9">externalId: VOID_{inv_id}</text>
+  <text x="875" y="133" text-anchor="middle" fill="#666" font-size="9">Form: 114 | Memo: Voided Invoice</text>
+
+  <!-- Line items sub-box -->
+  <rect x="775" y="160" width="200" height="120" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#df-shadow)"/>
+  <text x="875" y="180" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">Credit Memo Line Items</text>
+  <line x1="790" y1="188" x2="960" y2="188" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="800" y="205" fill="#333" font-size="9">item &rarr; NS item internal ID</text>
+  <text x="800" y="220" fill="#333" font-size="9">amount &rarr; line amount (negated)</text>
+  <text x="800" y="235" fill="#333" font-size="9">actual_qty &rarr; quantity</text>
+  <text x="800" y="250" fill="#333" font-size="9">rev_rec_start/end &rarr; rev dates</text>
+  <text x="800" y="265" fill="#333" font-size="9">discount_percentage &rarr; discount</text>
+
+  <!-- Relationship labels -->
+  <rect x="775" y="300" width="200" height="45" rx="8" fill="white" stroke="#4CAF50" stroke-width="1.5" filter="url(#df-shadow)"/>
+  <text x="875" y="320" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">1 Invoice : 1 Credit Memo</text>
+  <text x="875" y="336" text-anchor="middle" fill="#666" font-size="9">1 Invoice : N Line Items</text>
+
+  <!-- Audit log -->
+  <rect x="775" y="365" width="200" height="50" rx="8" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1.5" filter="url(#df-shadow)"/>
+  <text x="875" y="387" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">WORKATO_LOGS</text>
+  <text x="875" y="403" text-anchor="middle" fill="#9E9E9E" font-size="9">netsuite_internal_id recorded</text>
+
+  <line x1="875" y1="280" x2="875" y2="295" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#df-arr-green)"/>
+  <line x1="875" y1="345" x2="875" y2="360" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#df-arr-gray)"/>
+
+  <!-- Legend -->
+  <rect x="20" y="420" width="500" height="80" rx="8" fill="white" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="40" y="445" fill="#333" font-size="11" font-weight="bold">Legend</text>
+  <rect x="40" y="455" width="14" height="14" rx="2" fill="#2196F3"/>
+  <text x="60" y="466" fill="#333" font-size="10">Financial records</text>
+  <rect x="160" y="455" width="14" height="14" rx="2" fill="#FF9800"/>
+  <text x="180" y="466" fill="#333" font-size="10">Source data</text>
+  <rect x="280" y="455" width="14" height="14" rx="2" fill="#4CAF50"/>
+  <text x="300" y="466" fill="#333" font-size="10">Target records</text>
+  <rect x="400" y="455" width="14" height="14" rx="2" fill="#9E9E9E"/>
+  <text x="420" y="466" fill="#333" font-size="10">Audit/logging</text>
+</svg>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: PROCESSING STAGES -->
+<!-- ============================================================ -->
+<h2 id="processing-stages">7. Processing Stages</h2>
+
+<div class="card blue">
+  <h3>Stage 1: Ingestion (Snowflake Query)</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      The recipe reads all voided invoice line items from Snowflake that haven't been processed yet. It joins with item data to get item IDs, and checks the log table to skip already-processed invoices.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It Works</div>
+      A custom SQL query joins <code>NETSUITE_EXPORT_VOIDED_INVOICE</code> with <code>NETSUITE_EXPORT_ITEM</code> (on <code>billing_plan_id</code>) and <code>WORKATO_LOGS</code> (on <code>stripe_invoice_id = external_id</code>). Filters: <code>INVOICE_VOIDED_AT >= {Date parameter}</code>, <code>wl.netsuite_internal_id IS NULL</code>, <code>amount != 0</code>. Limit: 50,000 rows.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Stage 2: Grouping (Unique Invoice Extraction)</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      Since one voided invoice may have multiple line items, the recipe identifies all unique invoice IDs and processes them one at a time.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It Works</div>
+      Uses Ruby formula <code>.pluck('stripe_invoice_id').uniq</code> to extract distinct invoice IDs. Creates a <code>Unique_Invoice_List</code> variable. Then iterates using a For Each loop indexed by list position.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Stage 3: List Building (Per-Invoice Assembly)</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      For each invoice, all its line items are gathered into a structured list with all the data needed for the Credit Memo.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It Works</div>
+      Uses <code>.where(stripe_invoice_id: ...)</code> to filter the full dataset. Batch-inserts matching rows into an "Invoices" list with 16 fields (stripe_invoice_id, subsidiary, customer, invoice_voided_at, invoice_total, item, item_description, amount, tax_amount, line_type, actual_qty, discount_percentage, rev_rec_start_date, rev_rec_end_date, total_tax, item_internal_id). The list is cleared after each iteration.
+    </div>
+  </div>
+</div>
+
+<div class="card green">
+  <h3>Stage 4: NetSuite Processing (RF 10.1)</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      The child recipe validates the invoice, checks NetSuite for duplicates, and creates a Credit Memo if one doesn't already exist. It handles edge cases like missing invoices with a retry mechanism.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It Works</div>
+      <ol>
+        <li>Check <code>invoice_total > 0</code></li>
+        <li>Search NS for Invoice by <code>custbodystripeinvoiceid</code></li>
+        <li>Search NS for existing CreditMemo by <code>externalId = VOID_{invoice_id}</code></li>
+        <li>If no CM found AND invoice found: create CreditMemo (custom form 114, memo "Voided Invoice")</li>
+        <li>If invoice not found initially: execute concurrency wait (Ruby sleep), re-search with <code>status = CustInvc:A</code>, then create</li>
+        <li>Map result to <code>NetSuite_Integration_Log</code> schema (ID 78962) and log</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="card gray">
+  <h3>Stage 5: Logging &amp; Deduplication</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      Every processed invoice is logged so it won't be picked up again on the next run. Both successes and failures are recorded.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It Works</div>
+      The Workato mapper writes to the <code>NetSuite_Integration_Log</code> schema. The logger publishes to the job report. These entries feed into the <code>WORKATO_LOGS</code> Snowflake table with <code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_VOID_INVOICE'</code>. The dedup CTE in the extraction query filters on <code>netsuite_internal_id IS NULL</code>.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: COMPONENT OVERVIEW -->
+<!-- ============================================================ -->
+<h2 id="component-overview">8. Component / Module Overview</h2>
+
+<div class="card">
+  <h3>Recipe Inventory</h3>
+  <table>
+    <tr>
+      <th>Recipe</th>
+      <th>ID</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Purpose</th>
+    </tr>
+    <tr>
+      <td><strong>Rec 10.1 &mdash; Voided Invoice Master Recipe</strong></td>
+      <td>69929323</td>
+      <td>Master / Orchestrator</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>Extracts voided invoices from Snowflake, groups by invoice ID, calls child recipe for each</td>
+    </tr>
+    <tr>
+      <td><strong>RF 10.1 &mdash; Voided Invoice</strong></td>
+      <td>69929324</td>
+      <td>Recipe Function (Child)</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>Searches NetSuite for existing records, creates Credit Memo, logs results</td>
+    </tr>
+  </table>
+
+  <h3>Master Recipe (69929323) &mdash; Steps</h3>
+  <table>
+    <tr><th>Step</th><th>Action</th><th>Description</th></tr>
+    <tr><td>0</td><td>Trigger (Recipe Function)</td><td>Accepts a <code>Date</code> parameter to filter voided invoices</td></tr>
+    <tr><td>1</td><td>Try/Catch wrapper</td><td>Error handling for the entire flow</td></tr>
+    <tr><td>2</td><td>Snowflake SQL query</td><td>3-table join: voided invoices + items + logs dedup</td></tr>
+    <tr><td>4</td><td>Logger</td><td>Logs the raw query results</td></tr>
+    <tr><td>5</td><td>Create variable</td><td>Unique_Invoice_List = distinct stripe_invoice_ids</td></tr>
+    <tr><td>6-7</td><td>Create list</td><td>Invoices list with 16-field schema</td></tr>
+    <tr><td>8-14</td><td>For Each loop</td><td>Iterate over unique invoices: filter lines, build list, call RF 10.1, clear list</td></tr>
+    <tr><td>13</td><td>Call Recipe</td><td>Calls RF 10.1 with header + invoice_lines array</td></tr>
+    <tr><td>15</td><td>Catch block</td><td>Error handler (max 0 retries, 2s interval)</td></tr>
+  </table>
+
+  <h3>Child Recipe RF 10.1 (69929324) &mdash; Steps</h3>
+  <table>
+    <tr><th>Step</th><th>Action</th><th>Description</th></tr>
+    <tr><td>0</td><td>Trigger (Recipe Function)</td><td>Accepts: subsidiary, customer, stripe_invoice_id, invoice_total, invoice_voided_at, invoice_lines[], total_tax</td></tr>
+    <tr><td>2</td><td>IF invoice_total &gt; 0</td><td>Main processing path for positive-amount invoices</td></tr>
+    <tr><td>3</td><td>Search NS Invoice</td><td>By Stripe Invoice ID custom field</td></tr>
+    <tr><td>4</td><td>Search NS Credit Memo</td><td>By externalId = VOID_{stripe_invoice_id}</td></tr>
+    <tr><td>5</td><td>IF no CM exists AND invoice found</td><td>Proceed to create Credit Memo</td></tr>
+    <tr><td>6</td><td>Ruby: Concurrency Wait</td><td>Sleep to handle race conditions with other recipes</td></tr>
+    <tr><td>7</td><td>Search NS Invoice (retry)</td><td>Re-search with status = CustInvc:A (open invoices)</td></tr>
+    <tr><td>9</td><td>Create Credit Memo</td><td>NS CreditMemo with all line items, rev-rec dates, discount, tax</td></tr>
+    <tr><td>10-11</td><td>Map + Log (success)</td><td>Log successful creation to WORKATO_LOGS</td></tr>
+    <tr><td>12</td><td>ELSIF invoice_total &lt; 0</td><td>Negative total handling branch</td></tr>
+    <tr><td>13-15</td><td>ELSE: Map + Log (skip)</td><td>Log skipped records (CM already exists)</td></tr>
+    <tr><td>16-18</td><td>CATCH: Map + Log (error)</td><td>Log errors to WORKATO_LOGS</td></tr>
+  </table>
+</div>
+
+<!-- Recipe Hierarchy Diagram (SVG) -->
+<h3>Recipe Hierarchy Diagram</h3>
+<div class="diagram-container">
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:900px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="rh-arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6B4C9A"/></marker>
+    <marker id="rh-arr-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2E7D32"/></marker>
+    <marker id="rh-arr-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#29B5E8"/></marker>
+    <marker id="rh-arr-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#9E9E9E"/></marker>
+    <filter id="rh-shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" fill="#333" font-size="16" font-weight="bold">Recipe Hierarchy: Voided Invoice Pipeline</text>
+
+  <!-- Scheduler / Caller (top) -->
+  <rect x="275" y="55" width="350" height="70" rx="12" fill="white" stroke="#6B4C9A" stroke-width="2.5" filter="url(#rh-shadow)"/>
+  <rect x="275" y="55" width="350" height="24" rx="12" fill="#6B4C9A"/>
+  <rect x="275" y="67" width="350" height="12" fill="#6B4C9A"/>
+  <text x="450" y="73" text-anchor="middle" fill="white" font-size="11" font-weight="bold">MASTER RECIPE</text>
+  <text x="450" y="100" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">Rec 10.1 &mdash; Voided Invoice Master Recipe</text>
+  <text x="450" y="117" text-anchor="middle" fill="#6B4C9A" font-size="11">ID: 69929323 | Recipe Function Trigger</text>
+
+  <!-- Vertical line down -->
+  <line x1="450" y1="125" x2="450" y2="170" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arr)"/>
+  <text x="460" y="152" fill="#6B4C9A" font-size="9" font-weight="600">sync call</text>
+
+  <!-- Snowflake connection (left branch) -->
+  <line x1="350" y1="90" x2="100" y2="90" stroke="#29B5E8" stroke-width="2"/>
+  <line x1="100" y1="90" x2="100" y2="145" stroke="#29B5E8" stroke-width="2" marker-end="url(#rh-arr-blue)"/>
+
+  <rect x="15" y="150" width="170" height="80" rx="10" fill="#E8F4FD" stroke="#29B5E8" stroke-width="2" filter="url(#rh-shadow)"/>
+  <text x="100" y="172" text-anchor="middle" fill="#29B5E8" font-size="10" font-weight="bold">SNOWFLAKE</text>
+  <text x="100" y="190" text-anchor="middle" fill="#333" font-size="9">NETSUITE_EXPORT_</text>
+  <text x="100" y="203" text-anchor="middle" fill="#333" font-size="9">VOIDED_INVOICE</text>
+  <text x="100" y="218" text-anchor="middle" fill="#666" font-size="8">+ ITEM + LOGS tables</text>
+
+  <!-- Child Recipe -->
+  <rect x="275" y="175" width="350" height="80" rx="12" fill="white" stroke="#2E7D32" stroke-width="2.5" filter="url(#rh-shadow)"/>
+  <rect x="275" y="175" width="350" height="24" rx="12" fill="#2E7D32"/>
+  <rect x="275" y="187" width="350" height="12" fill="#2E7D32"/>
+  <text x="450" y="193" text-anchor="middle" fill="white" font-size="11" font-weight="bold">RECIPE FUNCTION (CHILD)</text>
+  <text x="450" y="220" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">RF 10.1 &mdash; Voided Invoice</text>
+  <text x="450" y="237" text-anchor="middle" fill="#2E7D32" font-size="11">ID: 69929324 | Apps: NetSuite, Custom Code, Mapper, Logger</text>
+  <text x="450" y="250" text-anchor="middle" fill="#666" font-size="9">782 succeeded | 0 failed</text>
+
+  <!-- Child recipe branches -->
+  <!-- Branch 1: Search Invoice -->
+  <line x1="350" y1="255" x2="350" y2="290" stroke="#2E7D32" stroke-width="1.5"/>
+  <line x1="350" y1="290" x2="150" y2="290" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#rh-arr-green)"/>
+
+  <rect x="30" y="270" width="120" height="50" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.5" filter="url(#rh-shadow)"/>
+  <text x="90" y="292" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Search</text>
+  <text x="90" y="308" text-anchor="middle" fill="#333" font-size="10">NS Invoice</text>
+
+  <!-- Branch 2: Search Credit Memo -->
+  <line x1="450" y1="255" x2="450" y2="290" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#rh-arr-green)"/>
+
+  <rect x="385" y="295" width="130" height="50" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.5" filter="url(#rh-shadow)"/>
+  <text x="450" y="317" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Search</text>
+  <text x="450" y="333" text-anchor="middle" fill="#333" font-size="10">NS Credit Memo</text>
+
+  <!-- Branch 3: Create Credit Memo -->
+  <line x1="550" y1="255" x2="550" y2="290" stroke="#2E7D32" stroke-width="1.5"/>
+  <line x1="550" y1="290" x2="750" y2="290" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#rh-arr-green)"/>
+
+  <rect x="700" y="270" width="150" height="50" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2" filter="url(#rh-shadow)"/>
+  <text x="775" y="292" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Create</text>
+  <text x="775" y="308" text-anchor="middle" fill="#333" font-size="10">Credit Memo</text>
+
+  <!-- Concurrency Wait -->
+  <line x1="90" y1="320" x2="90" y2="370" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#rh-arr)"/>
+
+  <rect x="30" y="375" width="120" height="40" rx="8" fill="#FFF5E6" stroke="#F5A623" stroke-width="1.5" filter="url(#rh-shadow)"/>
+  <text x="90" y="398" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">Concurrency Wait</text>
+  <text x="90" y="410" text-anchor="middle" fill="#666" font-size="8">(Ruby sleep)</text>
+
+  <!-- Logger / Mapper branch -->
+  <line x1="450" y1="345" x2="450" y2="380" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#rh-arr-gray)"/>
+
+  <rect x="350" y="385" width="200" height="55" rx="8" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1.5" filter="url(#rh-shadow)"/>
+  <text x="450" y="407" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Mapper + Logger</text>
+  <text x="450" y="423" text-anchor="middle" fill="#666" font-size="9">Schema: NetSuite_Integration_Log</text>
+  <text x="450" y="436" text-anchor="middle" fill="#9E9E9E" font-size="9">Writes to WORKATO_LOGS</text>
+
+  <!-- Create CM to logger -->
+  <line x1="775" y1="320" x2="775" y2="395" stroke="#9E9E9E" stroke-width="1.5"/>
+  <line x1="775" y1="395" x2="555" y2="395" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#rh-arr-gray)"/>
+
+  <!-- Legend -->
+  <rect x="600" y="375" width="260" height="80" rx="8" fill="white" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="620" y="395" fill="#333" font-size="10" font-weight="bold">Call Types</text>
+  <line x1="620" y1="410" x2="660" y2="410" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="670" y="414" fill="#333" font-size="9">Synchronous call (solid)</text>
+  <line x1="620" y1="430" x2="660" y2="430" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="670" y="434" fill="#333" font-size="9">Async / wait (dashed)</text>
+  <line x1="620" y1="448" x2="660" y2="448" stroke="#9E9E9E" stroke-width="1.5"/>
+  <text x="670" y="452" fill="#333" font-size="9">Logging flow (gray)</text>
+</svg>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: KEY BUSINESS LOGIC -->
+<!-- ============================================================ -->
+<h2 id="business-logic">9. Key Business Logic</h2>
+
+<div class="card">
+  <h3>Credit Memo Creation Logic</h3>
+  <p>The core business logic determines when and how a Credit Memo is created in NetSuite to reverse a voided Stripe invoice.</p>
+
+  <h4>Invoice Classification</h4>
+  <table>
+    <tr><th>Condition</th><th>Action</th><th>Rationale</th></tr>
+    <tr><td><code>invoice_total > 0</code></td><td>Process &rarr; Create Credit Memo</td><td>Standard voided invoices with positive balances need reversal</td></tr>
+    <tr><td><code>invoice_total < 0</code></td><td>Alternative handling</td><td>Negative totals indicate credits/adjustments that may need different treatment</td></tr>
+    <tr><td><code>amount = 0</code></td><td>Filtered out at SQL level</td><td>Zero-amount lines carry no financial impact</td></tr>
+  </table>
+
+  <h4>Credit Memo Structure</h4>
+  <p>Each Credit Memo is created with the following key attributes:</p>
+  <ul>
+    <li><strong>External ID:</strong> <code>VOID_{stripe_invoice_id}</code> &mdash; ensures idempotency and prevents duplicates</li>
+    <li><strong>Custom Form:</strong> 114 &mdash; the designated NetSuite form for voided invoice credit memos</li>
+    <li><strong>Memo:</strong> "Voided Invoice" &mdash; clear audit trail</li>
+    <li><strong>Subsidiary:</strong> Looked up from a NetSuite Subsidiaries table (US or IE)</li>
+    <li><strong>Customer:</strong> Linked via Stripe customer external ID</li>
+    <li><strong>Stripe Invoice ID:</strong> Set via custom field <code>custbodystripeinvoiceid</code></li>
+    <li><strong>Line Items:</strong> Replicate original invoice lines with amounts, quantities, items, discounts, and rev-rec dates</li>
+  </ul>
+
+  <h4>Deduplication Strategy</h4>
+  <p>Two levels of deduplication protect against duplicate Credit Memos:</p>
+  <ol>
+    <li><strong>Snowflake-level:</strong> The extraction SQL LEFT JOINs against <code>WORKATO_LOGS</code> and only includes rows where <code>netsuite_internal_id IS NULL</code> (not yet processed)</li>
+    <li><strong>NetSuite-level:</strong> RF 10.1 searches for an existing Credit Memo with <code>externalId = VOID_{invoice_id}</code>. If found, the invoice is skipped.</li>
+  </ol>
+
+  <h4>Concurrency Handling</h4>
+  <p>
+    If the initial search for the NetSuite invoice returns no results (possible when another recipe is mid-creation), the recipe executes a <strong>Ruby concurrency wait</strong> (sleep) and re-searches with a status filter (<code>CustInvc:A</code> = open invoices). This handles race conditions with the main invoice creation pipeline.
+  </p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: DATA MODEL -->
+<!-- ============================================================ -->
+<h2 id="data-model">10. Data Model</h2>
+
+<div class="card blue">
+  <h3>Source Table: NETSUITE_EXPORT_VOIDED_INVOICE</h3>
+  <p>Located in <code>INTERCOM_PROD.SHARED_EXTERNAL_WORKATO</code>. Contains 6,606 rows. Grain: one row per invoice line item.</p>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td>STRIPE_INVOICE_ID</td><td>TEXT</td><td>Stripe invoice identifier (join key with WORKATO_LOGS)</td></tr>
+    <tr><td>CUSTOMER</td><td>TEXT</td><td>Stripe customer identifier used to link to NetSuite customer</td></tr>
+    <tr><td>SUBSIDIARY</td><td>TEXT</td><td>Legal entity: US or IE</td></tr>
+    <tr><td>INVOICE_VOIDED_AT</td><td>TIMESTAMP_TZ</td><td>When the invoice was voided in Stripe</td></tr>
+    <tr><td>INVOICE_TOTAL</td><td>NUMBER</td><td>Total invoice amount (used for routing logic)</td></tr>
+    <tr><td>ITEM</td><td>TEXT</td><td>Billing plan ID (join key with NETSUITE_EXPORT_ITEM)</td></tr>
+    <tr><td>ITEM_DESCRIPTION</td><td>TEXT</td><td>Human-readable item description</td></tr>
+    <tr><td>AMOUNT</td><td>FLOAT</td><td>Line-level amount (filtered: != 0)</td></tr>
+    <tr><td>TAX_AMOUNT</td><td>NUMBER</td><td>Tax for this line item</td></tr>
+    <tr><td>LINE_TYPE</td><td>TEXT</td><td>Type of invoice line (subscription, prorated, etc.)</td></tr>
+    <tr><td>ACTUAL_QTY</td><td>NUMBER</td><td>Quantity of items on this line</td></tr>
+    <tr><td>DISCOUNT_PERCENTAGE</td><td>FLOAT</td><td>Discount applied to this line</td></tr>
+    <tr><td>TOTAL_TAX</td><td>NUMBER</td><td>Total tax at the invoice level</td></tr>
+    <tr><td>REV_REC_START_DATE</td><td>TIMESTAMP_TZ</td><td>Revenue recognition period start</td></tr>
+    <tr><td>REV_REC_END_DATE</td><td>TIMESTAMP_TZ</td><td>Revenue recognition period end</td></tr>
+    <tr><td>SALES_CHANNEL</td><td>TEXT</td><td>Sales channel (self-serve vs sales-contract)</td></tr>
+  </table>
+
+  <h3>Supporting Table: NETSUITE_EXPORT_ITEM</h3>
+  <p>Item mapping table joining Stripe billing plan IDs to NetSuite internal item IDs.</p>
+  <p>Join condition: <code>inv.item = i.billing_plan_id</code></p>
+
+  <h3>Deduplication Table: WORKATO_LOGS</h3>
+  <p>Central logging table for all Workato-to-NetSuite integrations. Filtered by <code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_VOID_INVOICE'</code> and <code>environment_type = 'prod'</code>.</p>
+  <p>The CTE uses <code>ROW_NUMBER() OVER (PARTITION BY external_id ORDER BY job_run_completed_at DESC)</code> to get the most recent log entry per invoice.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: EDGE CASES -->
+<!-- ============================================================ -->
+<h2 id="edge-cases">11. Edge Cases &amp; Special Scenarios</h2>
+
+<div class="card orange">
+  <h3>Invoice Not Found in NetSuite</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      Sometimes the original invoice hasn't been created in NetSuite yet when the voided invoice recipe runs. This can happen if the main invoice pipeline is still processing.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It's Handled</div>
+      RF 10.1 executes a Ruby concurrency wait (sleep), then re-searches NetSuite for the invoice with status <code>CustInvc:A</code> (Approved/Open). If found on retry, it proceeds to create the Credit Memo.
+    </div>
+  </div>
+</div>
+
+<div class="card orange">
+  <h3>Credit Memo Already Exists</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      If the recipe runs twice for the same invoice (e.g., due to a rerun), it should not create a duplicate Credit Memo.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It's Handled</div>
+      The recipe searches NetSuite for a CreditMemo with <code>externalId = VOID_{stripe_invoice_id}</code>. If found (count > 0), the recipe skips creation and logs the skip event. Additionally, the Snowflake-level dedup prevents the invoice from appearing in the extraction query after the first successful run.
+    </div>
+  </div>
+</div>
+
+<div class="card orange">
+  <h3>Negative Invoice Totals</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      Some voided invoices may have negative totals, indicating they were credits or adjustments rather than charges.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It's Handled</div>
+      The ELSIF branch (<code>invoice_total &lt; 0</code>) provides a separate handling path. Currently this appears to pass through to the logging step without creating a Credit Memo, as reversing a credit doesn't make sense.
+    </div>
+  </div>
+</div>
+
+<div class="card orange">
+  <h3>Zero-Amount Line Items</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      Some invoice lines have zero amounts (e.g., trial periods, $0 add-ons). These don't need financial reversal.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It's Handled</div>
+      Filtered out at the SQL level with <code>amount != 0</code>. They never enter the processing pipeline.
+    </div>
+  </div>
+</div>
+
+<div class="card orange">
+  <h3>Missing Customer in NetSuite</h3>
+  <div class="two-layer">
+    <div class="layer-box layer-biz">
+      <div class="layer-label">What Happens</div>
+      The Credit Memo references a customer by their Stripe external ID. If the customer hasn't been created in NetSuite, the creation will fail.
+    </div>
+    <div class="layer-box layer-tech">
+      <div class="layer-label">How It's Handled</div>
+      The error is caught by the Try/Catch block and logged to <code>WORKATO_LOGS</code> with the error type and message. The invoice will be retried on the next run (since no <code>netsuite_internal_id</code> will be recorded).
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: OPERATIONAL NOTES -->
+<!-- ============================================================ -->
+<h2 id="operational-notes">12. Operational Notes</h2>
+
+<div class="card">
+  <h3>Deduplication Mechanism</h3>
+  <p>The integration uses a two-tier deduplication approach:</p>
+  <ol>
+    <li><strong>Pre-processing (Snowflake):</strong> The extraction SQL LEFT JOINs to <code>WORKATO_LOGS</code> filtered by <code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_VOID_INVOICE'</code>. Only rows where <code>wl.netsuite_internal_id IS NULL</code> are included, meaning only unprocessed invoices are extracted.</li>
+    <li><strong>In-processing (NetSuite):</strong> RF 10.1 searches for an existing CreditMemo with <code>externalId = VOID_{stripe_invoice_id}</code>. If found, the invoice is skipped.</li>
+  </ol>
+
+  <h3>Error Handling</h3>
+  <ul>
+    <li>The master recipe wraps all processing in a <strong>Try/Catch</strong> block with 0 retries and a 2-second interval</li>
+    <li>The child recipe (RF 10.1) also has its own Try/Catch that logs errors via the mapper (schema 78962) and logger</li>
+    <li>Failed records remain in the extraction pool (no log entry) and will be retried on the next run</li>
+  </ul>
+
+  <h3>Performance &amp; Limits</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>SQL query row limit</td><td>50,000 rows</td></tr>
+    <tr><td>Total jobs succeeded (master)</td><td>205</td></tr>
+    <tr><td>Total jobs failed (master)</td><td>0</td></tr>
+    <tr><td>Total tasks consumed</td><td>5,725</td></tr>
+    <tr><td>Child recipe success rate</td><td>782/782 (100%)</td></tr>
+    <tr><td>Source table row count</td><td>6,606</td></tr>
+    <tr><td>Recipe version</td><td>10 (last edited by diana.sy)</td></tr>
+  </table>
+
+  <h3>Trigger Mechanism</h3>
+  <p>
+    This recipe is triggered as a <strong>Recipe Function</strong>, meaning it is called by another recipe or scheduler. It accepts a <code>Date</code> parameter that filters the <code>INVOICE_VOIDED_AT</code> column, allowing incremental processing from a specific date forward.
+  </p>
+
+  <h3>Key Dependencies</h3>
+  <ul>
+    <li><strong>Upstream:</strong> Fivetran + dbt pipeline must have loaded voided invoice data into Snowflake</li>
+    <li><strong>Upstream:</strong> The <code>NETSUITE_EXPORT_ITEM</code> table must have current item mappings</li>
+    <li><strong>Cross-recipe:</strong> The main invoice creation pipeline (Rec 7.0 / 8.0) may be running concurrently &mdash; hence the concurrency wait in RF 10.1</li>
+    <li><strong>NetSuite:</strong> Customer records must exist with matching Stripe external IDs</li>
+    <li><strong>NetSuite:</strong> Subsidiary lookup table ("NetSuite Subsidiaries- SB") must be configured in Workato</li>
+  </ul>
+
+  <h3>Monitoring Recommendations</h3>
+  <ul>
+    <li>Monitor the <code>WORKATO_LOGS</code> table for entries with <code>error_type IS NOT NULL</code> and this source table name</li>
+    <li>Track the backlog of unprocessed voided invoices with: records in <code>NETSUITE_EXPORT_VOIDED_INVOICE</code> without matching <code>WORKATO_LOGS</code> entries</li>
+    <li>The 100% success rate (0 failures) indicates a stable recipe, but the concurrency wait suggests timing-sensitive dependencies</li>
+  </ul>
+</div>
+
+<!-- Footer -->
+<div style="margin-top:48px; padding:20px 0; border-top:2px solid var(--border); text-align:center; color:var(--text-light); font-size:0.85em;">
+  <p>Generated by <strong>venkatesh.manohar</strong> | Workato Integration Documentor | April 2026</p>
+  <p>Recipe: Rec 10.1 &mdash; Voided Invoice Master Recipe (ID: 69929323) + RF 10.1 Voided Invoice (ID: 69929324)</p>
+</div>
+
+</div><!-- end .main-content -->
+
+<!-- Scroll Spy JavaScript -->
+<script>
+(function() {
+  const tocLinks = document.querySelectorAll('#toc a[data-section]');
+  const sections = [];
+  tocLinks.forEach(function(link) {
+    const id = link.getAttribute('data-section');
+    const el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    let current = sections[0];
+    const scrollY = window.scrollY + 120;
+    for (let i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

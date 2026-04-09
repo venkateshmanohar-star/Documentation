@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<meta name="generator" content="Workato Integration Documentor">
+<meta name="date" content="2026-04-01">
+<title>Rec 9.0 - Cancelled Sales Orders Master Recipe | Integration Documentation</title>
+<style>
+:root {
+  --orange: #F5A623;
+  --orange-bg: #FFF5E6;
+  --blue: #29B5E8;
+  --blue-bg: #E8F4FD;
+  --purple: #6B4C9A;
+  --purple-bg: #F0EBF8;
+  --green: #2E7D32;
+  --green-bg: #E8F5E9;
+  --gray: #9E9E9E;
+  --gray-bg: #F5F5F5;
+  --text: #333;
+  --text-light: #666;
+  --border: #E0E0E0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  line-height: 1.7;
+  color: var(--text);
+  background: #FAFAFA;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+}
+
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: white;
+  padding: 20px 16px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+  border-right: 3px solid var(--purple);
+  z-index: 1000;
+}
+nav#toc h3 {
+  font-size: 0.95em;
+  color: var(--purple);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--purple-bg);
+}
+nav#toc a {
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.84em;
+  display: block;
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  margin-bottom: 2px;
+}
+nav#toc a:hover { background: var(--purple-bg); color: var(--purple); }
+nav#toc a.active { background: var(--purple); color: white; }
+
+.main-content { max-width: 1100px; }
+
+h1 {
+  font-size: 2em;
+  color: var(--purple);
+  margin-bottom: 8px;
+  border-bottom: 3px solid var(--purple);
+  padding-bottom: 12px;
+}
+h2 {
+  font-size: 1.5em;
+  color: var(--purple);
+  margin: 40px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--purple-bg);
+}
+h3 {
+  font-size: 1.15em;
+  color: #444;
+  margin: 24px 0 10px 0;
+}
+h4 {
+  font-size: 1em;
+  color: var(--text-light);
+  margin: 16px 0 8px 0;
+}
+
+p { margin-bottom: 12px; }
+
+.meta {
+  color: var(--text-light);
+  font-size: 0.9em;
+  margin-bottom: 24px;
+}
+.meta span { margin-right: 20px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-active { background: var(--green-bg); color: var(--green); }
+.badge-stopped { background: #FFEBEE; color: #C62828; }
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--purple);
+}
+.card.orange { border-left-color: var(--orange); }
+.card.blue { border-left-color: var(--blue); }
+.card.green { border-left-color: var(--green); }
+.card.gray { border-left-color: var(--gray); }
+
+.system-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+.system-card {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-top: 4px solid var(--purple);
+}
+.system-card.source { border-top-color: var(--orange); }
+.system-card.data { border-top-color: var(--blue); }
+.system-card.orch { border-top-color: var(--purple); }
+.system-card.target { border-top-color: var(--green); }
+
+.system-card h4 { margin-top: 0; color: inherit; }
+.system-card.source h4 { color: var(--orange); }
+.system-card.data h4 { color: var(--blue); }
+.system-card.orch h4 { color: var(--purple); }
+.system-card.target h4 { color: var(--green); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.92em;
+}
+th {
+  background: var(--purple);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) { background: #FAFAFA; }
+tr:hover { background: var(--purple-bg); }
+
+code {
+  background: #F5F5F5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  font-size: 0.88em;
+}
+pre {
+  background: #2D2D2D;
+  color: #F8F8F2;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  margin: 12px 0;
+}
+pre code { background: none; color: inherit; padding: 0; }
+
+.diagram-container {
+  text-align: center;
+  margin: 24px 0;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.flow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 12px 0;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  border-left: 3px solid var(--purple);
+}
+.flow-step .step-num {
+  background: var(--purple);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85em;
+  flex-shrink: 0;
+}
+
+details {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0;
+}
+details summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--purple);
+  background: var(--purple-bg);
+  border-radius: 8px;
+}
+details[open] summary { border-radius: 8px 8px 0 0; }
+details .details-content { padding: 16px; }
+
+.callout {
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 0.92em;
+}
+.callout-info { background: var(--blue-bg); border-left: 4px solid var(--blue); }
+.callout-warn { background: #FFF3E0; border-left: 4px solid var(--orange); }
+.callout-success { background: var(--green-bg); border-left: 4px solid var(--green); }
+
+footer {
+  margin-top: 48px;
+  padding: 20px 0;
+  border-top: 2px solid var(--border);
+  color: var(--text-light);
+  font-size: 0.85em;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 3px solid var(--purple); }
+  body { padding: 24px; }
+}
+
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; }
+  .card { box-shadow: none; border: 1px solid #ddd; }
+  h2 { page-break-before: always; }
+  .diagram-container { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back to Index -->
+<a href="netsuite-integration-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#6B4C9A;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.15);">&#8592; Back to Index</a>
+
+<!-- Fixed Left Sidebar TOC -->
+<nav id="toc">
+  <h3>Table of Contents</h3>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#end-to-end-flow" data-section="end-to-end-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#component-overview" data-section="component-overview">8. Component Overview</a>
+  <a href="#business-logic" data-section="business-logic">9. Key Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+
+<h1>Rec 9.0 &mdash; Cancelled Sales Orders Master Recipe</h1>
+<div class="meta">
+  <span><strong>Recipe ID:</strong> 54665267</span>
+  <span><strong>Status:</strong> <span class="badge badge-active">Active</span></span>
+  <span><strong>Author:</strong> venkatesh.manohar</span>
+  <span><strong>Generated:</strong> 2026-04-01</span>
+  <span><strong>Last Run:</strong> 2026-04-01</span>
+  <span><strong>Version:</strong> 18 (by diana.sy)</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: EXECUTIVE SUMMARY -->
+<!-- ============================================================ -->
+<h2 id="executive-summary">1. Executive Summary</h2>
+
+<div class="card">
+  <p><strong>What it does:</strong> This integration automatically cancels (closes) Sales Orders in NetSuite when the corresponding Salesforce contract is marked as "Cancelled." It ensures that the financial system of record (NetSuite) stays synchronized with contract lifecycle events originating from Salesforce.</p>
+
+  <p><strong>Why it exists:</strong> When a customer cancels their Intercom subscription, the Salesforce contract status changes to "Cancelled." However, the associated Sales Order in NetSuite remains open unless explicitly closed. Open Sales Orders can distort revenue recognition, create billing errors, and cause audit discrepancies. This recipe automates the closure process to eliminate manual intervention and ensure financial accuracy.</p>
+
+  <p><strong>High-level flow:</strong> Snowflake identifies cancelled contracts that have a matching Sales Order in NetSuite but have not yet been processed. For each one, Workato searches NetSuite for the Sales Order by Salesforce Contract ID, marks all line items as "Closed," sets the cancellation date, and logs the result back to Snowflake for tracking and deduplication.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: BUSINESS OVERVIEW -->
+<!-- ============================================================ -->
+<h2 id="business-overview">2. Business Overview</h2>
+
+<div class="card">
+  <h3>The Problem</h3>
+  <p>When a customer cancels their Intercom subscription, the contract in Salesforce is updated to "Cancelled" status. The data pipeline (dbt) writes this information to the <code>NETSUITE_EXPORT_CONTRACTS</code> table in Snowflake. However, the corresponding Sales Order in NetSuite -- the financial document that drives billing and revenue recognition -- remains open. Without automation, finance teams would need to manually find and close each cancelled Sales Order, which is time-consuming and error-prone.</p>
+
+  <h3>What This Integration Solves</h3>
+  <ul>
+    <li><strong>Automated Sales Order Closure:</strong> Cancelled contracts in Salesforce automatically trigger Sales Order closure in NetSuite</li>
+    <li><strong>Revenue Accuracy:</strong> Prevents revenue from being recognized on cancelled contracts</li>
+    <li><strong>Billing Hygiene:</strong> Prevents future billing runs from picking up cancelled orders</li>
+    <li><strong>Audit Trail:</strong> Every closure is logged to the WORKATO_LOGS table with success/failure status and the NetSuite internal ID</li>
+  </ul>
+
+  <h3>Key Scenarios</h3>
+  <table>
+    <tr><th>Scenario</th><th>What Happens</th></tr>
+    <tr><td>Contract cancelled, Sales Order exists in NetSuite</td><td>Sales Order line items are closed and cancellation date is set</td></tr>
+    <tr><td>Contract cancelled, no Sales Order in NetSuite</td><td>Skipped by the query (JOIN filter excludes it)</td></tr>
+    <tr><td>Contract cancelled, already processed</td><td>Skipped by deduplication (WORKATO_LOGS check)</td></tr>
+    <tr><td>NetSuite update fails</td><td>Error logged to WORKATO_LOGS with error_type and error_message; recipe continues to next contract</td></tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: SYSTEM OVERVIEW -->
+<!-- ============================================================ -->
+<h2 id="system-overview">3. System Overview</h2>
+
+<div class="system-grid">
+  <div class="system-card source">
+    <h4>Salesforce (Indirect Source)</h4>
+    <p><strong>Business role:</strong> Source of truth for contract lifecycle events. When a customer cancels, the contract status changes here.</p>
+    <p><strong>Technical note:</strong> Data flows from Salesforce into Snowflake via Fivetran/dbt. This recipe does not connect to Salesforce directly.</p>
+  </div>
+  <div class="system-card data">
+    <h4>Snowflake (Data Layer)</h4>
+    <p><strong>Business role:</strong> Central data warehouse that stages contract and sales order data for processing, and stores integration logs.</p>
+    <p><strong>Technical note:</strong> Schema <code>SHARED_EXTERNAL_WORKATO</code> contains export tables and the WORKATO_LOGS audit table. The master recipe queries Snowflake to identify unprocessed cancelled contracts.</p>
+  </div>
+  <div class="system-card orch">
+    <h4>Workato (Orchestration)</h4>
+    <p><strong>Business role:</strong> The automation engine that coordinates the cancellation process -- reading from Snowflake, acting on NetSuite, and logging results.</p>
+    <p><strong>Technical note:</strong> Two recipes work together: Rec 9.0 (master/scheduler) queries Snowflake and iterates, RF 9.0 (callable recipe function) executes the NetSuite update for each contract.</p>
+  </div>
+  <div class="system-card target">
+    <h4>NetSuite (Target)</h4>
+    <p><strong>Business role:</strong> Financial system of record. Sales Orders must be closed here to prevent incorrect billing and revenue recognition.</p>
+    <p><strong>Technical note:</strong> RF 9.0 searches for Sales Orders by the custom field <code>custbodycustentity_sf_contract_id</code>, closes all line items (<code>isClosed: true</code>), and sets the cancellation custom field.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: ARCHITECTURE OVERVIEW -->
+<!-- ============================================================ -->
+<h2 id="architecture-overview">4. Architecture Overview</h2>
+
+<div class="card">
+  <h3>Layered Architecture</h3>
+
+  <h4>Source Layer (Salesforce)</h4>
+  <p><strong>Business:</strong> Contract cancellation events originate in Salesforce when a customer churns or downgrades.</p>
+  <p><strong>Technical:</strong> Salesforce contract data is replicated to Snowflake via Fivetran and transformed by dbt into the <code>NETSUITE_EXPORT_CONTRACTS</code> staging table.</p>
+
+  <h4>Data Layer (Snowflake)</h4>
+  <p><strong>Business:</strong> Provides a reliable staging area where the integration can identify which cancellations need processing.</p>
+  <p><strong>Technical:</strong> Three key tables are involved:
+    <code>NETSUITE_EXPORT_CONTRACTS</code> (41K rows, cancelled contract data),
+    <code>NETSUITE_EXPORT_SALES_ORDER</code> (180K rows, confirms NS sales order existence), and
+    <code>WORKATO_LOGS</code> (66M rows, deduplication/audit trail).</p>
+
+  <h4>Orchestration Layer (Workato)</h4>
+  <p><strong>Business:</strong> Coordinates the entire cancellation workflow automatically on a schedule or on-demand trigger.</p>
+  <p><strong>Technical:</strong> Master recipe (Rec 9.0, ID: 54665267) runs a SQL query and iterates. For each row, it calls child recipe (RF 9.0, ID: 54665277) which performs the NetSuite search + update. The child recipe uses try/catch to handle errors gracefully.</p>
+
+  <h4>Target Layer (NetSuite)</h4>
+  <p><strong>Business:</strong> Sales Orders are closed to reflect the cancellation, ensuring accurate financials.</p>
+  <p><strong>Technical:</strong> RF 9.0 performs a <code>search_object_v2</code> on SalesOrder records using the Salesforce contract ID, then <code>update_object</code> to close all line items and set the cancellation date custom field (<code>custbody_cg_cancellation_close</code>).</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: ARCHITECTURE DIAGRAM -->
+<!-- ============================================================ -->
+<h2 id="architecture-diagram">5. Architecture Diagram</h2>
+
+<div class="diagram-container">
+  <svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1200px; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/>
+      </marker>
+      <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/>
+      </marker>
+      <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/>
+      </marker>
+      <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
+      </marker>
+      <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+      </filter>
+    </defs>
+
+    <!-- Column backgrounds -->
+    <rect x="10" y="60" width="270" height="640" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.5"/>
+    <rect x="300" y="60" width="270" height="640" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.5"/>
+    <rect x="590" y="60" width="290" height="640" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.5"/>
+    <rect x="900" y="60" width="280" height="640" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.5"/>
+
+    <!-- Column headers -->
+    <rect x="10" y="10" width="270" height="45" rx="8" fill="#F5A623"/>
+    <text x="145" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Salesforce (Indirect)</text>
+
+    <rect x="300" y="10" width="270" height="45" rx="8" fill="#29B5E8"/>
+    <text x="435" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Snowflake</text>
+
+    <rect x="590" y="10" width="290" height="45" rx="8" fill="#6B4C9A"/>
+    <text x="735" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Workato</text>
+
+    <rect x="900" y="10" width="280" height="45" rx="8" fill="#2E7D32"/>
+    <text x="1040" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">NetSuite</text>
+
+    <!-- Salesforce: Contract Cancellation -->
+    <rect x="30" y="100" width="230" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="145" y="124" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Contract Cancelled</text>
+    <text x="145" y="142" text-anchor="middle" fill="#888" font-size="10">Status = 'Cancelled'</text>
+
+    <!-- Salesforce: Fivetran/dbt ETL -->
+    <rect x="30" y="190" width="230" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="145" y="214" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Fivetran / dbt ETL</text>
+    <text x="145" y="232" text-anchor="middle" fill="#888" font-size="10">Replicates to Snowflake</text>
+
+    <!-- Arrow: Salesforce down -->
+    <line x1="145" y1="155" x2="145" y2="190" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+    <!-- Snowflake: NETSUITE_EXPORT_CONTRACTS -->
+    <rect x="315" y="100" width="240" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="435" y="122" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
+    <text x="435" y="140" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">CONTRACTS</text>
+
+    <!-- Snowflake: NETSUITE_EXPORT_SALES_ORDER -->
+    <rect x="315" y="190" width="240" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="435" y="212" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
+    <text x="435" y="230" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">SALES_ORDER</text>
+
+    <!-- Snowflake: WORKATO_LOGS -->
+    <rect x="315" y="280" width="240" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="435" y="304" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">WORKATO_LOGS</text>
+    <text x="435" y="322" text-anchor="middle" fill="#888" font-size="10">Dedup + Audit Trail</text>
+
+    <!-- Arrow: Salesforce to Snowflake -->
+    <line x1="260" y1="217" x2="315" y2="127" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+    <!-- Workato: Rec 9.0 Master -->
+    <rect x="610" y="100" width="250" height="60" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="735" y="122" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Rec 9.0 Master Recipe</text>
+    <text x="735" y="140" text-anchor="middle" fill="#888" font-size="10">ID: 54665267 | Query + Iterate</text>
+
+    <!-- Arrow: Snowflake to Workato (query) -->
+    <line x1="555" y1="127" x2="610" y2="127" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <text x="583" y="118" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="bold">SQL</text>
+
+    <!-- Workato: For Each Loop -->
+    <rect x="630" y="200" width="210" height="45" rx="8" fill="var(--purple-bg)" stroke="#6B4C9A" stroke-width="1" filter="url(#shadow)"/>
+    <text x="735" y="228" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">For Each Contract</text>
+
+    <!-- Arrow: Master to loop -->
+    <line x1="735" y1="160" x2="735" y2="200" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+    <!-- Workato: RF 9.0 Child -->
+    <rect x="610" y="285" width="250" height="60" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow)"/>
+    <text x="735" y="307" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">RF 9.0 Cancel Sales Order</text>
+    <text x="735" y="325" text-anchor="middle" fill="#888" font-size="10">ID: 54665277 | Search + Update</text>
+
+    <!-- Arrow: Loop to RF -->
+    <line x1="735" y1="245" x2="735" y2="285" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+    <text x="762" y="270" fill="#6B4C9A" font-size="9" font-weight="bold">Call</text>
+
+    <!-- Workato: Try/Catch decision -->
+    <polygon points="735,380 775,410 735,440 695,410" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+    <text x="735" y="413" text-anchor="middle" fill="#333" font-size="10">Success?</text>
+
+    <!-- Arrow: RF to decision -->
+    <line x1="735" y1="345" x2="735" y2="380" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+    <!-- Workato: Log Success -->
+    <rect x="610" y="475" width="115" height="45" rx="8" fill="var(--green-bg)" stroke="#2E7D32" stroke-width="1" filter="url(#shadow)"/>
+    <text x="668" y="502" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">Log Success</text>
+
+    <!-- Workato: Log Error -->
+    <rect x="745" y="475" width="115" height="45" rx="8" fill="#FFEBEE" stroke="#C62828" stroke-width="1" filter="url(#shadow)"/>
+    <text x="803" y="502" text-anchor="middle" fill="#C62828" font-size="10" font-weight="bold">Log Error</text>
+
+    <!-- Arrow: Decision to Success/Error -->
+    <line x1="715" y1="430" x2="668" y2="475" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+    <text x="680" y="455" fill="#2E7D32" font-size="9">Yes</text>
+    <line x1="755" y1="430" x2="803" y2="475" stroke="#C62828" stroke-width="1.5"/>
+    <text x="790" y="455" fill="#C62828" font-size="9">No</text>
+
+    <!-- Arrow: Log back to Snowflake WORKATO_LOGS -->
+    <path d="M 668 520 L 668 560 L 435 560 L 435 335" fill="none" stroke="#29B5E8" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-blue)"/>
+    <text x="550" y="553" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="bold">Write to WORKATO_LOGS</text>
+
+    <!-- NetSuite: Search Sales Order -->
+    <rect x="920" y="180" width="240" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="1040" y="202" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Search Sales Orders</text>
+    <text x="1040" y="220" text-anchor="middle" fill="#888" font-size="10">by SF Contract ID</text>
+
+    <!-- NetSuite: Close Line Items -->
+    <rect x="920" y="280" width="240" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="1040" y="302" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Close All Line Items</text>
+    <text x="1040" y="320" text-anchor="middle" fill="#888" font-size="10">isClosed = true</text>
+
+    <!-- NetSuite: Set Cancellation Date -->
+    <rect x="920" y="370" width="240" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="1040" y="392" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Set Cancellation Date</text>
+    <text x="1040" y="410" text-anchor="middle" fill="#888" font-size="10">custbody_cg_cancellation_close</text>
+
+    <!-- Arrows: Workato RF to NetSuite -->
+    <line x1="860" y1="305" x2="920" y2="207" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+    <text x="895" y="248" fill="#6B4C9A" font-size="9" font-weight="bold">Search</text>
+
+    <!-- Arrows: NetSuite internal flow -->
+    <line x1="1040" y1="235" x2="1040" y2="280" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow-green)"/>
+    <line x1="1040" y1="335" x2="1040" y2="370" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+    <!-- Stats at bottom -->
+    <rect x="10" y="630" width="1170" height="55" rx="8" fill="white" stroke="var(--border)" stroke-width="1" filter="url(#shadow)"/>
+    <text x="100" y="660" fill="#333" font-size="11"><tspan font-weight="bold" fill="#2E7D32">825</tspan> Successful Jobs</text>
+    <text x="320" y="660" fill="#333" font-size="11"><tspan font-weight="bold" fill="#C62828">1</tspan> Failed Job</text>
+    <text x="500" y="660" fill="#333" font-size="11"><tspan font-weight="bold" fill="#6B4C9A">15,954</tspan> Lifetime Tasks</text>
+    <text x="730" y="660" fill="#333" font-size="11"><tspan font-weight="bold" fill="#6B4C9A">15,189</tspan> RF Successful Jobs</text>
+    <text x="980" y="660" fill="#333" font-size="11"><tspan font-weight="bold" fill="#2E7D32">99.9%</tspan> Success Rate</text>
+  </svg>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: END-TO-END FLOW -->
+<!-- ============================================================ -->
+<h2 id="end-to-end-flow">6. End-to-End Flow</h2>
+
+<div class="card">
+  <h3>Level 0 -- Simple View</h3>
+  <p>A customer cancels their Intercom subscription. Salesforce records the cancellation. Snowflake identifies it as unprocessed. Workato closes the corresponding Sales Order in NetSuite. The result is logged.</p>
+
+  <h3>Level 1 -- Detailed View</h3>
+  <div class="flow-step"><span class="step-num">1</span><div><strong>Extraction:</strong> Rec 9.0 runs a SQL query against Snowflake that joins <code>NETSUITE_EXPORT_CONTRACTS</code> with <code>NETSUITE_EXPORT_SALES_ORDER</code> and <code>WORKATO_LOGS</code>. It returns contracts where <code>contract_status = 'Cancelled'</code>, a matching Sales Order exists in NetSuite (<code>so.netsuite_internal_id IS NOT NULL</code>), but the contract itself has not been logged to WORKATO_LOGS yet (<code>wl.netsuite_internal_id IS NULL</code>).</div></div>
+  <div class="flow-step"><span class="step-num">2</span><div><strong>Iteration:</strong> For each row returned (each cancelled contract), the master recipe calls RF 9.0 with the <code>salesforce_contract_id</code> and <code>cancellation_date</code> as parameters.</div></div>
+  <div class="flow-step"><span class="step-num">3</span><div><strong>NetSuite Search:</strong> RF 9.0 searches NetSuite for Sales Orders matching the Salesforce contract ID via the custom field <code>custbodycustentity_sf_contract_id</code>.</div></div>
+  <div class="flow-step"><span class="step-num">4</span><div><strong>Concurrency Wait:</strong> A 1-second sleep prevents concurrent API rate-limit issues with NetSuite.</div></div>
+  <div class="flow-step"><span class="step-num">5</span><div><strong>Sales Order Update:</strong> Each matching Sales Order is updated: all line items are set to <code>isClosed = true</code>, and the cancellation date custom field is populated. The subsidiary determines whether additional custom fields are set.</div></div>
+  <div class="flow-step"><span class="step-num">6</span><div><strong>Logging:</strong> On success, a record is written to WORKATO_LOGS with <code>is_successful_write_to_netsuite = true</code> and the NetSuite internal ID. On failure, the error is caught and logged with <code>is_successful_write_to_netsuite = false</code>.</div></div>
+
+  <h3>Level 2 -- Subsidiary Branching</h3>
+  <p>The cancellation date field behavior depends on the subsidiary. If the subsidiary internal ID is 4 (indicating a specific legal entity), the cancellation date formatting may differ. This is handled via a ternary condition in the custom field mapping of the update step.</p>
+</div>
+
+<!-- Data Flow Diagram (SVG) -->
+<h3>Data Flow Diagram</h3>
+<div class="diagram-container">
+  <svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1100px; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <marker id="df-arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2196F3"/>
+      </marker>
+      <marker id="df-arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#FF9800"/>
+      </marker>
+      <marker id="df-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50"/>
+      </marker>
+      <marker id="df-arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/>
+      </marker>
+      <filter id="df-shadow" x="-4%" y="-4%" width="108%" height="108%">
+        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+      </filter>
+    </defs>
+
+    <!-- Title -->
+    <text x="550" y="30" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Data Transformation Flow: Contract Cancellation to Sales Order Closure</text>
+
+    <!-- SOURCE RECORDS (Left) -->
+    <rect x="20" y="70" width="200" height="60" rx="8" fill="white" stroke="#FF9800" stroke-width="2" filter="url(#df-shadow)"/>
+    <text x="120" y="95" text-anchor="middle" fill="#FF9800" font-size="11" font-weight="bold">SF Contract</text>
+    <text x="120" y="115" text-anchor="middle" fill="#888" font-size="9">status = 'Cancelled'</text>
+
+    <rect x="20" y="160" width="200" height="60" rx="8" fill="white" stroke="#2196F3" stroke-width="2" filter="url(#df-shadow)"/>
+    <text x="120" y="185" text-anchor="middle" fill="#2196F3" font-size="11" font-weight="bold">Sales Order Data</text>
+    <text x="120" y="205" text-anchor="middle" fill="#888" font-size="9">netsuite_internal_id exists</text>
+
+    <rect x="20" y="250" width="200" height="60" rx="8" fill="white" stroke="#9E9E9E" stroke-width="2" filter="url(#df-shadow)"/>
+    <text x="120" y="275" text-anchor="middle" fill="#9E9E9E" font-size="11" font-weight="bold">WORKATO_LOGS</text>
+    <text x="120" y="295" text-anchor="middle" fill="#888" font-size="9">dedup: not yet processed</text>
+
+    <!-- PROCESSING (Middle) -->
+    <rect x="300" y="100" width="220" height="70" rx="8" fill="#E3F2FD" stroke="#2196F3" stroke-width="1.5" filter="url(#df-shadow)"/>
+    <text x="410" y="125" text-anchor="middle" fill="#1565C0" font-size="11" font-weight="bold">SQL JOIN + Filter</text>
+    <text x="410" y="143" text-anchor="middle" fill="#666" font-size="9">contracts LEFT JOIN sales_orders</text>
+    <text x="410" y="158" text-anchor="middle" fill="#666" font-size="9">LEFT JOIN workato_logs</text>
+
+    <!-- Arrows: Source to Processing -->
+    <line x1="220" y1="100" x2="300" y2="125" stroke="#FF9800" stroke-width="2" marker-end="url(#df-arrow-orange)"/>
+    <line x1="220" y1="190" x2="300" y2="145" stroke="#2196F3" stroke-width="2" marker-end="url(#df-arrow-blue)"/>
+    <line x1="220" y1="280" x2="300" y2="155" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#df-arrow-gray)"/>
+
+    <!-- Output fields -->
+    <rect x="300" y="210" width="220" height="80" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#df-shadow)"/>
+    <text x="410" y="232" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Output Per Row</text>
+    <text x="320" y="252" fill="#555" font-size="9">salesforce_contract_id</text>
+    <text x="320" y="267" fill="#555" font-size="9">customer</text>
+    <text x="320" y="282" fill="#555" font-size="9">cancellation_date</text>
+
+    <!-- Arrow: SQL to Output -->
+    <line x1="410" y1="170" x2="410" y2="210" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+    <!-- NETSUITE ACTIONS (Right) -->
+    <rect x="600" y="70" width="210" height="55" rx="8" fill="white" stroke="#4CAF50" stroke-width="2" filter="url(#df-shadow)"/>
+    <text x="705" y="93" text-anchor="middle" fill="#4CAF50" font-size="11" font-weight="bold">Search NS Sales Order</text>
+    <text x="705" y="111" text-anchor="middle" fill="#888" font-size="9">by custbody SF Contract ID</text>
+
+    <rect x="600" y="155" width="210" height="55" rx="8" fill="white" stroke="#4CAF50" stroke-width="2" filter="url(#df-shadow)"/>
+    <text x="705" y="178" text-anchor="middle" fill="#4CAF50" font-size="11" font-weight="bold">Close Line Items</text>
+    <text x="705" y="196" text-anchor="middle" fill="#888" font-size="9">isClosed = true (all lines)</text>
+
+    <rect x="600" y="240" width="210" height="55" rx="8" fill="white" stroke="#4CAF50" stroke-width="2" filter="url(#df-shadow)"/>
+    <text x="705" y="263" text-anchor="middle" fill="#4CAF50" font-size="11" font-weight="bold">Set Cancel Date</text>
+    <text x="705" y="281" text-anchor="middle" fill="#888" font-size="9">custbody_cg_cancellation_close</text>
+
+    <!-- Arrows: Processing to NS -->
+    <line x1="520" y1="245" x2="600" y2="97" stroke="#4CAF50" stroke-width="2" marker-end="url(#df-arrow-green)"/>
+    <text x="565" y="160" fill="#4CAF50" font-size="9" font-weight="bold">1:N</text>
+
+    <!-- NS internal arrows -->
+    <line x1="705" y1="125" x2="705" y2="155" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-arrow-green)"/>
+    <line x1="705" y1="210" x2="705" y2="240" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-arrow-green)"/>
+
+    <!-- LOGGING (Bottom right) -->
+    <rect x="870" y="100" width="200" height="65" rx="8" fill="white" stroke="#9E9E9E" stroke-width="2" filter="url(#df-shadow)"/>
+    <text x="970" y="122" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">WORKATO_LOGS Entry</text>
+    <text x="890" y="142" fill="#555" font-size="9">external_id, netsuite_internal_id</text>
+    <text x="890" y="155" fill="#555" font-size="9">is_successful, error_type/msg</text>
+
+    <rect x="870" y="200" width="200" height="65" rx="8" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.5" filter="url(#df-shadow)"/>
+    <text x="970" y="225" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">Success Path</text>
+    <text x="890" y="250" fill="#555" font-size="9">NS internal ID captured</text>
+
+    <rect x="870" y="295" width="200" height="65" rx="8" fill="#FFEBEE" stroke="#C62828" stroke-width="1.5" filter="url(#df-shadow)"/>
+    <text x="970" y="320" text-anchor="middle" fill="#C62828" font-size="11" font-weight="bold">Error Path</text>
+    <text x="890" y="345" fill="#555" font-size="9">error_type + error_message</text>
+
+    <!-- Arrows to logging -->
+    <line x1="810" y1="267" x2="870" y2="132" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#df-arrow-gray)"/>
+    <line x1="970" y1="165" x2="970" y2="200" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-arrow-green)"/>
+    <line x1="970" y1="265" x2="970" y2="295" stroke="#C62828" stroke-width="1.5"/>
+
+    <!-- Relationship labels -->
+    <rect x="300" y="380" width="770" height="100" rx="8" fill="white" stroke="var(--border)" stroke-width="1" filter="url(#df-shadow)"/>
+    <text x="320" y="405" fill="#333" font-size="12" font-weight="bold">Key Relationships</text>
+    <text x="320" y="425" fill="#555" font-size="10">NETSUITE_EXPORT_CONTRACTS.salesforce_contract_id = NETSUITE_EXPORT_SALES_ORDER.salesforce_contract_id (1:N)</text>
+    <text x="320" y="445" fill="#555" font-size="10">WORKATO_LOGS.external_id = NETSUITE_EXPORT_CONTRACTS.salesforce_contract_id (dedup join)</text>
+    <text x="320" y="465" fill="#555" font-size="10">NetSuite SalesOrder.custbodycustentity_sf_contract_id = salesforce_contract_id (search key)</text>
+  </svg>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: PROCESSING STAGES -->
+<!-- ============================================================ -->
+<h2 id="processing-stages">7. Processing Stages</h2>
+
+<div class="card">
+  <h3>Stage 1: Ingestion (Snowflake SQL Query)</h3>
+  <p><strong>What happens:</strong> The master recipe executes a complex SQL query that identifies cancelled contracts needing Sales Order closure in NetSuite.</p>
+  <p><strong>How it works:</strong> The query uses a CTE (<code>stg_workato_log</code>) to get the latest log entry per contract from WORKATO_LOGS, then joins NETSUITE_EXPORT_CONTRACTS with NETSUITE_EXPORT_SALES_ORDER on <code>salesforce_contract_id</code>. Filters ensure: (a) contract is cancelled, (b) no existing log entry with a NetSuite ID (i.e., not already processed), and (c) a Sales Order exists in NetSuite.</p>
+  <p><strong>Why it matters:</strong> This deduplication-at-source approach prevents reprocessing, saving API calls and avoiding duplicate closures.</p>
+
+  <details>
+    <summary>View SQL Query</summary>
+    <div class="details-content">
+      <pre><code>WITH stg_workato_log AS (
+    SELECT
+        external_id,
+        job_run_completed_at AS last_successful_job_run_completed_at,
+        netsuite_internal_id,
+        source_table_name,
+        error_type,
+        error_message
+    FROM intercom_prod.shared_external_workato.WORKATO_LOGS
+    WHERE external_id IS NOT NULL
+        AND source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_CONTRACTS'
+        AND environment_type = 'prod'
+    QUALIFY ROW_NUMBER() OVER (
+        PARTITION BY external_id
+        ORDER BY job_run_completed_at DESC
+    ) = 1
+)
+SELECT DISTINCT
+    c.salesforce_contract_id,
+    c.customer,
+    c.cancellation_date
+FROM shared_external_workato.netsuite_export_contracts c
+LEFT JOIN shared_external_workato.netsuite_export_sales_order so
+    ON c.salesforce_contract_id = so.salesforce_contract_id
+LEFT JOIN stg_workato_log wl
+    ON wl.external_id = c.salesforce_contract_id
+WHERE c.contract_status = 'Cancelled'
+    AND wl.netsuite_internal_id IS NULL
+    AND so.netsuite_internal_id IS NOT NULL</code></pre>
+    </div>
+  </details>
+</div>
+
+<div class="card">
+  <h3>Stage 2: Iteration (For Each Contract)</h3>
+  <p><strong>What happens:</strong> The master recipe loops through each row returned by the query.</p>
+  <p><strong>How it works:</strong> Workato's built-in "For Each" loop processes rows sequentially, passing <code>salesforce_contract_id</code> and <code>cancellation_date</code> to the child recipe function.</p>
+  <p><strong>Why it matters:</strong> Sequential processing ensures orderly execution and prevents NetSuite API throttling.</p>
+</div>
+
+<div class="card">
+  <h3>Stage 3: NetSuite Search + Update (RF 9.0)</h3>
+  <p><strong>What happens:</strong> For each contract, NetSuite is searched for matching Sales Orders, then each is updated to close all line items.</p>
+  <p><strong>How it works:</strong> <code>search_object_v2</code> finds SalesOrder records by the custom field. After a 1-second concurrency wait, <code>update_object</code> sets <code>isClosed = true</code> on all line items and populates the cancellation date custom field. The subsidiary ID determines date formatting logic.</p>
+  <p><strong>Why it matters:</strong> Closing line items prevents future billing and stops revenue recognition on cancelled contracts.</p>
+</div>
+
+<div class="card">
+  <h3>Stage 4: Logging (WORKATO_LOGS)</h3>
+  <p><strong>What happens:</strong> The outcome (success or failure) is recorded for every contract processed.</p>
+  <p><strong>How it works:</strong> On success, the mapper writes <code>source_table_name</code>, <code>external_id</code>, <code>is_successful_write_to_netsuite = true</code>, and the <code>netsuite_internal_id</code>. On failure (caught by try/catch), it writes <code>is_successful_write_to_netsuite = false</code> with the error details. Both paths also log a message to the Workato job report.</p>
+  <p><strong>Why it matters:</strong> Logging enables deduplication (preventing reprocessing), auditing, and error investigation.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: COMPONENT OVERVIEW -->
+<!-- ============================================================ -->
+<h2 id="component-overview">8. Component / Module Overview</h2>
+
+<div class="card">
+  <h3>Rec 9.0 -- Cancelled Sales Orders Master Recipe</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Recipe ID</td><td>54665267</td></tr>
+    <tr><td>Type</td><td>Master / Scheduler</td></tr>
+    <tr><td>Trigger</td><td>Recipe Function (callable, accepts Start_Date parameter)</td></tr>
+    <tr><td>Status</td><td><span class="badge badge-active">Active</span></td></tr>
+    <tr><td>Connections</td><td>Snowflake, Workato Recipe Function</td></tr>
+    <tr><td>Successful Jobs</td><td>825</td></tr>
+    <tr><td>Failed Jobs</td><td>1</td></tr>
+    <tr><td>Lifetime Tasks</td><td>15,954</td></tr>
+    <tr><td>Last Author</td><td>diana.sy</td></tr>
+  </table>
+  <p><strong>What it does:</strong> Queries Snowflake for unprocessed cancelled contracts, then iterates through each result, calling the child recipe to perform the actual NetSuite cancellation.</p>
+  <p><strong>When it runs:</strong> Triggered as a callable recipe function (can be invoked by a scheduler or manually). Accepts a <code>Start_Date</code> parameter.</p>
+</div>
+
+<div class="card green">
+  <h3>RF 9.0 -- Cancel Sales Order (Child Recipe Function)</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Recipe ID</td><td>54665277</td></tr>
+    <tr><td>Type</td><td>Recipe Function (callable child)</td></tr>
+    <tr><td>Trigger</td><td>Recipe Function (accepts Contract_id, CancellationDate, subsidiary)</td></tr>
+    <tr><td>Status</td><td><span class="badge badge-active">Active</span></td></tr>
+    <tr><td>Connections</td><td>NetSuite, Workato Custom Code, Workato Mapper, Logger</td></tr>
+    <tr><td>Successful Jobs</td><td>15,189</td></tr>
+    <tr><td>Failed Jobs</td><td>0</td></tr>
+    <tr><td>Lifetime Tasks</td><td>63,038</td></tr>
+    <tr><td>Last Author</td><td>diana.sy</td></tr>
+  </table>
+  <p><strong>What it does:</strong> Receives a single contract ID and cancellation date, searches NetSuite for the corresponding Sales Order, closes all line items, and logs the result. Wrapped in try/catch for error resilience.</p>
+  <p><strong>Steps:</strong></p>
+  <ol>
+    <li><strong>Search Sales Orders</strong> -- NetSuite <code>search_object_v2</code> on SalesOrder using the SF contract ID custom field</li>
+    <li><strong>Concurrency Wait</strong> -- Ruby custom code: <code>sleep(1)</code> to prevent API throttling</li>
+    <li><strong>Update Sales Order</strong> -- Sets <code>isClosed = true</code> on all line items; populates <code>custbody_cg_cancellation_close</code> with the cancellation date</li>
+    <li><strong>Log Success</strong> -- Maps result to WORKATO_LOGS format with <code>is_successful_write_to_netsuite = true</code></li>
+    <li><strong>Log Message</strong> -- Writes to Workato job report</li>
+    <li><strong>Catch (on error)</strong> -- Maps error to WORKATO_LOGS format with <code>is_successful_write_to_netsuite = false</code></li>
+  </ol>
+</div>
+
+<!-- Recipe Hierarchy Diagram (SVG) -->
+<h3>Recipe Hierarchy Diagram</h3>
+<div class="diagram-container">
+  <svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:900px; font-family: 'Segoe UI', Arial, sans-serif;">
+    <defs>
+      <marker id="rh-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/>
+      </marker>
+      <marker id="rh-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
+      </marker>
+      <marker id="rh-arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/>
+      </marker>
+      <filter id="rh-shadow" x="-4%" y="-4%" width="108%" height="108%">
+        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/>
+      </filter>
+    </defs>
+
+    <!-- Title -->
+    <text x="450" y="30" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Recipe Hierarchy: Cancelled Sales Orders</text>
+
+    <!-- Scheduler / Trigger -->
+    <rect x="300" y="55" width="300" height="50" rx="10" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2" filter="url(#rh-shadow)"/>
+    <text x="340" y="75" fill="#888" font-size="9">TRIGGER</text>
+    <text x="450" y="93" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Scheduler / Manual Invoke</text>
+
+    <!-- Arrow: Trigger to Master -->
+    <line x1="450" y1="105" x2="450" y2="130" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+
+    <!-- Master Recipe -->
+    <rect x="250" y="130" width="400" height="70" rx="12" fill="white" stroke="#6B4C9A" stroke-width="2.5" filter="url(#rh-shadow)"/>
+    <rect x="250" y="130" width="400" height="25" rx="12" fill="#6B4C9A"/>
+    <rect x="250" y="143" width="400" height="12" fill="#6B4C9A"/>
+    <text x="450" y="148" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Rec 9.0 -- Cancelled Sales Orders Master (54665267)</text>
+    <text x="270" y="178" fill="#555" font-size="10">Snowflake SQL Query</text>
+    <text x="270" y="192" fill="#555" font-size="10">For Each Row: call RF 9.0</text>
+    <text x="530" y="178" fill="#29B5E8" font-size="10" font-weight="bold">Snowflake</text>
+
+    <!-- Arrow: Master to Child -->
+    <line x1="450" y1="200" x2="450" y2="250" stroke="#6B4C9A" stroke-width="2.5" marker-end="url(#rh-arrow)"/>
+    <text x="465" y="230" fill="#6B4C9A" font-size="10" font-weight="bold">Sync Call (For Each)</text>
+
+    <!-- Child Recipe -->
+    <rect x="200" y="250" width="500" height="90" rx="12" fill="white" stroke="#2E7D32" stroke-width="2.5" filter="url(#rh-shadow)"/>
+    <rect x="200" y="250" width="500" height="25" rx="12" fill="#2E7D32"/>
+    <rect x="200" y="263" width="500" height="12" fill="#2E7D32"/>
+    <text x="450" y="268" text-anchor="middle" fill="white" font-size="12" font-weight="bold">RF 9.0 -- Cancel Sales Order (54665277)</text>
+
+    <!-- Child steps inside -->
+    <text x="220" y="298" fill="#555" font-size="10">1. Search Sales Orders (NetSuite)</text>
+    <text x="220" y="313" fill="#555" font-size="10">2. Sleep(1) -- Concurrency Wait</text>
+    <text x="220" y="328" fill="#555" font-size="10">3. Update Sales Order (Close Lines)</text>
+    <text x="500" y="298" fill="#555" font-size="10">4. Map to WORKATO_LOGS</text>
+    <text x="500" y="313" fill="#555" font-size="10">5. Log Message (Job Report)</text>
+    <text x="500" y="328" fill="#555" font-size="10">6. Catch: Log Error</text>
+
+    <!-- Connection badges -->
+    <rect x="220" y="345" width="70" height="20" rx="4" fill="#2E7D32" opacity="0.15"/>
+    <text x="255" y="359" text-anchor="middle" fill="#2E7D32" font-size="9" font-weight="bold">NetSuite</text>
+
+    <rect x="300" y="345" width="70" height="20" rx="4" fill="#6B4C9A" opacity="0.15"/>
+    <text x="335" y="359" text-anchor="middle" fill="#6B4C9A" font-size="9" font-weight="bold">Mapper</text>
+
+    <rect x="380" y="345" width="55" height="20" rx="4" fill="#9E9E9E" opacity="0.15"/>
+    <text x="408" y="359" text-anchor="middle" fill="#666" font-size="9" font-weight="bold">Logger</text>
+
+    <rect x="445" y="345" width="80" height="20" rx="4" fill="#FF9800" opacity="0.15"/>
+    <text x="485" y="359" text-anchor="middle" fill="#FF9800" font-size="9" font-weight="bold">Custom Code</text>
+
+    <!-- Output arrows -->
+    <line x1="340" y1="370" x2="200" y2="420" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#rh-arrow-green)"/>
+    <line x1="560" y1="370" x2="700" y2="420" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#rh-arrow-blue)"/>
+
+    <!-- NetSuite box -->
+    <rect x="80" y="420" width="240" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#rh-shadow)"/>
+    <text x="200" y="442" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">NetSuite</text>
+    <text x="200" y="460" text-anchor="middle" fill="#888" font-size="9">SalesOrder: Close Lines + Set Cancel Date</text>
+
+    <!-- Snowflake Logs box -->
+    <rect x="580" y="420" width="240" height="50" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#rh-shadow)"/>
+    <text x="700" y="442" text-anchor="middle" fill="#29B5E8" font-size="11" font-weight="bold">Snowflake WORKATO_LOGS</text>
+    <text x="700" y="460" text-anchor="middle" fill="#888" font-size="9">Success/Error audit trail</text>
+
+    <!-- Legend -->
+    <rect x="30" y="55" width="180" height="70" rx="8" fill="white" stroke="var(--border)" stroke-width="1"/>
+    <text x="40" y="73" fill="#333" font-size="10" font-weight="bold">Legend</text>
+    <line x1="40" y1="88" x2="70" y2="88" stroke="#6B4C9A" stroke-width="2"/>
+    <text x="78" y="92" fill="#555" font-size="9">Sync call</text>
+    <line x1="40" y1="105" x2="70" y2="105" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="6,3"/>
+    <text x="78" y="109" fill="#555" font-size="9">Async / write-back</text>
+  </svg>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: KEY BUSINESS LOGIC -->
+<!-- ============================================================ -->
+<h2 id="business-logic">9. Key Business Logic</h2>
+
+<div class="card">
+  <h3>Deduplication Logic</h3>
+  <p>The SQL query ensures each cancelled contract is processed exactly once. It checks the <code>WORKATO_LOGS</code> table for an existing entry with <code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_CONTRACTS'</code>. Only contracts with no matching log entry (or no successful NetSuite internal ID) are returned for processing.</p>
+
+  <h3>Sales Order Closure Logic</h3>
+  <p>When a Sales Order is found in NetSuite, <strong>all line items</strong> are closed by setting <code>isClosed = true</code>. This is a bulk operation -- the recipe does not selectively close individual lines. The entire order is effectively cancelled.</p>
+
+  <h3>Cancellation Date Handling</h3>
+  <p>The cancellation date from Salesforce (stored in <code>NETSUITE_EXPORT_CONTRACTS.cancellation_date</code>) is passed to the NetSuite custom field <code>custbody_cg_cancellation_close</code>. The formatting logic includes a subsidiary check:</p>
+  <ul>
+    <li>If subsidiary internal ID = 4: may apply specific date formatting</li>
+    <li>Otherwise: standard date format is used</li>
+  </ul>
+
+  <h3>Sales Order Existence Check</h3>
+  <p>The SQL query includes <code>so.netsuite_internal_id IS NOT NULL</code> which ensures only contracts with an <strong>existing</strong> Sales Order in NetSuite are processed. Contracts where the Sales Order was never created (e.g., cancelled before order creation) are excluded.</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: DATA MODEL -->
+<!-- ============================================================ -->
+<h2 id="data-model">10. Data Model</h2>
+
+<div class="card blue">
+  <h3>NETSUITE_EXPORT_CONTRACTS</h3>
+  <p><strong>Purpose:</strong> Staging table for cancelled contract data originating from Salesforce. Contains the contract lifecycle events that drive the cancellation workflow.</p>
+  <p><strong>Row count:</strong> ~41,098 | <strong>Schema:</strong> SHARED_EXTERNAL_WORKATO</p>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>SALESFORCE_CONTRACT_ID</code></td><td>TEXT</td><td>Primary key for joining. Links to Sales Order and WORKATO_LOGS.</td></tr>
+    <tr><td><code>CUSTOMER</code></td><td>TEXT</td><td>Customer identifier (Stripe customer ID)</td></tr>
+    <tr><td><code>CUSTOMER_ACCOUNT</code></td><td>TEXT</td><td>Salesforce account ID</td></tr>
+    <tr><td><code>CONTRACT_STATUS</code></td><td>TEXT</td><td>Contract lifecycle status. This recipe filters for 'Cancelled'.</td></tr>
+    <tr><td><code>CANCELLATION_DATE</code></td><td>TIMESTAMP</td><td>When the contract was cancelled. Passed to NetSuite.</td></tr>
+    <tr><td><code>TOTAL_CONTRACT_VALUE</code></td><td>NUMBER</td><td>Dollar value of the cancelled contract</td></tr>
+    <tr><td><code>SUBSIDIARY</code></td><td>TEXT</td><td>Legal entity (affects date formatting in NetSuite)</td></tr>
+    <tr><td><code>NETSUITE_INTERNAL_ID</code></td><td>TEXT</td><td>Populated after processing (from WORKATO_LOGS writeback)</td></tr>
+    <tr><td><code>ERROR_MESSAGE</code></td><td>TEXT</td><td>Error details if processing failed</td></tr>
+    <tr><td><code>LAST_INTEGRATION_DATE</code></td><td>TIMESTAMP_TZ</td><td>Timestamp of last Workato processing attempt</td></tr>
+  </table>
+</div>
+
+<div class="card blue">
+  <h3>NETSUITE_EXPORT_SALES_ORDER</h3>
+  <p><strong>Purpose:</strong> Staging table for Sales Order data. Used to confirm that a NetSuite Sales Order exists for the contract being cancelled.</p>
+  <p><strong>Row count:</strong> ~180,504 | <strong>Schema:</strong> SHARED_EXTERNAL_WORKATO</p>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>SALESFORCE_CONTRACT_ID</code></td><td>TEXT</td><td>Join key to NETSUITE_EXPORT_CONTRACTS</td></tr>
+    <tr><td><code>NETSUITE_INTERNAL_ID</code></td><td>TEXT</td><td>Confirms Sales Order exists in NetSuite. Must be NOT NULL.</td></tr>
+    <tr><td><code>ORDER_NUMBER</code></td><td>TEXT</td><td>NetSuite Sales Order document number</td></tr>
+    <tr><td><code>CUSTOMER</code></td><td>TEXT</td><td>Stripe customer ID</td></tr>
+    <tr><td><code>ITEM</code></td><td>TEXT</td><td>Billing plan item identifier</td></tr>
+    <tr><td><code>AMOUNT</code></td><td>NUMBER</td><td>Line item amount</td></tr>
+    <tr><td><code>STATUS</code></td><td>TEXT</td><td>Sales Order status</td></tr>
+  </table>
+</div>
+
+<div class="card gray">
+  <h3>WORKATO_LOGS</h3>
+  <p><strong>Purpose:</strong> Central audit table for all Workato integration activity. Used for deduplication and error tracking across all recipe types.</p>
+  <p><strong>Row count:</strong> ~66.2M | <strong>Schema:</strong> SHARED_EXTERNAL_WORKATO</p>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>EXTERNAL_ID</code></td><td>TEXT</td><td>The identifier of the record processed (e.g., salesforce_contract_id)</td></tr>
+    <tr><td><code>SOURCE_TABLE_NAME</code></td><td>TEXT</td><td>Which export table the record came from. Filtered for 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_CONTRACTS'.</td></tr>
+    <tr><td><code>NETSUITE_INTERNAL_ID</code></td><td>TEXT</td><td>NetSuite record ID on success. NULL on failure.</td></tr>
+    <tr><td><code>IS_SUCCESSFUL_WRITE_TO_NETSUITE</code></td><td>BOOLEAN</td><td>True if the NetSuite operation succeeded</td></tr>
+    <tr><td><code>ERROR_TYPE</code></td><td>TEXT</td><td>Category of error (if failed)</td></tr>
+    <tr><td><code>ERROR_MESSAGE</code></td><td>TEXT</td><td>Detailed error message (if failed)</td></tr>
+    <tr><td><code>JOB_RUN_COMPLETED_AT</code></td><td>TIMESTAMP_TZ</td><td>When the job completed. Used for dedup ordering (most recent wins).</td></tr>
+    <tr><td><code>ENVIRONMENT_TYPE</code></td><td>TEXT</td><td>Filtered for 'prod' to exclude sandbox/test runs.</td></tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: EDGE CASES -->
+<!-- ============================================================ -->
+<h2 id="edge-cases">11. Edge Cases &amp; Special Scenarios</h2>
+
+<div class="card">
+  <table>
+    <tr><th>Scenario</th><th>What Happens</th><th>Impact</th></tr>
+    <tr>
+      <td><strong>No Sales Order in NetSuite</strong></td>
+      <td>The SQL query filters these out (<code>so.netsuite_internal_id IS NOT NULL</code>). The contract is never sent to RF 9.0.</td>
+      <td>None -- safely excluded. These are likely contracts that were cancelled before a Sales Order was created.</td>
+    </tr>
+    <tr>
+      <td><strong>Multiple Sales Orders per Contract</strong></td>
+      <td>The NetSuite search returns all matching Sales Orders. The <code>DISTINCT</code> in the SQL and the fact that RF 9.0 updates the first found order means only one is typically processed per invocation.</td>
+      <td>Low risk -- most contracts have a single Sales Order. If multiple exist, the search result handles it.</td>
+    </tr>
+    <tr>
+      <td><strong>Already-closed Sales Order</strong></td>
+      <td>NetSuite will accept the update (setting isClosed on already-closed lines is idempotent). No error occurs.</td>
+      <td>None -- safe to reprocess.</td>
+    </tr>
+    <tr>
+      <td><strong>NetSuite API Failure</strong></td>
+      <td>The try/catch block catches the error. RF 9.0 logs the failure to WORKATO_LOGS with the error details. The recipe continues processing the next contract.</td>
+      <td>The failed contract will be retried on the next run (since it won't have a successful log entry).</td>
+    </tr>
+    <tr>
+      <td><strong>NetSuite Rate Limiting</strong></td>
+      <td>The 1-second <code>sleep(1)</code> between search and update mitigates this. If a 429 error occurs, it is caught and logged.</td>
+      <td>Temporary -- will succeed on retry.</td>
+    </tr>
+    <tr>
+      <td><strong>Subsidiary-specific Date Formatting</strong></td>
+      <td>Subsidiary ID 4 triggers different cancellation date handling via a ternary condition in the custom field mapping.</td>
+      <td>Ensures correct date formatting per legal entity requirements.</td>
+    </tr>
+    <tr>
+      <td><strong>Contract re-cancellation (duplicate events)</strong></td>
+      <td>The WORKATO_LOGS dedup check prevents reprocessing. If a contract was already successfully processed, it is skipped.</td>
+      <td>None -- deduplication is robust.</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: OPERATIONAL NOTES -->
+<!-- ============================================================ -->
+<h2 id="operational-notes">12. Operational Notes</h2>
+
+<div class="card">
+  <h3>Deduplication</h3>
+  <p>Deduplication is achieved at the SQL query level using a LEFT JOIN to <code>WORKATO_LOGS</code>. The CTE uses <code>QUALIFY ROW_NUMBER() OVER (PARTITION BY external_id ORDER BY job_run_completed_at DESC) = 1</code> to get only the most recent log entry per contract. Only contracts where <code>wl.netsuite_internal_id IS NULL</code> (meaning no successful prior run) are returned.</p>
+
+  <div class="callout callout-info">
+    <strong>Note:</strong> If a contract was previously attempted but failed (logged with <code>is_successful_write_to_netsuite = false</code>), it will be retried because the log entry will have <code>netsuite_internal_id = NULL</code>.
+  </div>
+
+  <h3>Error Handling</h3>
+  <p>RF 9.0 wraps the entire NetSuite interaction in a try/catch block. On success, a success log is written. On error, the catch block writes an error log with the error type and message. The master recipe's For Each loop continues to the next contract regardless of individual failures.</p>
+
+  <div class="callout callout-warn">
+    <strong>Known limitation:</strong> The catch block has <code>max_retry_count = 0</code> and <code>retry_interval = 2</code> seconds. This means there are no automatic retries within a single job run. Retries only occur on the next scheduled run.
+  </div>
+
+  <h3>Performance Characteristics</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Master recipe success rate</td><td>99.9% (825 succeeded, 1 failed)</td></tr>
+    <tr><td>Child recipe success rate</td><td>100% (15,189 succeeded, 0 failed)</td></tr>
+    <tr><td>Average tasks per master job</td><td>~19.3 (15,954 tasks / 826 jobs)</td></tr>
+    <tr><td>Processing cadence</td><td>On-demand / scheduled via recipe function trigger</td></tr>
+    <tr><td>Concurrency control</td><td>1-second sleep between search and update per contract</td></tr>
+  </table>
+
+  <h3>Monitoring &amp; Alerting</h3>
+  <ul>
+    <li><strong>Job failures:</strong> Visible in Workato's job history. Only 1 master-level failure in history.</li>
+    <li><strong>Error investigation:</strong> Query <code>WORKATO_LOGS</code> where <code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_CONTRACTS'</code> and <code>is_successful_write_to_netsuite = false</code>.</li>
+    <li><strong>Backlog check:</strong> Run the master recipe's SQL query manually to see how many cancelled contracts are pending processing.</li>
+  </ul>
+
+  <h3>Dependencies</h3>
+  <ul>
+    <li><strong>Upstream:</strong> Fivetran/dbt must complete Salesforce-to-Snowflake sync before the recipe can find new cancellations</li>
+    <li><strong>Downstream:</strong> NetSuite revenue recognition and billing processes depend on Sales Order closure</li>
+    <li><strong>Snowflake tables:</strong> Must be accessible via the Workato Snowflake connection (<code>INTERCOM_PROD</code>)</li>
+    <li><strong>NetSuite custom fields:</strong> <code>custbodycustentity_sf_contract_id</code> (search), <code>custbody_cg_cancellation_close</code> (update), <code>custcol_cg_rev_rev_end_date</code> (column)</li>
+  </ul>
+</div>
+
+<footer>
+  <p>Generated by Workato Integration Documentor | Author: venkatesh.manohar | 2026-04-01</p>
+  <p>Recipe: Rec 9.0 &mdash; Cancelled Sales Orders Master Recipe (ID: 54665267) | RF 9.0 &mdash; Cancel Sales Order (ID: 54665277)</p>
+</footer>
+
+</div><!-- end .main-content -->
+
+<!-- Scroll Spy JavaScript -->
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a[data-section]');
+  var sections = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    var current = sections[0];
+    var scrollY = window.scrollY + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

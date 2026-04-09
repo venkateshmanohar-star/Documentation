@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<meta name="generator" content="Workato Integration Documentor">
+<meta name="date" content="2026-04-01">
+<title>Rec 7.0 — Refunds Master Recipe | Integration Documentation</title>
+<style>
+:root {
+  --orange: #F5A623;
+  --orange-bg: #FFF5E6;
+  --blue: #29B5E8;
+  --blue-bg: #E8F4FD;
+  --purple: #6B4C9A;
+  --purple-bg: #F0EBF8;
+  --green: #2E7D32;
+  --green-bg: #E8F5E9;
+  --gray: #9E9E9E;
+  --gray-bg: #F5F5F5;
+  --text: #333;
+  --text-light: #666;
+  --border: #E0E0E0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  line-height: 1.7;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  background: #FAFAFA;
+}
+
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: white;
+  padding: 20px 16px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+  border-right: 3px solid var(--purple);
+  z-index: 1000;
+}
+nav#toc h3 {
+  font-size: 0.95em;
+  color: var(--purple);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--purple-bg);
+  letter-spacing: 0.5px;
+}
+nav#toc a {
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85em;
+  display: block;
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  margin-bottom: 2px;
+}
+nav#toc a:hover { background: var(--purple-bg); color: var(--purple); }
+nav#toc a.active { background: var(--purple); color: white; }
+nav#toc .toc-num { display: inline-block; width: 22px; color: var(--gray); font-size: 0.8em; }
+
+.main-content { max-width: 1100px; }
+
+header {
+  background: linear-gradient(135deg, var(--purple), #4A3570);
+  color: white;
+  padding: 40px 48px;
+  border-radius: 16px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px rgba(107,76,154,0.25);
+}
+header h1 { font-size: 2em; font-weight: 700; margin-bottom: 8px; }
+header .subtitle { font-size: 1.05em; opacity: 0.85; margin-bottom: 12px; }
+header .meta { font-size: 0.85em; opacity: 0.7; display: flex; flex-wrap: wrap; gap: 24px; }
+header .meta span { display: flex; align-items: center; gap: 6px; }
+header .badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+header .badge.active { background: #4CAF50; }
+
+section {
+  background: white;
+  border-radius: 12px;
+  padding: 36px 40px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+}
+section h2 {
+  font-size: 1.4em;
+  color: var(--purple);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--purple-bg);
+}
+section h3 {
+  font-size: 1.1em;
+  color: var(--text);
+  margin: 20px 0 10px;
+}
+section h4 {
+  font-size: 0.95em;
+  color: var(--text-light);
+  margin: 16px 0 8px;
+  font-weight: 600;
+}
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 24px; }
+li { margin-bottom: 6px; }
+
+.callout {
+  border-left: 4px solid var(--purple);
+  background: var(--purple-bg);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 0.95em;
+}
+.callout.info { border-left-color: var(--blue); background: var(--blue-bg); }
+.callout.warn { border-left-color: var(--orange); background: var(--orange-bg); }
+.callout.success { border-left-color: var(--green); background: var(--green-bg); }
+
+.two-layer { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+.two-layer .layer {
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.two-layer .business { background: var(--green-bg); border-color: var(--green); }
+.two-layer .technical { background: var(--blue-bg); border-color: var(--blue); }
+.two-layer .layer h4 { margin-top: 0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+.two-layer .business h4 { color: var(--green); }
+.two-layer .technical h4 { color: var(--blue); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.92em;
+}
+th { background: var(--purple); color: white; text-align: left; padding: 10px 14px; font-weight: 600; }
+td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+tr:nth-child(even) { background: #F9F9FB; }
+
+code {
+  background: #F0F0F5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.88em;
+  color: var(--purple);
+}
+
+.diagram-container {
+  text-align: center;
+  margin: 24px 0;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.stage-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 12px 0;
+  background: white;
+}
+.stage-card h4 {
+  margin-top: 0;
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 0.9em;
+  color: white;
+}
+.stage-card.ingest h4 { background: var(--orange); }
+.stage-card.process h4 { background: var(--purple); }
+.stage-card.output h4 { background: var(--green); }
+.stage-card.log h4 { background: var(--gray); }
+
+footer {
+  text-align: center;
+  padding: 32px;
+  color: var(--text-light);
+  font-size: 0.85em;
+}
+
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 3px solid var(--purple); }
+  body { padding: 24px; }
+  .two-layer { grid-template-columns: 1fr; }
+}
+
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; background: white; }
+  section { box-shadow: none; border: 1px solid #CCC; page-break-inside: avoid; }
+  header { background: var(--purple); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .diagram-container { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back to Index -->
+<a href="netsuite-integration-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#6B4C9A;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.15);">&larr; Back to Index</a>
+
+<!-- Fixed Left Sidebar TOC -->
+<nav id="toc">
+  <h3>Table of Contents</h3>
+  <a href="#s1" data-section="s1"><span class="toc-num">1.</span> Executive Summary</a>
+  <a href="#s2" data-section="s2"><span class="toc-num">2.</span> Business Overview</a>
+  <a href="#s3" data-section="s3"><span class="toc-num">3.</span> System Overview</a>
+  <a href="#s4" data-section="s4"><span class="toc-num">4.</span> Architecture Overview</a>
+  <a href="#s5" data-section="s5"><span class="toc-num">5.</span> Architecture Diagram</a>
+  <a href="#s6" data-section="s6"><span class="toc-num">6.</span> End-to-End Flow</a>
+  <a href="#s7" data-section="s7"><span class="toc-num">7.</span> Processing Stages</a>
+  <a href="#s8" data-section="s8"><span class="toc-num">8.</span> Component Overview</a>
+  <a href="#s9" data-section="s9"><span class="toc-num">9.</span> Key Business Logic</a>
+  <a href="#s10" data-section="s10"><span class="toc-num">10.</span> Data Model</a>
+  <a href="#s11" data-section="s11"><span class="toc-num">11.</span> Edge Cases</a>
+  <a href="#s12" data-section="s12"><span class="toc-num">12.</span> Operational Notes</a>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+
+<!-- Header -->
+<header>
+  <h1>Rec 7.0 &mdash; Refunds Master Recipe</h1>
+  <div class="subtitle">Automated Stripe-to-NetSuite Refund Processing Pipeline</div>
+  <div class="meta">
+    <span>Recipe ID: <strong>54665265</strong></span>
+    <span>Status: <span class="badge active">Active</span></span>
+    <span>Author: venkatesh.manohar</span>
+    <span>Last Run: 2026-04-01</span>
+    <span>Success Rate: 824/824 (100%)</span>
+    <span>Generated: 2026-04-01</span>
+  </div>
+</header>
+
+<!-- 1. Executive Summary -->
+<section id="s1">
+  <h2>1. Executive Summary</h2>
+  <p>The <strong>Refunds Master Recipe (Rec 7.0)</strong> automates the creation of refund records in NetSuite whenever a customer is refunded through Stripe. It reads pending refunds from Snowflake, checks whether each has already been processed, and then creates the necessary Credit Memo and Customer Refund transactions in NetSuite.</p>
+  <div class="callout">
+    <strong>In plain terms:</strong> When Intercom refunds money to a customer via Stripe, this system ensures the company's accounting books in NetSuite are updated automatically &mdash; creating both the credit memo (the "why" of the refund) and the customer refund record (the "how" the money was returned).
+  </div>
+  <h3>High-Level Flow</h3>
+  <ol>
+    <li><strong>Stripe</strong> processes a refund &rarr; data lands in Snowflake via Fivetran/dbt</li>
+    <li><strong>Rec 7.0</strong> queries Snowflake for unprocessed refunds (filtered against the Workato deduplication log)</li>
+    <li>For each refund row, <strong>RF 7.0</strong> is called to create a <em>Credit Memo</em> and <em>Customer Refund</em> in NetSuite</li>
+    <li>Outcomes are logged back to Snowflake for audit and deduplication</li>
+  </ol>
+</section>
+
+<!-- 2. Business Overview -->
+<section id="s2">
+  <h2>2. Business Overview</h2>
+  <h3>What problem does this solve?</h3>
+  <p>When a customer receives a refund via Stripe, the Finance team needs that refund reflected accurately in NetSuite (the company's ERP / accounting system). Without automation, an accountant would need to manually:</p>
+  <ul>
+    <li>Look up the customer in NetSuite</li>
+    <li>Create a Credit Memo (a document that says "we owe the customer X dollars")</li>
+    <li>Create a Customer Refund (a record that says "we sent X dollars back to the customer's payment method")</li>
+  </ul>
+  <p>This recipe eliminates that manual work entirely, processing hundreds of refunds per month with zero failures.</p>
+
+  <h3>What happens from a business perspective?</h3>
+  <div class="two-layer">
+    <div class="layer business">
+      <h4>Business View</h4>
+      <p>A Stripe refund triggers an automated accounting entry. The system creates two linked records in NetSuite: a Credit Memo (adjusts the invoice) and a Customer Refund (records the actual money returned). The finance team sees accurate, real-time refund data without lifting a finger.</p>
+    </div>
+    <div class="layer technical">
+      <h4>Technical View</h4>
+      <p>A Workato Recipe Function is called with a start date parameter. It executes a SQL query against Snowflake joining <code>NETSUITE_EXPORT_REFUNDS</code> with <code>NETSUITE_EXPORT_CUSTOMER</code>, <code>NETSUITE_EXPORT_PAYMENT</code>, and <code>WORKATO_LOGS</code> to find unprocessed rows. Each row is passed to the child recipe RF 7.0 (ID: 54665275) for NetSuite record creation.</p>
+    </div>
+  </div>
+
+  <h3>Key Metrics</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Total successful jobs</td><td>824</td></tr>
+    <tr><td>Total failed jobs</td><td>0</td></tr>
+    <tr><td>Lifetime task count</td><td>2,824</td></tr>
+    <tr><td>Refunds table row count</td><td>~1,908</td></tr>
+    <tr><td>Child recipe (RF 7.0) success count</td><td>2,042</td></tr>
+  </table>
+</section>
+
+<!-- 3. System Overview -->
+<section id="s3">
+  <h2>3. System Overview</h2>
+  <table>
+    <tr><th>System</th><th>Role</th><th>Technical Detail</th></tr>
+    <tr>
+      <td><strong>Stripe</strong></td>
+      <td>The payment processor where refunds originate. When a customer is refunded, Stripe records the transaction.</td>
+      <td>Refund data is synced to Snowflake via Fivetran and transformed by dbt into the <code>NETSUITE_EXPORT_REFUNDS</code> table.</td>
+    </tr>
+    <tr>
+      <td><strong>Snowflake</strong></td>
+      <td>The data warehouse that stages refund records for processing. Acts as the "single source of truth" for which refunds need to be sent to NetSuite.</td>
+      <td>Schema: <code>INTERCOM_PROD.SHARED_EXTERNAL_WORKATO</code>. Key tables: <code>NETSUITE_EXPORT_REFUNDS</code>, <code>NETSUITE_EXPORT_CUSTOMER</code>, <code>NETSUITE_EXPORT_PAYMENT</code>, <code>WORKATO_LOGS</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>Workato</strong></td>
+      <td>The integration platform that orchestrates the flow. It reads from Snowflake and writes to NetSuite, handling iteration, error handling, and logging.</td>
+      <td>Two recipes: Rec 7.0 (master/scheduler, ID 54665265) and RF 7.0 (child/worker, ID 54665275). Uses Recipe Functions for parent-child communication.</td>
+    </tr>
+    <tr>
+      <td><strong>NetSuite</strong></td>
+      <td>The ERP/accounting system where refund records must be created. Finance teams use NetSuite for reporting, reconciliation, and audit.</td>
+      <td>Creates two record types: <em>Credit Memo</em> (custom form 114) and <em>Customer Refund</em> (custom form 113). Searched by external ID for deduplication.</td>
+    </tr>
+  </table>
+</section>
+
+<!-- 4. Architecture Overview -->
+<section id="s4">
+  <h2>4. Architecture Overview</h2>
+  <p>The system follows a four-layer architecture pattern:</p>
+
+  <div class="two-layer">
+    <div class="layer business">
+      <h4>Source Layer (Stripe)</h4>
+      <p><strong>Business:</strong> Refunds are initiated here &mdash; either by support teams, automated systems, or customer self-service. Each refund has a unique ID, amount, charge reference, and associated invoice.</p>
+      <p><strong>Technical:</strong> Stripe refund events are captured by Fivetran and loaded into Snowflake's <code>FIVETRAN_STRIPE.REFUND</code> table. dbt models then transform this into the <code>NETSUITE_EXPORT_REFUNDS</code> staging table.</p>
+    </div>
+    <div class="layer technical">
+      <h4>Data Layer (Snowflake)</h4>
+      <p><strong>Business:</strong> A staging area that prepares refund data for accounting. It enriches refund records with customer classification (subsidiary, category) and payment details (charge ID, payout ID).</p>
+      <p><strong>Technical:</strong> The master recipe runs a complex SQL query that joins 4 tables and uses a CTE to filter out already-processed refunds via the <code>WORKATO_LOGS</code> deduplication table.</p>
+    </div>
+  </div>
+  <div class="two-layer">
+    <div class="layer business" style="background: var(--purple-bg); border-color: var(--purple);">
+      <h4 style="color: var(--purple);">Orchestration Layer (Workato)</h4>
+      <p><strong>Business:</strong> The "traffic controller" that reads pending refunds and ensures each one gets processed exactly once, with proper error handling and logging.</p>
+      <p><strong>Technical:</strong> Rec 7.0 iterates over SQL results and calls RF 7.0 synchronously for each row. RF 7.0 handles the NetSuite API calls with try/catch blocks and retry logic (3 retries on Customer Refund creation).</p>
+    </div>
+    <div class="layer technical" style="background: var(--green-bg); border-color: var(--green);">
+      <h4 style="color: var(--green);">Target Layer (NetSuite)</h4>
+      <p><strong>Business:</strong> The final destination. Two accounting records are created per refund: a Credit Memo (reduces what the customer owes) and a Customer Refund (records the money returned).</p>
+      <p><strong>Technical:</strong> NetSuite SOAP API calls via Workato connector. Uses <code>search_object_v2</code> for deduplication check, <code>add_object</code> for Credit Memo and Customer Refund creation. Custom forms 114 and 113 respectively.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Architecture Diagram -->
+<section id="s5">
+  <h2>5. Architecture Diagram</h2>
+  <div class="diagram-container">
+    <svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1200px; font-family: 'Segoe UI', Arial, sans-serif;">
+      <defs>
+        <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/></marker>
+        <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/></marker>
+        <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/></marker>
+        <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%"><feDropShadow dx="1" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+      </defs>
+
+      <!-- Column backgrounds -->
+      <rect x="10" y="60" width="275" height="640" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.5"/>
+      <rect x="305" y="60" width="275" height="640" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.5"/>
+      <rect x="600" y="60" width="275" height="640" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.5"/>
+      <rect x="895" y="60" width="275" height="640" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.5"/>
+
+      <!-- Column headers -->
+      <rect x="10" y="10" width="275" height="45" rx="8" fill="#F5A623"/>
+      <text x="147" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Stripe (Source)</text>
+      <rect x="305" y="10" width="275" height="45" rx="8" fill="#29B5E8"/>
+      <text x="442" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Snowflake (Data)</text>
+      <rect x="600" y="10" width="275" height="45" rx="8" fill="#6B4C9A"/>
+      <text x="737" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Workato (Orchestration)</text>
+      <rect x="895" y="10" width="275" height="45" rx="8" fill="#2E7D32"/>
+      <text x="1032" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">NetSuite (Target)</text>
+
+      <!-- Stripe: Refund Event -->
+      <rect x="35" y="95" width="225" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="147" y="118" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Stripe Refund Created</text>
+      <text x="147" y="135" text-anchor="middle" fill="#666" font-size="10">re_*, amount, charge_id</text>
+
+      <!-- Stripe: Fivetran Sync -->
+      <rect x="35" y="180" width="225" height="55" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="147" y="203" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Fivetran Sync</text>
+      <text x="147" y="220" text-anchor="middle" fill="#666" font-size="10">Raw refund data to Snowflake</text>
+
+      <!-- Arrow: Stripe refund to Fivetran -->
+      <line x1="147" y1="150" x2="147" y2="178" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+      <!-- Arrow: Fivetran to Snowflake -->
+      <line x1="260" y1="207" x2="327" y2="207" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+      <!-- Snowflake: dbt Transform -->
+      <rect x="330" y="180" width="225" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="442" y="203" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">dbt Transform</text>
+      <text x="442" y="220" text-anchor="middle" fill="#666" font-size="10">Build NETSUITE_EXPORT_* tables</text>
+
+      <!-- Snowflake: NETSUITE_EXPORT_REFUNDS -->
+      <rect x="330" y="270" width="225" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="442" y="293" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_REFUNDS</text>
+      <text x="442" y="310" text-anchor="middle" fill="#666" font-size="10">~1,908 rows | Refund staging</text>
+
+      <!-- Snowflake: NETSUITE_EXPORT_CUSTOMER -->
+      <rect x="330" y="345" width="225" height="45" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="442" y="368" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_CUSTOMER</text>
+      <text x="442" y="382" text-anchor="middle" fill="#666" font-size="9">Customer category lookup</text>
+
+      <!-- Snowflake: WORKATO_LOGS -->
+      <rect x="330" y="410" width="225" height="45" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="442" y="433" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">WORKATO_LOGS</text>
+      <text x="442" y="447" text-anchor="middle" fill="#666" font-size="9">Deduplication filter</text>
+
+      <!-- Arrows within Snowflake -->
+      <line x1="442" y1="235" x2="442" y2="268" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+      <!-- Arrow: Snowflake to Workato -->
+      <line x1="555" y1="297" x2="622" y2="297" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+      <text x="588" y="290" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="bold">SQL Query</text>
+
+      <!-- Workato: Rec 7.0 Master -->
+      <rect x="625" y="270" width="225" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="737" y="293" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 7.0 Master Recipe</text>
+      <text x="737" y="310" text-anchor="middle" fill="#666" font-size="10">ID: 54665265</text>
+
+      <!-- Workato: For Each Loop -->
+      <rect x="650" y="355" width="175" height="40" rx="8" fill="var(--purple-bg)" stroke="#6B4C9A" stroke-width="1" filter="url(#shadow)"/>
+      <text x="737" y="380" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">For Each Refund Row</text>
+
+      <!-- Arrow: Master to For Each -->
+      <line x1="737" y1="325" x2="737" y2="353" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+      <!-- Workato: RF 7.0 Child -->
+      <rect x="625" y="425" width="225" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow)"/>
+      <text x="737" y="448" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">RF 7.0 Create Refunds</text>
+      <text x="737" y="465" text-anchor="middle" fill="#666" font-size="10">ID: 54665275</text>
+
+      <!-- Arrow: For Each to RF 7.0 -->
+      <line x1="737" y1="395" x2="737" y2="423" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <text x="770" y="413" fill="#6B4C9A" font-size="9" font-weight="bold">Call RF</text>
+
+      <!-- Workato: Dedup Check -->
+      <polygon points="737,510 780,540 737,570 694,540" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+      <text x="737" y="538" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">Already</text>
+      <text x="737" y="549" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">exists?</text>
+
+      <!-- Arrow: RF 7.0 to Dedup -->
+      <line x1="737" y1="480" x2="737" y2="508" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+      <!-- Arrow: Dedup NO to NetSuite -->
+      <line x1="780" y1="540" x2="917" y2="540" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <text x="848" y="533" text-anchor="middle" fill="#6B4C9A" font-size="9" font-weight="bold">No &rarr; Create</text>
+
+      <!-- Arrow: Dedup YES skip -->
+      <line x1="694" y1="540" x2="640" y2="540" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="655" y="533" text-anchor="middle" fill="#9E9E9E" font-size="9">Yes: Skip</text>
+
+      <!-- NetSuite: Search Customer Refund -->
+      <rect x="920" y="270" width="225" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="1032" y="291" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Search Customer Refund</text>
+      <text x="1032" y="307" text-anchor="middle" fill="#666" font-size="10">by External ID (dedup)</text>
+
+      <!-- Arrow: RF 7.0 to NS Search -->
+      <line x1="850" y1="450" x2="920" y2="305" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-green)" stroke-dasharray="6,3"/>
+
+      <!-- NetSuite: Credit Memo -->
+      <rect x="920" y="430" width="225" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="1032" y="453" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Create Credit Memo</text>
+      <text x="1032" y="470" text-anchor="middle" fill="#666" font-size="10">Custom Form 114</text>
+
+      <!-- NetSuite: Customer Refund -->
+      <rect x="920" y="515" width="225" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="1032" y="538" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Create Customer Refund</text>
+      <text x="1032" y="555" text-anchor="middle" fill="#666" font-size="10">Custom Form 113 (3 retries)</text>
+
+      <!-- Arrow: Credit Memo to Customer Refund -->
+      <line x1="1032" y1="485" x2="1032" y2="513" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+      <!-- Workato: Logger -->
+      <rect x="625" y="610" width="225" height="50" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="737" y="631" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Log to WORKATO_LOGS</text>
+      <text x="737" y="648" text-anchor="middle" fill="#666" font-size="10">Success / Error audit trail</text>
+
+      <!-- Arrow: NS Refund to Logger -->
+      <path d="M 1032 570 L 1032 640 L 852 640" stroke="#2E7D32" stroke-width="1.5" fill="none" marker-end="url(#arrow-green)"/>
+
+      <!-- Arrow: Logger back to Snowflake -->
+      <path d="M 625 640 L 442 640 L 442 457" stroke="#9E9E9E" stroke-width="1.5" fill="none" marker-end="url(#arrow-blue)" stroke-dasharray="5,3"/>
+      <text x="533" y="633" text-anchor="middle" fill="#9E9E9E" font-size="9">Write log</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 6. End-to-End Flow -->
+<section id="s6">
+  <h2>6. End-to-End Flow</h2>
+
+  <h3>Level 0 &mdash; Simple View</h3>
+  <p>A Stripe refund happens. The system automatically checks Snowflake for any refunds that haven't been recorded in NetSuite yet. For each one, it creates two accounting records in NetSuite: a Credit Memo and a Customer Refund. Everything is logged for audit.</p>
+
+  <h3>Level 1 &mdash; Detailed View</h3>
+  <ol>
+    <li><strong>Extraction:</strong> Rec 7.0 runs a SQL query against Snowflake that joins the refunds table with customer data and payment data. It filters out any refund that already has a successful entry in the <code>WORKATO_LOGS</code> table.</li>
+    <li><strong>Iteration:</strong> For each unprocessed refund row, the master recipe calls the child recipe RF 7.0 synchronously, passing 11 parameters (customer, subsidiary, date, Stripe IDs, amount, etc.).</li>
+    <li><strong>Deduplication:</strong> RF 7.0 first searches NetSuite for an existing Customer Refund with the same external ID. If found, it skips creation.</li>
+    <li><strong>Credit Memo Creation:</strong> If no existing refund is found, RF 7.0 creates a Credit Memo in NetSuite (custom form 114) with the refund details.</li>
+    <li><strong>Customer Refund Creation:</strong> Using the Credit Memo, RF 7.0 creates a Customer Refund record (custom form 113) with 3 retries on failure.</li>
+    <li><strong>Logging:</strong> Success or failure is logged via Workato's logger, which writes back to <code>WORKATO_LOGS</code> in Snowflake.</li>
+  </ol>
+
+  <h3>Level 2 &mdash; Branching Logic</h3>
+  <p>The recipe handles two main branches:</p>
+  <ul>
+    <li><strong>New Refund (no existing Customer Refund in NS):</strong> Create Credit Memo &rarr; Create Customer Refund &rarr; Log success</li>
+    <li><strong>Already Processed (existing Customer Refund found):</strong> Skip creation &rarr; Log as already exists</li>
+    <li><strong>Error Path:</strong> If Credit Memo or Customer Refund creation fails, the error is caught, mapped, and logged. Customer Refund has 3 automatic retries before failing.</li>
+  </ul>
+
+  <h3>Data Flow Diagram</h3>
+  <div class="diagram-container">
+    <svg viewBox="0 0 1100 480" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1100px; font-family: 'Segoe UI', Arial, sans-serif;">
+      <defs>
+        <marker id="df-arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/></marker>
+        <marker id="df-arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2196F3"/></marker>
+        <marker id="df-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50"/></marker>
+        <marker id="df-arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
+        <marker id="df-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+      </defs>
+
+      <!-- Title -->
+      <text x="550" y="25" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Data Flow: Stripe Refund &rarr; NetSuite Credit Memo + Customer Refund</text>
+
+      <!-- Source: Stripe Refund -->
+      <rect x="20" y="80" width="170" height="70" rx="10" fill="#FFF5E6" stroke="#F5A623" stroke-width="2"/>
+      <text x="105" y="108" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="bold">SOURCE</text>
+      <text x="105" y="125" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Stripe Refund</text>
+      <text x="105" y="140" text-anchor="middle" fill="#666" font-size="9">re_*, amount, charge</text>
+
+      <!-- Arrow -->
+      <line x1="190" y1="115" x2="230" y2="115" stroke="#F5A623" stroke-width="2" marker-end="url(#df-arrow-orange)"/>
+
+      <!-- Staging: Snowflake Tables -->
+      <rect x="235" y="50" width="190" height="130" rx="10" fill="#E8F4FD" stroke="#29B5E8" stroke-width="2"/>
+      <text x="330" y="72" text-anchor="middle" fill="#29B5E8" font-size="10" font-weight="bold">STAGING (Snowflake)</text>
+      <rect x="250" y="80" width="160" height="28" rx="5" fill="white" stroke="#29B5E8" stroke-width="1"/>
+      <text x="330" y="99" text-anchor="middle" fill="#333" font-size="9">NETSUITE_EXPORT_REFUNDS</text>
+      <rect x="250" y="112" width="160" height="28" rx="5" fill="white" stroke="#29B5E8" stroke-width="1"/>
+      <text x="330" y="131" text-anchor="middle" fill="#333" font-size="9">NETSUITE_EXPORT_CUSTOMER</text>
+      <rect x="250" y="144" width="160" height="28" rx="5" fill="white" stroke="#29B5E8" stroke-width="1"/>
+      <text x="330" y="163" text-anchor="middle" fill="#333" font-size="9">NETSUITE_EXPORT_PAYMENT</text>
+
+      <!-- Arrow -->
+      <line x1="425" y1="115" x2="465" y2="115" stroke="#2196F3" stroke-width="2" marker-end="url(#df-arrow-blue)"/>
+      <text x="445" y="108" text-anchor="middle" fill="#2196F3" font-size="8">JOIN + Filter</text>
+
+      <!-- Processing: Workato Logic -->
+      <rect x="470" y="60" width="180" height="110" rx="10" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="560" y="82" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">PROCESSING</text>
+      <text x="560" y="100" text-anchor="middle" fill="#333" font-size="10">For each row:</text>
+      <text x="560" y="116" text-anchor="middle" fill="#333" font-size="9">1. Dedup check (NS search)</text>
+      <text x="560" y="132" text-anchor="middle" fill="#333" font-size="9">2. Map fields</text>
+      <text x="560" y="148" text-anchor="middle" fill="#333" font-size="9">3. Custom Ruby transforms</text>
+
+      <!-- Decision diamond -->
+      <polygon points="560,200 600,230 560,260 520,230" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+      <text x="560" y="228" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">New?</text>
+
+      <!-- Arrow from processing to decision -->
+      <line x1="560" y1="170" x2="560" y2="198" stroke="#6B4C9A" stroke-width="2" marker-end="url(#df-arrow-purple)"/>
+
+      <!-- YES path: to Credit Memo -->
+      <line x1="600" y1="230" x2="700" y2="230" stroke="#6B4C9A" stroke-width="2" marker-end="url(#df-arrow-purple)"/>
+      <text x="650" y="223" text-anchor="middle" fill="#4CAF50" font-size="9" font-weight="bold">Yes</text>
+
+      <!-- NO path: skip -->
+      <line x1="520" y1="230" x2="440" y2="230" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#df-arrow-gray)"/>
+      <text x="480" y="223" text-anchor="middle" fill="#9E9E9E" font-size="9">No: Skip</text>
+      <rect x="360" y="215" width="80" height="30" rx="6" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1"/>
+      <text x="400" y="234" text-anchor="middle" fill="#9E9E9E" font-size="9">Log Skip</text>
+
+      <!-- Target: Credit Memo -->
+      <rect x="705" y="195" width="170" height="70" rx="10" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+      <text x="790" y="218" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">CREDIT MEMO</text>
+      <text x="790" y="235" text-anchor="middle" fill="#333" font-size="10">NetSuite Form 114</text>
+      <text x="790" y="252" text-anchor="middle" fill="#666" font-size="9">1:1 per refund</text>
+
+      <!-- Arrow: Credit Memo to Customer Refund -->
+      <line x1="790" y1="265" x2="790" y2="303" stroke="#4CAF50" stroke-width="2" marker-end="url(#df-arrow-green)"/>
+      <text x="815" y="290" fill="#4CAF50" font-size="8">applies to</text>
+
+      <!-- Target: Customer Refund -->
+      <rect x="705" y="305" width="170" height="70" rx="10" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+      <text x="790" y="328" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">CUSTOMER REFUND</text>
+      <text x="790" y="345" text-anchor="middle" fill="#333" font-size="10">NetSuite Form 113</text>
+      <text x="790" y="362" text-anchor="middle" fill="#666" font-size="9">1:1 per credit memo</text>
+
+      <!-- Audit: Log -->
+      <rect x="705" y="410" width="170" height="50" rx="10" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1.5"/>
+      <text x="790" y="433" text-anchor="middle" fill="#9E9E9E" font-size="10" font-weight="bold">WORKATO_LOGS</text>
+      <text x="790" y="449" text-anchor="middle" fill="#9E9E9E" font-size="9">Audit trail + dedup</text>
+
+      <!-- Arrow: Customer Refund to Log -->
+      <line x1="790" y1="375" x2="790" y2="408" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#df-arrow-gray)"/>
+
+      <!-- Field mapping callouts -->
+      <rect x="900" y="100" width="185" height="140" rx="8" fill="white" stroke="#E0E0E0" stroke-width="1"/>
+      <text x="992" y="120" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">Key Field Mappings</text>
+      <text x="912" y="140" fill="#333" font-size="9">customer &rarr; NS Customer ID</text>
+      <text x="912" y="156" fill="#333" font-size="9">stripe_refund_id &rarr; External ID</text>
+      <text x="912" y="172" fill="#333" font-size="9">refund_amount &rarr; CM Amount</text>
+      <text x="912" y="188" fill="#333" font-size="9">subsidiary &rarr; NS Subsidiary</text>
+      <text x="912" y="204" fill="#333" font-size="9">date &rarr; Transaction Date</text>
+      <text x="912" y="220" fill="#333" font-size="9">stripe_charge_id &rarr; Memo ref</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 7. Processing Stages -->
+<section id="s7">
+  <h2>7. Processing Stages</h2>
+
+  <div class="stage-card ingest">
+    <h4>Stage 1: Ingestion (Snowflake Query)</h4>
+    <div class="two-layer">
+      <div class="layer business">
+        <h4>What Happens</h4>
+        <p>The system pulls all Stripe refunds from the staging table that haven't been successfully processed yet. It also enriches each refund with customer classification (subsidiary, category) and payment details.</p>
+      </div>
+      <div class="layer technical">
+        <h4>How It Works</h4>
+        <p>A SQL query with a CTE (<code>stg_workato_log</code>) joins <code>NETSUITE_EXPORT_REFUNDS</code> with <code>NETSUITE_EXPORT_CUSTOMER</code> on <code>customer = external_id</code>, <code>NETSUITE_EXPORT_PAYMENT</code> on <code>stripe_charge_id = STRIPE_PAYMENT_ID</code>, and filters out rows present in <code>WORKATO_LOGS</code> where <code>is_successful_write_to_netsuite = true</code>. Date range: from input <code>Start_date</code> to yesterday.</p>
+      </div>
+    </div>
+    <p><strong>Why it matters:</strong> This is the "smart filter" that prevents duplicate processing and ensures only new refunds are sent to NetSuite.</p>
+  </div>
+
+  <div class="stage-card process">
+    <h4>Stage 2: Iteration &amp; Dispatch</h4>
+    <div class="two-layer">
+      <div class="layer business">
+        <h4>What Happens</h4>
+        <p>Each refund record is processed one at a time. The master recipe hands off each record to a specialized "worker" recipe that knows how to create the correct NetSuite records.</p>
+      </div>
+      <div class="layer technical">
+        <h4>How It Works</h4>
+        <p>Rec 7.0 uses a <code>foreach</code> loop over the SQL result rows. For each row, it calls RF 7.0 (Recipe Function, ID 54665275) synchronously, passing 11 parameters including Customer, Subsidiary, Date, Stripe Refund ID, Stripe Charge ID, Stripe Invoice ID, Credit Note ID, Payout ID, Refund Amount, external_id, and base_external_id.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage-card process">
+    <h4>Stage 3: Deduplication Check</h4>
+    <div class="two-layer">
+      <div class="layer business">
+        <h4>What Happens</h4>
+        <p>Before creating anything, the system checks NetSuite to see if this refund was already recorded. This prevents duplicate accounting entries.</p>
+      </div>
+      <div class="layer technical">
+        <h4>How It Works</h4>
+        <p>RF 7.0 searches NetSuite for a Customer Refund record with a matching external ID. If <code>CustomerRefunds.size == 0</code> (no match found), it proceeds to create records. Otherwise, it skips.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage-card output">
+    <h4>Stage 4: NetSuite Record Creation</h4>
+    <div class="two-layer">
+      <div class="layer business">
+        <h4>What Happens</h4>
+        <p>Two linked accounting records are created: (1) a Credit Memo that adjusts the customer's balance, and (2) a Customer Refund that records the actual money returned via their payment method.</p>
+      </div>
+      <div class="layer technical">
+        <h4>How It Works</h4>
+        <p>Step 1: <code>netsuite.add_object</code> creates a Credit Memo (custom form 114). A Ruby code block processes the response. Step 2: <code>netsuite.add_object</code> creates a Customer Refund (custom form 113), wrapped in a try/catch with 3 retries. The Credit Memo internal ID is linked to the Customer Refund.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage-card log">
+    <h4>Stage 5: Logging &amp; Audit</h4>
+    <div class="two-layer">
+      <div class="layer business">
+        <h4>What Happens</h4>
+        <p>Every outcome is recorded: success, failure, or skip. This creates a complete audit trail and feeds back into the deduplication filter for future runs.</p>
+      </div>
+      <div class="layer technical">
+        <h4>How It Works</h4>
+        <p>Three separate mapper+logger pairs handle different outcomes: (1) successful creation, (2) Customer Refund retry failure, and (3) top-level error catch. Logs are written to <code>WORKATO_LOGS</code> in Snowflake with <code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_REFUNDS'</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Component / Module Overview -->
+<section id="s8">
+  <h2>8. Component / Module Overview</h2>
+
+  <h3>Recipe Inventory</h3>
+  <table>
+    <tr><th>Recipe</th><th>ID</th><th>Type</th><th>Status</th><th>Purpose</th></tr>
+    <tr>
+      <td><strong>Rec 7.0 &mdash; Refunds Master Recipe</strong></td>
+      <td>54665265</td>
+      <td>Master / Scheduler</td>
+      <td><span style="color:#4CAF50; font-weight:600;">Active</span></td>
+      <td>Queries Snowflake for unprocessed refunds, iterates and dispatches to child recipe</td>
+    </tr>
+    <tr>
+      <td><strong>RF 7.0 &mdash; Create Refunds</strong></td>
+      <td>54665275</td>
+      <td>Recipe Function (Child)</td>
+      <td><span style="color:#4CAF50; font-weight:600;">Active</span></td>
+      <td>Creates Credit Memo + Customer Refund in NetSuite for a single refund record</td>
+    </tr>
+  </table>
+
+  <h3>Rec 7.0 &mdash; Master Recipe Details</h3>
+  <ul>
+    <li><strong>Trigger:</strong> Recipe Function (called with <code>Start_date</code> parameter)</li>
+    <li><strong>Connected systems:</strong> Snowflake, Workato Recipe Functions</li>
+    <li><strong>Actions:</strong> SQL query &rarr; For Each loop &rarr; Call RF 7.0</li>
+    <li><strong>Error handling:</strong> Top-level try/catch (no retries at master level)</li>
+    <li><strong>Version:</strong> 17 (last edited by diana.sy on 2026-02-28)</li>
+  </ul>
+
+  <h3>RF 7.0 &mdash; Create Refunds Details</h3>
+  <ul>
+    <li><strong>Trigger:</strong> Recipe Function (11 input parameters)</li>
+    <li><strong>Connected systems:</strong> NetSuite, Custom Ruby Code, Logger</li>
+    <li><strong>Actions:</strong> Search NS &rarr; IF not found &rarr; Create Credit Memo &rarr; Ruby transform &rarr; Create Customer Refund (3 retries) &rarr; Log</li>
+    <li><strong>Error handling:</strong> Inner try/catch on Customer Refund (3 retries, 2s interval), outer try/catch on entire flow</li>
+    <li><strong>Version:</strong> 10 (last edited by diana.sy)</li>
+    <li><strong>Success rate:</strong> 2,042/2,042 (100%)</li>
+  </ul>
+
+  <h3>Recipe Hierarchy Diagram</h3>
+  <div class="diagram-container">
+    <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:900px; font-family: 'Segoe UI', Arial, sans-serif;">
+      <defs>
+        <marker id="rh-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="rh-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/></marker>
+        <marker id="rh-arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
+        <filter id="rh-shadow" x="-2%" y="-2%" width="104%" height="104%"><feDropShadow dx="1" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+      </defs>
+
+      <!-- Title -->
+      <text x="450" y="25" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Recipe Hierarchy: Refunds Pipeline</text>
+
+      <!-- Scheduler / Caller (implied) -->
+      <rect x="300" y="45" width="300" height="30" rx="6" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1"/>
+      <text x="450" y="65" text-anchor="middle" fill="#9E9E9E" font-size="11">External Scheduler / Manual Trigger</text>
+
+      <!-- Arrow down -->
+      <line x1="450" y1="75" x2="450" y2="103" stroke="#9E9E9E" stroke-width="2" marker-end="url(#rh-arrow-gray)"/>
+      <text x="465" y="93" fill="#9E9E9E" font-size="9">Start_date param</text>
+
+      <!-- Master Recipe: Rec 7.0 -->
+      <rect x="250" y="105" width="400" height="75" rx="12" fill="white" stroke="#6B4C9A" stroke-width="2.5" filter="url(#rh-shadow)"/>
+      <rect x="260" y="112" width="10" height="60" rx="3" fill="#6B4C9A"/>
+      <text x="450" y="133" text-anchor="middle" fill="#6B4C9A" font-size="14" font-weight="bold">Rec 7.0 &mdash; Refunds Master Recipe</text>
+      <text x="450" y="152" text-anchor="middle" fill="#666" font-size="11">ID: 54665265 | Snowflake SQL + For Each Loop</text>
+      <text x="450" y="170" text-anchor="middle" fill="#999" font-size="10">824 jobs | 0 failures | v17</text>
+
+      <!-- Arrow to child -->
+      <line x1="450" y1="180" x2="450" y2="228" stroke="#6B4C9A" stroke-width="2.5" marker-end="url(#rh-arrow-purple)"/>
+      <rect x="400" y="195" width="100" height="22" rx="4" fill="var(--purple-bg)" stroke="#6B4C9A" stroke-width="1"/>
+      <text x="450" y="210" text-anchor="middle" fill="#6B4C9A" font-size="9" font-weight="bold">Sync Call (1:N)</text>
+
+      <!-- Child Recipe: RF 7.0 -->
+      <rect x="200" y="230" width="500" height="75" rx="12" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#rh-shadow)"/>
+      <rect x="210" y="237" width="10" height="60" rx="3" fill="#2E7D32"/>
+      <text x="450" y="258" text-anchor="middle" fill="#2E7D32" font-size="14" font-weight="bold">RF 7.0 &mdash; Create Refunds</text>
+      <text x="450" y="277" text-anchor="middle" fill="#666" font-size="11">ID: 54665275 | NetSuite + Custom Code + Logger</text>
+      <text x="450" y="295" text-anchor="middle" fill="#999" font-size="10">2,042 jobs | 0 failures | v10</text>
+
+      <!-- RF 7.0 internal actions -->
+      <line x1="450" y1="305" x2="450" y2="333" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#rh-arrow-green)"/>
+
+      <!-- Step boxes for RF 7.0 actions -->
+      <rect x="80" y="340" width="175" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+      <text x="167" y="362" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">Step 2: Search NS</text>
+      <text x="167" y="380" text-anchor="middle" fill="#666" font-size="9">Customer Refund by ext ID</text>
+
+      <rect x="280" y="340" width="175" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+      <text x="367" y="362" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">Step 5: Credit Memo</text>
+      <text x="367" y="380" text-anchor="middle" fill="#666" font-size="9">NS add_object (form 114)</text>
+
+      <rect x="480" y="340" width="175" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+      <text x="567" y="362" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">Step 8: Cust. Refund</text>
+      <text x="567" y="380" text-anchor="middle" fill="#666" font-size="9">NS add_object (form 113)</text>
+
+      <rect x="680" y="340" width="155" height="55" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5"/>
+      <text x="757" y="362" text-anchor="middle" fill="#9E9E9E" font-size="10" font-weight="bold">Steps 10-16: Log</text>
+      <text x="757" y="380" text-anchor="middle" fill="#666" font-size="9">Map + Logger (3 paths)</text>
+
+      <!-- Arrows between action boxes -->
+      <line x1="255" y1="367" x2="278" y2="367" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#rh-arrow-green)"/>
+      <line x1="455" y1="367" x2="478" y2="367" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#rh-arrow-green)"/>
+      <line x1="655" y1="367" x2="678" y2="367" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#rh-arrow-gray)"/>
+
+      <!-- Lines from RF 7.0 to step boxes -->
+      <line x1="300" y1="305" x2="167" y2="338" stroke="#2E7D32" stroke-width="1" stroke-dasharray="4,2"/>
+      <line x1="400" y1="305" x2="367" y2="338" stroke="#2E7D32" stroke-width="1" stroke-dasharray="4,2"/>
+      <line x1="500" y1="305" x2="567" y2="338" stroke="#2E7D32" stroke-width="1" stroke-dasharray="4,2"/>
+      <line x1="600" y1="305" x2="757" y2="338" stroke="#9E9E9E" stroke-width="1" stroke-dasharray="4,2"/>
+
+      <!-- Retry annotation on Customer Refund -->
+      <rect x="510" y="402" width="115" height="22" rx="4" fill="#FFF5E6" stroke="#F5A623" stroke-width="1"/>
+      <text x="567" y="417" text-anchor="middle" fill="#F5A623" font-size="9" font-weight="bold">3 retries, 2s interval</text>
+
+      <!-- Legend -->
+      <rect x="80" y="440" width="750" height="40" rx="8" fill="#F9F9FB" stroke="#E0E0E0" stroke-width="1"/>
+      <line x1="100" y1="460" x2="130" y2="460" stroke="#6B4C9A" stroke-width="2.5"/>
+      <text x="140" y="465" fill="#333" font-size="10">Sync call</text>
+      <line x1="230" y1="460" x2="260" y2="460" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="270" y="465" fill="#333" font-size="10">Internal step</text>
+      <rect x="370" y="452" width="14" height="14" rx="3" fill="#6B4C9A"/>
+      <text x="394" y="465" fill="#333" font-size="10">Workato</text>
+      <rect x="470" y="452" width="14" height="14" rx="3" fill="#2E7D32"/>
+      <text x="494" y="465" fill="#333" font-size="10">NetSuite</text>
+      <rect x="570" y="452" width="14" height="14" rx="3" fill="#9E9E9E"/>
+      <text x="594" y="465" fill="#333" font-size="10">Logging</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 9. Key Business Logic -->
+<section id="s9">
+  <h2>9. Key Business Logic</h2>
+
+  <h3>Refund Processing Logic</h3>
+  <p>Every Stripe refund follows this decision path:</p>
+  <ol>
+    <li><strong>Date filter:</strong> Only refunds between the <code>Start_date</code> parameter and yesterday are considered. This prevents processing refunds that are still "in flight."</li>
+    <li><strong>Deduplication (Snowflake-level):</strong> The SQL query LEFT JOINs to <code>WORKATO_LOGS</code> and filters out any refund where <code>wl.netsuite_internal_id IS NOT NULL</code> &mdash; meaning it was already successfully written to NetSuite.</li>
+    <li><strong>Deduplication (NetSuite-level):</strong> RF 7.0 searches for an existing Customer Refund by external ID. This double-check ensures no duplicates even if the log write failed.</li>
+    <li><strong>Credit Memo first:</strong> The Credit Memo is always created before the Customer Refund, because the Customer Refund references the Credit Memo (it "applies" the credit).</li>
+    <li><strong>Ruby transformation:</strong> Custom Ruby code runs after both the NetSuite search and the Credit Memo creation. This likely handles data formatting and response parsing.</li>
+  </ol>
+
+  <h3>Customer Lookup</h3>
+  <p>The refund is matched to a NetSuite customer using the <code>customer</code> field from <code>NETSUITE_EXPORT_REFUNDS</code>, which maps to <code>external_id</code> in <code>NETSUITE_EXPORT_CUSTOMER</code>. The customer's <code>category</code> and <code>subsidiary</code> (US or IE) determine which NetSuite subsidiary the records are created under.</p>
+
+  <h3>Subsidiary Handling</h3>
+  <p>Intercom operates through multiple legal entities. The <code>subsidiary</code> field (US or IE) from the refund table determines which NetSuite subsidiary the Credit Memo and Customer Refund are created under. This is critical for correct multi-entity accounting.</p>
+
+  <h3>Amount Handling</h3>
+  <p>The <code>refund_amount</code> from Snowflake is passed directly to the Credit Memo amount field. The Customer Refund then references the Credit Memo, inheriting the amount.</p>
+</section>
+
+<!-- 10. Data Model -->
+<section id="s10">
+  <h2>10. Data Model (Simplified)</h2>
+
+  <h3>Primary Table: NETSUITE_EXPORT_REFUNDS</h3>
+  <p>This is the main staging table. Each row represents one Stripe refund that needs to become a NetSuite Credit Memo + Customer Refund.</p>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>STRIPE_REFUND_ID</code></td><td>TEXT</td><td>Unique Stripe refund identifier (e.g., <code>re_*</code>). Used as the external ID for deduplication.</td></tr>
+    <tr><td><code>CUSTOMER</code></td><td>TEXT</td><td>Stripe customer ID. Joined to NETSUITE_EXPORT_CUSTOMER to get the NetSuite customer reference.</td></tr>
+    <tr><td><code>SUBSIDIARY</code></td><td>TEXT</td><td>Legal entity: US or IE. Determines which NetSuite subsidiary.</td></tr>
+    <tr><td><code>REFUND_AMOUNT</code></td><td>NUMBER</td><td>Refund amount in the original currency.</td></tr>
+    <tr><td><code>DATE</code></td><td>TIMESTAMP_TZ</td><td>Refund date from Stripe. Used for date range filtering.</td></tr>
+    <tr><td><code>CREATED_DATE</code></td><td>TIMESTAMP_TZ</td><td>Record creation timestamp. Results are ordered by this field.</td></tr>
+    <tr><td><code>STRIPE_INVOICE_ID</code></td><td>TEXT</td><td>The Stripe invoice this refund relates to.</td></tr>
+    <tr><td><code>STRIPE_CHARGE_ID</code></td><td>TEXT</td><td>The Stripe charge (payment) that was refunded. Joined to NETSUITE_EXPORT_PAYMENT.</td></tr>
+    <tr><td><code>CREDIT_NOTE_ID</code></td><td>TEXT</td><td>Stripe credit note ID associated with the refund.</td></tr>
+    <tr><td><code>STRIPE_AUTOMATIC_PAYOUT_ID</code></td><td>TEXT</td><td>The Stripe payout this refund is part of.</td></tr>
+    <tr><td><code>NETSUITE_INTERNAL_ID</code></td><td>TEXT</td><td>NetSuite internal ID once the record is created (populated after processing).</td></tr>
+    <tr><td><code>CURRENCY</code></td><td>TEXT</td><td>Transaction currency code.</td></tr>
+    <tr><td><code>REFUND_METHOD</code></td><td>TEXT</td><td>How the refund was processed (e.g., card reversal).</td></tr>
+    <tr><td><code>FEE_AMOUNT</code></td><td>NUMBER</td><td>Associated Stripe fee amount.</td></tr>
+    <tr><td><code>ERROR_TYPE</code></td><td>TEXT</td><td>Error classification if processing failed.</td></tr>
+    <tr><td><code>ERROR_MESSAGE</code></td><td>TEXT</td><td>Detailed error message if processing failed.</td></tr>
+  </table>
+
+  <h3>Supporting Tables</h3>
+  <table>
+    <tr><th>Table</th><th>Join Key</th><th>Purpose</th></tr>
+    <tr><td><code>NETSUITE_EXPORT_CUSTOMER</code></td><td><code>customer = external_id</code></td><td>Provides customer <code>category</code> for classification</td></tr>
+    <tr><td><code>NETSUITE_EXPORT_PAYMENT</code></td><td><code>stripe_charge_id = STRIPE_PAYMENT_ID</code></td><td>Provides payment context (payout, invoice info)</td></tr>
+    <tr><td><code>WORKATO_LOGS</code></td><td><code>external_id = stripe_refund_id</code></td><td>Deduplication filter &mdash; excludes already-processed refunds</td></tr>
+  </table>
+
+  <div class="callout info">
+    <strong>Why grouping matters:</strong> Each Snowflake row represents exactly one Stripe refund. There is a 1:1 relationship between a refund row, a Credit Memo, and a Customer Refund. However, the SQL query joins multiple tables to enrich the refund data and filter out duplicates before iteration begins.
+  </div>
+</section>
+
+<!-- 11. Edge Cases & Special Scenarios -->
+<section id="s11">
+  <h2>11. Edge Cases &amp; Special Scenarios</h2>
+
+  <h3>Already-Processed Refund</h3>
+  <div class="callout success">
+    <strong>Scenario:</strong> A refund was already processed in a previous run but the log write failed.<br>
+    <strong>Handling:</strong> RF 7.0 performs a secondary check by searching NetSuite for an existing Customer Refund with the same external ID. If found (size &ne; 0), creation is skipped and the outcome is logged.
+  </div>
+
+  <h3>NetSuite Customer Refund Creation Failure</h3>
+  <div class="callout warn">
+    <strong>Scenario:</strong> The Customer Refund creation in NetSuite fails (e.g., network timeout, validation error).<br>
+    <strong>Handling:</strong> The inner try/catch block retries up to 3 times with a 2-second interval. If all retries fail, the error is captured by a mapper (Step 10) and logged (Step 11). The Credit Memo that was already created will remain in NetSuite &mdash; a future run or manual intervention can create the missing Customer Refund.
+  </div>
+
+  <h3>Top-Level Error</h3>
+  <div class="callout warn">
+    <strong>Scenario:</strong> An unexpected error occurs in RF 7.0 outside the Customer Refund creation (e.g., Credit Memo creation fails, Ruby code error).<br>
+    <strong>Handling:</strong> The outer try/catch (no retries) captures the error. A mapper (Step 15) and logger (Step 16) record the failure. The master recipe's <code>foreach</code> loop continues processing the next row &mdash; one failure does not stop the entire batch.
+  </div>
+
+  <h3>Missing Customer in NetSuite</h3>
+  <div class="callout">
+    <strong>Scenario:</strong> The Stripe customer doesn't have a matching NetSuite customer record.<br>
+    <strong>Handling:</strong> The Credit Memo creation would fail because NetSuite requires a valid customer reference. This would be caught by the outer try/catch and logged. The refund would need to be reprocessed after the customer is created (typically handled by Recipe 1.0 in the broader OTC pipeline).
+  </div>
+
+  <h3>Date Boundary</h3>
+  <div class="callout info">
+    <strong>Scenario:</strong> Refunds created today are not yet processed.<br>
+    <strong>Handling:</strong> The SQL query filters <code>r.date &lt;= DATEADD(day, -1, CURRENT_DATE)</code>, meaning only refunds through yesterday are included. This prevents processing refunds that may still be in an intermediate state in Stripe.
+  </div>
+</section>
+
+<!-- 12. Operational Notes -->
+<section id="s12">
+  <h2>12. Operational Notes</h2>
+
+  <h3>Deduplication Strategy</h3>
+  <p>This recipe uses a <strong>two-tier deduplication</strong> approach:</p>
+  <ol>
+    <li><strong>Snowflake-level (pre-filter):</strong> The SQL CTE joins to <code>WORKATO_LOGS</code> and excludes any <code>stripe_refund_id</code> that has a successful log entry. This prevents re-processing at the query level.</li>
+    <li><strong>NetSuite-level (safety check):</strong> RF 7.0 searches NetSuite for an existing Customer Refund by external ID. This catches edge cases where the refund was created but the log write failed.</li>
+  </ol>
+
+  <h3>Error Handling Summary</h3>
+  <table>
+    <tr><th>Level</th><th>Scope</th><th>Retries</th><th>Behavior</th></tr>
+    <tr><td>Master (Rec 7.0)</td><td>Entire recipe</td><td>0</td><td>Try/catch with empty catch block &mdash; errors in individual rows don't stop the batch</td></tr>
+    <tr><td>Child outer (RF 7.0)</td><td>Full processing flow</td><td>0</td><td>Catches any error, maps and logs it</td></tr>
+    <tr><td>Child inner (RF 7.0)</td><td>Customer Refund creation only</td><td>3 (2s interval)</td><td>Retries transient failures; if exhausted, maps and logs error</td></tr>
+  </table>
+
+  <h3>Performance</h3>
+  <ul>
+    <li><strong>SQL query limit:</strong> 50,000 rows (more than sufficient for daily refund volumes)</li>
+    <li><strong>Processing model:</strong> Sequential (one row at a time via foreach). This is intentional to avoid overwhelming the NetSuite API.</li>
+    <li><strong>Lifetime tasks:</strong> 2,824 (master) + 12,768 (child) = 15,592 total Workato tasks consumed</li>
+  </ul>
+
+  <h3>Monitoring &amp; Alerting</h3>
+  <ul>
+    <li>Recipe has <strong>100% success rate</strong> (824/824 master jobs, 2,042/2,042 child jobs)</li>
+    <li>Last run: 2026-04-01 (today)</li>
+    <li>Recipe is currently <strong>active and running</strong></li>
+    <li>Logs are queryable in <code>WORKATO_LOGS</code> with <code>source_table_name = 'SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_REFUNDS'</code></li>
+  </ul>
+
+  <h3>Limitations</h3>
+  <ul>
+    <li>Sequential processing means large refund volumes take longer to process</li>
+    <li>If a Credit Memo is created but the Customer Refund fails after all retries, the Credit Memo remains "orphaned" in NetSuite until manual intervention or a subsequent process links it</li>
+    <li>The recipe depends on the upstream dbt models running first to populate <code>NETSUITE_EXPORT_REFUNDS</code></li>
+    <li>The <code>Start_date</code> parameter must be provided by the caller &mdash; there is no built-in schedule in this recipe itself</li>
+  </ul>
+
+  <h3>Related Recipes</h3>
+  <p>This recipe is part of the broader <strong>NetSuite OTC (Order-to-Cash) Integration</strong> pipeline. Related recipes handle:</p>
+  <ul>
+    <li>Customer creation (Rec 1.0)</li>
+    <li>Invoice creation (Rec 3.0 / 4.0)</li>
+    <li>Payment creation (Rec 5.0 / 6.0)</li>
+    <li>Refunds (this recipe: Rec 7.0)</li>
+  </ul>
+</section>
+
+</div><!-- end .main-content -->
+
+<footer>
+  <p>Generated by Workato Integration Documentor | Author: venkatesh.manohar | 2026-04-01</p>
+  <p>Recipe: Rec 7.0 &mdash; Refunds Master Recipe (ID: 54665265) | Intercom</p>
+</footer>
+
+<!-- Scroll Spy JavaScript -->
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a[data-section]');
+  var sections = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    var current = sections[0];
+    var scrollY = window.scrollY + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

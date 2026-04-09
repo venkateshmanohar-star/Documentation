@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<title>2.0 Master Recipe — Credit Memo CBAs and Payments (58628332)</title>
+<style>
+:root {
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --purple: #6B4C9A;
+  --green: #2E7D32;
+  --gray: #9E9E9E;
+  --orange-bg: #FFF5E6;
+  --blue-bg: #E8F4FD;
+  --purple-bg: #F0EBF8;
+  --green-bg: #E8F5E9;
+  --gray-bg: #F5F5F5;
+  --text: #333;
+  --text-light: #666;
+  --border: #E0E0E0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.65;
+  background: #FAFAFA;
+}
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: white;
+  padding: 20px 16px;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+  border-right: 3px solid var(--purple);
+  z-index: 1000;
+}
+nav#toc h3 {
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--purple);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--purple-bg);
+}
+nav#toc a {
+  color: #555;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85em;
+  display: block;
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  margin-bottom: 2px;
+}
+nav#toc a:hover { background: var(--purple-bg); color: var(--purple); }
+nav#toc a.active { background: var(--purple); color: white; }
+.main-content { max-width: 1100px; }
+h1 { font-size: 1.85em; color: var(--purple); margin-bottom: 8px; }
+h2 { font-size: 1.4em; color: var(--purple); margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--purple-bg); }
+h3 { font-size: 1.1em; color: var(--text); margin: 20px 0 10px; }
+h4 { font-size: 0.95em; color: var(--text-light); margin: 14px 0 8px; }
+p { margin-bottom: 12px; }
+.header-meta { color: var(--text-light); font-size: 0.88em; margin-bottom: 24px; }
+.header-meta span { margin-right: 18px; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.78em; font-weight: 600; }
+.badge-active { background: var(--green-bg); color: var(--green); }
+.badge-stopped { background: #FFEBEE; color: #C62828; }
+section { background: white; padding: 24px 28px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9em; }
+th { background: var(--purple-bg); color: var(--purple); text-align: left; padding: 10px 12px; font-weight: 600; }
+td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+tr:hover td { background: #FAFAFA; }
+.callout { padding: 14px 18px; border-radius: 8px; margin: 14px 0; font-size: 0.92em; }
+.callout-blue { background: var(--blue-bg); border-left: 4px solid var(--blue); }
+.callout-orange { background: var(--orange-bg); border-left: 4px solid var(--orange); }
+.callout-green { background: var(--green-bg); border-left: 4px solid var(--green); }
+.callout-purple { background: var(--purple-bg); border-left: 4px solid var(--purple); }
+.diagram-container { text-align: center; margin: 20px 0; overflow-x: auto; }
+code { background: var(--gray-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; font-family: 'SF Mono', Consolas, monospace; }
+.two-layer { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; }
+.two-layer > div { padding: 14px; border-radius: 8px; }
+.layer-biz { background: var(--green-bg); border-left: 4px solid var(--green); }
+.layer-tech { background: var(--blue-bg); border-left: 4px solid var(--blue); }
+.layer-label { font-weight: 600; font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+details { margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; color: var(--purple); padding: 6px 0; }
+details summary:hover { color: var(--orange); }
+footer { text-align: center; color: var(--text-light); font-size: 0.82em; margin-top: 40px; padding: 20px 0; border-top: 1px solid var(--border); }
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 3px solid var(--purple); }
+  body { padding: 24px; }
+}
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; }
+  section { box-shadow: none; border: 1px solid var(--border); page-break-inside: avoid; }
+  .back-to-index { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<a href="netsuite-integration-index.html" class="back-to-index" style="position:fixed;top:8px;right:16px;z-index:1001;background:#6B4C9A;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.15);">&#8592; Back to Index</a>
+
+<nav id="toc">
+  <h3>Table of Contents</h3>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#end-to-end-flow" data-section="end-to-end-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#component-overview" data-section="component-overview">8. Component Overview</a>
+  <a href="#business-logic" data-section="business-logic">9. Key Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<div class="main-content">
+
+<h1>2.0 Master Recipe &mdash; Credit Memo CBAs and Payments</h1>
+<div class="header-meta">
+  <span><strong>Recipe ID:</strong> 58628332</span>
+  <span><strong>Status:</strong> <span class="badge badge-active">Active</span></span>
+  <span><strong>Author:</strong> venkatesh.manohar</span>
+  <span><strong>Generated:</strong> 2026-04-01</span>
+  <span><strong>Last Run:</strong> 2026-04-01</span>
+  <span><strong>Jobs Succeeded:</strong> 700</span>
+  <span><strong>Jobs Failed:</strong> 3</span>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: EXECUTIVE SUMMARY -->
+<!-- ============================================================ -->
+<section id="executive-summary">
+<h2>1. Executive Summary</h2>
+
+<p>This integration is a <strong>master orchestrator</strong> within Intercom's Order-to-Cash (OTC) pipeline that automates three critical financial processes between Stripe (payment processor) and NetSuite (ERP system):</p>
+
+<ol style="margin:12px 0 12px 24px;">
+  <li><strong>Credit Memo creation</strong> &mdash; When a customer receives a credit note in Stripe, this system creates the corresponding Credit Memo in NetSuite so the books reflect the customer's reduced balance.</li>
+  <li><strong>Customer Balance Adjustment (CBA) creation</strong> &mdash; When Stripe issues a credit balance adjustment (e.g., a credit applied toward future invoices), this system records the matching CBA record in NetSuite.</li>
+  <li><strong>Customer Payment recording</strong> &mdash; When Stripe collects a payment, this system creates the Customer Payment in NetSuite, linking it to the correct invoice and sales order.</li>
+  <li><strong>Refunds, Voided Invoices, and Cancellations</strong> (async) &mdash; A secondary branch handles refunds, uncollectible invoices, voided invoices, and cancelled sales orders.</li>
+</ol>
+
+<div class="callout callout-purple">
+  <strong>Why it matters:</strong> Without this automation, the Finance team would need to manually create thousands of credit memos, CBAs, and payments in NetSuite every day. This recipe processes them automatically, ensuring Stripe and NetSuite stay in sync for accurate revenue recognition and financial reporting.
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: BUSINESS OVERVIEW -->
+<!-- ============================================================ -->
+<section id="business-overview">
+<h2>2. Business Overview</h2>
+
+<h3>What Problem Does This Solve?</h3>
+<p>Intercom bills customers through Stripe. When customers receive credits, refunds, or make payments, those financial events must be accurately recorded in NetSuite (the system of record for accounting). Manual entry would be error-prone and impossibly slow at Intercom's scale.</p>
+
+<h3>What Happens from a Business Perspective</h3>
+<table>
+  <tr><th>Stripe Event</th><th>NetSuite Record Created</th><th>Business Meaning</th></tr>
+  <tr><td>Credit note issued</td><td>Credit Memo</td><td>Customer's balance reduced; offsets an invoice</td></tr>
+  <tr><td>Credit balance adjustment</td><td>Customer Balance Adjustment (CBA)</td><td>Credit applied toward future billing</td></tr>
+  <tr><td>Payment received</td><td>Customer Payment</td><td>Cash received against an invoice</td></tr>
+  <tr><td>Refund processed</td><td>Customer Refund</td><td>Money returned to customer</td></tr>
+  <tr><td>Invoice voided</td><td>Voided Invoice</td><td>Invoice cancelled before collection</td></tr>
+  <tr><td>Contract cancelled</td><td>Cancelled Sales Order</td><td>Subscription ended, order closed</td></tr>
+</table>
+
+<h3>Key Scenarios</h3>
+<div class="two-layer">
+  <div class="layer-biz">
+    <div class="layer-label">Self-Serve Customers</div>
+    <p>Customers who sign up and pay via Stripe directly. Credits and payments are fully automated through the Stripe &rarr; Snowflake &rarr; NetSuite pipeline.</p>
+  </div>
+  <div class="layer-tech">
+    <div class="layer-label">Sales-Led Customers</div>
+    <p>Enterprise customers with contracts managed via Salesforce. The same pipeline processes their Stripe transactions, but additional subsidiary and category routing logic applies.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: SYSTEM OVERVIEW -->
+<!-- ============================================================ -->
+<section id="system-overview">
+<h2>3. System Overview</h2>
+
+<table>
+  <tr><th>System</th><th>Role</th><th>Technical Detail</th></tr>
+  <tr>
+    <td><strong>Stripe</strong></td>
+    <td>Payment processor &mdash; source of all payment events, credit notes, and refunds</td>
+    <td>Data lands in Snowflake via Fivetran ETL; dbt models transform raw Stripe data into export-ready tables</td>
+  </tr>
+  <tr>
+    <td><strong>Snowflake</strong></td>
+    <td>Data warehouse &mdash; staging layer between Stripe and NetSuite</td>
+    <td>Schema: <code>INTERCOM_PROD.SHARED_EXTERNAL_WORKATO</code>. Contains 6+ export tables and a deduplication log table.</td>
+  </tr>
+  <tr>
+    <td><strong>Workato</strong></td>
+    <td>Integration platform &mdash; orchestrates the flow between systems</td>
+    <td>Master recipe (58628332) calls 4 child orchestrators, each of which calls individual record-processing recipe functions (RFs)</td>
+  </tr>
+  <tr>
+    <td><strong>NetSuite</strong></td>
+    <td>ERP &mdash; system of record for accounting</td>
+    <td>Receives Credit Memos, CBAs, Customer Payments, Refunds, and updates Sales Orders via SuiteTalk API</td>
+  </tr>
+</table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: ARCHITECTURE OVERVIEW -->
+<!-- ============================================================ -->
+<section id="architecture-overview">
+<h2>4. Architecture Overview</h2>
+
+<h3>Layered Architecture</h3>
+
+<div class="two-layer">
+  <div class="layer-biz">
+    <div class="layer-label">Source Layer (Stripe)</div>
+    <p><strong>Business:</strong> All billing activity originates here &mdash; invoices, payments, credits, and refunds.</p>
+    <p><strong>Technical:</strong> Fivetran replicates Stripe data into Snowflake raw tables. dbt models clean and reshape the data into <code>NETSUITE_EXPORT_*</code> tables.</p>
+  </div>
+  <div class="layer-tech">
+    <div class="layer-label">Data Layer (Snowflake)</div>
+    <p><strong>Business:</strong> A staging area that holds prepared records waiting to be sent to NetSuite.</p>
+    <p><strong>Technical:</strong> Six key tables in <code>SHARED_EXTERNAL_WORKATO</code> schema. Dedup via <code>WORKATO_LOGS</code> table ensures no record is processed twice.</p>
+  </div>
+</div>
+
+<div class="two-layer">
+  <div class="layer-biz">
+    <div class="layer-label">Orchestration Layer (Workato)</div>
+    <p><strong>Business:</strong> The "traffic controller" that reads staged records and routes them to NetSuite in the correct order.</p>
+    <p><strong>Technical:</strong> Hierarchical recipe structure: 1 master &rarr; 4 sub-masters &rarr; 4+ recipe functions. Sequential for Credit Memos and CBAs; async for Payments and Refunds.</p>
+  </div>
+  <div class="layer-tech">
+    <div class="layer-label">Target Layer (NetSuite)</div>
+    <p><strong>Business:</strong> Where financial records live for reporting, audit, and revenue recognition.</p>
+    <p><strong>Technical:</strong> Records created via SuiteTalk REST API: Credit Memo, Customer Deposit (CBA), Customer Payment. Each write is logged back to Snowflake for deduplication.</p>
+  </div>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: ARCHITECTURE DIAGRAM -->
+<!-- ============================================================ -->
+<section id="architecture-diagram">
+<h2>5. Architecture Diagram</h2>
+
+<div class="diagram-container">
+<svg viewBox="0 0 1200 920" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1200px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F5A623"/></marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#29B5E8"/></marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6B4C9A"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2E7D32"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#9E9E9E"/></marker>
+  </defs>
+
+  <!-- Column backgrounds -->
+  <rect x="10" y="60" width="270" height="840" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.5"/>
+  <rect x="300" y="60" width="280" height="840" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.5"/>
+  <rect x="600" y="60" width="300" height="840" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.5"/>
+  <rect x="920" y="60" width="270" height="840" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.5"/>
+
+  <!-- Column headers -->
+  <rect x="10" y="10" width="270" height="45" rx="8" fill="#F5A623"/>
+  <text x="145" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Stripe (Source)</text>
+  <rect x="300" y="10" width="280" height="45" rx="8" fill="#29B5E8"/>
+  <text x="440" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Snowflake (Data)</text>
+  <rect x="600" y="10" width="300" height="45" rx="8" fill="#6B4C9A"/>
+  <text x="750" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Workato (Orchestration)</text>
+  <rect x="920" y="10" width="270" height="45" rx="8" fill="#2E7D32"/>
+  <text x="1055" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">NetSuite (Target)</text>
+
+  <!-- Stripe boxes -->
+  <rect x="30" y="90" width="230" height="50" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5"/>
+  <text x="145" y="112" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Credit Notes</text>
+  <text x="145" y="128" text-anchor="middle" fill="#666" font-size="10">Prorations, downgrades</text>
+
+  <rect x="30" y="160" width="230" height="50" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5"/>
+  <text x="145" y="182" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Credit Balance Adjustments</text>
+  <text x="145" y="198" text-anchor="middle" fill="#666" font-size="10">Applied / issued credits</text>
+
+  <rect x="30" y="230" width="230" height="50" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5"/>
+  <text x="145" y="252" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Payments (Charges)</text>
+  <text x="145" y="268" text-anchor="middle" fill="#666" font-size="10">Card, ACH, Wire</text>
+
+  <rect x="30" y="300" width="230" height="50" rx="8" fill="white" stroke="#F5A623" stroke-width="1.5"/>
+  <text x="145" y="322" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Refunds</text>
+  <text x="145" y="338" text-anchor="middle" fill="#666" font-size="10">Full and partial refunds</text>
+
+  <!-- Fivetran/dbt arrow -->
+  <rect x="45" y="380" width="200" height="35" rx="6" fill="#F5A623" opacity="0.15" stroke="#F5A623" stroke-width="1"/>
+  <text x="145" y="402" text-anchor="middle" fill="#F5A623" font-size="11" font-weight="600">Fivetran ETL + dbt</text>
+
+  <!-- Arrows from Stripe to Snowflake -->
+  <line x1="260" y1="115" x2="320" y2="115" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <line x1="260" y1="185" x2="320" y2="255" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <line x1="260" y1="255" x2="320" y2="395" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+  <line x1="260" y1="325" x2="320" y2="535" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <!-- Snowflake tables -->
+  <rect x="320" y="90" width="240" height="50" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="440" y="110" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
+  <text x="440" y="128" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">CREDIT_MEMO_CREDIT_NOTES</text>
+
+  <rect x="320" y="160" width="240" height="50" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="440" y="180" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
+  <text x="440" y="198" text-anchor="middle" fill="#666" font-size="11">CUSTOMER</text>
+
+  <rect x="320" y="230" width="240" height="50" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="440" y="250" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_CUSTOMER_</text>
+  <text x="440" y="268" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">CREDIT_ADJUSTMENTS</text>
+
+  <rect x="320" y="300" width="240" height="50" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="440" y="320" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
+  <text x="440" y="338" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">SALES_ORDER</text>
+
+  <rect x="320" y="370" width="240" height="50" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="440" y="390" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
+  <text x="440" y="408" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">PAYMENT</text>
+
+  <rect x="320" y="510" width="240" height="50" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="440" y="530" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
+  <text x="440" y="548" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">REFUNDS (via Rec 7.0)</text>
+
+  <!-- Dedup log -->
+  <rect x="320" y="810" width="240" height="50" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5"/>
+  <text x="440" y="832" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">WORKATO_LOGS</text>
+  <text x="440" y="848" text-anchor="middle" fill="#666" font-size="10">Deduplication / audit trail</text>
+
+  <!-- Arrows from Snowflake to Workato -->
+  <line x1="560" y1="115" x2="620" y2="175" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="560" y1="255" x2="620" y2="315" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="560" y1="395" x2="620" y2="455" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <line x1="560" y1="535" x2="620" y2="595" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Workato recipes -->
+  <rect x="620" y="90" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="750" y="110" text-anchor="middle" fill="#6B4C9A" font-size="12" font-weight="bold">2.0 Master Recipe</text>
+  <text x="750" y="128" text-anchor="middle" fill="#666" font-size="10">ID: 58628332 (Orchestrator)</text>
+
+  <rect x="620" y="155" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="750" y="175" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 5.0 Credit Memo Master</text>
+  <text x="750" y="193" text-anchor="middle" fill="#666" font-size="10">ID: 54665263 &rarr; RF 5.0 (54665273)</text>
+
+  <rect x="620" y="225" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="750" y="245" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 1.01 Customer Master</text>
+  <text x="750" y="263" text-anchor="middle" fill="#666" font-size="10">ID: 54665259 (shared helper)</text>
+
+  <rect x="620" y="295" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="750" y="315" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 8.0 Create CBA</text>
+  <text x="750" y="333" text-anchor="middle" fill="#666" font-size="10">ID: 54665266 &rarr; RF 8.0 (54665276)</text>
+
+  <rect x="620" y="435" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="750" y="455" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 6.0 Create Payment</text>
+  <text x="750" y="473" text-anchor="middle" fill="#666" font-size="10">ID: 54665264 &rarr; RF 6.0 (54665274)</text>
+
+  <rect x="620" y="575" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="750" y="595" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">3.0 Refunds Master (async)</text>
+  <text x="750" y="613" text-anchor="middle" fill="#666" font-size="10">ID: 58628333</text>
+
+  <rect x="630" y="645" width="115" height="40" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <text x="687" y="665" text-anchor="middle" fill="#333" font-size="9" font-weight="600">Rec 7.0 Refunds</text>
+  <text x="687" y="678" text-anchor="middle" fill="#666" font-size="8">54665265</text>
+
+  <rect x="755" y="645" width="115" height="40" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <text x="812" y="665" text-anchor="middle" fill="#333" font-size="9" font-weight="600">Rec 10.1 Voided</text>
+  <text x="812" y="678" text-anchor="middle" fill="#666" font-size="8">69929323</text>
+
+  <rect x="630" y="695" width="115" height="40" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <text x="687" y="715" text-anchor="middle" fill="#333" font-size="9" font-weight="600">Rec 9.0 Cancelled</text>
+  <text x="687" y="728" text-anchor="middle" fill="#666" font-size="8">54665267</text>
+
+  <!-- Vertical arrows in Workato -->
+  <line x1="750" y1="140" x2="750" y2="155" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="205" x2="750" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="275" x2="750" y2="295" stroke="#6B4C9A" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="770" y="288" fill="#6B4C9A" font-size="9">then</text>
+  <line x1="750" y1="345" x2="750" y2="435" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="770" y="390" fill="#6B4C9A" font-size="9">then</text>
+  <line x1="750" y1="485" x2="750" y2="575" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="760" y="530" fill="#6B4C9A" font-size="9">async</text>
+  <line x1="750" y1="625" x2="687" y2="645" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="625" x2="812" y2="645" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="625" x2="687" y2="695" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+  <!-- Arrows from Workato to NetSuite -->
+  <line x1="880" y1="180" x2="940" y2="115" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="250" x2="940" y2="195" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="315" x2="940" y2="290" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="460" x2="940" y2="390" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="600" x2="940" y2="480" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <!-- NetSuite records -->
+  <rect x="940" y="90" width="230" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="1055" y="112" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Credit Memo</text>
+  <text x="1055" y="128" text-anchor="middle" fill="#666" font-size="10">With line items from credit note</text>
+
+  <rect x="940" y="170" width="230" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="1055" y="192" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Customer Record</text>
+  <text x="1055" y="208" text-anchor="middle" fill="#666" font-size="10">Create / update via RF 1.0</text>
+
+  <rect x="940" y="265" width="230" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="1055" y="285" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Customer Deposit (CBA)</text>
+  <text x="1055" y="301" text-anchor="middle" fill="#666" font-size="10">Credit balance adjustment</text>
+
+  <rect x="940" y="365" width="230" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="1055" y="385" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Customer Payment</text>
+  <text x="1055" y="401" text-anchor="middle" fill="#666" font-size="10">Applied to invoice</text>
+
+  <rect x="940" y="455" width="230" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="1055" y="475" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Customer Refund</text>
+  <text x="1055" y="491" text-anchor="middle" fill="#666" font-size="10">Refund / void / cancellation</text>
+
+  <!-- Dedup feedback arrow -->
+  <line x1="940" y1="835" x2="880" y2="835" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#arrow-gray)" stroke-dasharray="5,3"/>
+  <text x="910" y="825" text-anchor="middle" fill="#9E9E9E" font-size="9">Log result</text>
+
+  <rect x="940" y="810" width="230" height="50" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5"/>
+  <text x="1055" y="832" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Write-back to WORKATO_LOGS</text>
+  <text x="1055" y="848" text-anchor="middle" fill="#666" font-size="10">NetSuite internal ID + status</text>
+
+  <!-- Legend -->
+  <rect x="30" y="860" width="230" height="30" rx="6" fill="white" stroke="#ccc" stroke-width="1"/>
+  <line x1="45" y1="875" x2="75" y2="875" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="80" y="879" fill="#666" font-size="10">Sync call</text>
+  <line x1="140" y1="875" x2="170" y2="875" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="175" y="879" fill="#666" font-size="10">Async call</text>
+</svg>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: END-TO-END FLOW -->
+<!-- ============================================================ -->
+<section id="end-to-end-flow">
+<h2>6. End-to-End Flow</h2>
+
+<h3>Level 0 &mdash; Simple View</h3>
+<div class="callout callout-green">
+  <p>Every day, Stripe billing events (credits, payments, refunds) flow through Snowflake into Workato, which creates the matching financial records in NetSuite. The system ensures every Stripe transaction has a corresponding NetSuite record, keeping the books balanced.</p>
+</div>
+
+<h3>Level 1 &mdash; Detailed View</h3>
+<ol style="margin:12px 0 12px 24px;">
+  <li><strong>Extraction:</strong> dbt models in Snowflake transform raw Stripe data into standardized export tables (<code>NETSUITE_EXPORT_*</code>).</li>
+  <li><strong>Deduplication Check:</strong> Each recipe queries Snowflake with a LEFT JOIN to <code>WORKATO_LOGS</code>, filtering out records that already have a <code>netsuite_internal_id</code> &mdash; meaning they were already processed.</li>
+  <li><strong>Sequential Processing:</strong> The master recipe calls child recipes in order: Credit Memos first (Rec 5.0), then CBAs (Rec 8.0), then Payments (Rec 6.0). This order matters because credit memos may need to exist before CBAs can reference them.</li>
+  <li><strong>Record-Level Processing:</strong> Each child "Rec" recipe queries Snowflake for unprocessed rows, then iterates (For Each) calling the corresponding "RF" recipe function to create the individual NetSuite record.</li>
+  <li><strong>Logging:</strong> After each NetSuite write, the RF recipe logs the result (success/failure, NetSuite internal ID) back to <code>WORKATO_LOGS</code>.</li>
+</ol>
+
+<h3>Level 2 &mdash; Branching Logic</h3>
+<table>
+  <tr><th>Branch</th><th>Trigger Condition</th><th>Behavior</th></tr>
+  <tr><td>Credit Memo</td><td>Rows in <code>NETSUITE_EXPORT_CREDIT_MEMO_CREDIT_NOTES</code> not yet logged</td><td>Groups by credit note, calls RF 5.0 to create Credit Memo in NetSuite</td></tr>
+  <tr><td>CBA</td><td>Rows in <code>NETSUITE_EXPORT_CUSTOMER_CREDIT_ADJUSTMENTS</code> not yet logged</td><td>For each row, calls RF 8.0 to create CBA; looks up sales order for invoice linkage</td></tr>
+  <tr><td>Payment</td><td>Rows in <code>NETSUITE_EXPORT_PAYMENT</code> not yet logged, excluding Bank Transfer Payments</td><td>For each row, calls RF 6.0 (async) to create Customer Payment; searches for matching invoice in NetSuite</td></tr>
+  <tr><td>Refunds (async)</td><td>Triggered asynchronously by 3.0 Master</td><td>Calls Rec 7.0 (Refunds), Rec 10.1 (Voided Invoices), Rec 9.0 (Cancelled Sales Orders) sequentially</td></tr>
+</table>
+
+<h3>Data Flow Diagram</h3>
+<div class="diagram-container">
+<svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1200px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="df-arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2196F3"/></marker>
+    <marker id="df-arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#FF9800"/></marker>
+    <marker id="df-arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4CAF50"/></marker>
+    <marker id="df-arrow-gray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#9E9E9E"/></marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="28" text-anchor="middle" fill="#333" font-size="16" font-weight="bold">Data Flow: Source Records &rarr; Transformations &rarr; NetSuite Records</text>
+
+  <!-- Source records (left) -->
+  <rect x="20" y="60" width="200" height="45" rx="8" fill="white" stroke="#F5A623" stroke-width="2"/>
+  <text x="120" y="80" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="bold">STRIPE</text>
+  <text x="120" y="95" text-anchor="middle" fill="#333" font-size="11">Credit Note</text>
+
+  <rect x="20" y="130" width="200" height="45" rx="8" fill="white" stroke="#F5A623" stroke-width="2"/>
+  <text x="120" y="150" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="bold">STRIPE</text>
+  <text x="120" y="165" text-anchor="middle" fill="#333" font-size="11">Credit Balance Adjustment</text>
+
+  <rect x="20" y="200" width="200" height="45" rx="8" fill="white" stroke="#F5A623" stroke-width="2"/>
+  <text x="120" y="220" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="bold">STRIPE</text>
+  <text x="120" y="235" text-anchor="middle" fill="#333" font-size="11">Payment (Charge)</text>
+
+  <rect x="20" y="270" width="200" height="45" rx="8" fill="white" stroke="#F5A623" stroke-width="2"/>
+  <text x="120" y="290" text-anchor="middle" fill="#F5A623" font-size="10" font-weight="bold">STRIPE</text>
+  <text x="120" y="305" text-anchor="middle" fill="#333" font-size="11">Refund</text>
+
+  <!-- Snowflake staging (middle-left) -->
+  <rect x="290" y="55" width="210" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="395" y="76" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="bold">SNOWFLAKE</text>
+  <text x="395" y="92" text-anchor="middle" fill="#333" font-size="10">EXPORT_CREDIT_MEMO_</text>
+  <text x="395" y="104" text-anchor="middle" fill="#333" font-size="10">CREDIT_NOTES</text>
+
+  <rect x="290" y="125" width="210" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="395" y="146" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="bold">SNOWFLAKE</text>
+  <text x="395" y="162" text-anchor="middle" fill="#333" font-size="10">EXPORT_CUSTOMER_</text>
+  <text x="395" y="174" text-anchor="middle" fill="#333" font-size="10">CREDIT_ADJUSTMENTS</text>
+
+  <rect x="290" y="195" width="210" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="395" y="216" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="bold">SNOWFLAKE</text>
+  <text x="395" y="232" text-anchor="middle" fill="#333" font-size="10">EXPORT_PAYMENT</text>
+
+  <rect x="290" y="265" width="210" height="55" rx="8" fill="white" stroke="#29B5E8" stroke-width="1.5"/>
+  <text x="395" y="286" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="bold">SNOWFLAKE</text>
+  <text x="395" y="302" text-anchor="middle" fill="#333" font-size="10">(Refund staging tables)</text>
+
+  <!-- Arrows source to staging -->
+  <line x1="220" y1="82" x2="288" y2="82" stroke="#2196F3" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="220" y1="152" x2="288" y2="152" stroke="#2196F3" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="220" y1="222" x2="288" y2="222" stroke="#2196F3" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="220" y1="292" x2="288" y2="292" stroke="#2196F3" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+
+  <!-- Processing (middle) -->
+  <rect x="560" y="45" width="230" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="675" y="66" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">WORKATO RF 5.0</text>
+  <text x="675" y="82" text-anchor="middle" fill="#333" font-size="10">Group by credit_note &rarr; line items</text>
+
+  <rect x="560" y="115" width="230" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="675" y="136" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">WORKATO RF 8.0</text>
+  <text x="675" y="152" text-anchor="middle" fill="#333" font-size="10">Lookup sales order &rarr; map CBA</text>
+
+  <rect x="560" y="185" width="230" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="675" y="206" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">WORKATO RF 6.0</text>
+  <text x="675" y="222" text-anchor="middle" fill="#333" font-size="10">Find invoice &rarr; apply payment</text>
+
+  <rect x="560" y="255" width="230" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
+  <text x="675" y="276" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">WORKATO Rec 7.0 / 10.1 / 9.0</text>
+  <text x="675" y="292" text-anchor="middle" fill="#333" font-size="10">Process refunds, voids, cancellations</text>
+
+  <!-- Arrows staging to processing -->
+  <line x1="500" y1="82" x2="558" y2="70" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="500" y1="152" x2="558" y2="140" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="500" y1="222" x2="558" y2="210" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="500" y1="292" x2="558" y2="280" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+
+  <!-- Labels on arrows -->
+  <text x="525" y="68" fill="#6B4C9A" font-size="8" font-weight="600">For Each</text>
+  <text x="525" y="138" fill="#6B4C9A" font-size="8" font-weight="600">For Each</text>
+  <text x="525" y="208" fill="#6B4C9A" font-size="8" font-weight="600">For Each (async)</text>
+  <text x="525" y="278" fill="#6B4C9A" font-size="8" font-weight="600">Sequential</text>
+
+  <!-- Target records (right) -->
+  <rect x="860" y="45" width="200" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="2"/>
+  <text x="960" y="66" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">NETSUITE</text>
+  <text x="960" y="82" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Credit Memo</text>
+
+  <rect x="860" y="115" width="200" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="2"/>
+  <text x="960" y="136" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">NETSUITE</text>
+  <text x="960" y="152" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Customer Deposit (CBA)</text>
+
+  <rect x="860" y="185" width="200" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="2"/>
+  <text x="960" y="206" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">NETSUITE</text>
+  <text x="960" y="222" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Customer Payment</text>
+
+  <rect x="860" y="255" width="200" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="2"/>
+  <text x="960" y="276" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="bold">NETSUITE</text>
+  <text x="960" y="292" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Customer Refund</text>
+
+  <!-- Arrows processing to target -->
+  <line x1="790" y1="70" x2="858" y2="70" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-arrow-green)"/>
+  <line x1="790" y1="140" x2="858" y2="140" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-arrow-green)"/>
+  <line x1="790" y1="210" x2="858" y2="210" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-arrow-green)"/>
+  <line x1="790" y1="280" x2="858" y2="280" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#df-arrow-green)"/>
+
+  <!-- Multiplicity labels -->
+  <text x="820" y="63" fill="#4CAF50" font-size="9" font-weight="600">1:1</text>
+  <text x="820" y="133" fill="#4CAF50" font-size="9" font-weight="600">1:1</text>
+  <text x="820" y="203" fill="#4CAF50" font-size="9" font-weight="600">1:1</text>
+  <text x="820" y="273" fill="#4CAF50" font-size="9" font-weight="600">1:1</text>
+
+  <!-- Audit/logging row at bottom -->
+  <rect x="290" y="365" width="530" height="45" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5"/>
+  <text x="555" y="386" text-anchor="middle" fill="#9E9E9E" font-size="10" font-weight="bold">WORKATO_LOGS (Deduplication &amp; Audit)</text>
+  <text x="555" y="400" text-anchor="middle" fill="#666" font-size="9">external_id | netsuite_internal_id | source_table_name | error_type | job_run_completed_at</text>
+
+  <!-- Feedback arrows to logs -->
+  <line x1="675" y1="95" x2="555" y2="363" stroke="#9E9E9E" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#df-arrow-gray)"/>
+  <line x1="675" y1="165" x2="555" y2="363" stroke="#9E9E9E" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="675" y1="235" x2="555" y2="363" stroke="#9E9E9E" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Customer creation side-flow -->
+  <rect x="860" y="365" width="200" height="45" rx="8" fill="white" stroke="#FF9800" stroke-width="1.5"/>
+  <text x="960" y="385" text-anchor="middle" fill="#FF9800" font-size="10" font-weight="bold">NETSUITE</text>
+  <text x="960" y="400" text-anchor="middle" fill="#333" font-size="11">Customer (create/update)</text>
+
+  <text x="960" y="350" fill="#FF9800" font-size="9" font-weight="600">Rec 1.01 &rarr; RF 1.0</text>
+  <line x1="790" y1="70" x2="860" y2="387" stroke="#FF9800" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#df-arrow-orange)"/>
+
+  <!-- Field mapping callouts -->
+  <rect x="20" y="360" width="200" height="200" rx="8" fill="white" stroke="#2196F3" stroke-width="1"/>
+  <text x="120" y="382" text-anchor="middle" fill="#2196F3" font-size="11" font-weight="bold">Key Field Mappings</text>
+  <line x1="30" y1="390" x2="210" y2="390" stroke="#E0E0E0" stroke-width="1"/>
+  <text x="30" y="410" fill="#333" font-size="9"><tspan font-weight="bold">entity</tspan> &rarr; NS Customer ID</text>
+  <text x="30" y="428" fill="#333" font-size="9"><tspan font-weight="bold">external_id</tspan> &rarr; NS External ID</text>
+  <text x="30" y="446" fill="#333" font-size="9"><tspan font-weight="bold">amount</tspan> &rarr; NS Amount</text>
+  <text x="30" y="464" fill="#333" font-size="9"><tspan font-weight="bold">subsidiary</tspan> &rarr; NS Subsidiary</text>
+  <text x="30" y="482" fill="#333" font-size="9"><tspan font-weight="bold">currency</tspan> &rarr; NS Currency</text>
+  <text x="30" y="500" fill="#333" font-size="9"><tspan font-weight="bold">invoice_id</tspan> &rarr; NS Invoice Ref</text>
+  <text x="30" y="518" fill="#333" font-size="9"><tspan font-weight="bold">stripe_payment_id</tspan> &rarr; NS Ext ID</text>
+  <text x="30" y="536" fill="#333" font-size="9"><tspan font-weight="bold">fee_amount</tspan> &rarr; NS Processing Fee</text>
+</svg>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: PROCESSING STAGES -->
+<!-- ============================================================ -->
+<section id="processing-stages">
+<h2>7. Processing Stages</h2>
+
+<h3>Stage 1: Ingestion (dbt / Snowflake)</h3>
+<div class="two-layer">
+  <div class="layer-biz"><div class="layer-label">Business View</div><p>Stripe billing data (credit notes, payments, refunds) is automatically copied into Snowflake and transformed into clean, standardized tables ready for NetSuite.</p></div>
+  <div class="layer-tech"><div class="layer-label">Technical View</div><p>Fivetran extracts raw Stripe data; dbt models in <code>SHARED_EXTERNAL_WORKATO</code> schema create the <code>NETSUITE_EXPORT_*</code> tables. Each table is grain-specific (e.g., one row per payment, one row per credit adjustment).</p></div>
+</div>
+
+<h3>Stage 2: Deduplication Query</h3>
+<div class="two-layer">
+  <div class="layer-biz"><div class="layer-label">Business View</div><p>Before processing, the system checks which records have already been sent to NetSuite, skipping duplicates. Only new records are processed.</p></div>
+  <div class="layer-tech"><div class="layer-label">Technical View</div><p>Each Rec recipe runs a SQL query with a LEFT JOIN to <code>WORKATO_LOGS</code> using <code>external_id</code>. The WHERE clause filters for rows where <code>wl.netsuite_internal_id IS NULL</code> and date is within range. Limit: 50,000 rows per run.</p></div>
+</div>
+
+<h3>Stage 3: Routing / Orchestration</h3>
+<div class="two-layer">
+  <div class="layer-biz"><div class="layer-label">Business View</div><p>The master recipe ensures records are processed in the correct business order: Credit Memos first, then CBAs, then Payments, and finally Refunds.</p></div>
+  <div class="layer-tech"><div class="layer-label">Technical View</div><p>Recipe 58628332 calls children sequentially via <code>call_recipe</code> (sync). The last call (3.0 Refunds Master) is <code>call_recipe_async</code> so it does not block. A try/catch wrapper sends email alerts on timeout.</p></div>
+</div>
+
+<h3>Stage 4: Record Processing</h3>
+<div class="two-layer">
+  <div class="layer-biz"><div class="layer-label">Business View</div><p>Each credit, payment, or adjustment is individually processed: the customer is verified/created in NetSuite, the matching invoice or sales order is located, and the financial record is written.</p></div>
+  <div class="layer-tech"><div class="layer-label">Technical View</div><p>RF recipes use NetSuite's SuiteTalk API: <code>search_object_v2</code> to find existing records (customer, invoice, sales order), <code>add_object</code> to create new records, and <code>update_object</code> for updates. Custom code blocks handle edge cases and field mapping.</p></div>
+</div>
+
+<h3>Stage 5: Logging</h3>
+<div class="two-layer">
+  <div class="layer-biz"><div class="layer-label">Business View</div><p>Every processed record is logged so the system knows it was handled, preventing duplicate creation on the next run.</p></div>
+  <div class="layer-tech"><div class="layer-label">Technical View</div><p>After each NetSuite write, the RF recipe inserts/updates a row in <code>WORKATO_LOGS</code> with the <code>external_id</code>, <code>netsuite_internal_id</code>, <code>source_table_name</code>, timestamp, and any error details.</p></div>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: COMPONENT OVERVIEW -->
+<!-- ============================================================ -->
+<section id="component-overview">
+<h2>8. Component / Module Overview</h2>
+
+<table>
+  <tr><th>Recipe</th><th>ID</th><th>Type</th><th>Purpose</th><th>Runs</th><th>Status</th></tr>
+  <tr>
+    <td><strong>2.0 Master Recipe</strong></td>
+    <td>58628332</td>
+    <td>Master Orchestrator</td>
+    <td>Calls all child recipes sequentially; handles timeout errors with email alerts</td>
+    <td>700 succeeded / 3 failed</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+  <tr>
+    <td><strong>Rec 5.0 Credit Memo Master</strong></td>
+    <td>54665263</td>
+    <td>Sub-Orchestrator</td>
+    <td>Queries <code>NETSUITE_EXPORT_CREDIT_MEMO_CREDIT_NOTES</code>, groups by credit note, calls RF 5.0 for each</td>
+    <td>833 succeeded</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+  <tr>
+    <td><strong>RF 5.0 Create Credit Memo</strong></td>
+    <td>54665273</td>
+    <td>Recipe Function</td>
+    <td>Searches for customer &amp; invoice in NetSuite, creates Credit Memo with line items; calls Rec 1.01 if customer missing</td>
+    <td>2,819 succeeded</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+  <tr>
+    <td><strong>Rec 8.0 Create CBA</strong></td>
+    <td>54665266</td>
+    <td>Sub-Orchestrator</td>
+    <td>Queries <code>NETSUITE_EXPORT_CUSTOMER_CREDIT_ADJUSTMENTS</code>, iterates rows, calls RF 8.0 for each</td>
+    <td>839 succeeded / 9 failed</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+  <tr>
+    <td><strong>RF 8.0 Create CBA</strong></td>
+    <td>54665276</td>
+    <td>Recipe Function</td>
+    <td>Looks up sales order in Snowflake/NetSuite, creates Customer Deposit (CBA) in NetSuite; calls Rec 1.01 if customer missing</td>
+    <td>63,114 succeeded</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+  <tr>
+    <td><strong>Rec 6.0 Create Customer Payment</strong></td>
+    <td>54665264</td>
+    <td>Sub-Orchestrator</td>
+    <td>Queries <code>NETSUITE_EXPORT_PAYMENT</code>, iterates rows, calls RF 6.0 (async) for each</td>
+    <td>876 succeeded</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+  <tr>
+    <td><strong>RF 6.0 Create Customer Payment</strong></td>
+    <td>54665274</td>
+    <td>Recipe Function</td>
+    <td>Searches NetSuite for invoice, creates or updates Customer Payment, applies to invoice</td>
+    <td>804,893 succeeded</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+  <tr>
+    <td><strong>3.0 Refunds Master (async)</strong></td>
+    <td>58628333</td>
+    <td>Sub-Orchestrator</td>
+    <td>Calls Rec 7.0 (Refunds), Rec 10.1 (Voided Invoices), Rec 9.0 (Cancelled Sales Orders)</td>
+    <td>687 succeeded</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+  <tr>
+    <td><strong>Rec 1.01 Customer Master</strong></td>
+    <td>54665259</td>
+    <td>Shared Helper</td>
+    <td>Looks up customer in <code>NETSUITE_EXPORT_CUSTOMER</code>, calls RF 1.0 to create/update customer in NetSuite</td>
+    <td>178,485 succeeded</td>
+    <td><span class="badge badge-active">Active</span></td>
+  </tr>
+</table>
+
+<h3>Recipe Hierarchy Diagram</h3>
+<div class="diagram-container">
+<svg viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1100px; font-family:'Segoe UI',Arial,sans-serif;">
+  <defs>
+    <marker id="rh-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#6B4C9A"/></marker>
+    <marker id="rh-arrow-dash" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#6B4C9A" opacity="0.6"/></marker>
+    <marker id="rh-arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2E7D32"/></marker>
+  </defs>
+
+  <!-- Level 0: Master -->
+  <rect x="380" y="20" width="340" height="55" rx="10" fill="#6B4C9A" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="550" y="44" text-anchor="middle" fill="white" font-size="13" font-weight="bold">2.0 Master Recipe (58628332)</text>
+  <text x="550" y="62" text-anchor="middle" fill="#D4C4E8" font-size="10">Orchestrator &mdash; called by 0.0 Scheduler</text>
+
+  <!-- Level 1: Children -->
+  <!-- Rec 5.0 -->
+  <line x1="440" y1="75" x2="140" y2="125" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+  <rect x="20" y="125" width="240" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="140" y="148" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Rec 5.0 Credit Memo Master</text>
+  <text x="140" y="165" text-anchor="middle" fill="#666" font-size="9">54665263 (sync)</text>
+
+  <!-- Rec 8.0 -->
+  <line x1="480" y1="75" x2="380" y2="125" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+  <rect x="280" y="125" width="200" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="380" y="148" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Rec 8.0 Create CBA</text>
+  <text x="380" y="165" text-anchor="middle" fill="#666" font-size="9">54665266 (sync)</text>
+
+  <!-- Rec 6.0 -->
+  <line x1="620" y1="75" x2="620" y2="125" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+  <rect x="500" y="125" width="240" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="620" y="148" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Rec 6.0 Create Payment</text>
+  <text x="620" y="165" text-anchor="middle" fill="#666" font-size="9">54665264 (sync)</text>
+
+  <!-- 3.0 Refunds Master (async) -->
+  <line x1="660" y1="75" x2="880" y2="125" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#rh-arrow-dash)"/>
+  <rect x="760" y="125" width="280" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="900" y="148" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">3.0 Refunds Master (async)</text>
+  <text x="900" y="165" text-anchor="middle" fill="#666" font-size="9">58628333 (async call)</text>
+
+  <!-- Level 2: Recipe Functions -->
+  <!-- RF 5.0 -->
+  <line x1="140" y1="175" x2="140" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="30" y="225" width="220" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="140" y="248" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">RF 5.0 Create Credit Memo</text>
+  <text x="140" y="265" text-anchor="middle" fill="#666" font-size="9">54665273 &rarr; NetSuite</text>
+
+  <!-- RF 8.0 -->
+  <line x1="380" y1="175" x2="380" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="270" y="225" width="220" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="380" y="248" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">RF 8.0 Create CBA</text>
+  <text x="380" y="265" text-anchor="middle" fill="#666" font-size="9">54665276 &rarr; NetSuite</text>
+
+  <!-- RF 6.0 -->
+  <line x1="620" y1="175" x2="620" y2="225" stroke="#6B4C9A" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#rh-arrow-dash)"/>
+  <rect x="510" y="225" width="220" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="620" y="248" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">RF 6.0 Create Payment</text>
+  <text x="620" y="265" text-anchor="middle" fill="#666" font-size="9">54665274 &rarr; NetSuite (async)</text>
+
+  <!-- 3.0 children -->
+  <line x1="830" y1="175" x2="790" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="700" y="225" width="180" height="45" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <text x="790" y="248" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Rec 7.0 Refunds</text>
+  <text x="790" y="262" text-anchor="middle" fill="#666" font-size="9">54665265</text>
+
+  <line x1="930" y1="175" x2="960" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="880" y="225" width="180" height="45" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <text x="970" y="248" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Rec 10.1 Voided Inv</text>
+  <text x="970" y="262" text-anchor="middle" fill="#666" font-size="9">69929323</text>
+
+  <line x1="880" y1="175" x2="790" y2="290" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="700" y="290" width="180" height="45" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <text x="790" y="313" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Rec 9.0 Cancelled SO</text>
+  <text x="790" y="327" text-anchor="middle" fill="#666" font-size="9">54665267</text>
+
+  <!-- Level 3: Shared helper -->
+  <line x1="140" y1="275" x2="140" y2="380" stroke="#FF9800" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <line x1="380" y1="275" x2="220" y2="380" stroke="#FF9800" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#rh-arrow)"/>
+  <rect x="30" y="380" width="220" height="50" rx="8" fill="white" stroke="#FF9800" stroke-width="2"/>
+  <text x="140" y="403" text-anchor="middle" fill="#FF9800" font-size="11" font-weight="bold">Rec 1.01 Customer Master</text>
+  <text x="140" y="420" text-anchor="middle" fill="#666" font-size="9">54665259 (shared helper)</text>
+
+  <line x1="140" y1="430" x2="140" y2="475" stroke="#FF9800" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="40" y="475" width="200" height="45" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="140" y="498" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">RF 1.0 Create Customer</text>
+  <text x="140" y="512" text-anchor="middle" fill="#666" font-size="9">54251831 &rarr; NetSuite</text>
+
+  <!-- Legend -->
+  <rect x="30" y="555" width="500" height="50" rx="8" fill="white" stroke="#ccc" stroke-width="1"/>
+  <text x="50" y="575" fill="#333" font-size="11" font-weight="bold">Legend:</text>
+  <line x1="110" y1="572" x2="150" y2="572" stroke="#6B4C9A" stroke-width="2"/>
+  <text x="155" y="576" fill="#666" font-size="10">Sync call</text>
+  <line x1="220" y1="572" x2="260" y2="572" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="265" y="576" fill="#666" font-size="10">Async call</text>
+  <rect x="340" y="563" width="18" height="18" rx="3" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="363" y="576" fill="#666" font-size="10">NetSuite writer</text>
+  <rect x="448" y="563" width="18" height="18" rx="3" fill="white" stroke="#FF9800" stroke-width="1.5"/>
+  <text x="471" y="576" fill="#666" font-size="10">Shared helper</text>
+</svg>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: KEY BUSINESS LOGIC -->
+<!-- ============================================================ -->
+<section id="business-logic">
+<h2>9. Key Business Logic</h2>
+
+<h3>Credit Memo Processing (Rec 5.0 / RF 5.0)</h3>
+<ul style="margin:8px 0 8px 24px;">
+  <li><strong>Grouping:</strong> Credit notes are grouped by <code>credit_note</code> ID in Snowflake. RF 5.0 receives one group and creates a single Credit Memo with multiple line items.</li>
+  <li><strong>Invoice Linkage:</strong> RF 5.0 searches NetSuite for the original invoice using the Stripe invoice ID. If found, the Credit Memo is linked to it.</li>
+  <li><strong>Customer Verification:</strong> If the customer doesn't exist in NetSuite, RF 5.0 calls Rec 1.01 (Customer Master) to create them before proceeding.</li>
+</ul>
+
+<h3>CBA Processing (Rec 8.0 / RF 8.0)</h3>
+<ul style="margin:8px 0 8px 24px;">
+  <li><strong>Sales Order Lookup:</strong> RF 8.0 queries <code>NETSUITE_EXPORT_SALES_ORDER</code> in Snowflake to find the matching sales order for the credit adjustment.</li>
+  <li><strong>CBA Types:</strong> The <code>type</code> field from Snowflake determines the CBA type in NetSuite (e.g., "Adjustment Credit", "Credit Applied").</li>
+  <li><strong>Customer Internal ID:</strong> The CBA query joins to <code>NETSUITE_EXPORT_CUSTOMER</code> to get the customer's NetSuite internal ID, avoiding an extra API call.</li>
+</ul>
+
+<h3>Payment Processing (Rec 6.0 / RF 6.0)</h3>
+<ul style="margin:8px 0 8px 24px;">
+  <li><strong>Invoice Search:</strong> RF 6.0 searches NetSuite for the invoice matching the Stripe invoice ID, then applies the payment against it.</li>
+  <li><strong>Payment Methods:</strong> Supports Card, ACH, and Wire payments. Bank Transfer Payments are explicitly excluded from processing (<code>check_reference_number &lt;&gt; 'Bank Transfer Payment'</code>).</li>
+  <li><strong>Fee Tracking:</strong> Stripe processing fees (<code>fee_amount</code>) are passed to NetSuite for expense tracking.</li>
+  <li><strong>Async Processing:</strong> RF 6.0 is called asynchronously to handle the high volume (804K+ records processed to date).</li>
+</ul>
+
+<h3>Refunds / Cancellations (3.0 Master)</h3>
+<ul style="margin:8px 0 8px 24px;">
+  <li><strong>Three Sub-Flows:</strong> Rec 7.0 handles refunds, Rec 10.1 handles voided invoices, Rec 9.0 handles cancelled sales orders.</li>
+  <li><strong>Async Launch:</strong> The entire refunds branch runs asynchronously to avoid blocking the main Credit Memo / CBA / Payment flow.</li>
+  <li><strong>Note:</strong> Rec 10.0 (Uncollectible Invoices) exists in the code but is currently <strong>skipped</strong> (disabled).</li>
+</ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: DATA MODEL -->
+<!-- ============================================================ -->
+<section id="data-model">
+<h2>10. Data Model (Simplified)</h2>
+
+<h3>Key Snowflake Tables</h3>
+<table>
+  <tr><th>Table</th><th>Grain</th><th>Key Fields</th><th>Purpose</th></tr>
+  <tr>
+    <td><code>NETSUITE_EXPORT_CREDIT_MEMO_CREDIT_NOTES</code></td>
+    <td>One row per credit note line</td>
+    <td>credit_note, entity, amount, invoice_id, subsidiary</td>
+    <td>Staged credit memos ready for NetSuite</td>
+  </tr>
+  <tr>
+    <td><code>NETSUITE_EXPORT_CUSTOMER_CREDIT_ADJUSTMENTS</code></td>
+    <td>One row per CBA</td>
+    <td>external_id, entity, amount, type, invoice_id, credit_note</td>
+    <td>Staged credit balance adjustments</td>
+  </tr>
+  <tr>
+    <td><code>NETSUITE_EXPORT_PAYMENT</code></td>
+    <td>One row per stripe_payment_id</td>
+    <td>stripe_payment_id, stripe_invoice_id, payment_amount, payment_method, fee_amount</td>
+    <td>Staged payments ready for NetSuite</td>
+  </tr>
+  <tr>
+    <td><code>NETSUITE_EXPORT_CUSTOMER</code></td>
+    <td>One row per customer</td>
+    <td>external_id, customer_name, subsidiary, netsuite_internal_id, category</td>
+    <td>Customer master data; includes NS internal ID after creation</td>
+  </tr>
+  <tr>
+    <td><code>NETSUITE_EXPORT_SALES_ORDER</code></td>
+    <td>One row per sales order</td>
+    <td>external_id, netsuite_internal_id, customer_id</td>
+    <td>Sales order reference for CBA and payment linkage</td>
+  </tr>
+  <tr>
+    <td><code>WORKATO_LOGS</code></td>
+    <td>One row per external_id + source_table_name</td>
+    <td>external_id, netsuite_internal_id, source_table_name, error_type, job_run_completed_at</td>
+    <td>Deduplication and audit trail; prevents reprocessing</td>
+  </tr>
+</table>
+
+<h3>How Deduplication Works</h3>
+<div class="callout callout-blue">
+  <p>Each export query uses a CTE called <code>stg_workato_log</code> that selects the most recent log entry per <code>external_id</code> (using <code>ROW_NUMBER() ... PARTITION BY external_id ORDER BY job_run_completed_at DESC</code>). The main query LEFT JOINs to this CTE and only processes rows where <code>netsuite_internal_id IS NULL</code> &mdash; meaning no successful NetSuite write has been recorded.</p>
+</div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: EDGE CASES -->
+<!-- ============================================================ -->
+<section id="edge-cases">
+<h2>11. Edge Cases &amp; Special Scenarios</h2>
+
+<h3>Missing Customer in NetSuite</h3>
+<div class="callout callout-orange">
+  <p><strong>Scenario:</strong> A credit memo or CBA references a Stripe customer that doesn't yet exist in NetSuite.</p>
+  <p><strong>Handling:</strong> Both RF 5.0 and RF 8.0 call <code>Rec 1.01 Customer Master</code> to create the customer on-the-fly before proceeding with the financial record.</p>
+</div>
+
+<h3>Missing Sales Order</h3>
+<div class="callout callout-orange">
+  <p><strong>Scenario:</strong> RF 8.0 cannot find a matching sales order in <code>NETSUITE_EXPORT_SALES_ORDER</code>.</p>
+  <p><strong>Handling:</strong> The CBA is still created, but without a sales order linkage. The log records this for reconciliation.</p>
+</div>
+
+<h3>Bank Transfer Payments</h3>
+<div class="callout callout-blue">
+  <p><strong>Scenario:</strong> Some payments come via bank transfer (wire) rather than card/ACH.</p>
+  <p><strong>Handling:</strong> Rec 6.0 explicitly excludes rows where <code>check_reference_number = 'Bank Transfer Payment'</code>. These are handled by a separate process. (Note: wire transfers were added to the model as of 2026-03-04.)</p>
+</div>
+
+<h3>Timeout / Too Many Records</h3>
+<div class="callout callout-orange">
+  <p><strong>Scenario:</strong> A large backlog causes the recipe to exceed Workato's execution time limit.</p>
+  <p><strong>Handling:</strong> The try/catch block in the master recipe catches the timeout error and sends an email alert to danny.mcgean@intercom.io, nan.lu@intercom.io, chase.clark@connorgp.com, and diana.sy@intercom.io.</p>
+</div>
+
+<h3>Negative Amounts</h3>
+<p>Credit memos and CBAs naturally carry negative amounts (reducing a customer's balance). The RF recipes pass these amounts directly to NetSuite, which treats them as credits on the customer's account.</p>
+
+<h3>Skipped Rec 10.0 (Uncollectible Invoices)</h3>
+<p>The 3.0 Refunds Master includes a call to Rec 10.0 (Uncollectible Invoice Master), but this step is currently marked as <code>skip: true</code> in the recipe configuration. This likely indicates the uncollectible invoice process is handled elsewhere or is under development.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 12: OPERATIONAL NOTES -->
+<!-- ============================================================ -->
+<section id="operational-notes">
+<h2>12. Operational Notes</h2>
+
+<h3>Deduplication</h3>
+<ul style="margin:8px 0 8px 24px;">
+  <li>Every recipe query includes a LEFT JOIN to <code>WORKATO_LOGS</code> filtered by <code>source_table_name</code> and <code>environment_type = 'prod'</code>.</li>
+  <li>Only the most recent log per <code>external_id</code> is considered (via <code>ROW_NUMBER</code>).</li>
+  <li>Records with a non-null <code>netsuite_internal_id</code> in the log are skipped.</li>
+</ul>
+
+<h3>Error Handling</h3>
+<ul style="margin:8px 0 8px 24px;">
+  <li><strong>Master level:</strong> Try/catch with email notification on failure.</li>
+  <li><strong>Sub-orchestrator level:</strong> Each Rec recipe has its own try/catch (currently with empty catch blocks &mdash; errors propagate to the master).</li>
+  <li><strong>RF level:</strong> Individual record failures are logged to <code>WORKATO_LOGS</code> with error details but do not stop the batch.</li>
+</ul>
+
+<h3>Execution Cadence</h3>
+<ul style="margin:8px 0 8px 24px;">
+  <li>The master recipe (58628332) is called by a parent scheduler (0.0 Scheduler). It receives a <code>Date</code> parameter that sets the lookback window.</li>
+  <li>All date-filtered queries process records from the given start date up to <code>DATEADD(day, -1, CURRENT_DATE)</code> &mdash; i.e., up to yesterday.</li>
+  <li>Row limit per query: 50,000 records.</li>
+</ul>
+
+<h3>Contact / Ownership</h3>
+<table>
+  <tr><th>Role</th><th>Person</th></tr>
+  <tr><td>Last version author</td><td>diana.sy@intercom.io</td></tr>
+  <tr><td>Error alert recipients</td><td>danny.mcgean, nan.lu, chase.clark, diana.sy</td></tr>
+  <tr><td>Data engineering support</td><td>#team-data-eng</td></tr>
+</table>
+
+<h3>Key Limitations</h3>
+<ul style="margin:8px 0 8px 24px;">
+  <li>Maximum 50,000 rows per recipe run. If more records accumulate, they will be picked up in subsequent runs.</li>
+  <li>The payment branch (RF 6.0) runs asynchronously, meaning failures may not be immediately visible in the master recipe's job report.</li>
+  <li>Rec 10.0 (Uncollectible Invoices) is currently disabled.</li>
+  <li>CBAs from manual invoices (proration/downgrade) may not appear in NetSuite when the originating invoice routing debug string prevents RF 8.0 from parsing the NS ID.</li>
+</ul>
+</section>
+
+<footer>
+  <p>Documentation generated by <strong>venkatesh.manohar</strong> on 2026-04-01 | Recipe 58628332 | Workato Integration Documentor</p>
+</footer>
+
+</div><!-- end .main-content -->
+
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a[data-section]');
+  var sections = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    var current = sections[0];
+    var scrollY = window.scrollY + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
