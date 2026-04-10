@@ -5,165 +5,315 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rec 1.01 - Customer Master Recipe By Customer ID | Integration Documentation v3</title>
 <style>
-  :root {
-    --stripe-orange: #F5A623;
-    --stripe-bg: #FFF5E6;
-    --snowflake-blue: #29B5E8;
-    --snowflake-bg: #E8F4FD;
-    --workato-purple: #6B4C9A;
-    --workato-bg: #F0EBF8;
-    --netsuite-green: #2E7D32;
-    --netsuite-bg: #E8F5E9;
-    --financial-blue: #2196F3;
-    --customer-orange: #FF9800;
-    --product-green: #4CAF50;
-    --audit-gray: #9E9E9E;
-    --sidebar-width: 266px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.6; color: #333; background: #f8f9fa;
-    padding-left: 290px;
-  }
+:root {
+  /* Intercom brand palette */
+  --ic-navy: #1a1a2e;
+  --ic-blue: #286EFA;
+  --ic-blue-light: #5B93FC;
+  --ic-blue-bg: #EBF1FF;
+  --ic-dark: #0D1117;
+  --ic-sidebar: #131320;
+  --ic-sidebar-hover: rgba(40,110,250,0.12);
+  --ic-sidebar-active: #286EFA;
+  /* Semantic colors (unchanged for system cards/callouts) */
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --green: #2E7D32;
+  --sf-blue: #0070d2;
+  --gray: #9E9E9E;
+  --orange-bg: #FFF5E6;
+  --blue-bg: #E8F4FD;
+  --green-bg: #E8F5E9;
+  --sf-bg: #E6F0FA;
+  --gray-bg: #F5F5F5;
+  --text-primary: #0D1117;
+  --text-secondary: #555;
+  --border: #E1E4E8;
+}
 
-  /* FIXED LEFT SIDEBAR TOC */
-  .sidebar-toc {
-    position: fixed;
-    left: 0; top: 0;
-    width: 266px;
-    height: 100vh;
-    background: linear-gradient(180deg, #2d1f4e 0%, #3d2d63 100%);
-    border-right: 3px solid #6B4C9A;
-    overflow-y: auto;
-    z-index: 1000;
-    padding: 20px 0;
-  }
-  .sidebar-toc .toc-header {
-    padding: 0 16px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    margin-bottom: 12px;
-  }
-  .sidebar-toc .toc-header h3 {
-    color: #fff; font-size: 14px; font-weight: 700;
-    letter-spacing: 0.5px; text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .sidebar-toc .toc-header .recipe-id {
-    color: rgba(255,255,255,0.6); font-size: 11px;
-  }
-  .sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
-  .sidebar-toc li { margin: 0; }
-  .sidebar-toc a {
-    display: block;
-    padding: 8px 16px 8px 20px;
-    color: rgba(255,255,255,0.75);
-    text-decoration: none;
-    font-size: 13px;
-    border-left: 3px solid transparent;
-    transition: all 0.2s ease;
-  }
-  .sidebar-toc a:hover {
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    border-left-color: var(--stripe-orange);
-  }
-  .sidebar-toc a.active {
-    background: rgba(107,76,154,0.4);
-    color: #fff;
-    border-left-color: var(--stripe-orange);
-    font-weight: 600;
-  }
-  .sidebar-toc .toc-number {
-    display: inline-block;
-    width: 24px;
-    color: rgba(255,255,255,0.4);
-    font-size: 11px;
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* BACK TO INDEX - FIXED TOP RIGHT */
-  .back-to-index {
-    position: fixed;
-    top: 12px;
-    right: 16px;
-    z-index: 1001;
-    background: var(--workato-purple);
-    color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(107,76,154,0.3);
-    transition: background 0.2s;
-  }
-  .back-to-index:hover { background: #4a3570; }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  background: #F7F8FA;
+}
 
-  /* MAIN CONTENT */
-  .main-content {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 24px 32px;
-  }
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--ic-sidebar);
+  padding: 0 0 20px 0;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.2);
+  border-right: none;
+  z-index: 1000;
+}
+nav#toc .toc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 12px;
+}
+nav#toc .toc-brand svg { flex-shrink: 0; }
+nav#toc .toc-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+nav#toc .toc-brand-text .brand-title {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+nav#toc .toc-brand-text .brand-sub {
+  font-size: 0.68em;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+nav#toc h3 {
+  font-size: 0.7em;
+  color: rgba(255,255,255,0.4);
+  margin: 12px 18px 8px;
+  padding: 0;
+  border-bottom: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+nav#toc a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.82em;
+  display: block;
+  padding: 6px 18px;
+  border-radius: 0;
+  transition: all 0.15s ease;
+  margin: 0;
+  border-left: 3px solid transparent;
+}
+nav#toc a:hover { background: var(--ic-sidebar-hover); color: #fff; border-left-color: rgba(40,110,250,0.4); }
+nav#toc a.active { background: var(--ic-sidebar-hover); color: #fff; border-left-color: var(--ic-blue); font-weight: 600; }
 
-  .header {
-    background: linear-gradient(135deg, #6B4C9A, #4a3570);
-    color: white; padding: 40px 32px; border-radius: 12px; margin-bottom: 32px;
-  }
-  .header h1 { font-size: 28px; margin-bottom: 8px; }
-  .header .subtitle { font-size: 16px; opacity: 0.9; }
-  .header .meta { display: flex; gap: 24px; margin-top: 16px; font-size: 13px; opacity: 0.85; flex-wrap: wrap; }
-  .header .meta span { display: flex; align-items: center; gap: 6px; }
+.main-content { max-width: 1100px; }
 
-  .section { background: white; border-radius: 10px; padding: 28px 32px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); scroll-margin-top: 20px; }
-  .section h2 { font-size: 22px; color: #2c3e50; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; }
-  .section h3 { font-size: 17px; color: #495057; margin: 18px 0 10px; }
-  .section h4 { font-size: 15px; color: #6c757d; margin: 14px 0 8px; }
-  p, li { font-size: 14.5px; }
-  ul, ol { margin-left: 20px; margin-bottom: 12px; }
-  li { margin-bottom: 6px; }
-  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; }
-  th { background: #f1f3f5; text-align: left; padding: 10px 12px; border: 1px solid #dee2e6; font-weight: 600; }
-  td { padding: 8px 12px; border: 1px solid #dee2e6; vertical-align: top; }
-  tr:nth-child(even) td { background: #fafbfc; }
-  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
-  .badge-active { background: #d4edda; color: #155724; }
-  .badge-sync { background: #cce5ff; color: #004085; }
-  .badge-async { background: #fff3cd; color: #856404; }
-  .callout { background: #e8f4fd; border-left: 4px solid #29B5E8; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 14px; }
-  .callout-warn { background: #fff8e1; border-left-color: #ffa000; }
-  .callout-error { background: #fde8e8; border-left-color: #e53935; }
-  code { background: #f1f3f5; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: 'SF Mono', 'Fira Code', monospace; }
-  .svg-container { overflow-x: auto; margin: 16px 0; text-align: center; }
-  .svg-container svg { max-width: 100%; height: auto; }
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 16px 0; }
-  .stat-card { background: #f8f9fa; border-radius: 8px; padding: 16px; text-align: center; border: 1px solid #e9ecef; }
-  .stat-card .value { font-size: 24px; font-weight: 700; color: #6B4C9A; }
-  .stat-card .label { font-size: 12px; color: #6c757d; margin-top: 4px; }
-  .system-tag { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; margin: 2px 4px; }
-  .tag-snowflake { background: var(--snowflake-bg); color: #1a8bb5; }
-  .tag-netsuite { background: var(--netsuite-bg); color: var(--netsuite-green); }
-  .tag-workato { background: var(--workato-bg); color: var(--workato-purple); }
-  .tag-fivetran { background: #FFE0B2; color: #E65100; }
-  .tag-stripe { background: var(--stripe-bg); color: #c47a00; }
-  .tag-salesforce { background: #E3F2FD; color: #1565C0; }
+h1 {
+  font-size: 2em;
+  color: var(--ic-dark);
+  margin-bottom: 8px;
+  border-bottom: 3px solid var(--ic-blue);
+  padding-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: 1.5em;
+  color: var(--ic-dark);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ic-blue-bg);
+  letter-spacing: -0.02em;
+}
+h3 {
+  font-size: 1.15em;
+  color: var(--text-primary);
+  margin: 24px 0 10px;
+  letter-spacing: -0.01em;
+}
+h4 {
+  font-size: 1em;
+  color: var(--text-secondary);
+  margin: 16px 0 8px;
+}
 
-  /* Responsive */
-  @media (max-width: 900px) {
-    .sidebar-toc { display: none; }
-    body { padding-left: 0; }
-    .back-to-index { right: 8px; top: 8px; font-size: 12px; padding: 6px 12px; }
-  }
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 24px; }
+li { margin-bottom: 6px; }
 
-  /* Print-friendly */
-  @media print {
-    .sidebar-toc { display: none; }
-    .back-to-index { display: none; }
-    body { padding-left: 0; background: white; }
-    .section { box-shadow: none; border: 1px solid #dee2e6; break-inside: avoid; }
-    .header { break-after: page; }
-    .svg-container { break-inside: avoid; }
-  }
+.meta-header {
+  background: linear-gradient(135deg, var(--ic-navy) 0%, #1E3A6E 40%, var(--ic-blue) 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.meta-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.meta-header h1 { color: white; border-bottom-color: rgba(255,255,255,0.25); position: relative; }
+.meta-header .meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 12px;
+  font-size: 0.9em;
+  opacity: 0.9;
+  position: relative;
+}
+.meta-header .meta-info span { display: flex; align-items: center; gap: 6px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-active { background: var(--green); color: white; }
+.badge-stopped { background: var(--gray); color: white; }
+.badge-e2e { background: var(--orange); color: white; }
+.badge-arch { background: var(--ic-blue); color: white; }
+
+section {
+  background: white;
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+  border: 1px solid var(--border);
+}
+
+.two-layer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 16px 0;
+}
+.layer-box {
+  padding: 16px 20px;
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+.layer-business { background: var(--blue-bg); border-color: var(--blue); }
+.layer-technical { background: var(--ic-blue-bg); border-color: var(--ic-blue); }
+.layer-box h4 { margin-top: 0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+.layer-business h4 { color: var(--blue); }
+.layer-technical h4 { color: var(--ic-blue); }
+
+.system-card {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  margin: 4px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+.system-salesforce { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-snowflake { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-workato { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-netsuite { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+.system-fivetran { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-stripe { background: var(--orange-bg); color: #635BFF; border: 1px solid #635BFF; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.9em;
+}
+th {
+  background: var(--ic-navy);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) { background: #F7F8FA; }
+
+code {
+  background: #EFF1F5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+pre {
+  background: #0D1117;
+  color: #cdd6f4;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.diagram-container {
+  text-align: center;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+.callout {
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 12px 0;
+  font-size: 0.92em;
+}
+.callout-info { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); }
+.callout-warn { background: var(--orange-bg); border-left: 4px solid var(--orange); }
+.callout-success { background: var(--green-bg); border-left: 4px solid var(--green); }
+
+details {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ic-blue);
+}
+details[open] summary { margin-bottom: 10px; }
+
+footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-bottom: 3px solid var(--ic-blue); }
+  body { padding: 24px; }
+  .two-layer { grid-template-columns: 1fr; }
+}
+
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; background: white; }
+  section { box-shadow: none; break-inside: avoid; border: 1px solid #ddd; }
+  .meta-header { background: var(--ic-blue) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2 { break-before: auto; }
+}
 </style>
 </head>
 <body>
@@ -174,6 +324,43 @@
     <h3>Contents</h3>
     <div class="recipe-id">Rec 1.01 | ID: 54665259</div>
   </div>
+  <ul>
+    <li><a href="#exec-summary" data-section="exec-summary"><span class="toc-number">1.</span>Executive Summary</a></li>
+    <li><a href="#business-overview" data-section="business-overview"><span class="toc-number">2.</span>Business Overview</a></li>
+    <li><a href="#system-overview" data-section="system-overview"><span class="toc-number">3.</span>System Overview</a></li>
+    <li><a href="#architecture-overview" data-section="architecture-overview"><span class="toc-number">4.</span>Architecture Overview</a></li>
+    <li><a href="#architecture-diagram" data-section="architecture-diagram"><span class="toc-number">5.</span>Architecture Diagram</a></li>
+    <li><a href="#e2e-flow" data-section="e2e-flow"><span class="toc-number">6.</span>End-to-End Flow</a></li>
+    <li><a href="#processing-stages" data-section="processing-stages"><span class="toc-number">7.</span>Processing Stages</a></li>
+    <li><a href="#component-overview" data-section="component-overview"><span class="toc-number">8.</span>Component Overview</a></li>
+    <li><a href="#business-logic" data-section="business-logic"><span class="toc-number">9.</span>Key Business Logic</a></li>
+    <li><a href="#data-model" data-section="data-model"><span class="toc-number">10.</span>Data Model</a></li>
+    <li><a href="#edge-cases" data-section="edge-cases"><span class="toc-number">11.</span>Edge Cases</a></li>
+    <li><a href="#operational-notes" data-section="operational-notes"><span class="toc-number">12.</span>Operational Notes</a></li>
+  </ul>
+</nav>
+
+<!-- BACK TO INDEX -->
+<!-- Back to Index -->
+<a href="index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:var(--ic-navy);color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.2);transition:background 0.15s ease;" onmouseover="this.style.background='#286EFA'" onmouseout="this.style.background='#131320'">&#8592; Back to Index</a>
+
+<!-- Fixed Left Sidebar TOC -->
+<nav id="toc">
+  <div class="toc-brand">
+    <svg width="32" height="32" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="28" height="28" rx="7" fill="#286EFA"/>
+      <rect x="7" y="8" width="14" height="2" rx="1" fill="white"/>
+      <rect x="7" y="13" width="14" height="2" rx="1" fill="white"/>
+      <rect x="7" y="18" width="14" height="2" rx="1" fill="white"/>
+      <rect x="18" y="20" width="4" height="4" rx="1" fill="white"/>
+    </svg>
+    <div class="toc-brand-text">
+      <span class="brand-title">Intercom</span>
+      <span class="brand-sub">Enterprise Systems</span>
+    </div>
+  </div>
+  <h3>Navigation</h3>
+
   <ul>
     <li><a href="#exec-summary" data-section="exec-summary"><span class="toc-number">1.</span>Executive Summary</a></li>
     <li><a href="#business-overview" data-section="business-overview"><span class="toc-number">2.</span>Business Overview</a></li>
