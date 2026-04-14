@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rec 1.01 - Customer Master Recipe By Customer ID | Integration Documentation v3</title>
+<style>
+:root {
+  /* Intercom brand — light cream aesthetic */
+  --ic-cream: #F4F3ED;
+  --ic-warm-white: #FEFDFB;
+  --ic-dark: #16100E;
+  --ic-blue: #334BFA;
+  --ic-blue-bg: #DCE1F9;
+  --ic-green: #0F7134;
+  --ic-green-bg: #D7EFDC;
+  --ic-orange-accent: #B24D00;
+  --ic-orange-bg: #FFEBDB;
+  --ic-red: #DF2020;
+  --ic-red-bg: #FFDBDB;
+  /* System-specific brand colors */
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --green: #2E7D32;
+  --sf-blue: #0070d2;
+  --gray: #9E9E9E;
+  --orange-bg: #FFF5E6;
+  --blue-bg: #E8F4FD;
+  --green-bg: #E8F5E9;
+  --sf-bg: #E6F0FA;
+  --gray-bg: #F5F5F5;
+  --text-primary: #1A1A1A;
+  --text-secondary: #737373;
+  --border: #E6E6E6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  background: var(--ic-cream);
+}
+
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 0 0 20px 0;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04);
+  border-right: 1px solid var(--border);
+  z-index: 1000;
+}
+nav#toc .toc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+nav#toc .toc-brand svg { flex-shrink: 0; }
+nav#toc .toc-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+nav#toc .toc-brand-text .brand-title {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ic-dark);
+  letter-spacing: -0.02em;
+}
+nav#toc .toc-brand-text .brand-sub {
+  font-size: 0.68em;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+nav#toc h3 {
+  font-size: 0.7em;
+  color: var(--text-secondary);
+  margin: 12px 18px 8px;
+  padding: 0;
+  border-bottom: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+nav#toc a {
+  color: #1A1A1A;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.82em;
+  display: block;
+  padding: 6px 18px;
+  border-radius: 0;
+  transition: all 0.15s ease;
+  margin: 0;
+  border-left: 3px solid transparent;
+}
+nav#toc a:hover { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: rgba(51,75,250,0.3); }
+nav#toc a.active { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: var(--ic-blue); font-weight: 600; }
+
+.main-content { max-width: 1100px; }
+
+h1 {
+  font-size: 2em;
+  color: var(--ic-dark);
+  margin-bottom: 8px;
+  border-bottom: 3px solid var(--ic-blue);
+  padding-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: 1.5em;
+  color: var(--ic-dark);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ic-blue-bg);
+  letter-spacing: -0.02em;
+}
+h3 {
+  font-size: 1.15em;
+  color: var(--text-primary);
+  margin: 24px 0 10px;
+  letter-spacing: -0.01em;
+}
+h4 {
+  font-size: 1em;
+  color: var(--text-secondary);
+  margin: 16px 0 8px;
+}
+
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 24px; }
+li { margin-bottom: 6px; }
+
+.meta-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.meta-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.meta-header h1 { color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative; }
+.meta-header .meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 12px;
+  font-size: 0.9em;
+  opacity: 0.9;
+  position: relative;
+}
+.meta-header .meta-info span { display: flex; align-items: center; gap: 6px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-active { background: var(--ic-green-bg); color: var(--ic-green); }
+.badge-stopped { background: var(--gray); color: white; }
+.badge-e2e { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+.badge-arch { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+section {
+  background: white;
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+
+.two-layer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 16px 0;
+}
+.layer-box {
+  padding: 16px 20px;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+.layer-business { background: var(--blue-bg); border-color: var(--blue); }
+.layer-technical { background: var(--ic-blue-bg); border-color: var(--ic-blue); }
+.layer-box h4 { margin-top: 0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+.layer-business h4 { color: var(--blue); }
+.layer-technical h4 { color: var(--ic-blue); }
+
+.system-card {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  margin: 4px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+.system-salesforce { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-snowflake { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-workato { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-netsuite { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+.system-fivetran { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-stripe { background: var(--orange-bg); color: #635BFF; border: 1px solid #635BFF; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.9em;
+  border-radius: 6px;
+  overflow: hidden;
+}
+th {
+  background: var(--ic-dark);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) { background: var(--ic-cream); }
+
+code {
+  background: #F4F3ED;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+pre {
+  background: var(--ic-dark);
+  color: #E6E1DC;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.diagram-container {
+  text-align: center;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+.callout {
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin: 12px 0;
+  font-size: 0.92em;
+}
+.callout-info { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); }
+.callout-warn { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); }
+.callout-success { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); }
+
+details {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ic-blue);
+}
+details[open] summary { margin-bottom: 10px; }
+
+footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  body { padding: 24px; }
+  .two-layer { grid-template-columns: 1fr; }
+}
+
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; background: white; }
+  section { box-shadow: none; break-inside: avoid; border: 1px solid #ddd; }
+  .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2 { break-before: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- FIXED LEFT SIDEBAR TOC -->
+<nav class="sidebar-toc">
+  <div class="toc-header">
+    <h3>Contents</h3>
+    <div class="recipe-id">Rec 1.01 | ID: 54665259</div>
+  </div>
+  <ul>
+    <li><a href="#exec-summary" data-section="exec-summary"><span class="toc-number">1.</span>Executive Summary</a></li>
+    <li><a href="#business-overview" data-section="business-overview"><span class="toc-number">2.</span>Business Overview</a></li>
+    <li><a href="#system-overview" data-section="system-overview"><span class="toc-number">3.</span>System Overview</a></li>
+    <li><a href="#architecture-overview" data-section="architecture-overview"><span class="toc-number">4.</span>Architecture Overview</a></li>
+    <li><a href="#architecture-diagram" data-section="architecture-diagram"><span class="toc-number">5.</span>Architecture Diagram</a></li>
+    <li><a href="#e2e-flow" data-section="e2e-flow"><span class="toc-number">6.</span>End-to-End Flow</a></li>
+    <li><a href="#processing-stages" data-section="processing-stages"><span class="toc-number">7.</span>Processing Stages</a></li>
+    <li><a href="#component-overview" data-section="component-overview"><span class="toc-number">8.</span>Component Overview</a></li>
+    <li><a href="#business-logic" data-section="business-logic"><span class="toc-number">9.</span>Key Business Logic</a></li>
+    <li><a href="#data-model" data-section="data-model"><span class="toc-number">10.</span>Data Model</a></li>
+    <li><a href="#edge-cases" data-section="edge-cases"><span class="toc-number">11.</span>Edge Cases</a></li>
+    <li><a href="#operational-notes" data-section="operational-notes"><span class="toc-number">12.</span>Operational Notes</a></li>
+  </ul>
+</nav>
+
+<!-- BACK TO INDEX -->
+<!-- Back to Index -->
+<a href="index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#16100E;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#334BFA'" onmouseout="this.style.background='#16100E'">&#8592; Back to Index</a>
+
+<!-- Fixed Left Sidebar TOC -->
+<nav id="toc">
+  <div class="toc-brand">
+    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#000000"/>
+      <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="toc-brand-text">
+      <span class="brand-title">Intercom</span>
+      <span class="brand-sub">Enterprise Systems</span>
+    </div>
+  </div>
+  <h3>Navigation</h3>
+
+  <ul>
+    <li><a href="#exec-summary" data-section="exec-summary"><span class="toc-number">1.</span>Executive Summary</a></li>
+    <li><a href="#business-overview" data-section="business-overview"><span class="toc-number">2.</span>Business Overview</a></li>
+    <li><a href="#system-overview" data-section="system-overview"><span class="toc-number">3.</span>System Overview</a></li>
+    <li><a href="#architecture-overview" data-section="architecture-overview"><span class="toc-number">4.</span>Architecture Overview</a></li>
+    <li><a href="#architecture-diagram" data-section="architecture-diagram"><span class="toc-number">5.</span>Architecture Diagram</a></li>
+    <li><a href="#e2e-flow" data-section="e2e-flow"><span class="toc-number">6.</span>End-to-End Flow</a></li>
+    <li><a href="#processing-stages" data-section="processing-stages"><span class="toc-number">7.</span>Processing Stages</a></li>
+    <li><a href="#component-overview" data-section="component-overview"><span class="toc-number">8.</span>Component Overview</a></li>
+    <li><a href="#business-logic" data-section="business-logic"><span class="toc-number">9.</span>Key Business Logic</a></li>
+    <li><a href="#data-model" data-section="data-model"><span class="toc-number">10.</span>Data Model</a></li>
+    <li><a href="#edge-cases" data-section="edge-cases"><span class="toc-number">11.</span>Edge Cases</a></li>
+    <li><a href="#operational-notes" data-section="operational-notes"><span class="toc-number">12.</span>Operational Notes</a></li>
+  </ul>
+</nav>
+
+<!-- BACK TO INDEX -->
+<a href="index.html" class="back-to-index">&#8592; Back to Index</a>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Rec 1.01 - Customer Master Recipe By Customer ID</h1>
+  <div class="subtitle">Workato Integration Documentation &mdash; NetSuite ARM Customer Sync (v3)</div>
+  <div class="meta">
+    <span>Recipe ID: 54665259</span>
+    <span>Status: <span class="badge badge-active">Active / Running</span></span>
+    <span>Author: venkatesh.manohar</span>
+    <span>Created: 2024-10-10</span>
+    <span>Last Run: 2026-04-01</span>
+    <span>Generated: 2026-04-01</span>
+  </div>
+</div>
+
+<!-- 1. EXECUTIVE SUMMARY -->
+<div class="section" id="exec-summary">
+  <h2>1. Executive Summary</h2>
+  <p><strong>Rec 1.01 - Customer Master Recipe By Customer ID</strong> is a Workato recipe function that synchronizes customer records from Snowflake to NetSuite. It is a core building block of the NetSuite ARM (Accounts Receivable Management) integration, invoked by upstream recipes whenever a customer record must exist in NetSuite before processing sales orders, invoices, or credit memos.</p>
+  <p>The recipe accepts a <code>customer_id</code> parameter, queries the <code>SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_CUSTOMER</code> staging table in Snowflake, and for each matching row calls a child recipe function (<strong>RF 1.0 Create/Update Customer</strong>, ID: 54251831) that upserts the customer into NetSuite, manages multi-subsidiary relationships, and logs results back via Fivetran.</p>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="value">178,479</div><div class="label">Successful Jobs</div></div>
+    <div class="stat-card"><div class="value">2</div><div class="label">Failed Jobs</div></div>
+    <div class="stat-card"><div class="value">99.999%</div><div class="label">Success Rate</div></div>
+    <div class="stat-card"><div class="value">355,786</div><div class="label">Lifetime Task Count</div></div>
+    <div class="stat-card"><div class="value">v7</div><div class="label">Recipe Version</div></div>
+    <div class="stat-card"><div class="value">On-Demand</div><div class="label">Trigger Mode</div></div>
+  </div>
+</div>
+
+<!-- 2. BUSINESS OVERVIEW -->
+<div class="section" id="business-overview">
+  <h2>2. Business Overview</h2>
+  <h3>Purpose</h3>
+  <p>Intercom's Order-to-Cash (OTC) pipeline requires every customer that will appear on a Sales Order, Invoice, or Credit Memo in NetSuite to first have a corresponding Customer record. This recipe ensures that requirement is met by creating or updating the NetSuite Customer record on-demand, driven by data staged in Snowflake from upstream Stripe, Salesforce, and billing systems.</p>
+
+  <h3>Business Context</h3>
+  <ul>
+    <li><strong>Revenue Recognition:</strong> Accurate customer records are a prerequisite for NetSuite ASC-606 revenue recognition schedules.</li>
+    <li><strong>Multi-subsidiary Support:</strong> Intercom operates through multiple legal entities (US, IE). The integration automatically creates subsidiary relationships when a customer transacts across subsidiaries.</li>
+    <li><strong>Billing Accuracy:</strong> Customer billing addresses, payment terms, and currency are synchronized to ensure invoices are correct.</li>
+    <li><strong>Audit Trail:</strong> Every create/update is logged back to Snowflake via Workato Logs + Fivetran, maintaining a complete integration audit trail.</li>
+  </ul>
+
+  <h3>Stakeholders</h3>
+  <table>
+    <tr><th>Team</th><th>Role</th></tr>
+    <tr><td>Finance / Revenue Accounting</td><td>Primary business owner; relies on accurate customer records for revenue recognition</td></tr>
+    <tr><td>Finance Systems Engineering</td><td>Technical owner; maintains the integration (diana.sy, danny.mcgean, nan.lu)</td></tr>
+    <tr><td>Billing Operations</td><td>Upstream data provider; manages Stripe customer/subscription data</td></tr>
+    <tr><td>Sales Operations</td><td>Provides Salesforce Account IDs linked to customers</td></tr>
+  </table>
+</div>
+
+<!-- 3. SYSTEM OVERVIEW -->
+<div class="section" id="system-overview">
+  <h2>3. System Overview</h2>
+  <h3>Connected Systems</h3>
+  <div style="margin: 12px 0;">
+    <span class="system-tag tag-snowflake">Snowflake</span>
+    <span class="system-tag tag-netsuite">NetSuite</span>
+    <span class="system-tag tag-workato">Workato</span>
+    <span class="system-tag tag-fivetran">Fivetran</span>
+    <span class="system-tag tag-stripe">Stripe (upstream)</span>
+    <span class="system-tag tag-salesforce">Salesforce (upstream)</span>
+  </div>
+
+  <table>
+    <tr><th>System</th><th>Role</th><th>Connection Details</th></tr>
+    <tr><td><span class="system-tag tag-snowflake">Snowflake</span></td><td>Source of truth for customer staging data; stores integration logs</td><td>INTERCOM_PROD / SHARED_EXTERNAL_WORKATO schema; Account ID 13171882</td></tr>
+    <tr><td><span class="system-tag tag-netsuite">NetSuite</span></td><td>Target ERP system; customer records are upserted here</td><td>Upsert Customer, Search Customer Subsidiary Relationships, Add/Update objects</td></tr>
+    <tr><td><span class="system-tag tag-workato">Workato</span></td><td>Integration orchestrator; recipe functions, lookup tables, logging</td><td>Recipe Function trigger; Lookup Table "Integration Tracker- SB" (ID: 3347261)</td></tr>
+    <tr><td><span class="system-tag tag-fivetran">Fivetran</span></td><td>Reverse ETL; picks up Workato Logs and writes integration results back to Snowflake</td><td>Scheduled sync of Workato log data into Snowflake staging tables</td></tr>
+    <tr><td><span class="system-tag tag-stripe">Stripe</span></td><td>Upstream billing system; provides customer_id (external_id) and billing data</td><td>Data flows through dbt models into NETSUITE_EXPORT_CUSTOMER</td></tr>
+    <tr><td><span class="system-tag tag-salesforce">Salesforce</span></td><td>Upstream CRM; provides Salesforce Account ID linked to customer</td><td>SALESFORCE_ID column in staging table</td></tr>
+  </table>
+</div>
+
+<!-- 4. ARCHITECTURE OVERVIEW -->
+<div class="section" id="architecture-overview">
+  <h2>4. Architecture Overview</h2>
+  <p>The architecture follows a <strong>hub-and-spoke</strong> pattern with Snowflake as the central data hub and Workato as the orchestration layer:</p>
+  <ol>
+    <li><strong>Data Staging (Snowflake):</strong> Upstream dbt models aggregate customer data from Stripe, Salesforce, and billing systems into <code>NETSUITE_EXPORT_CUSTOMER</code>.</li>
+    <li><strong>Orchestration (Workato):</strong> A scheduled master recipe (0.0) triggers the pipeline 4x daily. Downstream recipes call Rec 1.01 on-demand when customer records are needed before processing sales orders or CBAs.</li>
+    <li><strong>Processing (Workato &rarr; NetSuite):</strong> RF 1.0 upserts the customer, manages subsidiary relationships, and logs results.</li>
+    <li><strong>Feedback Loop (Fivetran &rarr; Snowflake):</strong> Workato Logs are synced back to Snowflake via Fivetran, updating staging rows with NetSuite Internal IDs, error messages, and timestamps.</li>
+  </ol>
+  <div class="callout">
+    <strong>Key Design Decision:</strong> This recipe is a <em>callable function</em>, not a standalone scheduled recipe. It is invoked synchronously by RF 3.0 (Sales Orders) and RF 8.0 (CBAs) whenever they detect a customer that does not yet exist in NetSuite, ensuring just-in-time customer creation.
+  </div>
+</div>
+
+<!-- 5. ARCHITECTURE DIAGRAM (SVG 1 of 3) -->
+<div class="section" id="architecture-diagram">
+  <h2>5. Architecture Diagram</h2>
+  <div class="svg-container">
+    <svg viewBox="0 0 1200 820" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+        </marker>
+        <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/>
+        </marker>
+        <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
+        </marker>
+        <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/>
+        </marker>
+      </defs>
+
+      <!-- Column Headers -->
+      <rect x="10" y="10" width="280" height="50" rx="8" fill="#F5A623"/>
+      <text x="150" y="42" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Source Systems</text>
+
+      <rect x="310" y="10" width="280" height="50" rx="8" fill="#29B5E8"/>
+      <text x="450" y="42" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Snowflake (Data Hub)</text>
+
+      <rect x="610" y="10" width="280" height="50" rx="8" fill="#6B4C9A"/>
+      <text x="750" y="42" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Workato (Orchestrator)</text>
+
+      <rect x="910" y="10" width="280" height="50" rx="8" fill="#2E7D32"/>
+      <text x="1050" y="42" text-anchor="middle" fill="white" font-size="16" font-weight="bold">NetSuite (Target ERP)</text>
+
+      <!-- Column Backgrounds -->
+      <rect x="10" y="70" width="280" height="740" rx="6" fill="#FFF5E6" opacity="0.4" stroke="#F5A623" stroke-width="1"/>
+      <rect x="310" y="70" width="280" height="740" rx="6" fill="#E8F4FD" opacity="0.4" stroke="#29B5E8" stroke-width="1"/>
+      <rect x="610" y="70" width="280" height="740" rx="6" fill="#F0EBF8" opacity="0.4" stroke="#6B4C9A" stroke-width="1"/>
+      <rect x="910" y="70" width="280" height="740" rx="6" fill="#E8F5E9" opacity="0.4" stroke="#2E7D32" stroke-width="1"/>
+
+      <!-- Source Systems -->
+      <rect x="30" y="100" width="240" height="60" rx="6" fill="white" stroke="#F5A623" stroke-width="2"/>
+      <text x="150" y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="#c47a00">Stripe</text>
+      <text x="150" y="145" text-anchor="middle" font-size="11" fill="#666">Customer &amp; Billing Data</text>
+
+      <rect x="30" y="180" width="240" height="60" rx="6" fill="white" stroke="#F5A623" stroke-width="2"/>
+      <text x="150" y="205" text-anchor="middle" font-size="13" font-weight="bold" fill="#c47a00">Salesforce</text>
+      <text x="150" y="225" text-anchor="middle" font-size="11" fill="#666">Account &amp; Opportunity Data</text>
+
+      <rect x="30" y="260" width="240" height="60" rx="6" fill="white" stroke="#F5A623" stroke-width="2"/>
+      <text x="150" y="285" text-anchor="middle" font-size="13" font-weight="bold" fill="#c47a00">Intercom Billing</text>
+      <text x="150" y="305" text-anchor="middle" font-size="11" fill="#666">Subscription &amp; Plan Data</text>
+
+      <!-- Snowflake -->
+      <rect x="330" y="100" width="240" height="55" rx="6" fill="white" stroke="#29B5E8" stroke-width="2"/>
+      <text x="450" y="122" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a8bb5">dbt Models</text>
+      <text x="450" y="142" text-anchor="middle" font-size="10" fill="#666">Staging / Transformation</text>
+
+      <rect x="330" y="175" width="240" height="70" rx="6" fill="white" stroke="#29B5E8" stroke-width="2"/>
+      <text x="450" y="197" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a8bb5">NETSUITE_EXPORT_CUSTOMER</text>
+      <text x="450" y="215" text-anchor="middle" font-size="10" fill="#666">32 columns | external_id key</text>
+      <text x="450" y="233" text-anchor="middle" font-size="10" fill="#666">SHARED_EXTERNAL_WORKATO</text>
+
+      <rect x="330" y="500" width="240" height="55" rx="6" fill="white" stroke="#29B5E8" stroke-width="2"/>
+      <text x="450" y="522" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a8bb5">Workato Logs (via Fivetran)</text>
+      <text x="450" y="540" text-anchor="middle" font-size="10" fill="#666">Integration Audit Trail</text>
+
+      <!-- Workato -->
+      <rect x="630" y="100" width="240" height="55" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="750" y="120" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">0.0 Scheduled Master</text>
+      <text x="750" y="138" text-anchor="middle" font-size="10" fill="#666">Cron: 5:30, 10:30, 15:30, 20:30</text>
+
+      <rect x="630" y="175" width="240" height="55" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="750" y="195" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 3.0 Sales Order</text>
+      <text x="750" y="213" text-anchor="middle" font-size="10" fill="#666">Calls 1.01 for customer ensure</text>
+
+      <rect x="630" y="250" width="240" height="55" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="750" y="270" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 8.0 Create CBA</text>
+      <text x="750" y="288" text-anchor="middle" font-size="10" fill="#666">Calls 1.01 for customer ensure</text>
+
+      <rect x="630" y="340" width="240" height="70" rx="6" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="3"/>
+      <text x="750" y="362" text-anchor="middle" font-size="13" font-weight="bold" fill="#6B4C9A">Rec 1.01 Customer Master</text>
+      <text x="750" y="380" text-anchor="middle" font-size="11" fill="#6B4C9A">ID: 54665259</text>
+      <text x="750" y="396" text-anchor="middle" font-size="10" fill="#666">Query SF + foreach row</text>
+
+      <rect x="630" y="435" width="240" height="60" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="750" y="457" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 1.0 Create/Update</text>
+      <text x="750" y="475" text-anchor="middle" font-size="10" fill="#666">ID: 54251831 | Upsert to NS</text>
+
+      <rect x="630" y="520" width="240" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="750" y="540" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Integration Tracker LUT</text>
+      <text x="750" y="555" text-anchor="middle" font-size="10" fill="#666">ID: 3347261 | Error Tracking</text>
+
+      <!-- NetSuite -->
+      <rect x="930" y="175" width="240" height="60" rx="6" fill="white" stroke="#2E7D32" stroke-width="2"/>
+      <text x="1050" y="198" text-anchor="middle" font-size="13" font-weight="bold" fill="#2E7D32">Customer Record</text>
+      <text x="1050" y="220" text-anchor="middle" font-size="10" fill="#666">Upsert via External ID</text>
+
+      <rect x="930" y="260" width="240" height="55" rx="6" fill="white" stroke="#2E7D32" stroke-width="2"/>
+      <text x="1050" y="283" text-anchor="middle" font-size="13" font-weight="bold" fill="#2E7D32">Subsidiary Relationship</text>
+      <text x="1050" y="300" text-anchor="middle" font-size="10" fill="#666">Cross-entity linkage</text>
+
+      <rect x="930" y="340" width="240" height="55" rx="6" fill="white" stroke="#2E7D32" stroke-width="2"/>
+      <text x="1050" y="363" text-anchor="middle" font-size="13" font-weight="bold" fill="#2E7D32">Sales Orders</text>
+      <text x="1050" y="380" text-anchor="middle" font-size="10" fill="#666">Depend on Customer existing</text>
+
+      <rect x="930" y="420" width="240" height="55" rx="6" fill="white" stroke="#2E7D32" stroke-width="2"/>
+      <text x="1050" y="443" text-anchor="middle" font-size="13" font-weight="bold" fill="#2E7D32">Invoices / Credit Memos</text>
+      <text x="1050" y="460" text-anchor="middle" font-size="10" fill="#666">Depend on Customer existing</text>
+
+      <!-- Arrows: Source -> Snowflake -->
+      <line x1="270" y1="130" x2="328" y2="125" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="270" y1="210" x2="328" y2="210" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="270" y1="290" x2="328" y2="230" stroke="#F5A623" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Arrow: dbt -> staging table -->
+      <line x1="450" y1="155" x2="450" y2="173" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+      <!-- Arrow: Snowflake -> Rec 1.01 -->
+      <line x1="570" y1="210" x2="628" y2="365" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+      <text x="585" y="280" font-size="10" fill="#29B5E8" transform="rotate(55, 585, 280)">SQL Query</text>
+
+      <!-- Arrows: Master -> RF 3.0 -->
+      <line x1="750" y1="155" x2="750" y2="173" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+      <!-- Arrows: RF 3.0, RF 8.0 -> Rec 1.01 -->
+      <line x1="750" y1="230" x2="750" y2="338" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <text x="758" y="295" font-size="10" fill="#6B4C9A">call_recipe (sync)</text>
+      <line x1="780" y1="305" x2="760" y2="338" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+      <!-- Arrow: Rec 1.01 -> RF 1.0 -->
+      <line x1="750" y1="410" x2="750" y2="433" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <text x="758" y="425" font-size="10" fill="#6B4C9A">foreach row</text>
+
+      <!-- Arrow: RF 1.0 -> NetSuite Customer -->
+      <line x1="870" y1="460" x2="928" y2="210" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow-green)"/>
+      <text x="905" y="330" font-size="10" fill="#2E7D32" transform="rotate(-45, 905, 330)">Upsert</text>
+
+      <!-- Arrow: RF 1.0 -> Subsidiary -->
+      <line x1="870" y1="470" x2="928" y2="285" stroke="#2E7D32" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-green)"/>
+
+      <!-- Arrow: RF 1.0 -> Workato Logs -> Snowflake -->
+      <line x1="750" y1="495" x2="750" y2="518" stroke="#6B4C9A" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
+      <line x1="628" y1="540" x2="572" y2="530" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-blue)"/>
+      <text x="600" y="555" font-size="10" fill="#9E9E9E">Fivetran sync</text>
+
+      <!-- Error path -->
+      <path d="M 700 410 Q 690 480 700 520" stroke="#e53935" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+      <text x="680" y="480" font-size="9" fill="#e53935">on error</text>
+
+      <!-- Legend -->
+      <rect x="30" y="720" width="240" height="80" rx="6" fill="white" stroke="#dee2e6" stroke-width="1"/>
+      <text x="45" y="740" font-size="11" font-weight="bold" fill="#333">Legend</text>
+      <line x1="45" y1="755" x2="85" y2="755" stroke="#555" stroke-width="2"/>
+      <text x="90" y="759" font-size="10" fill="#666">Synchronous call</text>
+      <line x1="45" y1="773" x2="85" y2="773" stroke="#555" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="90" y="777" font-size="10" fill="#666">Async / feedback loop</text>
+      <line x1="45" y1="791" x2="85" y2="791" stroke="#e53935" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="90" y="795" font-size="10" fill="#666">Error path</text>
+    </svg>
+  </div>
+</div>
+
+<!-- 6. END-TO-END FLOW + DATA FLOW DIAGRAM (SVG 2 of 3) -->
+<div class="section" id="e2e-flow">
+  <h2>6. End-to-End Flow</h2>
+
+  <h3>Flow Narrative</h3>
+  <ol>
+    <li><strong>Scheduled Trigger:</strong> The root recipe <em>0.0 Scheduled Master</em> (ID: 58628330) fires at 05:30, 10:30, 15:30, and 20:30 Pacific daily via cron.</li>
+    <li><strong>Upstream Pipeline:</strong> The master recipe calls Rec 2.0 (Items), Rec 3.0 (Sales Orders), and an async invoice/credit memo pipeline. Both Rec 3.0 and RF 8.0 (CBA) call Rec 1.01 synchronously when they need to ensure a customer exists in NetSuite.</li>
+    <li><strong>Customer Lookup:</strong> Rec 1.01 receives a <code>customer_id</code> and queries Snowflake: <code>SELECT * FROM NETSUITE_EXPORT_CUSTOMER WHERE external_id = :customer_id</code>.</li>
+    <li><strong>Row Iteration:</strong> For each row returned (typically 1), Rec 1.01 calls RF 1.0 passing all customer fields (name, address, subsidiary, Salesforce ID, billing info, terms, etc.).</li>
+    <li><strong>NetSuite Upsert:</strong> RF 1.0 upserts the customer in NetSuite using the External ID. If the customer already exists, it updates; otherwise, it creates.</li>
+    <li><strong>Subsidiary Management:</strong> RF 1.0 searches for existing subsidiary relationships. If none exists for the current subsidiary, it creates one.</li>
+    <li><strong>Logging:</strong> RF 1.0 logs the result (success or error) to Workato Logs, which Fivetran syncs back to Snowflake for auditability.</li>
+    <li><strong>Error Handling:</strong> If the master recipe (Rec 1.01) itself fails, the catch block updates the Integration Tracker lookup table with the failure timestamp.</li>
+  </ol>
+
+  <h3>Data Flow Diagram</h3>
+  <div class="svg-container">
+    <svg viewBox="0 0 1200 460" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+      <defs>
+        <marker id="df-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+        </marker>
+        <marker id="df-arrow-fin" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#2196F3"/>
+        </marker>
+        <marker id="df-arrow-cust" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#FF9800"/>
+        </marker>
+        <marker id="df-arrow-audit" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#9E9E9E"/>
+        </marker>
+      </defs>
+
+      <!-- Data Type Legend -->
+      <rect x="20" y="10" width="350" height="30" rx="4" fill="#f8f9fa" stroke="#dee2e6"/>
+      <circle cx="40" cy="25" r="6" fill="#FF9800"/><text x="52" y="29" font-size="11" fill="#666">Customer Data</text>
+      <circle cx="170" cy="25" r="6" fill="#2196F3"/><text x="182" y="29" font-size="11" fill="#666">Financial Data</text>
+      <circle cx="290" cy="25" r="6" fill="#9E9E9E"/><text x="302" y="29" font-size="11" fill="#666">Audit Data</text>
+
+      <!-- Stage 1: Source Systems -->
+      <rect x="20" y="60" width="160" height="50" rx="6" fill="white" stroke="#FF9800" stroke-width="2"/>
+      <text x="100" y="82" text-anchor="middle" font-size="12" font-weight="bold" fill="#E65100">Stripe</text>
+      <text x="100" y="99" text-anchor="middle" font-size="10" fill="#666">customer_id, billing</text>
+
+      <rect x="20" y="125" width="160" height="50" rx="6" fill="white" stroke="#FF9800" stroke-width="2"/>
+      <text x="100" y="147" text-anchor="middle" font-size="12" font-weight="bold" fill="#1565C0">Salesforce</text>
+      <text x="100" y="164" text-anchor="middle" font-size="10" fill="#666">account_id, name</text>
+
+      <!-- Arrow: Sources -> dbt -->
+      <line x1="180" y1="85" x2="218" y2="105" stroke="#FF9800" stroke-width="2" marker-end="url(#df-arrow-cust)"/>
+      <line x1="180" y1="150" x2="218" y2="120" stroke="#FF9800" stroke-width="2" marker-end="url(#df-arrow-cust)"/>
+
+      <!-- Stage 2: dbt Transform -->
+      <rect x="220" y="80" width="150" height="65" rx="6" fill="white" stroke="#29B5E8" stroke-width="2"/>
+      <text x="295" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a8bb5">dbt Models</text>
+      <text x="295" y="118" text-anchor="middle" font-size="10" fill="#666">Merge, deduplicate</text>
+      <text x="295" y="134" text-anchor="middle" font-size="10" fill="#666">Enrich with subsidiary</text>
+
+      <!-- Arrow: dbt -> Staging Table -->
+      <line x1="370" y1="112" x2="408" y2="112" stroke="#FF9800" stroke-width="2" marker-end="url(#df-arrow-cust)"/>
+
+      <!-- Stage 3: Staging Table -->
+      <rect x="410" y="70" width="180" height="85" rx="6" fill="#E8F4FD" stroke="#29B5E8" stroke-width="2"/>
+      <text x="500" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a8bb5">NETSUITE_EXPORT_</text>
+      <text x="500" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a8bb5">CUSTOMER</text>
+      <text x="500" y="125" text-anchor="middle" font-size="10" fill="#666">external_id, customer_name</text>
+      <text x="500" y="140" text-anchor="middle" font-size="10" fill="#666">subsidiary, billing addr, terms</text>
+
+      <!-- Arrow: Staging -> Rec 1.01 -->
+      <line x1="590" y1="112" x2="628" y2="112" stroke="#FF9800" stroke-width="2" marker-end="url(#df-arrow-cust)"/>
+      <text x="609" y="105" font-size="9" fill="#FF9800">SQL</text>
+
+      <!-- Stage 4: Rec 1.01 -->
+      <rect x="630" y="80" width="150" height="65" rx="6" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="705" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Rec 1.01</text>
+      <text x="705" y="118" text-anchor="middle" font-size="10" fill="#666">foreach customer row</text>
+      <text x="705" y="134" text-anchor="middle" font-size="10" fill="#666">call RF 1.0</text>
+
+      <!-- Arrow: Rec 1.01 -> RF 1.0 -->
+      <line x1="780" y1="112" x2="818" y2="112" stroke="#FF9800" stroke-width="2" marker-end="url(#df-arrow-cust)"/>
+
+      <!-- Stage 5: RF 1.0 -->
+      <rect x="820" y="65" width="160" height="95" rx="6" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="900" y="87" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 1.0</text>
+      <text x="900" y="103" text-anchor="middle" font-size="10" fill="#666">Upsert Customer</text>
+      <text x="900" y="118" text-anchor="middle" font-size="10" fill="#666">Manage Subsidiaries</text>
+      <text x="900" y="133" text-anchor="middle" font-size="10" fill="#666">Log Results</text>
+      <text x="900" y="148" text-anchor="middle" font-size="9" fill="#999">ID: 54251831</text>
+
+      <!-- Arrow: RF 1.0 -> NetSuite -->
+      <line x1="980" y1="100" x2="1018" y2="100" stroke="#FF9800" stroke-width="2" marker-end="url(#df-arrow-cust)"/>
+
+      <!-- Stage 6: NetSuite -->
+      <rect x="1020" y="70" width="160" height="85" rx="6" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+      <text x="1100" y="95" text-anchor="middle" font-size="13" font-weight="bold" fill="#2E7D32">NetSuite</text>
+      <text x="1100" y="113" text-anchor="middle" font-size="10" fill="#666">Customer Record</text>
+      <text x="1100" y="128" text-anchor="middle" font-size="10" fill="#666">Subsidiary Relations</text>
+      <text x="1100" y="143" text-anchor="middle" font-size="10" fill="#2E7D32">Internal ID returned</text>
+
+      <!-- Feedback / Audit Flow -->
+      <rect x="820" y="210" width="160" height="50" rx="6" fill="white" stroke="#9E9E9E" stroke-width="2"/>
+      <text x="900" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#666">Workato Logs</text>
+      <text x="900" y="249" text-anchor="middle" font-size="10" fill="#999">NS ID, errors, timestamps</text>
+
+      <line x1="900" y1="160" x2="900" y2="208" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#df-arrow-audit)"/>
+      <text x="908" y="185" font-size="9" fill="#9E9E9E">log_message</text>
+
+      <rect x="560" y="210" width="160" height="50" rx="6" fill="white" stroke="#9E9E9E" stroke-width="2"/>
+      <text x="640" y="232" text-anchor="middle" font-size="12" font-weight="bold" fill="#E65100">Fivetran</text>
+      <text x="640" y="249" text-anchor="middle" font-size="10" fill="#999">Scheduled sync</text>
+
+      <line x1="818" y1="235" x2="722" y2="235" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#df-arrow-audit)"/>
+
+      <rect x="310" y="210" width="180" height="50" rx="6" fill="white" stroke="#9E9E9E" stroke-width="2"/>
+      <text x="400" y="232" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a8bb5">Snowflake Audit</text>
+      <text x="400" y="249" text-anchor="middle" font-size="10" fill="#999">stg_workato_log</text>
+
+      <line x1="558" y1="235" x2="492" y2="235" stroke="#9E9E9E" stroke-width="1.5" marker-end="url(#df-arrow-audit)"/>
+
+      <!-- Data Fields -->
+      <rect x="20" y="300" width="1160" height="150" rx="8" fill="#fafbfc" stroke="#dee2e6"/>
+      <text x="40" y="325" font-size="14" font-weight="bold" fill="#333">Key Data Fields Transferred</text>
+
+      <text x="40" y="355" font-size="12" font-weight="bold" fill="#FF9800">Customer Identity</text>
+      <text x="40" y="372" font-size="11" fill="#666">external_id (Stripe customer ID), customer_name, salesforce_id, email, netsuite_internal_id</text>
+
+      <text x="40" y="397" font-size="12" font-weight="bold" fill="#2196F3">Financial / Billing</text>
+      <text x="40" y="414" font-size="11" fill="#666">subsidiary (US/IE), currency_id, primary_currency, terms, category, reseller, default_billing, default_shipping</text>
+
+      <text x="40" y="439" font-size="12" font-weight="bold" fill="#4CAF50">Address</text>
+      <text x="600" y="439" font-size="12" font-weight="bold" fill="#9E9E9E">Audit / Integration</text>
+      <text x="40" y="452" font-size="11" fill="#666">billing_address_1, billing_city/state/zip/country, shipping equivalents</text>
+      <text x="600" y="452" font-size="11" fill="#666">error_type, error_message, last_integration_date, status</text>
+    </svg>
+  </div>
+</div>
+
+<!-- 7. PROCESSING STAGES -->
+<div class="section" id="processing-stages">
+  <h2>7. Processing Stages</h2>
+
+  <h3>Stage 1: Trigger (Recipe Function Call)</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Trigger Type</td><td>Recipe Function (<code>workato_recipe_function.execute</code>)</td></tr>
+    <tr><td>Input Parameter</td><td><code>customer_id</code> (string, required)</td></tr>
+    <tr><td>Called By</td><td>RF 3.0 Create/Update Sales Order (54665270), RF 8.0 Create CBA (54665276)</td></tr>
+    <tr><td>Call Pattern</td><td>Synchronous &mdash; caller waits for completion</td></tr>
+  </table>
+
+  <h3>Stage 2: Snowflake Query</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Action</td><td><code>snowflake.search_rows</code></td></tr>
+    <tr><td>Table</td><td><code>SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_CUSTOMER</code></td></tr>
+    <tr><td>WHERE Clause</td><td><code>external_id = ':customer_id'</code></td></tr>
+    <tr><td>Limit</td><td>5,000 rows (safety cap)</td></tr>
+    <tr><td>Offset</td><td>0</td></tr>
+  </table>
+
+  <h3>Stage 3: Row Iteration</h3>
+  <p>A <code>foreach</code> loop iterates over each row returned by the Snowflake query. For each row, Rec 1.01 calls <strong>RF 1.0 Create/Update Customer</strong> (ID: 54251831) synchronously, passing all customer fields.</p>
+
+  <h4>Fields Passed to RF 1.0</h4>
+  <table>
+    <tr><th>RF 1.0 Parameter</th><th>Source Column</th><th>Required</th><th>Notes</th></tr>
+    <tr><td>ExternalID</td><td>external_id</td><td>Yes</td><td>Stripe customer ID; used as upsert key</td></tr>
+    <tr><td>CompanyName</td><td>customer_name</td><td>Yes</td><td>Falls back to external_id if name is blank</td></tr>
+    <tr><td>Subsidiary</td><td>subsidiary</td><td>Yes</td><td>US or IE legal entity</td></tr>
+    <tr><td>SFDCID</td><td>salesforce_id</td><td>No</td><td>Salesforce Account ID</td></tr>
+    <tr><td>Category</td><td>category</td><td>No</td><td>Customer category</td></tr>
+    <tr><td>Status</td><td>status</td><td>No</td><td>Customer status</td></tr>
+    <tr><td>Email</td><td>email</td><td>No</td><td>Primary contact email</td></tr>
+    <tr><td>BillingLabel</td><td>billing_label</td><td>No</td><td>Billing address label</td></tr>
+    <tr><td>BillingAddress1</td><td>billing_address_1</td><td>Yes</td><td>Street address</td></tr>
+    <tr><td>BillingCity</td><td>billing_city</td><td>Yes</td><td></td></tr>
+    <tr><td>BillingState</td><td>billing_state</td><td>Yes</td><td></td></tr>
+    <tr><td>BillingZipCode</td><td>billing_zip</td><td>Yes</td><td></td></tr>
+    <tr><td>BillingCountry</td><td>billing_country</td><td>Yes</td><td></td></tr>
+    <tr><td>Terms</td><td>terms</td><td>No</td><td>Payment terms (e.g., Net 30)</td></tr>
+    <tr><td>DefaultBilling</td><td>default_billing</td><td>No</td><td>Boolean flag</td></tr>
+    <tr><td>DefaultShipping</td><td>default_shipping</td><td>No</td><td>Boolean flag</td></tr>
+    <tr><td>netsuite_internal_id</td><td>netsuite_internal_id</td><td>No</td><td>Existing NS ID for updates</td></tr>
+    <tr><td>reseller</td><td>reseller</td><td>No</td><td>Reseller indicator</td></tr>
+  </table>
+
+  <h3>Stage 4: RF 1.0 Processing (Child Recipe)</h3>
+  <ol>
+    <li><strong>Upsert Customer:</strong> <code>netsuite.upsert_object</code> creates or updates the Customer record in NetSuite using External ID as the match key.</li>
+    <li><strong>Subsidiary Logic:</strong> Custom Ruby code determines if a subsidiary relationship is needed. A search checks existing relationships; if missing, <code>netsuite.add_object</code> creates one.</li>
+    <li><strong>Success Logging:</strong> A mapper formats the result, and <code>logger.log_message</code> writes it to Workato Logs (picked up by Fivetran).</li>
+    <li><strong>Error Handling:</strong> On error, the catch block distinguishes error types via conditional logic, formats an error log, and writes it to Workato Logs with error_type and error_message.</li>
+  </ol>
+
+  <h3>Stage 5: Error Handling (Rec 1.01 Level)</h3>
+  <p>If the overall recipe fails (e.g., Snowflake connectivity issue), the catch block:</p>
+  <ol>
+    <li>Searches the <strong>Integration Tracker</strong> lookup table (ID: 3347261) for the "Customer" object entry.</li>
+    <li>Updates <code>Last_Runtime</code> to the current timestamp (but does NOT update <code>Last_Successful_Runtime</code>), creating an observable gap for monitoring.</li>
+  </ol>
+  <div class="callout callout-warn">
+    <strong>Note:</strong> Steps 6 and 7 (LUT search and update) are currently marked as <code>skip: true</code> in the recipe configuration, meaning the error tracking via the lookup table is disabled. Errors at the RF 1.0 level are still logged to Workato Logs.
+  </div>
+</div>
+
+<!-- 8. COMPONENT / MODULE OVERVIEW + RECIPE HIERARCHY DIAGRAM (SVG 3 of 3) -->
+<div class="section" id="component-overview">
+  <h2>8. Component / Module Overview</h2>
+
+  <table>
+    <tr><th>Recipe ID</th><th>Name</th><th>Type</th><th>Status</th><th>Success Count</th><th>Role</th></tr>
+    <tr>
+      <td>58628330</td>
+      <td>0.0 Scheduled Master - Items and Sales Orders</td>
+      <td>Scheduled (cron)</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>771</td>
+      <td>Root orchestrator; triggers 4x daily at 5:30/10:30/15:30/20:30 PT</td>
+    </tr>
+    <tr>
+      <td>54665270</td>
+      <td>RF 3.0 Create/Update Sales Order</td>
+      <td>Recipe Function</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>16,301</td>
+      <td>Caller; invokes 1.01 to ensure customer exists before SO creation</td>
+    </tr>
+    <tr>
+      <td>54665276</td>
+      <td>RF 8.0 Create CBA</td>
+      <td>Recipe Function</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>63,086</td>
+      <td>Caller; invokes 1.01 to ensure customer exists before CBA processing</td>
+    </tr>
+    <tr style="background: #F0EBF8;">
+      <td><strong>54665259</strong></td>
+      <td><strong>Rec 1.01 Customer Master By Customer ID</strong></td>
+      <td>Recipe Function</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td><strong>178,479</strong></td>
+      <td><strong>THIS RECIPE</strong> &mdash; queries Snowflake, iterates rows, calls RF 1.0</td>
+    </tr>
+    <tr>
+      <td>54251831</td>
+      <td>RF 1.0 Create/Update Customer</td>
+      <td>Recipe Function</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>230,789</td>
+      <td>Child; upserts Customer in NetSuite, manages subsidiaries, logs</td>
+    </tr>
+    <tr>
+      <td>54665268</td>
+      <td>RF 2.0 Items (referenced by RF 3.0)</td>
+      <td>Recipe Function</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>--</td>
+      <td>Sibling; items processing for sales orders</td>
+    </tr>
+    <tr>
+      <td>54620963</td>
+      <td>Rec 2.0 Items Master Recipe</td>
+      <td>Recipe Function</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>--</td>
+      <td>Sibling; called by master for items pipeline</td>
+    </tr>
+    <tr>
+      <td>54665261</td>
+      <td>Rec 3.0 Sales Order Master Recipe</td>
+      <td>Recipe Function</td>
+      <td><span class="badge badge-active">Active</span></td>
+      <td>--</td>
+      <td>Sibling; sales order master pipeline</td>
+    </tr>
+    <tr>
+      <td>58628331</td>
+      <td>Master Recipe - Invoice and Credit Memos</td>
+      <td>Recipe Function (async)</td>
+      <td><span class="badge badge-async">Async</span></td>
+      <td>--</td>
+      <td>Sibling; invoice/CM pipeline called asynchronously</td>
+    </tr>
+  </table>
+
+  <h3>Recipe Hierarchy Diagram</h3>
+  <div class="svg-container">
+    <svg viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
+      <defs>
+        <marker id="rh-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#6B4C9A"/>
+        </marker>
+        <marker id="rh-arrow-dash" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#999"/>
+        </marker>
+      </defs>
+
+      <!-- Level 0: Root -->
+      <rect x="350" y="15" width="320" height="55" rx="8" fill="#6B4C9A" stroke="#4a3570" stroke-width="2"/>
+      <text x="510" y="38" text-anchor="middle" fill="white" font-size="13" font-weight="bold">0.0 Scheduled Master</text>
+      <text x="510" y="55" text-anchor="middle" fill="#ddd" font-size="11">ID: 58628330 | Cron 4x/day</text>
+
+      <!-- Level 1 branches -->
+      <rect x="30" y="120" width="220" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="140" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Rec 2.0 Items Master</text>
+      <text x="140" y="158" text-anchor="middle" font-size="10" fill="#999">ID: 54620963 | sync</text>
+
+      <rect x="280" y="120" width="220" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="390" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Rec 3.0 SO Master</text>
+      <text x="390" y="158" text-anchor="middle" font-size="10" fill="#999">ID: 54665261 | sync</text>
+
+      <rect x="530" y="120" width="250" height="50" rx="6" fill="white" stroke="#999" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="655" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#666">Master - Invoice &amp; Credit Memos</text>
+      <text x="655" y="158" text-anchor="middle" font-size="10" fill="#999">ID: 58628331 | async</text>
+
+      <!-- Lines: Root -> Level 1 -->
+      <line x1="430" y1="70" x2="140" y2="118" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="510" y1="70" x2="390" y2="118" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="590" y1="70" x2="655" y2="118" stroke="#999" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#rh-arrow-dash)"/>
+      <text x="260" y="92" font-size="10" fill="#6B4C9A">sync</text>
+      <text x="440" y="92" font-size="10" fill="#6B4C9A">sync</text>
+      <text x="640" y="92" font-size="10" fill="#999">async</text>
+
+      <!-- Level 2 -->
+      <rect x="200" y="220" width="220" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="310" y="242" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 3.0 Create/Update SO</text>
+      <text x="310" y="258" text-anchor="middle" font-size="10" fill="#999">ID: 54665270 | sync</text>
+
+      <rect x="530" y="220" width="220" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="640" y="242" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 8.0 Create CBA</text>
+      <text x="640" y="258" text-anchor="middle" font-size="10" fill="#999">ID: 54665276 | sync</text>
+
+      <line x1="390" y1="170" x2="310" y2="218" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="390" y1="170" x2="640" y2="218" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+
+      <!-- Level 3: THIS RECIPE -->
+      <rect x="370" y="320" width="260" height="60" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="3"/>
+      <text x="500" y="343" text-anchor="middle" font-size="13" font-weight="bold" fill="#6B4C9A">Rec 1.01 Customer Master</text>
+      <text x="500" y="360" text-anchor="middle" font-size="11" fill="#6B4C9A">ID: 54665259</text>
+      <text x="500" y="375" text-anchor="middle" font-size="10" fill="#999">THIS RECIPE</text>
+
+      <line x1="310" y1="270" x2="440" y2="318" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="640" y1="270" x2="560" y2="318" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <text x="355" y="296" font-size="10" fill="#6B4C9A">sync call</text>
+      <text x="580" y="296" font-size="10" fill="#6B4C9A">sync call</text>
+
+      <!-- RF 2.0 Items -->
+      <rect x="30" y="220" width="150" height="45" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+      <text x="105" y="240" text-anchor="middle" font-size="11" font-weight="bold" fill="#6B4C9A">RF 2.0 Items</text>
+      <text x="105" y="255" text-anchor="middle" font-size="10" fill="#999">ID: 54665268</text>
+      <line x1="310" y1="270" x2="105" y2="218" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+
+      <!-- Level 4: RF 1.0 -->
+      <rect x="400" y="430" width="200" height="55" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="500" y="452" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 1.0 Create/Update</text>
+      <text x="500" y="468" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Customer</text>
+      <text x="500" y="480" text-anchor="middle" font-size="10" fill="#999">ID: 54251831 | sync</text>
+
+      <line x1="500" y1="380" x2="500" y2="428" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <text x="508" y="408" font-size="10" fill="#6B4C9A">foreach row</text>
+
+      <!-- NetSuite target -->
+      <rect x="750" y="430" width="160" height="55" rx="6" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+      <text x="830" y="455" text-anchor="middle" font-size="13" font-weight="bold" fill="#2E7D32">NetSuite</text>
+      <text x="830" y="473" text-anchor="middle" font-size="10" fill="#666">Customer Upsert</text>
+
+      <line x1="600" y1="457" x2="748" y2="457" stroke="#2E7D32" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <text x="670" y="450" font-size="10" fill="#2E7D32">upsert_object</text>
+
+      <!-- Legend -->
+      <rect x="830" y="15" width="250" height="95" rx="6" fill="white" stroke="#dee2e6"/>
+      <text x="845" y="35" font-size="12" font-weight="bold" fill="#333">Legend</text>
+      <line x1="845" y1="50" x2="895" y2="50" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="900" y="54" font-size="10" fill="#666">Synchronous call</text>
+      <line x1="845" y1="68" x2="895" y2="68" stroke="#999" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="900" y="72" font-size="10" fill="#666">Asynchronous call</text>
+      <rect x="845" y="80" width="45" height="18" rx="4" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
+      <text x="900" y="93" font-size="10" fill="#666">Current recipe</text>
+    </svg>
+  </div>
+</div>
+
+<!-- 9. KEY BUSINESS LOGIC -->
+<div class="section" id="business-logic">
+  <h2>9. Key Business Logic</h2>
+
+  <h3>9.1 Company Name Fallback</h3>
+  <p>When passing <code>CompanyName</code> to RF 1.0, the recipe uses conditional logic:</p>
+  <pre style="background:#f1f3f5; padding:12px; border-radius:6px; font-size:13px; overflow-x:auto;">CompanyName = customer_name.present? ? customer_name : external_id</pre>
+  <p>If the customer name is blank or null, the Stripe customer ID (external_id) is used as a fallback to ensure the NetSuite record always has a name.</p>
+
+  <h3>9.2 Upsert Strategy</h3>
+  <p>RF 1.0 uses NetSuite's <code>upsert_object</code> action, which matches on the <strong>External ID</strong> field. This means:</p>
+  <ul>
+    <li>If a customer with that External ID already exists in NetSuite, all fields are <strong>updated</strong>.</li>
+    <li>If no customer exists with that External ID, a new customer record is <strong>created</strong>.</li>
+    <li>This is idempotent &mdash; running the same customer_id multiple times is safe.</li>
+  </ul>
+
+  <h3>9.3 Multi-Subsidiary Relationship Management</h3>
+  <p>After upserting the customer, RF 1.0:</p>
+  <ol>
+    <li>Uses custom Ruby code to determine the subsidiary internal ID.</li>
+    <li>Searches NetSuite for existing Customer Subsidiary Relationships.</li>
+    <li>If the customer does not already have a relationship for the current subsidiary, creates one via <code>netsuite.add_object</code>.</li>
+  </ol>
+  <p>This allows a single customer to transact across both the US and IE subsidiaries.</p>
+
+  <h3>9.4 Integration Tracker (Error Monitoring)</h3>
+  <p>The recipe's catch block references a Workato Lookup Table ("Integration Tracker- SB", ID: 3347261) to track runtimes. The design pattern is:</p>
+  <ul>
+    <li><strong>On success:</strong> Both <code>Last_Runtime</code> and <code>Last_Successful_Runtime</code> would be updated.</li>
+    <li><strong>On failure:</strong> Only <code>Last_Runtime</code> is updated; the gap between the two timestamps signals a problem.</li>
+  </ul>
+  <div class="callout callout-warn">These lookup table steps are currently <strong>skipped</strong> in production (skip: true). Error tracking relies on Workato Logs and Fivetran-synced audit data in Snowflake.</div>
+
+  <h3>9.5 Error Handling in RF 1.0</h3>
+  <p>RF 1.0's catch block categorizes errors with conditional logic (if/else), formatting different log messages depending on the error type. Both success and error outcomes are logged to Workato Logs for Fivetran to pick up, ensuring the Snowflake staging table is always updated with the latest integration status.</p>
+</div>
+
+<!-- 10. DATA MODEL -->
+<div class="section" id="data-model">
+  <h2>10. Data Model</h2>
+
+  <h3>Source Table: NETSUITE_EXPORT_CUSTOMER</h3>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Full Path</td><td><code>INTERCOM_PROD.SHARED_EXTERNAL_WORKATO.NETSUITE_EXPORT_CUSTOMER</code></td></tr>
+    <tr><td>Description</td><td>Netsuite Customer OTC data</td></tr>
+    <tr><td>Select Star GUID</td><td><code>ta_f2BhXGLoY39KYjerTSy8by</code></td></tr>
+    <tr><td>Select Star URL</td><td><a href="https://app.selectstar.com/link/ta_f2BhXGLoY39KYjerTSy8by/">View in Select Star</a></td></tr>
+    <tr><td>Tag</td><td><code>shared_external</code> (dbt)</td></tr>
+  </table>
+
+  <h3>Column Definitions</h3>
+  <table>
+    <tr><th>Column</th><th>Type</th><th>Description</th><th>Join Key</th></tr>
+    <tr><td><code>EXTERNAL_ID</code></td><td>VARCHAR(256)</td><td>Stripe customer ID; primary lookup key for this recipe and NetSuite upsert key</td><td>Yes</td></tr>
+    <tr><td><code>CUSTOMER_NAME</code></td><td>VARCHAR(512)</td><td>Company/customer display name</td><td>No</td></tr>
+    <tr><td><code>SUBSIDIARY</code></td><td>TEXT</td><td>Legal entity (US/IE); determines NetSuite subsidiary</td><td>Yes</td></tr>
+    <tr><td><code>SALESFORCE_ID</code></td><td>VARCHAR(36)</td><td>Salesforce Account ID for CRM linkage</td><td>Yes</td></tr>
+    <tr><td><code>CATEGORY</code></td><td>TEXT</td><td>Customer category classification</td><td>No</td></tr>
+    <tr><td><code>STATUS</code></td><td>TEXT</td><td>Customer status</td><td>No</td></tr>
+    <tr><td><code>EMAIL</code></td><td>VARCHAR(256)</td><td>Primary contact email</td><td>No</td></tr>
+    <tr><td><code>CURRENCY_ID</code></td><td>VARCHAR(3)</td><td>ISO currency code (e.g., USD, EUR)</td><td>No</td></tr>
+    <tr><td><code>PRIMARY_CURRENCY</code></td><td>VARCHAR(256)</td><td>Primary billing currency</td><td>No</td></tr>
+    <tr><td><code>TERMS</code></td><td>TEXT</td><td>Payment terms (e.g., Net 30)</td><td>No</td></tr>
+    <tr><td><code>BILLING_ADDRESS_1</code></td><td>VARCHAR(256)</td><td>Billing street address</td><td>No</td></tr>
+    <tr><td><code>BILLING_CITY</code></td><td>VARCHAR(256)</td><td>Billing city</td><td>No</td></tr>
+    <tr><td><code>BILLING_STATE</code></td><td>VARCHAR(256)</td><td>Billing state/province</td><td>No</td></tr>
+    <tr><td><code>BILLING_ZIP</code></td><td>VARCHAR(256)</td><td>Billing postal code</td><td>No</td></tr>
+    <tr><td><code>BILLING_COUNTRY</code></td><td>VARCHAR(256)</td><td>Billing country</td><td>No</td></tr>
+    <tr><td><code>BILLING_LABEL</code></td><td>VARCHAR(512)</td><td>Billing address label/description</td><td>No</td></tr>
+    <tr><td><code>DEFAULT_BILLING</code></td><td>NUMBER(1)</td><td>Flag: 1 = default billing address</td><td>No</td></tr>
+    <tr><td><code>DEFAULT_SHIPPING</code></td><td>TEXT</td><td>Default shipping flag/label</td><td>No</td></tr>
+    <tr><td><code>SHIPPING_ADDRESS_1</code></td><td>TEXT</td><td>Shipping street address</td><td>No</td></tr>
+    <tr><td><code>SHIPPING_CITY</code></td><td>TEXT</td><td>Shipping city</td><td>No</td></tr>
+    <tr><td><code>SHIPPING_STATE</code></td><td>TEXT</td><td>Shipping state/province</td><td>No</td></tr>
+    <tr><td><code>SHIPPING_ZIP</code></td><td>TEXT</td><td>Shipping postal code</td><td>No</td></tr>
+    <tr><td><code>SHIPPING_COUNTRY</code></td><td>TEXT</td><td>Shipping country</td><td>No</td></tr>
+    <tr><td><code>SHIPPING_LABEL</code></td><td>TEXT</td><td>Shipping address label</td><td>No</td></tr>
+    <tr><td><code>NETSUITE_INTERNAL_ID</code></td><td>TEXT</td><td>NetSuite internal ID (populated after sync)</td><td>No</td></tr>
+    <tr><td><code>RESELLER</code></td><td>TEXT</td><td>Reseller indicator</td><td>No</td></tr>
+    <tr><td><code>USES_FIN_RESOLUTION_BUCKETS</code></td><td>TEXT</td><td>Whether customer uses Fin resolution buckets</td><td>No</td></tr>
+    <tr><td><code>CREATED_DATE</code></td><td>DATE</td><td>Record creation date</td><td>No</td></tr>
+    <tr><td><code>UPDATED_DATE</code></td><td>DATE</td><td>Last update date</td><td>No</td></tr>
+    <tr><td><code>LAST_INTEGRATION_DATE</code></td><td>TIMESTAMP_TZ</td><td>Last Workato integration run timestamp</td><td>No</td></tr>
+    <tr><td><code>ERROR_TYPE</code></td><td>VARCHAR(256)</td><td>Integration error classification</td><td>No</td></tr>
+    <tr><td><code>ERROR_MESSAGE</code></td><td>TEXT</td><td>Detailed error message from last integration attempt</td><td>No</td></tr>
+  </table>
+
+  <h3>Key Joins</h3>
+  <table>
+    <tr><th>This Table Column</th><th>Joined Table</th><th>Joined Column</th><th>Relationship</th></tr>
+    <tr><td>EXTERNAL_ID</td><td>NETSUITE_EXPORT_SALES_ORDER.CUSTOMER</td><td>CUSTOMER</td><td>Customer referenced in sales orders</td></tr>
+    <tr><td>EXTERNAL_ID</td><td>FIVETRAN_STRIPE.INVOICE.CUSTOMER_ID</td><td>CUSTOMER_ID</td><td>Stripe invoice linkage</td></tr>
+    <tr><td>EXTERNAL_ID</td><td>STG_BILLING_CUSTOMERS.STRIPE_CUSTOMER_ID</td><td>STRIPE_CUSTOMER_ID</td><td>Billing customer reference</td></tr>
+  </table>
+</div>
+
+<!-- 11. EDGE CASES -->
+<div class="section" id="edge-cases">
+  <h2>11. Edge Cases</h2>
+
+  <table>
+    <tr><th>#</th><th>Scenario</th><th>Behavior</th><th>Risk</th></tr>
+    <tr>
+      <td>1</td>
+      <td><strong>Customer not found in Snowflake</strong></td>
+      <td>Query returns 0 rows; foreach loop does not execute; recipe completes successfully with no action.</td>
+      <td>Low &mdash; but caller (RF 3.0 / RF 8.0) may fail if it expects the customer to exist in NetSuite after this call.</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>Multiple rows for same external_id</strong></td>
+      <td>Foreach iterates all rows, calling RF 1.0 for each. Since upsert is idempotent, the last row's data wins.</td>
+      <td>Medium &mdash; if rows have conflicting data (e.g., different addresses), the final state may be non-deterministic.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>Blank company name</strong></td>
+      <td>Fallback logic uses external_id as company name. Customer is created in NetSuite with Stripe ID as name.</td>
+      <td>Low &mdash; customer will exist but may require manual name correction.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><strong>Missing required billing address fields</strong></td>
+      <td>NetSuite may reject the upsert if required address fields are null. Error is caught and logged by RF 1.0.</td>
+      <td>Medium &mdash; customer will not be created; downstream SO/CBA processing will fail.</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><strong>Subsidiary change</strong></td>
+      <td>RF 1.0 searches existing subsidiary relationships and adds new ones if needed. Does not remove old relationships.</td>
+      <td>Low &mdash; subsidiary relationships are additive.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><strong>NetSuite API timeout/rate limit</strong></td>
+      <td>RF 1.0's catch block logs the error. The customer row's error_type and error_message are updated in Snowflake via Fivetran.</td>
+      <td>Medium &mdash; retry is not automatic; requires re-trigger from upstream.</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><strong>Snowflake connectivity failure</strong></td>
+      <td>Rec 1.01's catch block fires. Integration Tracker LUT update is currently skipped.</td>
+      <td>High &mdash; no automatic retry; entire batch for that customer_id fails silently.</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><strong>Concurrent calls for same customer_id</strong></td>
+      <td>Multiple RF 3.0/RF 8.0 jobs may call Rec 1.01 for the same customer simultaneously. NetSuite upsert is idempotent, so both succeed.</td>
+      <td>Low &mdash; potential for wasted API calls but no data corruption.</td>
+    </tr>
+  </table>
+</div>
+
+<!-- 12. OPERATIONAL NOTES -->
+<div class="section" id="operational-notes">
+  <h2>12. Operational Notes</h2>
+
+  <h3>Scheduling &amp; Frequency</h3>
+  <ul>
+    <li>Root recipe (0.0) runs 4 times daily: <code>cron: 30 5,10,15,20 * * *</code> (Pacific time).</li>
+    <li>Rec 1.01 is not scheduled directly; it is called on-demand by RF 3.0 and RF 8.0.</li>
+    <li>Typical volume: ~178K+ successful executions over the recipe's lifetime (since Oct 2024).</li>
+    <li>Last run: 2026-04-01 11:32 PT.</li>
+  </ul>
+
+  <h3>Monitoring &amp; Alerting</h3>
+  <ul>
+    <li><strong>Workato Job Reports:</strong> Custom column "Customer ID" is included in job reports for easy lookup.</li>
+    <li><strong>Email Alerting:</strong> The root master recipe (0.0) sends email alerts to <code>danny.mcgean@intercom.io</code>, <code>nan.lu@intercom.io</code>, <code>chase.clark@connorgp.com</code>, <code>diana.sy@intercom.io</code> on timeout errors.</li>
+    <li><strong>Snowflake Audit:</strong> Integration results (including errors) are queryable in <code>staging_product.stg_workato_log</code> via Fivetran sync.</li>
+  </ul>
+
+  <h3>Error Recovery</h3>
+  <ul>
+    <li>Rec 1.01 has only 2 failed jobs out of 178,481 total (99.999% success rate).</li>
+    <li>Individual record failures in RF 1.0 are caught and logged; they do not cause the parent recipe to fail.</li>
+    <li>To re-process a failed customer, re-trigger the upstream recipe (RF 3.0 or RF 8.0) which will call Rec 1.01 again.</li>
+  </ul>
+
+  <h3>Performance Considerations</h3>
+  <ul>
+    <li>Snowflake query has a 5,000-row safety limit, though a single customer_id typically returns 1 row.</li>
+    <li>RF 1.0 makes 2-3 NetSuite API calls per customer (upsert + subsidiary search + optional subsidiary create), so high-volume batches should account for NetSuite rate limits.</li>
+    <li>The recipe uses Workato's Lifetime Task Count of 355,786 tasks, indicating ~2 tasks per job (Snowflake query + RF 1.0 call).</li>
+  </ul>
+
+  <h3>Version History</h3>
+  <table>
+    <tr><th>Version</th><th>Author</th><th>Date</th><th>Notes</th></tr>
+    <tr><td>7 (current)</td><td>diana.sy</td><td>2025-05-03</td><td>Latest production version</td></tr>
+    <tr><td>1</td><td>Environment Production</td><td>2024-10-10</td><td>Initial creation</td></tr>
+  </table>
+
+  <h3>Dependencies &amp; Prerequisites</h3>
+  <ul>
+    <li><strong>Snowflake Connection:</strong> Account ID 13171882 must be active and have read access to <code>SHARED_EXTERNAL_WORKATO</code>.</li>
+    <li><strong>NetSuite Connection:</strong> RF 1.0 requires active NetSuite credentials with permission to create/update Customers and Subsidiary Relationships.</li>
+    <li><strong>dbt Models:</strong> The <code>NETSUITE_EXPORT_CUSTOMER</code> table depends on upstream source tables being refreshed by dbt runs.</li>
+    <li><strong>Fivetran:</strong> Must be syncing Workato Logs to Snowflake for the feedback loop and audit trail.</li>
+  </ul>
+
+  <h3>Workato Connection Config</h3>
+  <table>
+    <tr><th>Provider</th><th>Connection Name</th><th>Account ID</th></tr>
+    <tr><td>Snowflake</td><td>snowflake</td><td>13171882</td></tr>
+    <tr><td>Recipe Function</td><td>workato_recipe_function</td><td>N/A</td></tr>
+    <tr><td>Lookup Table</td><td>lookup_table</td><td>N/A</td></tr>
+  </table>
+</div>
+
+<!-- Footer -->
+<div style="text-align:center; padding: 24px; color: #999; font-size: 12px;">
+  Generated by Workato Documentor &mdash; 2026-04-01 | Recipe ID: 54665259 | Author: venkatesh.manohar | v3
+</div>
+
+</div><!-- end main-content -->
+
+<!-- SCROLL SPY JS -->
+<script>
+(function() {
+  const tocLinks = document.querySelectorAll('.sidebar-toc a[data-section]');
+  const sections = [];
+
+  tocLinks.forEach(function(link) {
+    const sectionId = link.getAttribute('data-section');
+    const section = document.getElementById(sectionId);
+    if (section) {
+      sections.push({ id: sectionId, el: section, link: link });
+    }
+  });
+
+  function onScroll() {
+    const scrollPos = window.scrollY + 80;
+    let current = null;
+
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sections[i].el.offsetTop <= scrollPos) {
+        current = sections[i];
+        break;
+      }
+    }
+
+    tocLinks.forEach(function(link) {
+      link.classList.remove('active');
+    });
+
+    if (current) {
+      current.link.classList.add('active');
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Smooth scroll for TOC links
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
