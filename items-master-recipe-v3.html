@@ -6,16 +6,19 @@
 <title>Rec 2.0 - Items Master Recipe | Integration Documentation</title>
 <style>
 :root {
-  /* Intercom brand palette */
-  --ic-navy: #1a1a2e;
-  --ic-blue: #286EFA;
-  --ic-blue-light: #5B93FC;
-  --ic-blue-bg: #EBF1FF;
-  --ic-dark: #0D1117;
-  --ic-sidebar: #131320;
-  --ic-sidebar-hover: rgba(40,110,250,0.12);
-  --ic-sidebar-active: #286EFA;
-  /* Semantic colors (unchanged for system cards/callouts) */
+  /* Intercom brand — light cream aesthetic */
+  --ic-cream: #F4F3ED;
+  --ic-warm-white: #FEFDFB;
+  --ic-dark: #16100E;
+  --ic-blue: #334BFA;
+  --ic-blue-bg: #DCE1F9;
+  --ic-green: #0F7134;
+  --ic-green-bg: #D7EFDC;
+  --ic-orange-accent: #B24D00;
+  --ic-orange-bg: #FFEBDB;
+  --ic-red: #DF2020;
+  --ic-red-bg: #FFDBDB;
+  /* System-specific brand colors */
   --orange: #F5A623;
   --blue: #29B5E8;
   --green: #2E7D32;
@@ -26,9 +29,9 @@
   --green-bg: #E8F5E9;
   --sf-bg: #E6F0FA;
   --gray-bg: #F5F5F5;
-  --text-primary: #0D1117;
-  --text-secondary: #555;
-  --border: #E1E4E8;
+  --text-primary: #1A1A1A;
+  --text-secondary: #737373;
+  --border: #E6E6E6;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,7 +43,7 @@ body {
   letter-spacing: -0.01em;
   margin: 0;
   padding: 24px 24px 24px 290px;
-  background: #F7F8FA;
+  background: var(--ic-cream);
 }
 
 nav#toc {
@@ -50,10 +53,10 @@ nav#toc {
   width: 266px;
   height: 100vh;
   overflow-y: auto;
-  background: var(--ic-sidebar);
+  background: #ffffff;
   padding: 0 0 20px 0;
-  box-shadow: 2px 0 16px rgba(0,0,0,0.2);
-  border-right: none;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04);
+  border-right: 1px solid var(--border);
   z-index: 1000;
 }
 nav#toc .toc-brand {
@@ -61,7 +64,7 @@ nav#toc .toc-brand {
   align-items: center;
   gap: 10px;
   padding: 20px 18px 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid var(--border);
   margin-bottom: 12px;
 }
 nav#toc .toc-brand svg { flex-shrink: 0; }
@@ -72,12 +75,12 @@ nav#toc .toc-brand-text {
 nav#toc .toc-brand-text .brand-title {
   font-size: 0.85em;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ic-dark);
   letter-spacing: -0.02em;
 }
 nav#toc .toc-brand-text .brand-sub {
   font-size: 0.68em;
-  color: rgba(255,255,255,0.5);
+  color: var(--text-secondary);
   font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -85,7 +88,7 @@ nav#toc .toc-brand-text .brand-sub {
 }
 nav#toc h3 {
   font-size: 0.7em;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-secondary);
   margin: 12px 18px 8px;
   padding: 0;
   border-bottom: none;
@@ -94,7 +97,7 @@ nav#toc h3 {
   font-weight: 600;
 }
 nav#toc a {
-  color: rgba(255,255,255,0.7);
+  color: #1A1A1A;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.82em;
@@ -105,8 +108,8 @@ nav#toc a {
   margin: 0;
   border-left: 3px solid transparent;
 }
-nav#toc a:hover { background: var(--ic-sidebar-hover); color: #fff; border-left-color: rgba(40,110,250,0.4); }
-nav#toc a.active { background: var(--ic-sidebar-hover); color: #fff; border-left-color: var(--ic-blue); font-weight: 600; }
+nav#toc a:hover { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: rgba(51,75,250,0.3); }
+nav#toc a.active { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: var(--ic-blue); font-weight: 600; }
 
 .main-content { max-width: 1100px; }
 
@@ -143,10 +146,10 @@ ul, ol { margin: 8px 0 16px 24px; }
 li { margin-bottom: 6px; }
 
 .meta-header {
-  background: linear-gradient(135deg, var(--ic-navy) 0%, #1E3A6E 40%, var(--ic-blue) 100%);
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
   color: white;
   padding: 28px 32px;
-  border-radius: 12px;
+  border-radius: 8px;
   margin-bottom: 32px;
   position: relative;
   overflow: hidden;
@@ -158,10 +161,10 @@ li { margin-bottom: 6px; }
   right: -10%;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
   border-radius: 50%;
 }
-.meta-header h1 { color: white; border-bottom-color: rgba(255,255,255,0.25); position: relative; }
+.meta-header h1 { color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative; }
 .meta-header .meta-info {
   display: flex;
   flex-wrap: wrap;
@@ -180,17 +183,17 @@ li { margin-bottom: 6px; }
   font-size: 0.8em;
   font-weight: 600;
 }
-.badge-active { background: var(--green); color: white; }
+.badge-active { background: var(--ic-green-bg); color: var(--ic-green); }
 .badge-stopped { background: var(--gray); color: white; }
-.badge-e2e { background: var(--orange); color: white; }
-.badge-arch { background: var(--ic-blue); color: white; }
+.badge-e2e { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+.badge-arch { background: var(--ic-blue-bg); color: var(--ic-blue); }
 
 section {
   background: white;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 28px 32px;
   margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
   border: 1px solid var(--border);
 }
 
@@ -202,7 +205,7 @@ section {
 }
 .layer-box {
   padding: 16px 20px;
-  border-radius: 8px;
+  border-radius: 6px;
   border-left: 4px solid;
 }
 .layer-business { background: var(--blue-bg); border-color: var(--blue); }
@@ -231,9 +234,11 @@ table {
   border-collapse: collapse;
   margin: 12px 0;
   font-size: 0.9em;
+  border-radius: 6px;
+  overflow: hidden;
 }
 th {
-  background: var(--ic-navy);
+  background: var(--ic-dark);
   color: white;
   padding: 10px 14px;
   text-align: left;
@@ -243,18 +248,18 @@ td {
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
 }
-tr:nth-child(even) { background: #F7F8FA; }
+tr:nth-child(even) { background: var(--ic-cream); }
 
 code {
-  background: #EFF1F5;
+  background: #F4F3ED;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.88em;
   font-family: 'SF Mono', 'Fira Code', monospace;
 }
 pre {
-  background: #0D1117;
-  color: #cdd6f4;
+  background: var(--ic-dark);
+  color: #E6E1DC;
   padding: 16px 20px;
   border-radius: 8px;
   overflow-x: auto;
@@ -271,18 +276,18 @@ pre {
 
 .callout {
   padding: 14px 18px;
-  border-radius: 8px;
+  border-radius: 6px;
   margin: 12px 0;
   font-size: 0.92em;
 }
 .callout-info { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); }
-.callout-warn { background: var(--orange-bg); border-left: 4px solid var(--orange); }
-.callout-success { background: var(--green-bg); border-left: 4px solid var(--green); }
+.callout-warn { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); }
+.callout-success { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); }
 
 details {
   margin: 12px 0;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 12px 16px;
 }
 details summary {
@@ -302,7 +307,7 @@ footer {
 }
 
 @media (max-width: 900px) {
-  nav#toc { position: relative; width: 100%; height: auto; border-bottom: 3px solid var(--ic-blue); }
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
   body { padding: 24px; }
   .two-layer { grid-template-columns: 1fr; }
 }
@@ -311,7 +316,7 @@ footer {
   nav#toc { display: none; }
   body { padding: 0; background: white; }
   section { box-shadow: none; break-inside: avoid; border: 1px solid #ddd; }
-  .meta-header { background: var(--ic-blue) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   h2 { break-before: auto; }
 }
 </style>
@@ -319,17 +324,19 @@ footer {
 <body>
 
 <!-- Back to Index -->
-<a href="index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:var(--ic-navy);color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,0.2);transition:background 0.15s ease;" onmouseover="this.style.background='#286EFA'" onmouseout="this.style.background='#131320'">&#8592; Back to Index</a>
+<a href="index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#16100E;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#334BFA'" onmouseout="this.style.background='#16100E'">&#8592; Back to Index</a>
 
 <!-- Fixed Left Sidebar TOC -->
 <nav id="toc">
   <div class="toc-brand">
-    <svg width="32" height="32" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="28" height="28" rx="7" fill="#286EFA"/>
-      <rect x="7" y="8" width="14" height="2" rx="1" fill="white"/>
-      <rect x="7" y="13" width="14" height="2" rx="1" fill="white"/>
-      <rect x="7" y="18" width="14" height="2" rx="1" fill="white"/>
-      <rect x="18" y="20" width="4" height="4" rx="1" fill="white"/>
+    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#000000"/>
+      <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
     </svg>
     <div class="toc-brand-text">
       <span class="brand-title">Intercom</span>
@@ -438,7 +445,7 @@ footer {
         <rect width="880" height="420" fill="#fafbfc" rx="12"/>
 
         <!-- Title -->
-        <text x="440" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" fill="#1a1a2e">Items Master Recipe &mdash; System Architecture</text>
+        <text x="440" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" fill="#16100E">Items Master Recipe &mdash; System Architecture</text>
 
         <!-- Snowflake Box -->
         <rect x="40" y="60" width="200" height="120" rx="10" fill="#29B5E8" fill-opacity="0.12" stroke="#29B5E8" stroke-width="2"/>
@@ -622,7 +629,7 @@ WHERE
     <div class="diagram-container">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" width="880" height="500">
         <rect width="880" height="500" fill="#fafbfc" rx="12"/>
-        <text x="440" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" fill="#1a1a2e">Column-Level Data Flow</text>
+        <text x="440" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" fill="#16100E">Column-Level Data Flow</text>
 
         <!-- NETSUITE_EXPORT_ITEM table -->
         <rect x="30" y="55" width="250" height="210" rx="8" fill="#fff" stroke="#29B5E8" stroke-width="2"/>
@@ -857,7 +864,7 @@ WHERE
     <div class="diagram-container">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" width="880" height="520">
         <rect width="880" height="520" fill="#fafbfc" rx="12"/>
-        <text x="440" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" fill="#1a1a2e">Item Sync Decision Tree</text>
+        <text x="440" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" fill="#16100E">Item Sync Decision Tree</text>
 
         <!-- Start -->
         <rect x="340" y="50" width="200" height="40" rx="20" fill="#6B4C9A" stroke="#6B4C9A" stroke-width="2"/>

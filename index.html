@@ -6,18 +6,24 @@
 <title>NetSuite Integration — Recipe Documentation</title>
 <style>
   :root {
-    --purple: #6B4C9A;
-    --purple-light: #8B6FBB;
-    --purple-bg: #F5F0FA;
+    --ic-dark: #16100E;
+    --ic-blue: #334BFA;
+    --ic-blue-light: #5B7BFC;
+    --ic-blue-bg: #DCE1F9;
+    --ic-cream: #F4F3ED;
+    --ic-green: #0F7134;
+    --ic-green-bg: #D7EFDC;
+    --ic-orange-accent: #B24D00;
+    --ic-orange-bg: #FFEBDB;
     --orange: #F5A623;
     --blue: #29B5E8;
     --green: #2E7D32;
     --gray: #9E9E9E;
-    --text: #333;
-    --text-light: #666;
-    --bg: #FAFAFA;
+    --text: #1A1A1A;
+    --text-light: #737373;
+    --bg: #F4F3ED;
     --card-bg: #FFFFFF;
-    --border: #E0D6EC;
+    --border: #E6E6E6;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,7 +37,7 @@
 
   /* Header */
   .header {
-    background: linear-gradient(135deg, var(--purple) 0%, #4A2D7A 100%);
+    background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
     color: #fff;
     padding: 48px 40px 40px;
     text-align: center;
@@ -116,7 +122,7 @@
     background: var(--card-bg);
   }
   .search-box input:focus {
-    border-color: var(--purple);
+    border-color: var(--ic-blue);
   }
   .search-box svg {
     position: absolute;
@@ -140,11 +146,11 @@
     color: var(--text-light);
     transition: all 0.2s;
   }
-  .filter-btn:hover { border-color: var(--purple-light); color: var(--purple); }
+  .filter-btn:hover { border-color: var(--ic-blue); color: var(--ic-blue); }
   .filter-btn.active {
-    background: var(--purple);
+    background: var(--ic-blue);
     color: #fff;
-    border-color: var(--purple);
+    border-color: var(--ic-blue);
   }
 
   /* Stats bar */
@@ -159,7 +165,7 @@
   .stat-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 16px 24px;
     flex: 1;
     min-width: 140px;
@@ -168,7 +174,7 @@
   .stat-card .stat-number {
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--purple);
+    color: var(--ic-blue);
   }
   .stat-card .stat-label {
     font-size: 0.8rem;
@@ -189,7 +195,7 @@
   .card {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 24px;
     transition: all 0.25s;
     cursor: pointer;
@@ -207,13 +213,13 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--purple), var(--purple-light));
+    background: linear-gradient(90deg, var(--ic-blue), var(--ic-blue-light));
     opacity: 0;
     transition: opacity 0.25s;
   }
   .card:hover {
-    border-color: var(--purple-light);
-    box-shadow: 0 8px 24px rgba(107,76,154,0.12);
+    border-color: var(--ic-blue);
+    box-shadow: 0 8px 24px rgba(51,75,250,0.10);
     transform: translateY(-2px);
   }
   .card:hover::before { opacity: 1; }
@@ -228,9 +234,9 @@
     font-size: 0.75rem;
     font-weight: 600;
     color: #fff;
-    background: var(--purple);
+    background: var(--ic-blue);
     padding: 3px 10px;
-    border-radius: 12px;
+    border-radius: 8px;
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -261,13 +267,13 @@
   .tag {
     font-size: 0.7rem;
     padding: 2px 8px;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: 500;
   }
   .tag-stripe { background: #FEF3E0; color: #E68A00; }
   .tag-snowflake { background: #E3F5FD; color: #1A8BB5; }
   .tag-netsuite { background: #E8F5E9; color: #1B5E20; }
-  .tag-workato { background: var(--purple-bg); color: var(--purple); }
+  .tag-workato { background: var(--ic-blue-bg); color: var(--ic-blue); }
   .tag-master { background: #FFF3E0; color: #E65100; }
   .tag-child { background: #E8EAF6; color: #283593; }
 
@@ -277,7 +283,7 @@
     justify-content: space-between;
     margin-top: 14px;
     padding-top: 12px;
-    border-top: 1px solid #F0EAF5;
+    border-top: 1px solid var(--border);
   }
   .card-formats {
     display: flex;
@@ -294,7 +300,7 @@
   .fmt-html { background: #E8F5E9; color: #2E7D32; }
   .fmt-docx { background: #E3F2FD; color: #1565C0; }
   .card-arrow {
-    color: var(--purple);
+    color: var(--ic-blue);
     font-size: 1.2rem;
     transition: transform 0.2s;
   }
@@ -332,7 +338,7 @@
   @media print {
     .controls, .legend { display: none; }
     .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
-    .header { background: #6B4C9A; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .header { background: var(--ic-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 </head>
@@ -347,7 +353,7 @@
 <div class="legend">
   <div class="legend-item"><div class="legend-dot" style="background:#F5A623"></div> Stripe (Source)</div>
   <div class="legend-item"><div class="legend-dot" style="background:#29B5E8"></div> Snowflake (Data)</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#6B4C9A"></div> Workato (Orchestration)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#334BFA"></div> Workato (Orchestration)</div>
   <div class="legend-item"><div class="legend-dot" style="background:#2E7D32"></div> NetSuite (Target ERP)</div>
 </div>
 
