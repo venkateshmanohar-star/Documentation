@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<title>Scheduled Job Pigment - Integration Documentation</title>
+<style>
+:root {
+  /* Intercom brand — light cream aesthetic */
+  --ic-cream: #F4F3ED;
+  --ic-warm-white: #FEFDFB;
+  --ic-dark: #16100E;
+  --ic-blue: #334BFA;
+  --ic-blue-bg: #DCE1F9;
+  --ic-green: #0F7134;
+  --ic-green-bg: #D7EFDC;
+  --ic-orange-accent: #B24D00;
+  --ic-orange-bg: #FFEBDB;
+  --ic-red: #DF2020;
+  --ic-red-bg: #FFDBDB;
+  /* System-specific brand colors */
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --green: #2E7D32;
+  --sf-blue: #0070d2;
+  --gray: #9E9E9E;
+  --orange-bg: #FFF5E6;
+  --blue-bg: #E8F4FD;
+  --green-bg: #E8F5E9;
+  --sf-bg: #E6F0FA;
+  --gray-bg: #F5F5F5;
+  --text-primary: #1A1A1A;
+  --text-secondary: #737373;
+  --border: #E6E6E6;
+  /* Legacy aliases for SVG diagrams and varied agent output */
+  --source-orange: #F5A623;
+  --source-bg: #FFF5E6;
+  --data-blue: #29B5E8;
+  --data-bg: #E8F4FD;
+  --orchestration-purple: #334BFA;
+  --orchestration-bg: #DCE1F9;
+  --target-green: #2E7D32;
+  --target-bg: #E8F5E9;
+  --audit-gray: #9E9E9E;
+  --audit-bg: #F5F5F5;
+  --card: #ffffff;
+  --text: #1A1A1A;
+  --muted: #737373;
+  --bg: #F4F3ED;
+  --purple: #334BFA;
+  --purple-bg: #DCE1F9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  background: var(--ic-cream);
+}
+
+/* ── Fixed Left Sidebar TOC ── */
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 0 0 20px 0;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04);
+  border-right: 1px solid var(--border);
+  z-index: 1000;
+}
+nav#toc .toc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+nav#toc .toc-brand svg { flex-shrink: 0; }
+nav#toc .toc-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+nav#toc .toc-brand-text .brand-title {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ic-dark);
+  letter-spacing: -0.02em;
+}
+nav#toc .toc-brand-text .brand-sub {
+  font-size: 0.68em;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+nav#toc h3 {
+  font-size: 0.7em;
+  color: var(--text-secondary);
+  margin: 12px 18px 8px;
+  padding: 0;
+  border-bottom: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+nav#toc a {
+  color: #1A1A1A;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.82em;
+  display: block;
+  padding: 6px 18px;
+  border-radius: 0;
+  transition: all 0.15s ease;
+  margin: 0;
+  border-left: 3px solid transparent;
+}
+nav#toc a:hover { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: rgba(51,75,250,0.3); }
+nav#toc a.active { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: var(--ic-blue); font-weight: 600; }
+
+/* ── Main Content ── */
+.main-content { max-width: 1100px; }
+
+h1 {
+  font-size: 2em;
+  color: var(--ic-dark);
+  margin-bottom: 8px;
+  border-bottom: 3px solid var(--ic-blue);
+  padding-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: 1.5em;
+  color: var(--ic-dark);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ic-blue-bg);
+  letter-spacing: -0.02em;
+}
+h3 {
+  font-size: 1.15em;
+  color: var(--text-primary);
+  margin: 24px 0 10px;
+  letter-spacing: -0.01em;
+}
+h4 {
+  font-size: 1em;
+  color: var(--text-secondary);
+  margin: 16px 0 8px;
+}
+
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 24px; }
+li { margin-bottom: 6px; }
+
+/* ── Meta Header ── */
+.meta-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.meta-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.meta-header h1 { color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative; }
+.meta-header .meta-info, .meta-header .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 12px;
+  font-size: 0.9em;
+  opacity: 0.9;
+  position: relative;
+}
+.meta-header .meta-info span, .meta-header .meta span { display: flex; align-items: center; gap: 6px; }
+.meta-header p, .meta-header .subtitle { margin-top: 4px; opacity: 0.85; position: relative; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-active { background: var(--ic-green-bg); color: var(--ic-green); }
+.badge-stopped { background: var(--gray); color: white; }
+.badge-e2e { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+.badge-arch { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* ── Sections ── */
+section, .section {
+  background: white;
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+section h2, .section h2 {
+  margin-top: 0;
+}
+
+/* ── Two-Layer Boxes ── */
+.two-layer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 16px 0;
+}
+.layer-box {
+  padding: 16px 20px;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+.layer-business { background: var(--blue-bg); border-color: var(--blue); }
+.layer-technical { background: var(--ic-blue-bg); border-color: var(--ic-blue); }
+.layer-box h4 { margin-top: 0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+.layer-business h4 { color: var(--blue); }
+.layer-technical h4 { color: var(--ic-blue); }
+
+/* ── System Cards ── */
+.system-card {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  margin: 4px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+.system-salesforce { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-snowflake { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-workato { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-netsuite { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+.system-fivetran { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-stripe { background: var(--orange-bg); color: #635BFF; border: 1px solid #635BFF; }
+.system-marketo { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+.system-sfdc, .system-intercom { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-expensify { background: var(--ic-green-bg); color: var(--ic-green); border: 1px solid var(--ic-green); }
+.system-workday { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-navan { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+.system-pigment { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-outreach { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-zuora { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-ebanx { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.9em;
+  border-radius: 6px;
+  overflow: hidden;
+}
+th {
+  background: var(--ic-dark);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) { background: var(--ic-cream); }
+
+/* ── Code ── */
+code {
+  background: #F4F3ED;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+pre {
+  background: var(--ic-dark);
+  color: #E6E1DC;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+pre code { background: none; padding: 0; color: inherit; }
+
+/* ── Diagrams ── */
+.diagram-container, .svg-container, .architecture-diagram {
+  text-align: center;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+.diagram-container svg, .svg-container svg, .architecture-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Callouts ── */
+.callout {
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin: 12px 0;
+  font-size: 0.92em;
+}
+.callout-info { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); }
+.callout-warn, .callout-warning { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); }
+.callout-success { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); }
+.callout-error, .callout-danger { background: var(--ic-red-bg); border-left: 4px solid var(--ic-red); }
+
+/* ── Details/Collapsible ── */
+details {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ic-blue);
+}
+details[open] summary { margin-bottom: 10px; }
+
+/* ── Steps ── */
+.step-row, .step-card { display: flex; gap: 12px; align-items: flex-start; margin: 10px 0; }
+.step-num, .step-number {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--ic-blue); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+}
+.step-content { flex: 1; }
+
+/* ── Tags (compat aliases for varied agent output) ── */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-right: 6px; }
+.tag-source { background: var(--orange-bg); color: #c77600; }
+.tag-data { background: var(--blue-bg); color: #1a7fa3; }
+.tag-workato, .tag-orchestration { background: var(--ic-blue-bg); color: var(--ic-blue); }
+.tag-target { background: var(--green-bg); color: var(--green); }
+.tag-audit { background: var(--gray-bg); color: var(--gray); }
+.tag-red, .tag-danger { background: var(--ic-red-bg); color: var(--ic-red); }
+.tag-green, .tag-success { background: var(--ic-green-bg); color: var(--ic-green); }
+.tag-blue, .tag-info { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* ── Compat: note/warn boxes (varied agent class names) ── */
+.note-info, .info-box, .note { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-warn, .warn-box, .warning-box, .warning { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-success, .success-box { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-error, .error-box, .danger-box { background: var(--ic-red-bg); border-left: 4px solid var(--ic-red); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+
+/* ── Compat: KPI/value boxes ── */
+.kpi-grid, .stats-grid, .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
+.kpi-card, .stat-card, .metric-card {
+  background: white; border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; text-align: center;
+}
+.kpi-value, .stat-value, .metric-value, .value {
+  font-size: 1.8em; font-weight: 700; color: var(--ic-blue);
+}
+.kpi-label, .stat-label, .metric-label, .label {
+  font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;
+}
+
+/* ── Compat: header aliases ── */
+.doc-header, .header-bar, .hero, .page-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.doc-header h1, .header-bar h1, .hero h1, .page-header h1 {
+  color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative;
+}
+.doc-header .meta, .header-bar .meta, .doc-header .meta-info, .header-bar .meta-info {
+  display: flex; flex-wrap: wrap; gap: 24px; margin-top: 12px;
+  font-size: 0.9em; opacity: 0.9; position: relative;
+}
+.doc-header .subtitle, .header-bar .subtitle, .hero .subtitle, .page-header .subtitle {
+  margin-top: 4px; opacity: 0.85; position: relative;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  body { padding: 24px; }
+  .two-layer { grid-template-columns: 1fr; }
+}
+
+/* ── Print ── */
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; background: white; }
+  section, .section { box-shadow: none; break-inside: avoid; border: 1px solid #ddd; }
+  .meta-header, .doc-header, .header-bar { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2 { break-before: auto; }
+}
+</style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:8px;right:180px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
+
+<a href="business-systems-active-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#16100E;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#334BFA'" onmouseout="this.style.background='#16100E'">&#8592; Back to Index</a>
+
+<nav id="toc">
+  <div class="toc-brand">
+    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#000000"/>
+      <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="toc-brand-text">
+      <span class="brand-title">Intercom</span>
+      <span class="brand-sub">Enterprise Systems</span>
+    </div>
+  </div>
+  <h3>Navigation</h3>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#end-to-end-flow" data-section="end-to-end-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#component-overview" data-section="component-overview">8. Component Overview</a>
+  <a href="#business-logic" data-section="business-logic">9. Key Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<div class="main-content">
+
+<div class="meta-header">
+<h1>Scheduled Job Pigment</h1>
+<p class="subtitle">NetSuite Financial Report to Pigment FP&amp;A Data Pipeline</p>
+<div class="meta-badges">
+<span class="badge badge-active"><span class="status-dot green"></span>Active</span>
+<span class="badge badge-schedule">3x Daily (6AM / 12PM / 6PM PT)</span>
+<span class="badge badge-id">ID: 61727250</span>
+</div>
+</div>
+ Section 1: Executive Summary 
+<div class="section" id="executive-summary">
+<h2>1. Executive Summary</h2>
+<p>
+            The <strong>Scheduled Job Pigment</strong> recipe is an automated data pipeline that extracts financial report data from NetSuite's web query API, transforms it from HTML to CSV format using custom Ruby code, and pushes the cleaned data into <strong>Pigment</strong> (an FP&amp;A/financial planning platform) via its CSV import API. The integration runs three times daily to ensure Pigment's planning models remain synchronized with the latest NetSuite financial actuals.
+        </p>
+<div class="kpi-grid">
+<div class="kpi-card">
+<div class="value">683</div>
+<div class="label">Total Jobs Run</div>
+</div>
+<div class="kpi-card">
+<div class="value">96.5%</div>
+<div class="label">Success Rate</div>
+</div>
+<div class="kpi-card">
+<div class="value">~67s</div>
+<div class="label">Avg Duration</div>
+</div>
+<div class="kpi-card">
+<div class="value">3x/day</div>
+<div class="label">Frequency</div>
+</div>
+</div>
+</div>
+ Section 2: Business Overview 
+<div class="section" id="business-overview">
+<h2>2. Business Overview</h2>
+<h3>Purpose</h3>
+<p>
+            This integration bridges the gap between Intercom's ERP system (NetSuite) and its financial planning platform (Pigment). By automatically pushing financial report data from NetSuite to Pigment, the Finance team can maintain up-to-date planning models without manual data entry or CSV file transfers.
+        </p>
+<h3>Business Context</h3>
+<ul>
+<li><strong>Stakeholders:</strong> Finance / FP&amp;A team, Business Operations</li>
+<li><strong>Business Process:</strong> Financial planning and analysis (FP&amp;A), budget-to-actuals reconciliation, financial forecasting</li>
+<li><strong>Data Freshness:</strong> Updated 3x daily to maintain near-real-time financial visibility in Pigment</li>
+<li><strong>Report Source:</strong> NetSuite saved report (entity ID 431348, company ID 3840170, role 1025) accessed via web query API as user diana.sy@intercom.io</li>
+</ul>
+<h3>Business Value</h3>
+<ul>
+<li>Eliminates manual CSV export/import between NetSuite and Pigment</li>
+<li>Ensures FP&amp;A models reflect latest financial data within hours</li>
+<li>Reduces human error in data transfer processes</li>
+<li>Enables Finance team to focus on analysis rather than data wrangling</li>
+</ul>
+</div>
+ Section 3: System Overview 
+<div class="section" id="system-overview">
+<h2>3. System Overview</h2>
+<table>
+<tr><th>Attribute</th><th>Details</th></tr>
+<tr><td>Recipe Name</td><td>Scheduled Job Pigment</td></tr>
+<tr><td>Recipe ID</td><td>61727250</td></tr>
+<tr><td>Status</td><td><span class="status-dot green"></span>Running (Active)</td></tr>
+<tr><td>Created</td><td>2025-04-23</td></tr>
+<tr><td>Last Updated</td><td>2025-11-07</td></tr>
+<tr><td>Version</td><td>6</td></tr>
+<tr><td>Last Version Author</td><td>pedro.cruz@intercom.io</td></tr>
+<tr><td>Author</td><td>Environment Production</td></tr>
+<tr><td>Project ID</td><td>370065</td></tr>
+<tr><td>Folder ID</td><td>24719173</td></tr>
+<tr><td>Trigger</td><td>Cron Schedule: <code>0 6,12,18 * * *</code> (PT)</td></tr>
+<tr><td>Timezone</td><td>America/Los_Angeles (Pacific Time)</td></tr>
+<tr><td>Lifetime Task Count</td><td>2,640</td></tr>
+<tr><td>Last Run</td><td>2026-04-15 06:00 PT</td></tr>
+</table>
+<h3>Connected Systems</h3>
+<table>
+<tr><th>System</th><th>Role</th><th>Connection Type</th><th>Account ID</th></tr>
+<tr><td>NetSuite (Web Query API)</td><td>Source - Financial Report</td><td>HTTP REST (Primary)</td><td>17229555</td></tr>
+<tr><td>Pigment (CSV Import API)</td><td>Target - FP&amp;A Platform</td><td>HTTP REST (Secondary)</td><td>17229556</td></tr>
+<tr><td>Workato Custom Code</td><td>Transformation - Ruby</td><td>Built-in</td><td>N/A</td></tr>
+<tr><td>Workato Logger</td><td>Observability</td><td>Built-in</td><td>N/A</td></tr>
+</table>
+</div>
+ Section 4: Architecture Overview 
+<div class="section" id="architecture-overview">
+<h2>4. Architecture Overview</h2>
+<p>
+            The recipe follows a classic <strong>Extract-Transform-Load (ETL)</strong> pattern orchestrated by Workato's scheduler. The architecture is linear and single-threaded with no branching, conditionals, or child recipe calls.
+        </p>
+<h3>Architecture Pattern</h3>
+<ul>
+<li><strong>Pattern:</strong> Scheduled ETL (Extract-Transform-Load)</li>
+<li><strong>Trigger:</strong> Cron-based scheduler (3x daily at 6AM, 12PM, 6PM Pacific)</li>
+<li><strong>Extract:</strong> HTTP GET to NetSuite Web Query API returning HTML report data</li>
+<li><strong>Transform:</strong> Custom Ruby code using Nokogiri to parse HTML tables and convert to CSV</li>
+<li><strong>Load:</strong> HTTP POST to Pigment CSV Import API with configuration ID header</li>
+<li><strong>Observability:</strong> Intermediate logging of transformed data to Workato job report</li>
+</ul>
+<h3>Key Design Decisions</h3>
+<ul>
+<li>Uses NetSuite's web query endpoint rather than SuiteQL/REST for report extraction (leverages existing saved report with complex formatting)</li>
+<li>HTML-to-CSV transformation done via Ruby/Nokogiri rather than direct CSV export (NetSuite report delivers HTML-formatted data)</li>
+<li>Non-2xx response handling enabled on both HTTP calls for resilience</li>
+<li>Single monolithic recipe (no child recipes) for simplicity</li>
+</ul>
+</div>
+ Section 5: Architecture Diagram 
+<div class="section" id="architecture-diagram">
+<h2>5. Architecture Diagram</h2>
+<p>Four-column swimlane showing the data flow from source to target.</p>
+<div class="diagram-container">
+<svg font-family="Segoe UI, sans-serif" viewbox="0 0 960 520" xmlns="http://www.w3.org/2000/svg">
+<!-- Column Headers -->
+<rect fill="#F5A623" height="50" rx="0" width="240" x="0" y="0"></rect>
+<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="120" y="32">SOURCE</text>
+<rect fill="#29B5E8" height="50" rx="0" width="240" x="240" y="0"></rect>
+<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="360" y="32">DATA PROCESSING</text>
+<rect fill="#334BFA" height="50" rx="0" width="240" x="480" y="0"></rect>
+<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="600" y="32">ORCHESTRATION</text>
+<rect fill="#2E7D32" height="50" rx="0" width="240" x="720" y="0"></rect>
+<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="840" y="32">TARGET</text>
+<!-- Column Backgrounds -->
+<rect fill="#FEF3E0" height="470" opacity="0.5" width="240" x="0" y="50"></rect>
+<rect fill="#E0F4FE" height="470" opacity="0.5" width="240" x="240" y="50"></rect>
+<rect fill="#DCE1F9" height="470" opacity="0.5" width="240" x="480" y="50"></rect>
+<rect fill="#E8F5E9" height="470" opacity="0.5" width="240" x="720" y="50"></rect>
+<!-- Column dividers -->
+<line stroke="#ddd" stroke-dasharray="4" x1="240" x2="240" y1="50" y2="520"></line>
+<line stroke="#ddd" stroke-dasharray="4" x1="480" x2="480" y1="50" y2="520"></line>
+<line stroke="#ddd" stroke-dasharray="4" x1="720" x2="720" y1="50" y2="520"></line>
+<!-- Source: NetSuite -->
+<rect fill="white" height="80" rx="10" stroke="#F5A623" stroke-width="2" width="180" x="30" y="100"></rect>
+<text fill="#333" font-size="13" font-weight="bold" text-anchor="middle" x="120" y="130">NetSuite</text>
+<text fill="#666" font-size="11" text-anchor="middle" x="120" y="150">Web Query API</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="120" y="167">Entity: 431348</text>
+<rect fill="white" height="60" rx="8" stroke="#F5A623" stroke-width="1.5" width="180" x="30" y="210"></rect>
+<text fill="#333" font-size="12" text-anchor="middle" x="120" y="235">Saved Report</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="120" y="253">HTML Format / 2400 rows</text>
+<!-- Data Processing: Ruby Transform -->
+<rect fill="white" height="80" rx="10" stroke="#29B5E8" stroke-width="2" width="180" x="270" y="100"></rect>
+<text fill="#333" font-size="13" font-weight="bold" text-anchor="middle" x="360" y="128">Ruby Custom Code</text>
+<text fill="#666" font-size="11" text-anchor="middle" x="360" y="148">Nokogiri HTML Parser</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="360" y="165">HTML to CSV</text>
+<rect fill="white" height="60" rx="8" stroke="#29B5E8" stroke-width="1.5" width="180" x="270" y="210"></rect>
+<text fill="#333" font-size="12" text-anchor="middle" x="360" y="235">CSV Output</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="360" y="253">Cleaned tabular data</text>
+<!-- Orchestration: Workato -->
+<rect fill="white" height="80" rx="10" stroke="#334BFA" stroke-width="2" width="180" x="510" y="100"></rect>
+<text fill="#333" font-size="13" font-weight="bold" text-anchor="middle" x="600" y="128">Workato Scheduler</text>
+<text fill="#666" font-size="11" text-anchor="middle" x="600" y="148">Cron: 0 6,12,18 * * *</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="600" y="165">3x daily (PT)</text>
+<rect fill="white" height="60" rx="8" stroke="#334BFA" stroke-width="1.5" width="180" x="510" y="210"></rect>
+<text fill="#333" font-size="12" text-anchor="middle" x="600" y="235">Job Logger</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="600" y="253">Intermediate logging</text>
+<!-- Target: Pigment -->
+<rect fill="white" height="80" rx="10" stroke="#2E7D32" stroke-width="2" width="180" x="750" y="100"></rect>
+<text fill="#333" font-size="13" font-weight="bold" text-anchor="middle" x="840" y="128">Pigment</text>
+<text fill="#666" font-size="11" text-anchor="middle" x="840" y="148">CSV Import API</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="840" y="165">FP&amp;A Platform</text>
+<rect fill="white" height="60" rx="8" stroke="#2E7D32" stroke-width="1.5" width="180" x="750" y="210"></rect>
+<text fill="#333" font-size="12" text-anchor="middle" x="840" y="235">Config ID</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="840" y="253">dafb08cb-7f42-...</text>
+<!-- Flow Arrows -->
+<defs>
+<marker id="arrowOrange" markerheight="7" markerwidth="10" orient="auto" refx="10" refy="3.5">
+<polygon fill="#F5A623" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+<marker id="arrowBlue" markerheight="7" markerwidth="10" orient="auto" refx="10" refy="3.5">
+<polygon fill="#29B5E8" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+<marker id="arrowBlue" markerheight="7" markerwidth="10" orient="auto" refx="10" refy="3.5">
+<polygon fill="#334BFA" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+<marker id="arrowGreen" markerheight="7" markerwidth="10" orient="auto" refx="10" refy="3.5">
+<polygon fill="#2E7D32" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+</defs>
+<line marker-end="url(#arrowOrange)" stroke="#F5A623" stroke-width="2.5" x1="210" x2="268" y1="140" y2="140"></line>
+<text fill="#F5A623" font-size="9" text-anchor="middle" x="238" y="133">HTML</text>
+<line marker-end="url(#arrowBlue)" stroke="#29B5E8" stroke-width="2.5" x1="450" x2="508" y1="140" y2="140"></line>
+<text fill="#29B5E8" font-size="9" text-anchor="middle" x="478" y="133">CSV</text>
+<line marker-end="url(#arrowBlue)" stroke="#334BFA" stroke-width="2.5" x1="690" x2="748" y1="140" y2="140"></line>
+<text fill="#334BFA" font-size="9" text-anchor="middle" x="718" y="133">POST</text>
+<!-- Schedule trigger arrow -->
+<path d="M 600 180 L 600 320 L 120 320 L 120 280" fill="none" marker-end="url(#arrowBlue)" stroke="#334BFA" stroke-dasharray="6" stroke-width="1.5"></path>
+<text fill="#334BFA" font-size="10" text-anchor="middle" x="360" y="312">Triggers at 6AM / 12PM / 6PM PT</text>
+<!-- Legend -->
+<rect fill="white" height="120" rx="8" stroke="#ddd" stroke-width="1" width="900" x="30" y="380"></rect>
+<text fill="#333" font-size="12" font-weight="bold" x="50" y="405">Connection Details</text>
+<circle cx="60" cy="430" fill="#F5A623" r="6"></circle>
+<text fill="#666" font-size="11" x="75" y="434">REST Connection (acct: 17229555) - NetSuite Web Query</text>
+<circle cx="60" cy="455" fill="#2E7D32" r="6"></circle>
+<text fill="#666" font-size="11" x="75" y="459">REST Secondary Connection (acct: 17229556) - Pigment API</text>
+<circle cx="500" cy="430" fill="#29B5E8" r="6"></circle>
+<text fill="#666" font-size="11" x="515" y="434">Custom Ruby Code - Nokogiri HTML-to-CSV</text>
+<circle cx="500" cy="455" fill="#334BFA" r="6"></circle>
+<text fill="#666" font-size="11" x="515" y="459">Workato Logger - Job report logging</text>
+<text fill="#999" font-size="10" x="50" y="485">Auth: diana.sy@intercom.io | NS Company: 3840170 | NS Role: 1025 | Pigment Config: dafb08cb-7f42-4e67-870c-c683683b55a3</text>
+</svg>
+</div>
+</div>
+ Section 6: End-to-End Flow 
+<div class="section" id="end-to-end-flow">
+<h2>6. End-to-End Flow</h2>
+<h3>Flow Description</h3>
+<ol>
+<li><strong>Trigger (Scheduler):</strong> Workato's cron scheduler fires at 6:00 AM, 12:00 PM, and 6:00 PM Pacific Time every day.</li>
+<li><strong>Step 1 - Extract (NetSuite HTTP GET):</strong> The recipe calls NetSuite's web query endpoint (<code>/app/reporting/webquery.nl</code>) with parameters specifying the saved report, company ID, entity, email, role, and format (CSV). Despite requesting CSV format, NetSuite returns HTML-formatted data. The response is captured as raw text (UTF-8).</li>
+<li><strong>Step 2 - Transform (Ruby Custom Code):</strong> The raw HTML response is passed to a Ruby code block that uses <code>Nokogiri::HTML</code> to parse the HTML, extract all table rows (<code>tr</code>) and cells (<code>td</code>), strip whitespace, remove <code>=</code> characters, and generate a clean CSV string.</li>
+<li><strong>Step 3 - Log (Logger):</strong> The transformed output is logged to the Workato job report for debugging and audit purposes.</li>
+<li><strong>Step 4 - Load (Pigment HTTP POST):</strong> The CSV data is sent as a POST request to Pigment's CSV import API (<code>/api/import/push/csv</code>) with the appropriate <code>configurationId</code> header and <code>text/csv</code> content type.</li>
+</ol>
+<h3>Data Flow Diagram</h3>
+<div class="diagram-container">
+<svg font-family="Segoe UI, sans-serif" viewbox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+<!-- Timeline -->
+<line stroke="#ddd" stroke-width="1" x1="50" x2="850" y1="60" y2="60"></line>
+<!-- Step markers -->
+<circle cx="100" cy="60" fill="#334BFA" r="20"></circle>
+<text fill="white" font-size="12" font-weight="bold" text-anchor="middle" x="100" y="65">T</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="100" y="95">Trigger</text>
+<circle cx="280" cy="60" fill="#F5A623" r="20"></circle>
+<text fill="white" font-size="12" font-weight="bold" text-anchor="middle" x="280" y="65">1</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="280" y="95">Extract</text>
+<circle cx="460" cy="60" fill="#29B5E8" r="20"></circle>
+<text fill="white" font-size="12" font-weight="bold" text-anchor="middle" x="460" y="65">2</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="460" y="95">Transform</text>
+<circle cx="640" cy="60" fill="#8B6FB0" r="20"></circle>
+<text fill="white" font-size="12" font-weight="bold" text-anchor="middle" x="640" y="65">3</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="640" y="95">Log</text>
+<circle cx="810" cy="60" fill="#2E7D32" r="20"></circle>
+<text fill="white" font-size="12" font-weight="bold" text-anchor="middle" x="810" y="65">4</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="810" y="95">Load</text>
+<!-- Arrows between steps -->
+<line marker-end="url(#arrowBlue)" stroke="#334BFA" stroke-width="2" x1="120" x2="258" y1="60" y2="60"></line>
+<line marker-end="url(#arrowOrange)" stroke="#F5A623" stroke-width="2" x1="300" x2="438" y1="60" y2="60"></line>
+<line marker-end="url(#arrowBlue)" stroke="#29B5E8" stroke-width="2" x1="480" x2="618" y1="60" y2="60"></line>
+<line marker-end="url(#arrowBlue)" stroke="#334BFA" stroke-width="2" x1="660" x2="788" y1="60" y2="60"></line>
+<!-- Detail boxes -->
+<!-- Trigger detail -->
+<rect fill="white" height="100" rx="8" stroke="#334BFA" stroke-width="1.5" width="160" x="20" y="120"></rect>
+<text fill="#334BFA" font-size="11" font-weight="bold" text-anchor="middle" x="100" y="142">Cron Scheduler</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="100" y="162">0 6,12,18 * * *</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="100" y="178">America/Los_Angeles</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="100" y="198">Every day, 3 runs</text>
+<!-- Extract detail -->
+<rect fill="white" height="120" rx="8" stroke="#F5A623" stroke-width="1.5" width="170" x="195" y="120"></rect>
+<text fill="#F5A623" font-size="11" font-weight="bold" text-anchor="middle" x="280" y="142">NetSuite HTTP GET</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="280" y="160">/app/reporting/</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="280" y="175">webquery.nl</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="280" y="195">entity=431348</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="280" y="210">format=csv, cr=2400</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="280" y="225">Response: HTML (raw text)</text>
+<!-- Transform detail -->
+<rect fill="white" height="120" rx="8" stroke="#29B5E8" stroke-width="1.5" width="160" x="380" y="120"></rect>
+<text fill="#29B5E8" font-size="11" font-weight="bold" text-anchor="middle" x="460" y="142">Ruby Custom Code</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="460" y="162">Nokogiri::HTML</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="460" y="180">Parse HTML tables</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="460" y="196">Extract td cells</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="460" y="212">Strip / gsub('=','')</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="460" y="228">Output: CSV string</text>
+<!-- Log detail -->
+<rect fill="white" height="80" rx="8" stroke="#8B6FB0" stroke-width="1.5" width="150" x="565" y="120"></rect>
+<text fill="#8B6FB0" font-size="11" font-weight="bold" text-anchor="middle" x="640" y="142">Workato Logger</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="640" y="162">Log to Job Report</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="640" y="180">Audit / debug output</text>
+<!-- Load detail -->
+<rect fill="white" height="120" rx="8" stroke="#2E7D32" stroke-width="1.5" width="160" x="730" y="120"></rect>
+<text fill="#2E7D32" font-size="11" font-weight="bold" text-anchor="middle" x="810" y="142">Pigment HTTP POST</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="810" y="162">/api/import/push/csv</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="810" y="182">Content: text/csv</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="810" y="198">Header: configurationId</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="810" y="214">dafb08cb-7f42-...</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="810" y="230">Response: JSON</text>
+<!-- Data format labels on arrows -->
+<rect fill="#FEF3E0" height="18" rx="4" width="55" x="185" y="40"></rect>
+<text fill="#F5A623" font-size="9" font-weight="bold" text-anchor="middle" x="212" y="53">HTML</text>
+<rect fill="#E0F4FE" height="18" rx="4" width="45" x="370" y="40"></rect>
+<text fill="#29B5E8" font-size="9" font-weight="bold" text-anchor="middle" x="392" y="53">CSV</text>
+<rect fill="#DCE1F9" height="18" rx="4" width="55" x="550" y="40"></rect>
+<text fill="#8B6FB0" font-size="9" font-weight="bold" text-anchor="middle" x="577" y="53">LOG</text>
+<rect fill="#E8F5E9" height="18" rx="4" width="45" x="710" y="40"></rect>
+<text fill="#2E7D32" font-size="9" font-weight="bold" text-anchor="middle" x="732" y="53">CSV</text>
+<!-- Duration annotations -->
+<rect fill="#F8F7FC" height="80" rx="8" stroke="#D4C5E8" width="860" x="20" y="300"></rect>
+<text fill="#333" font-size="12" font-weight="bold" x="50" y="325">Typical Timing</text>
+<text fill="#666" font-size="11" x="50" y="348">Total duration: ~67 seconds average (range: 17s - 238s)</text>
+<text fill="#666" font-size="11" x="50" y="368">Extract from NetSuite: ~30-40s | Transform: &lt;1s | Log: &lt;1s | Load to Pigment: ~20-30s</text>
+</svg>
+</div>
+</div>
+ Section 7: Processing Stages 
+<div class="section" id="processing-stages">
+<h2>7. Processing Stages</h2>
+<h3>Stage 1: Trigger - Cron Scheduler</h3>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Step Number</td><td>0 (Trigger)</td></tr>
+<tr><td>Provider</td><td>clock</td></tr>
+<tr><td>Event</td><td>scheduled_event</td></tr>
+<tr><td>Cron Expression</td><td><code>0 6,12,18 * * *</code></td></tr>
+<tr><td>Timezone</td><td>America/Los_Angeles</td></tr>
+<tr><td>Description</td><td>Fires at the top of the hour at 6AM, 12PM, and 6PM Pacific daily</td></tr>
+</table>
+<h3>Stage 2: Extract - NetSuite Web Query (HTTP GET)</h3>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Step Number</td><td>1</td></tr>
+<tr><td>Provider</td><td>REST (Primary, acct 17229555)</td></tr>
+<tr><td>Method</td><td>GET</td></tr>
+<tr><td>Endpoint</td><td><code>/app/reporting/webquery.nl</code></td></tr>
+<tr><td>Content Type</td><td>application/json</td></tr>
+<tr><td>Response Type</td><td>Raw text (UTF-8)</td></tr>
+<tr><td>Ignore HTTP Errors</td><td>Yes (non-2xx treated as success)</td></tr>
+</table>
+<p><strong>Query Parameters:</strong></p>
+<table>
+<tr><th>Parameter</th><th>Value</th><th>Purpose</th></tr>
+<tr><td>compid</td><td>3840170</td><td>NetSuite company ID</td></tr>
+<tr><td>entity</td><td>431348</td><td>Saved report entity ID</td></tr>
+<tr><td>email</td><td>diana.sy@intercom.io</td><td>Authenticating user</td></tr>
+<tr><td>role</td><td>1025</td><td>NetSuite role for access</td></tr>
+<tr><td>Selection</td><td>EntirePage</td><td>Return full report</td></tr>
+<tr><td>Formatting</td><td>All</td><td>Include all formatting</td></tr>
+<tr><td>PreFormattedTextToColumns</td><td>True</td><td>Convert pre-formatted text to columns</td></tr>
+<tr><td>ConsecutiveDelimitersAsOne</td><td>True</td><td>Merge consecutive delimiters</td></tr>
+<tr><td>SingleBlockTextImport</td><td>False</td><td>Allow multi-block import</td></tr>
+<tr><td>format</td><td>csv</td><td>Request CSV format (returns HTML)</td></tr>
+<tr><td>cr</td><td>2400</td><td>Max rows to return</td></tr>
+</table>
+<h3>Stage 3: Transform - Ruby Custom Code (HTML to CSV)</h3>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Step Number</td><td>2</td></tr>
+<tr><td>Provider</td><td>workato_custom_code</td></tr>
+<tr><td>Action</td><td>invoke_custom_ruby_code</td></tr>
+<tr><td>Name</td><td>Convert html to csv</td></tr>
+<tr><td>Input</td><td>html_table (from Step 1 response body)</td></tr>
+<tr><td>Output</td><td>csv (string)</td></tr>
+</table>
+<p><strong>Ruby Code:</strong></p>
+<pre>require 'nokogiri'
+require 'csv'
+
+html = input[:html_table]
+doc = Nokogiri::HTML(html)
+
+rows = doc.css('tr').map do |tr|
+  tr.css('td').map { |td| td.text.strip.gsub('=', '') }
+end
+
+csv_string = CSV.generate do |csv|
+  rows.each { |row| csv &lt;&lt; row }
+end
+
+{ csv: csv_string }</pre>
+<h3>Stage 4: Log - Workato Logger</h3>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Step Number</td><td>3</td></tr>
+<tr><td>Provider</td><td>logger</td></tr>
+<tr><td>Action</td><td>log_message</td></tr>
+<tr><td>Input</td><td>Full output from Step 2 (custom code)</td></tr>
+<tr><td>Log Service</td><td>Disabled (user_logs_enabled = false)</td></tr>
+<tr><td>Purpose</td><td>Write transformed data to Workato job report for audit</td></tr>
+</table>
+<h3>Stage 5: Load - Pigment CSV Import (HTTP POST)</h3>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Step Number</td><td>4</td></tr>
+<tr><td>Provider</td><td>REST Secondary (acct 17229556)</td></tr>
+<tr><td>Method</td><td>POST</td></tr>
+<tr><td>Endpoint</td><td><code>/api/import/push/csv</code></td></tr>
+<tr><td>Content Type</td><td>application/octet-stream (body), text/csv (header override)</td></tr>
+<tr><td>Response Type</td><td>JSON</td></tr>
+<tr><td>Ignore HTTP Errors</td><td>Yes (non-2xx treated as success)</td></tr>
+<tr><td>Body</td><td>CSV string from Step 2 output</td></tr>
+</table>
+<p><strong>Custom Headers:</strong></p>
+<table>
+<tr><th>Header</th><th>Value</th></tr>
+<tr><td>configurationId</td><td><code>dafb08cb-7f42-4e67-870c-c683683b55a3</code></td></tr>
+<tr><td>Content-Type</td><td>text/csv</td></tr>
+</table>
+</div>
+ Section 8: Component/Module Overview 
+<div class="section" id="component-overview">
+<h2>8. Component / Module Overview</h2>
+<p>This recipe is a single, linear (non-branching) recipe with no child or callable recipe dependencies. All processing occurs within four sequential steps in the parent recipe.</p>
+<h3>Recipe Hierarchy Diagram</h3>
+<div class="diagram-container">
+<svg font-family="Segoe UI, sans-serif" viewbox="0 0 700 360" xmlns="http://www.w3.org/2000/svg">
+<!-- Main Recipe Box -->
+<rect fill="white" height="70" rx="12" stroke="#334BFA" stroke-width="3" width="400" x="150" y="20"></rect>
+<text fill="#334BFA" font-size="14" font-weight="bold" text-anchor="middle" x="350" y="50">Scheduled Job Pigment</text>
+<text fill="#999" font-size="11" text-anchor="middle" x="350" y="70">Recipe 61727250 | v6 | Active</text>
+<!-- Vertical connector -->
+<line stroke="#334BFA" stroke-width="2" x1="350" x2="350" y1="90" y2="120"></line>
+<!-- Steps container -->
+<rect fill="#F8F7FC" height="220" rx="10" stroke="#D4C5E8" stroke-dasharray="6" stroke-width="1" width="600" x="50" y="120"></rect>
+<text fill="#334BFA" font-size="12" font-weight="bold" x="70" y="145">Recipe Steps (Sequential)</text>
+<!-- Step 1 -->
+<rect fill="white" height="70" rx="8" stroke="#F5A623" stroke-width="2" width="120" x="80" y="160"></rect>
+<text fill="#F5A623" font-size="11" font-weight="bold" text-anchor="middle" x="140" y="185">Step 1</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="140" y="200">HTTP GET</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="140" y="215">NetSuite</text>
+<!-- Arrow 1-2 -->
+<defs>
+<marker id="arrowGray" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3">
+<polygon fill="#999" points="0 0, 8 3, 0 6"></polygon>
+</marker>
+</defs>
+<line marker-end="url(#arrowGray)" stroke="#999" stroke-width="1.5" x1="200" x2="230" y1="195" y2="195"></line>
+<!-- Step 2 -->
+<rect fill="white" height="70" rx="8" stroke="#29B5E8" stroke-width="2" width="120" x="230" y="160"></rect>
+<text fill="#29B5E8" font-size="11" font-weight="bold" text-anchor="middle" x="290" y="185">Step 2</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="290" y="200">Ruby Code</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="290" y="215">HTML to CSV</text>
+<!-- Arrow 2-3 -->
+<line marker-end="url(#arrowGray)" stroke="#999" stroke-width="1.5" x1="350" x2="380" y1="195" y2="195"></line>
+<!-- Step 3 -->
+<rect fill="white" height="70" rx="8" stroke="#8B6FB0" stroke-width="2" width="120" x="380" y="160"></rect>
+<text fill="#8B6FB0" font-size="11" font-weight="bold" text-anchor="middle" x="440" y="185">Step 3</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="440" y="200">Logger</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="440" y="215">Job Report</text>
+<!-- Arrow 3-4 -->
+<line marker-end="url(#arrowGray)" stroke="#999" stroke-width="1.5" x1="500" x2="530" y1="195" y2="195"></line>
+<!-- Step 4 -->
+<rect fill="white" height="70" rx="8" stroke="#2E7D32" stroke-width="2" width="120" x="530" y="160"></rect>
+<text fill="#2E7D32" font-size="11" font-weight="bold" text-anchor="middle" x="590" y="185">Step 4</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="590" y="200">HTTP POST</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="590" y="215">Pigment</text>
+<!-- No child recipes note -->
+<rect fill="white" height="55" rx="8" stroke="#D4C5E8" stroke-width="1" width="400" x="150" y="260"></rect>
+<text fill="#666" font-size="11" text-anchor="middle" x="350" y="282">No child recipes or callable recipes</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="350" y="300">Standalone linear pipeline | 4 steps | No branching</text>
+</svg>
+</div>
+<h3>Module Summary</h3>
+<table>
+<tr><th>Module</th><th>Type</th><th>Provider</th><th>Description</th></tr>
+<tr><td>Scheduler Trigger</td><td>Trigger</td><td>clock</td><td>Fires 3x daily on cron schedule</td></tr>
+<tr><td>NetSuite Extract</td><td>HTTP Action</td><td>rest (primary)</td><td>GET saved report from NetSuite web query API</td></tr>
+<tr><td>HTML-to-CSV Transform</td><td>Custom Code</td><td>workato_custom_code</td><td>Parse HTML with Nokogiri, output CSV</td></tr>
+<tr><td>Job Logger</td><td>Logger</td><td>logger</td><td>Log transformed output to job report</td></tr>
+<tr><td>Pigment Load</td><td>HTTP Action</td><td>rest_secondary</td><td>POST CSV data to Pigment import API</td></tr>
+</table>
+</div>
+ Section 9: Key Business Logic 
+<div class="section" id="business-logic">
+<h2>9. Key Business Logic</h2>
+<h3>HTML-to-CSV Transformation Logic</h3>
+<p>The core transformation logic uses Ruby with the Nokogiri gem to parse the HTML response from NetSuite:</p>
+<ol>
+<li><strong>HTML Parsing:</strong> <code>Nokogiri::HTML(html)</code> parses the raw HTML response into a DOM tree</li>
+<li><strong>Row Extraction:</strong> <code>doc.css('tr')</code> selects all table rows from the HTML</li>
+<li><strong>Cell Extraction:</strong> <code>tr.css('td')</code> selects all data cells within each row (note: <code>th</code> headers are excluded)</li>
+<li><strong>Data Cleaning:</strong> Each cell value is processed with:
+                <ul>
+<li><code>.text</code> - Extracts text content, stripping HTML tags</li>
+<li><code>.strip</code> - Removes leading/trailing whitespace</li>
+<li><code>.gsub('=', '')</code> - Removes equals signs (NetSuite formula prefix artifacts)</li>
+</ul>
+</li>
+<li><strong>CSV Generation:</strong> <code>CSV.generate</code> properly formats the cleaned rows into a valid CSV string with correct escaping</li>
+</ol>
+<h3>Important Business Rules</h3>
+<ul>
+<li><strong>Report Identity:</strong> The NetSuite report is accessed by entity ID 431348 under company 3840170, using role 1025. Any changes to the saved report in NetSuite will directly affect the data pushed to Pigment.</li>
+<li><strong>Row Limit:</strong> The <code>cr=2400</code> parameter caps the report at 2,400 rows. If the report grows beyond this limit, data will be silently truncated.</li>
+<li><strong>Equals Sign Removal:</strong> The <code>gsub('=', '')</code> cleaning step removes ALL equals signs from data values. This is designed to strip NetSuite's formula prefix characters but could unintentionally modify data containing legitimate equals signs.</li>
+<li><strong>Header Row Handling:</strong> The code uses <code>td</code> selectors only, meaning table header cells (<code>th</code>) are excluded from the output. This assumes Pigment's import configuration expects data without headers, or the NetSuite report does not use <code>th</code> tags.</li>
+<li><strong>Full Replace Pattern:</strong> Each run pushes the entire report to Pigment (full dataset push, not incremental). The Pigment configuration ID determines how the data is mapped and whether it replaces or appends.</li>
+</ul>
+<h3>Error Handling Strategy</h3>
+<ul>
+<li>Both HTTP steps have <code>ignore_http_errors</code> enabled, meaning non-2xx responses are treated as successful actions and do not halt the recipe</li>
+<li>No explicit error handling, retry logic, or conditional branching exists in the recipe</li>
+<li>Failed jobs (24 out of 683 = 3.5% failure rate) are likely caused by NetSuite report timeouts or API unavailability</li>
+</ul>
+</div>
+ Section 10: Data Model 
+<div class="section" id="data-model">
+<h2>10. Data Model</h2>
+<h3>Data Flow Summary</h3>
+<table>
+<tr><th>Stage</th><th>Format</th><th>Structure</th><th>Size Estimate</th></tr>
+<tr><td>NetSuite Response</td><td>HTML (raw text)</td><td>HTML table with tr/td elements</td><td>Up to 2,400 rows</td></tr>
+<tr><td>After Transform</td><td>CSV (string)</td><td>Comma-separated values, one row per line</td><td>Same row count, cleaned</td></tr>
+<tr><td>Pigment Import</td><td>CSV (POST body)</td><td>Mapped by configurationId in Pigment</td><td>Same as transform output</td></tr>
+</table>
+<h3>NetSuite Report Parameters</h3>
+<table>
+<tr><th>Field</th><th>Value</th><th>Notes</th></tr>
+<tr><td>Company ID</td><td>3840170</td><td>Intercom's NetSuite instance</td></tr>
+<tr><td>Entity ID</td><td>431348</td><td>Saved report identifier</td></tr>
+<tr><td>User Email</td><td>diana.sy@intercom.io</td><td>Service account / report owner</td></tr>
+<tr><td>Role</td><td>1025</td><td>NetSuite role for data access permissions</td></tr>
+<tr><td>Max Rows</td><td>2,400</td><td>Hard limit on returned data</td></tr>
+</table>
+<h3>Pigment Import Configuration</h3>
+<table>
+<tr><th>Field</th><th>Value</th><th>Notes</th></tr>
+<tr><td>Configuration ID</td><td><code>dafb08cb-7f42-4e67-870c-c683683b55a3</code></td><td>Identifies the Pigment data model / import mapping</td></tr>
+<tr><td>Content Type</td><td>text/csv</td><td>CSV format expected by Pigment</td></tr>
+<tr><td>API Endpoint</td><td>/api/import/push/csv</td><td>Pigment's push-based CSV import</td></tr>
+</table>
+<h3>Transform Input/Output Schema</h3>
+<table>
+<tr><th>Direction</th><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>Input</td><td>html_table</td><td>string</td><td>Raw HTML from NetSuite web query response body</td></tr>
+<tr><td>Output</td><td>csv</td><td>string</td><td>Cleaned CSV string ready for Pigment import</td></tr>
+</table>
+</div>
+ Section 11: Edge Cases 
+<div class="section" id="edge-cases">
+<h2>11. Edge Cases &amp; Risk Factors</h2>
+<h3>Known Risks</h3>
+<table>
+<tr><th>Risk</th><th>Severity</th><th>Description</th><th>Mitigation</th></tr>
+<tr>
+<td>Row Truncation</td>
+<td><span style="color:#F44336;font-weight:bold;">High</span></td>
+<td>If the NetSuite report exceeds 2,400 rows (cr=2400), data is silently truncated with no alert</td>
+<td>Monitor report row count; increase cr parameter if needed</td>
+</tr>
+<tr>
+<td>Equals Sign Removal</td>
+<td><span style="color:#FFC107;font-weight:bold;">Medium</span></td>
+<td>The gsub('=', '') removes ALL equals signs, potentially corrupting data containing legitimate = characters</td>
+<td>Review report data for = characters; consider more targeted regex</td>
+</tr>
+<tr>
+<td>Silent HTTP Errors</td>
+<td><span style="color:#FFC107;font-weight:bold;">Medium</span></td>
+<td>Both HTTP steps ignore non-2xx errors, meaning Pigment could receive empty/error data without the recipe failing</td>
+<td>Add conditional checks on response status codes; validate response body</td>
+</tr>
+<tr>
+<td>Header Row Omission</td>
+<td><span style="color:#FFC107;font-weight:bold;">Medium</span></td>
+<td>Only td elements are extracted (not th), so table headers may be missing from CSV output</td>
+<td>Verify Pigment import config handles headerless data correctly</td>
+</tr>
+<tr>
+<td>Service Account Dependency</td>
+<td><span style="color:#FFC107;font-weight:bold;">Medium</span></td>
+<td>The recipe authenticates as diana.sy@intercom.io; if this account is deactivated or role 1025 is modified, extraction fails</td>
+<td>Use a shared service account; document role requirements</td>
+</tr>
+<tr>
+<td>NetSuite Report Changes</td>
+<td><span style="color:#F44336;font-weight:bold;">High</span></td>
+<td>Any structural changes to the saved report (entity 431348) in NetSuite will change the data pushed to Pigment, potentially breaking the Pigment import mapping</td>
+<td>Coordinate report changes with Pigment configuration updates</td>
+</tr>
+<tr>
+<td>Empty Report</td>
+<td><span style="color:#4CAF50;font-weight:bold;">Low</span></td>
+<td>If NetSuite returns an empty report, the recipe will push an empty CSV to Pigment</td>
+<td>Add validation for minimum expected row count</td>
+</tr>
+</table>
+<h3>Historical Failure Pattern</h3>
+<p>
+            24 out of 683 jobs (3.5%) have failed. The most recent cluster of failures occurred between <strong>January 22-25, 2026</strong>, with multiple consecutive failures suggesting a temporary system issue (likely NetSuite API unavailability or report generation timeout).
+        </p>
+</div>
+ Section 12: Operational Notes 
+<div class="section" id="operational-notes">
+<h2>12. Operational Notes</h2>
+<h3>Schedule Details</h3>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Cron Expression</td><td><code>0 6,12,18 * * *</code></td></tr>
+<tr><td>Timezone</td><td>America/Los_Angeles (Pacific Time)</td></tr>
+<tr><td>Run Times (PT)</td><td>6:00 AM, 12:00 PM, 6:00 PM</td></tr>
+<tr><td>Run Times (UTC)</td><td>1:00 PM / 2:00 PM, 7:00 PM / 8:00 PM, 1:00 AM / 2:00 AM (varies with DST)</td></tr>
+<tr><td>Frequency</td><td>3 runs per day, 7 days per week (21 runs/week)</td></tr>
+</table>
+<h3>Performance Metrics</h3>
+<table>
+<tr><th>Metric</th><th>Value</th></tr>
+<tr><td>Total Jobs</td><td>683</td></tr>
+<tr><td>Succeeded</td><td>659 (96.5%)</td></tr>
+<tr><td>Failed</td><td>24 (3.5%)</td></tr>
+<tr><td>Avg Duration (succeeded)</td><td>67.3 seconds</td></tr>
+<tr><td>Min Duration</td><td>17.0 seconds</td></tr>
+<tr><td>Max Duration</td><td>238.4 seconds (~4 min)</td></tr>
+<tr><td>Lifetime Task Count</td><td>2,640</td></tr>
+</table>
+<h3>Monitoring &amp; Alerting</h3>
+<ul>
+<li><strong>Workato Job History:</strong> Available in Workato console under recipe 61727250</li>
+<li><strong>Logger Output:</strong> Step 3 logs the full transformed CSV to the Workato job report (visible per-job)</li>
+<li><strong>No External Alerting:</strong> The recipe does not send Slack notifications, emails, or webhook alerts on failure. Monitoring relies on Workato's built-in job failure notifications.</li>
+</ul>
+<h3>Connections &amp; Authentication</h3>
+<table>
+<tr><th>Connection</th><th>Account ID</th><th>Purpose</th><th>Auth Notes</th></tr>
+<tr><td>REST (Primary)</td><td>17229555</td><td>NetSuite Web Query API</td><td>Authenticated via diana.sy@intercom.io, role 1025</td></tr>
+<tr><td>REST Secondary</td><td>17229556</td><td>Pigment CSV Import API</td><td>API key or OAuth (configured in Workato connection)</td></tr>
+</table>
+<h3>Maintenance Considerations</h3>
+<ul>
+<li><strong>NetSuite Report:</strong> Entity 431348 must remain accessible to role 1025 under company 3840170. Changes to the report structure require corresponding Pigment import configuration updates.</li>
+<li><strong>User Account:</strong> diana.sy@intercom.io must remain active with role 1025 access. Consider migrating to a service account for resilience.</li>
+<li><strong>Pigment Configuration:</strong> The import configuration <code>dafb08cb-7f42-4e67-870c-c683683b55a3</code> must match the expected CSV column structure.</li>
+<li><strong>Row Limit:</strong> Monitor whether the NetSuite report approaches the 2,400 row cap. Increase <code>cr</code> parameter if needed.</li>
+<li><strong>Version History:</strong> Last modified by pedro.cruz@intercom.io on 2025-11-07 (version 6).</li>
+</ul>
+<h3>Troubleshooting Guide</h3>
+<table>
+<tr><th>Symptom</th><th>Likely Cause</th><th>Resolution</th></tr>
+<tr><td>Job fails with HTTP error</td><td>NetSuite API timeout or unavailability</td><td>Check NetSuite status; re-run job manually</td></tr>
+<tr><td>Empty data in Pigment</td><td>NetSuite report returned empty/error HTML</td><td>Check Step 1 response in job report; verify NS report</td></tr>
+<tr><td>Incorrect data in Pigment</td><td>NetSuite report structure changed</td><td>Compare Step 2 CSV output with expected format; update Pigment config</td></tr>
+<tr><td>Authentication failure</td><td>User account deactivated or role changed</td><td>Verify diana.sy@intercom.io access; update connection</td></tr>
+<tr><td>Truncated data</td><td>Report exceeds 2,400 row limit</td><td>Increase cr parameter in Step 1</td></tr>
+</table>
+</div>
+ Footer 
+<div class="footer">
+<p>Generated on April 15, 2026 | Author: venkatesh.manohar | Workato Recipe 61727250</p>
+<p>Scheduled Job Pigment - NetSuite to Pigment FP&amp;A Data Pipeline Documentation</p>
+</div>
+
+</div>
+
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a[data-section]');
+  var sections = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    var current = sections[0];
+    var scrollY = window.scrollY + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="venkatesh.manohar">
+  <title>Business Systems — Active Recipes Documentation Index</title>
+  <style>
+    :root {
+      --ic-cream: #F4F3ED;
+      --ic-dark: #16100E;
+      --ic-blue: #334BFA;
+      --ic-blue-bg: #DCE1F9;
+      --ic-green: #0F7134;
+      --ic-green-bg: #D7EFDC;
+      --ic-orange-accent: #B24D00;
+      --ic-orange-bg: #FFEBDB;
+      --text-primary: #1A1A1A;
+      --text-secondary: #737373;
+      --border: #E6E6E6;
+      --orange: #B24D00;
+      --orange-bg: #FFEBDB;
+      --blue: #334BFA;
+      --blue-bg: #DCE1F9;
+      --green: #0F7134;
+      --green-bg: #D7EFDC;
+      --gray: #9E9E9E;
+      --gray-bg: #F5F5F5;
+      --red: #D32F2F;
+      --red-bg: #FFEBEE;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--ic-cream);
+      min-height: 100vh;
+      color: var(--text-primary);
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+      color: white;
+      padding: 40px 32px 32px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(22, 16, 14, 0.3);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .header h1 {
+      font-size: 2em;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header .subtitle {
+      font-size: 1.1em;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .header .meta {
+      margin-top: 16px;
+      font-size: 0.85em;
+      opacity: 0.75;
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 20px 32px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat .number {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: var(--ic-blue);
+    }
+
+    .stat .label {
+      font-size: 0.8em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .controls {
+      max-width: 1300px;
+      margin: 24px auto 0;
+      padding: 0 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      padding: 12px 16px 12px 40px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 1em;
+      outline: none;
+      transition: border-color 0.2s;
+      background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239E9E9E' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 12px center no-repeat;
+    }
+
+    .search-box:focus { border-color: var(--ic-blue); }
+
+    .filter-btn {
+      padding: 10px 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      font-size: 0.9em;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--ic-dark);
+      color: white;
+      border-color: var(--ic-dark);
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 20px auto 40px;
+      padding: 0 24px;
+    }
+
+    .section-title {
+      font-size: 1.15em;
+      font-weight: 700;
+      color: var(--ic-blue);
+      margin: 28px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title .icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75em;
+      color: white;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      border-left: 4px solid var(--ic-blue);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(51, 75, 250, 0.12);
+    }
+
+    .card .recipe-name {
+      font-size: 1.05em;
+      font-weight: 600;
+      color: var(--ic-dark);
+      margin-bottom: 6px;
+      padding-right: 70px;
+    }
+
+    .card .recipe-id {
+      font-size: 0.78em;
+      color: var(--text-secondary);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      margin-bottom: 8px;
+    }
+
+    .card .summary {
+      font-size: 0.88em;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .card .card-footer {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.72em;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-running { background: var(--ic-green-bg); color: var(--ic-green); }
+    .badge-stopped { background: var(--red-bg); color: var(--red); }
+    .badge-subfolder { background: var(--ic-blue-bg); color: var(--ic-blue); }
+    .badge-jobs { background: var(--gray-bg); color: #666; }
+    .badge-success { background: var(--ic-green-bg); color: var(--ic-green); }
+    .badge-parent { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+    .badge-child { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+    .status-dot {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+      font-size: 1.1em;
+      display: none;
+    }
+
+    .formats {
+      position: absolute;
+      top: 20px;
+      right: 50px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .format-link {
+      font-size: 0.7em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .format-link:hover { opacity: 1; }
+    .format-link.html-link { color: var(--ic-blue); background: var(--ic-blue-bg); }
+    .format-link.docx-link { color: var(--ic-blue); background: var(--ic-blue-bg); }
+
+    @media (max-width: 500px) {
+      .grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.4em; }
+      .stats-bar { gap: 16px; }
+      .header-logo { flex-direction: column; gap: 8px; }
+    }
+
+    @media print {
+      .controls { display: none; }
+      .card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
+
+<div class="header">
+  <div class="header-logo">
+    <svg width="40" height="40" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#000000"/>
+      <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <h1>Business Systems — Active Recipes</h1>
+  </div>
+  <div class="subtitle">Workato Integration Documentation Index</div>
+  <div class="meta">Author: venkatesh.manohar | Generated: April 15, 2026 | Folder: Business Systems &gt; Recipes &gt; Active</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="number">20</div><div class="label">Recipes Documented</div></div>
+  <div class="stat"><div class="number">7</div><div class="label">Subfolders</div></div>
+  <div class="stat"><div class="number">19</div><div class="label">Active / Running</div></div>
+  <div class="stat"><div class="number">1</div><div class="label">Stopped</div></div>
+  <div class="stat"><div class="number">8.4M+</div><div class="label">Total Jobs Processed</div></div>
+</div>
+
+<div class="controls">
+  <input type="text" class="search-box" id="searchBox" placeholder="Search recipes by name, system, or keyword...">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="running">Running</button>
+  <button class="filter-btn" data-filter="stopped">Stopped</button>
+  <button class="filter-btn" data-filter="parent">Parents</button>
+  <button class="filter-btn" data-filter="child">Children</button>
+</div>
+
+<div class="container">
+
+  <!-- Root Active Folder -->
+  <div class="section-title">
+    <span class="icon" style="background:var(--ic-dark);">R</span>
+    Active (Root) — Marketing & Sales Syncs
+  </div>
+  <div class="grid">
+
+    <div class="card" onclick="window.location='sfdc-to-zuora-stripe-us-sync-documentation.html'" data-status="running" data-type="standalone" data-search="sfdc salesforce zuora stripe us account owner champion sync">
+      <div class="formats">
+        <a class="format-link html-link" href="sfdc-to-zuora-stripe-us-sync-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="sfdc-to-zuora-stripe-us-sync-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">SFDC to Zuora and Stripe U.S. Account Owner, Champion Sync</div>
+      <div class="recipe-id">ID: 5621222</div>
+      <div class="summary">Event-driven sync of Salesforce Account Owner + AE Champion metadata to Zuora and Stripe U.S. via Platform Events. Highest-volume recipe: 2.87M+ jobs.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">2,872,790 jobs</span>
+        <span class="badge badge-success">99.6%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='sfdc-to-stripe-ie-sync-documentation.html'" data-status="running" data-type="standalone" data-search="sfdc salesforce stripe ie ireland account owner champion sync">
+      <div class="formats">
+        <a class="format-link html-link" href="sfdc-to-stripe-ie-sync-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="sfdc-to-stripe-ie-sync-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">SFDC to Stripe IE Account Owner, Champion Sync</div>
+      <div class="recipe-id">ID: 44651280</div>
+      <div class="summary">Real-time Platform Event sync pushing Salesforce Account Owner + AE Champion metadata to Stripe IE with idempotent change detection.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">1,062,751 jobs</span>
+        <span class="badge badge-success">99.9%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='marketo-mql-sync-to-intercom-documentation.html'" data-status="running" data-type="standalone" data-search="marketo mql date sync intercom lead webhook">
+      <div class="formats">
+        <a class="format-link html-link" href="marketo-mql-sync-to-intercom-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="marketo-mql-sync-to-intercom-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Marketo RECENT_MQL_DATE sync to Intercom</div>
+      <div class="recipe-id">ID: 51338253</div>
+      <div class="summary">Polls Marketo for lead updates with Recent MQL Date and POSTs to Intercom's webhook endpoint for contact enrichment.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">129,887 jobs</span>
+        <span class="badge badge-success">99.7%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='intercom-to-marketo-webhook-documentation.html'" data-status="running" data-type="standalone" data-search="intercom marketo contact subscribed webhook resubscription">
+      <div class="formats">
+        <a class="format-link html-link" href="intercom-to-marketo-webhook-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="intercom-to-marketo-webhook-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Intercom to Marketo Contact Subscribed Webhook</div>
+      <div class="recipe-id">ID: 47719924</div>
+      <div class="summary">Webhook listener for Intercom contact resubscription events, syncs to Marketo with 4-branch decision logic and 3 retries.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">1,264 jobs</span>
+        <span class="badge badge-success">99.4%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='intercom-to-sfdc-assignee-sync-documentation.html'" data-status="running" data-type="parent" data-search="intercom sfdc salesforce conversation assignee sync owner outreach">
+      <div class="formats">
+        <a class="format-link html-link" href="intercom-to-sfdc-assignee-sync-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="intercom-to-sfdc-assignee-sync-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Intercom to SFDC Conversation Assignee Sync</div>
+      <div class="recipe-id">ID: 15918702</div>
+      <div class="summary">192-step deep decision tree syncing Intercom conversation assignees to SFDC Contact/Lead records with role-based SLA windows and Outreach guards.</div>
+      <div class="card-footer">
+        <span class="badge badge-parent">Parent</span>
+        <span class="badge badge-jobs">671 jobs</span>
+        <span class="badge badge-success">100%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='outreach-prospect-search-documentation.html'" data-status="running" data-type="child" data-search="outreach prospect search function callable email">
+      <div class="formats">
+        <a class="format-link html-link" href="outreach-prospect-search-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="outreach-prospect-search-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">[FUNCTION] Outreach Prospect Search</div>
+      <div class="recipe-id">ID: 39468878</div>
+      <div class="summary">Callable function that searches Outreach for prospect records by email, returning profile + owner details to the Assignee Sync parent.</div>
+      <div class="card-footer">
+        <span class="badge badge-child">Child of 15918702</span>
+        <span class="badge badge-jobs">661 jobs</span>
+        <span class="badge badge-success">100%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='sfdc-task-search-documentation.html'" data-status="running" data-type="child" data-search="salesforce sfdc task search function callable lead contact">
+      <div class="formats">
+        <a class="format-link html-link" href="sfdc-task-search-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="sfdc-task-search-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">[FUNCTION] Most Recent Salesforce Task Search</div>
+      <div class="recipe-id">ID: 39468877</div>
+      <div class="summary">Callable function querying Salesforce for the most recent Task by Lead/Contact within N-day window with Outreach sequence attribution.</div>
+      <div class="card-footer">
+        <span class="badge badge-child">Child of 15918702</span>
+        <span class="badge badge-jobs">575 jobs</span>
+        <span class="badge badge-success">100%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Payroll-WD-Netsuite -->
+  <div class="section-title">
+    <span class="icon" style="background:var(--green);">P</span>
+    Payroll-WD-Netsuite — Workday Payroll to NetSuite
+  </div>
+  <div class="grid">
+
+    <div class="card" onclick="window.location='adhoc-payroll-report-documentation.html'" data-status="running" data-type="parent" data-search="adhoc payroll report slack workday netsuite journal entry">
+      <div class="formats">
+        <a class="format-link html-link" href="adhoc-payroll-report-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="adhoc-payroll-report-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Adhoc Payroll Report</div>
+      <div class="recipe-id">ID: 71201278</div>
+      <div class="summary">Slack-triggered on-demand payroll pipeline: extracts Workday GL data and forwards via webhook to Payroll-WD-Netsuite-v2 for NetSuite journal entry creation.</div>
+      <div class="card-footer">
+        <span class="badge badge-parent">Triggers 70791533</span>
+        <span class="badge badge-jobs">9 jobs</span>
+        <span class="badge badge-success">64%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='payroll-wd-netsuite-v2-documentation.html'" data-status="running" data-type="standalone" data-search="payroll workday netsuite journal entry reclassification webhook">
+      <div class="formats">
+        <a class="format-link html-link" href="payroll-wd-netsuite-v2-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="payroll-wd-netsuite-v2-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Payroll-WD-Netsuite-v2</div>
+      <div class="recipe-id">ID: 70791533</div>
+      <div class="summary">Webhook-triggered: receives Workday payroll GL XML, applies 6-branch reclassification rules, aggregates via SQL, posts consolidated Journal Entry to NetSuite.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">13 jobs</span>
+        <span class="badge badge-success">100%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='pull-netsuite-account-documentation.html'" data-status="running" data-type="standalone" data-search="pull netsuite account lookup table snowflake payroll reference">
+      <div class="formats">
+        <a class="format-link html-link" href="pull-netsuite-account-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="pull-netsuite-account-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Pull_Netsuite_Account</div>
+      <div class="recipe-id">ID: 70791534</div>
+      <div class="summary">Weekly Snowflake-to-Workato lookup table refresh: loads NetSuite Accounts, Departments, Locations, and Classes for payroll reference data.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">7 jobs</span>
+        <span class="badge badge-success">100%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='get-accounting-period-id-documentation.html'" data-status="running" data-type="child" data-search="get accounting period id netsuite soap callable function">
+      <div class="formats">
+        <a class="format-link html-link" href="get-accounting-period-id-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="get-accounting-period-id-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Get Accounting Period ID</div>
+      <div class="recipe-id">ID: 70830774</div>
+      <div class="summary">Callable function that resolves a date string to a NetSuite accounting period internal ID via SOAP search. Used by Rocketlane pipeline.</div>
+      <div class="card-footer">
+        <span class="badge badge-child">Child Function</span>
+        <span class="badge badge-jobs">84 jobs</span>
+        <span class="badge badge-success">73.7%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EBANX -->
+  <div class="section-title">
+    <span class="icon" style="background:var(--orange);">E</span>
+    EBANX — LATAM Payment Notifications
+  </div>
+  <div class="grid">
+
+    <div class="card" onclick="window.location='automation-ebanx-documentation.html'" data-status="running" data-type="standalone" data-search="automation ebanx latam slack snowflake invoice notification stripe">
+      <div class="formats">
+        <a class="format-link html-link" href="automation-ebanx-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="automation-ebanx-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Automation Ebanx</div>
+      <div class="recipe-id">ID: 66379536</div>
+      <div class="summary">Daily Snowflake query for finalized EBANX (LATAM) invoices, posts rich Slack notifications with Stripe dashboard links using high-water mark tracking.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">201 jobs</span>
+        <span class="badge badge-success">98%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Pigment -->
+  <div class="section-title">
+    <span class="icon" style="background:var(--blue);">P</span>
+    Pigment — Financial Planning ETL
+  </div>
+  <div class="grid">
+
+    <div class="card" onclick="window.location='scheduled-job-pigment-documentation.html'" data-status="running" data-type="parent" data-search="scheduled job pigment netsuite financial report csv fp&a">
+      <div class="formats">
+        <a class="format-link html-link" href="scheduled-job-pigment-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="scheduled-job-pigment-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Scheduled Job Pigment</div>
+      <div class="recipe-id">ID: 61727250</div>
+      <div class="summary">Parent scheduler: 3x daily ETL extracting NetSuite financial reports as HTML, converting to CSV via Ruby/Nokogiri, pushing to Pigment FP&A.</div>
+      <div class="card-footer">
+        <span class="badge badge-parent">Parent</span>
+        <span class="badge badge-jobs">659 jobs</span>
+        <span class="badge badge-success">96.5%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='pigment-child-documentation.html'" data-status="running" data-type="child" data-search="pigment child webhook netsuite csv transform ruby nokogiri">
+      <div class="formats">
+        <a class="format-link html-link" href="pigment-child-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="pigment-child-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Pigment (Child)</div>
+      <div class="recipe-id">ID: 61725798</div>
+      <div class="summary">Webhook-triggered child with identical NetSuite→CSV→Pigment logic. 100% success rate, handles ~3% of total executions.</div>
+      <div class="card-footer">
+        <span class="badge badge-child">Child of 61727250</span>
+        <span class="badge badge-jobs">22 jobs</span>
+        <span class="badge badge-success">100%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NetSuite -->
+  <div class="section-title">
+    <span class="icon" style="background:var(--green);">N</span>
+    Netsuite — Workday Employee Sync
+  </div>
+  <div class="grid">
+
+    <div class="card" onclick="window.location='workday-to-netsuite-integration-documentation.html'" data-status="running" data-type="standalone" data-search="workday netsuite employee integration sync daily upsert">
+      <div class="formats">
+        <a class="format-link html-link" href="workday-to-netsuite-integration-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="workday-to-netsuite-integration-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Workday to Netsuite Integration</div>
+      <div class="recipe-id">ID: 61350879</div>
+      <div class="summary">Daily ETL: extracts full Workday employee roster, transforms via lookup-based field mappings, batch-upserts Employee records into NetSuite.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">361 jobs</span>
+        <span class="badge badge-success">98.6%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='export-netsuite-hr-documentation.html'" data-status="stopped" data-type="standalone" data-search="export netsuite hr employee lookup table stopped">
+      <div class="formats">
+        <a class="format-link html-link" href="export-netsuite-hr-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="export-netsuite-hr-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-stopped">Stopped</span></span>
+      <div class="recipe-name">Export-Netsuite-HR</div>
+      <div class="recipe-id">ID: 61814301</div>
+      <div class="summary">Stopped recipe that loads NetSuite Employee records into a Workato lookup table. Only ran once. WorkdayID field extracted but never written (possible bug).</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">1 job</span>
+        <span class="badge badge-success">100%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Expensify V2 -->
+  <div class="section-title">
+    <span class="icon" style="background:#E8850C;">X</span>
+    Expensify V2 — Workday Employee Expense Provisioning
+  </div>
+  <div class="grid">
+
+    <div class="card" onclick="window.location='workday-to-expensify-v2-documentation.html'" data-status="running" data-type="parent" data-search="workday expensify parent expense employee country policy sync">
+      <div class="formats">
+        <a class="format-link html-link" href="workday-to-expensify-v2-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="workday-to-expensify-v2-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">EXPENSE - Workday to Expensify Parent V2</div>
+      <div class="recipe-id">ID: 59113812</div>
+      <div class="summary">Daily parent: extracts Workday employees, partitions by country, maps to Expensify expense policies via lookup table, calls child for async upsert.</div>
+      <div class="card-footer">
+        <span class="badge badge-parent">Parent</span>
+        <span class="badge badge-jobs">383 jobs</span>
+        <span class="badge badge-success">97%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='expensify-child-documentation.html'" data-status="running" data-type="child" data-search="expensify child callable employee upsert integration server country">
+      <div class="formats">
+        <a class="format-link html-link" href="expensify-child-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="expensify-child-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">EXPENSIFY-Child</div>
+      <div class="recipe-id">ID: 59113811</div>
+      <div class="summary">Callable child: receives country-grouped employee batches from parent and upserts into Expensify Integration Server via REST API.</div>
+      <div class="card-footer">
+        <span class="badge badge-child">Child of 59113812</span>
+        <span class="badge badge-jobs">1,534 jobs</span>
+        <span class="badge badge-success">100%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navan -->
+  <div class="section-title">
+    <span class="icon" style="background:#0097A7;">T</span>
+    Navan — Travel Platform Employee Provisioning
+  </div>
+  <div class="grid">
+
+    <div class="card" onclick="window.location='workday-to-navan-employee-sync-documentation.html'" data-status="running" data-type="standalone" data-search="workday navan employee sync sftp travel csv nightly">
+      <div class="formats">
+        <a class="format-link html-link" href="workday-to-navan-employee-sync-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="workday-to-navan-employee-sync-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Workday to Navan Employee sync</div>
+      <div class="recipe-id">ID: 55165071</div>
+      <div class="summary">Nightly Workday employee extraction to 13-column CSV with policy-level lookups, uploaded to Navan SFTP for travel platform provisioning.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">536 jobs</span>
+        <span class="badge badge-success">98.7%</span>
+      </div>
+    </div>
+
+    <div class="card" onclick="window.location='workday-to-navan-notification-documentation.html'" data-status="running" data-type="standalone" data-search="workday navan notification data quality cost allocation email finance">
+      <div class="formats">
+        <a class="format-link html-link" href="workday-to-navan-notification-documentation.html" onclick="event.stopPropagation()">HTML</a>
+        <a class="format-link docx-link" href="workday-to-navan-notification-documentation.docx" onclick="event.stopPropagation()">DOCX</a>
+      </div>
+      <span class="status-dot"><span class="badge badge-running">Running</span></span>
+      <div class="recipe-name">Workday to Navan notification</div>
+      <div class="recipe-id">ID: 59686983</div>
+      <div class="summary">Daily data quality check: flags Workday employees missing Cost Allocation, Location, or Cost Center fields and emails Finance/AP team for remediation.</div>
+      <div class="card-footer">
+        <span class="badge badge-jobs">378 jobs</span>
+        <span class="badge badge-success">96.7%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="no-results" id="noResults">No recipes match your search.</div>
+
+</div>
+
+<script>
+(function() {
+  const searchBox = document.getElementById('searchBox');
+  const cards = document.querySelectorAll('.card');
+  const sections = document.querySelectorAll('.section-title');
+  const grids = document.querySelectorAll('.grid');
+  const noResults = document.getElementById('noResults');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  let activeFilter = 'all';
+
+  function applyFilters() {
+    const query = searchBox.value.toLowerCase().trim();
+    let visible = 0;
+
+    cards.forEach(function(card) {
+      const text = (card.textContent + ' ' + (card.getAttribute('data-search') || '')).toLowerCase();
+      const status = card.getAttribute('data-status');
+      const type = card.getAttribute('data-type');
+
+      let matchSearch = !query || text.indexOf(query) !== -1;
+      let matchFilter = activeFilter === 'all' ||
+        (activeFilter === 'running' && status === 'running') ||
+        (activeFilter === 'stopped' && status === 'stopped') ||
+        (activeFilter === 'parent' && type === 'parent') ||
+        (activeFilter === 'child' && type === 'child');
+
+      if (matchSearch && matchFilter) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Hide empty sections
+    grids.forEach(function(grid, i) {
+      const visibleCards = grid.querySelectorAll('.card:not([style*="display: none"])');
+      const section = grid.previousElementSibling;
+      if (visibleCards.length === 0) {
+        grid.style.display = 'none';
+        if (section && section.classList.contains('section-title')) section.style.display = 'none';
+      } else {
+        grid.style.display = '';
+        if (section && section.classList.contains('section-title')) section.style.display = '';
+      }
+    });
+
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  searchBox.addEventListener('input', applyFilters);
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeFilter = btn.getAttribute('data-filter');
+      applyFilters();
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

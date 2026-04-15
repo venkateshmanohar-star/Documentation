@@ -3,737 +3,935 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NetSuite Integration — Recipe Documentation</title>
+<meta name="author" content="venkatesh.manohar">
+<title>Documentation Hub — Enterprise Systems Integration</title>
 <style>
-  :root {
-    --ic-dark: #16100E;
-    --ic-blue: #334BFA;
-    --ic-blue-light: #5B7BFC;
-    --ic-blue-bg: #DCE1F9;
-    --ic-cream: #F4F3ED;
-    --ic-green: #0F7134;
-    --ic-green-bg: #D7EFDC;
-    --ic-orange-accent: #B24D00;
-    --ic-orange-bg: #FFEBDB;
-    --orange: #F5A623;
-    --blue: #29B5E8;
-    --green: #2E7D32;
-    --gray: #9E9E9E;
-    --text: #1A1A1A;
-    --text-light: #737373;
-    --bg: #F4F3ED;
-    --card-bg: #FFFFFF;
-    --border: #E6E6E6;
-  }
+:root {
+  --ic-cream: #F4F3ED;
+  --ic-warm-white: #FEFDFB;
+  --ic-dark: #16100E;
+  --ic-blue: #334BFA;
+  --ic-blue-bg: #DCE1F9;
+  --ic-green: #0F7134;
+  --ic-green-bg: #D7EFDC;
+  --ic-orange-accent: #B24D00;
+  --ic-orange-bg: #FFEBDB;
+  --ic-red: #DF2020;
+  --ic-red-bg: #FFDBDB;
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --green: #2E7D32;
+  --sf-blue: #0070d2;
+  --gray: #9E9E9E;
+  --text-primary: #1A1A1A;
+  --text-secondary: #737373;
+  --border: #E6E6E6;
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-  }
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0 0 0 280px;
+  background: var(--ic-cream);
+}
 
-  /* Header */
-  .header {
-    background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
-    color: #fff;
-    padding: 48px 40px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .header h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-    position: relative;
-  }
-  .header .subtitle {
-    font-size: 1.1rem;
-    opacity: 0.85;
-    margin-bottom: 4px;
-    position: relative;
-  }
-  .header .author {
-    font-size: 0.9rem;
-    opacity: 0.65;
-    position: relative;
-  }
+/* ── Fixed Left Sidebar ── */
+nav#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 0 0 24px 0;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04);
+  border-right: 1px solid var(--border);
+  z-index: 1000;
+}
+nav#sidebar::-webkit-scrollbar { width: 4px; }
+nav#sidebar::-webkit-scrollbar-thumb { background: #ddd; border-radius: 2px; }
 
-  /* System legend */
-  .legend {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
-    padding: 16px 40px;
-    background: var(--card-bg);
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.sidebar-brand svg { flex-shrink: 0; }
+.sidebar-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-brand-text .brand-title {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ic-dark);
+  letter-spacing: -0.02em;
+}
+.sidebar-brand-text .brand-sub {
+  font-size: 0.68em;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.tree-section {
+  font-size: 0.7em;
+  color: var(--text-secondary);
+  margin: 16px 18px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.tree-node {
+  display: block;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.82em;
+  padding: 5px 18px;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.tree-node:hover { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: rgba(51,75,250,0.3); }
+.tree-node.active { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: var(--ic-blue); font-weight: 600; }
+
+a.tree-link {
+  display: block;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.78em;
+  padding: 3px 18px 3px 36px;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease;
+}
+a.tree-link:hover { color: var(--ic-blue); background: rgba(51,75,250,0.04); border-left-color: rgba(51,75,250,0.2); }
+
+.tree-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 14px;
+}
+.tree-toggle .arrow {
+  font-size: 0.7em;
+  transition: transform 0.2s;
+  color: var(--text-secondary);
+}
+.tree-toggle.open .arrow { transform: rotate(90deg); }
+.tree-children { display: none; }
+.tree-children.open { display: block; }
+
+.tree-index-link {
+  display: block;
+  color: var(--ic-blue);
+  text-decoration: none;
+  font-size: 0.78em;
+  font-weight: 600;
+  padding: 4px 18px 4px 36px;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease;
+}
+.tree-index-link:hover { background: var(--ic-blue-bg); border-left-color: var(--ic-blue); }
+
+.tree-count {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+/* ── Main Content ── */
+.main-content {
+  max-width: 1200px;
+  padding: 0 32px 60px;
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 40px 36px 32px;
+  border-radius: 0 0 12px 12px;
+  margin: 0 -32px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+  position: relative;
+}
+.hero h1 {
+  font-size: 2em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  position: relative;
+}
+.hero .subtitle {
+  font-size: 1.05em;
+  opacity: 0.85;
+  position: relative;
+}
+.hero .meta-line {
+  margin-top: 16px;
+  font-size: 0.85em;
+  opacity: 0.6;
+  position: relative;
+}
+
+/* Stats */
+.stats-bar {
+  display: flex;
+  gap: 16px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+.stat-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.stat-card .stat-num {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: var(--ic-blue);
+  line-height: 1.2;
+}
+.stat-card .stat-label {
+  font-size: 0.75em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* Search */
+.search-row {
+  margin: 20px 0 28px;
+}
+.search-input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95em;
+  outline: none;
+  transition: border-color 0.2s;
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239E9E9E' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 14px center no-repeat;
+}
+.search-input:focus { border-color: var(--ic-blue); }
+
+/* Sections */
+.doc-section {
+  margin-bottom: 36px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+.section-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9em;
+  flex-shrink: 0;
+}
+.section-title {
+  font-size: 1.25em;
+  font-weight: 700;
+  color: var(--ic-dark);
+  letter-spacing: -0.02em;
+}
+.section-subtitle {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.section-index-link {
+  margin-left: auto;
+  font-size: 0.85em;
+  color: var(--ic-blue);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 14px;
+  border: 1px solid var(--ic-blue);
+  border-radius: 8px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.section-index-link:hover { background: var(--ic-blue); color: white; }
+
+/* Sub-category headings */
+.subcategory {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--ic-blue);
+  margin: 20px 0 10px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.subcategory .subcat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ic-blue);
+}
+
+/* Card grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s;
+  border-left: 4px solid var(--ic-blue);
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(51,75,250,0.1);
+  border-left-color: var(--ic-blue);
+}
+.card-name {
+  font-size: 0.92em;
+  font-weight: 600;
+  color: var(--ic-dark);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.card-desc {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  flex: 1;
+}
+.card-tags {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 0.65em;
+  padding: 2px 7px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.tag-stripe { background: #FEF3E0; color: #E68A00; }
+.tag-snowflake { background: #E3F5FD; color: #1A8BB5; }
+.tag-netsuite { background: #E8F5E9; color: #1B5E20; }
+.tag-workato { background: var(--ic-blue-bg); color: var(--ic-blue); }
+.tag-sfdc { background: #E6F0FA; color: #0070d2; }
+.tag-marketo { background: #F3E5F5; color: #7B1FA2; }
+.tag-intercom { background: var(--ic-blue-bg); color: var(--ic-blue); }
+.tag-workday { background: #FFF3E0; color: #E65100; }
+.tag-expensify { background: #E8F5E9; color: #2E7D32; }
+.tag-navan { background: #E0F7FA; color: #0097A7; }
+.tag-pigment { background: #E3F2FD; color: #1565C0; }
+.tag-ebanx { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+.tag-master { background: var(--ic-dark); color: white; }
+.tag-e2e { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+.tag-arch { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px 0;
+  color: var(--text-secondary);
+  font-size: 0.8em;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  nav#sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
     border-bottom: 1px solid var(--border);
   }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    color: var(--text-light);
-  }
-  .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  body { padding: 0; }
+  .hero { margin: 0; border-radius: 0; }
+  .main-content { padding: 0 16px 40px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
 
-  /* Search & filters */
-  .controls {
-    max-width: 1200px;
-    margin: 24px auto 0;
-    padding: 0 24px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .search-box {
-    flex: 1;
-    min-width: 260px;
-    position: relative;
-  }
-  .search-box input {
-    width: 100%;
-    padding: 12px 16px 12px 42px;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.2s;
-    background: var(--card-bg);
-  }
-  .search-box input:focus {
-    border-color: var(--ic-blue);
-  }
-  .search-box svg {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--gray);
-  }
-  .filter-btns {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .filter-btn {
-    padding: 8px 16px;
-    border: 2px solid var(--border);
-    border-radius: 20px;
-    background: var(--card-bg);
-    cursor: pointer;
-    font-size: 0.85rem;
-    color: var(--text-light);
-    transition: all 0.2s;
-  }
-  .filter-btn:hover { border-color: var(--ic-blue); color: var(--ic-blue); }
-  .filter-btn.active {
-    background: var(--ic-blue);
-    color: #fff;
-    border-color: var(--ic-blue);
-  }
-
-  /* Stats bar */
-  .stats {
-    max-width: 1200px;
-    margin: 20px auto 8px;
-    padding: 0 24px;
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  .stat-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px 24px;
-    flex: 1;
-    min-width: 140px;
-    text-align: center;
-  }
-  .stat-card .stat-number {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--ic-blue);
-  }
-  .stat-card .stat-label {
-    font-size: 0.8rem;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  /* Card grid */
-  .grid {
-    max-width: 1200px;
-    margin: 20px auto 40px;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 20px;
-  }
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 24px;
-    transition: all 0.25s;
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--ic-blue), var(--ic-blue-light));
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-  .card:hover {
-    border-color: var(--ic-blue);
-    box-shadow: 0 8px 24px rgba(51,75,250,0.10);
-    transform: translateY(-2px);
-  }
-  .card:hover::before { opacity: 1; }
-  .card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  .card-rec {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #fff;
-    background: var(--ic-blue);
-    padding: 3px 10px;
-    border-radius: 8px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .card-id {
-    font-size: 0.75rem;
-    color: var(--gray);
-    font-family: 'SF Mono', 'Consolas', monospace;
-  }
-  .card-title {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 8px;
-    line-height: 1.4;
-  }
-  .card-summary {
-    font-size: 0.85rem;
-    color: var(--text-light);
-    flex: 1;
-    line-height: 1.5;
-  }
-  .card-tags {
-    display: flex;
-    gap: 6px;
-    margin-top: 14px;
-    flex-wrap: wrap;
-  }
-  .tag {
-    font-size: 0.7rem;
-    padding: 2px 8px;
-    border-radius: 8px;
-    font-weight: 500;
-  }
-  .tag-stripe { background: #FEF3E0; color: #E68A00; }
-  .tag-snowflake { background: #E3F5FD; color: #1A8BB5; }
-  .tag-netsuite { background: #E8F5E9; color: #1B5E20; }
-  .tag-workato { background: var(--ic-blue-bg); color: var(--ic-blue); }
-  .tag-master { background: #FFF3E0; color: #E65100; }
-  .tag-child { background: #E8EAF6; color: #283593; }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-  }
-  .card-formats {
-    display: flex;
-    gap: 8px;
-  }
-  .fmt-badge {
-    font-size: 0.7rem;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-  }
-  .fmt-html { background: #E8F5E9; color: #2E7D32; }
-  .fmt-docx { background: #E3F2FD; color: #1565C0; }
-  .card-arrow {
-    color: var(--ic-blue);
-    font-size: 1.2rem;
-    transition: transform 0.2s;
-  }
-  .card:hover .card-arrow { transform: translateX(4px); }
-
-  /* No results */
-  .no-results {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--gray);
-  }
-  .no-results svg { margin-bottom: 16px; }
-
-  /* Footer */
-  .footer {
-    text-align: center;
-    padding: 32px 24px;
-    color: var(--gray);
-    font-size: 0.8rem;
-    border-top: 1px solid var(--border);
-    background: var(--card-bg);
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    .header { padding: 32px 20px; }
-    .header h1 { font-size: 1.6rem; }
-    .grid { grid-template-columns: 1fr; padding: 0 16px; }
-    .controls { padding: 0 16px; }
-    .stats { padding: 0 16px; }
-  }
-
-  /* Print */
-  @media print {
-    .controls, .legend { display: none; }
-    .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
-    .header { background: var(--ic-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  }
+@media print {
+  nav#sidebar { display: none; }
+  body { padding: 0; }
+  .hero { background: var(--ic-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .card { break-inside: avoid; box-shadow: none; }
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>NetSuite Integration &mdash; Recipe Documentation</h1>
-  <div class="subtitle">Stripe &rarr; Snowflake &rarr; Workato &rarr; NetSuite &nbsp;|&nbsp; Automated Revenue Management</div>
-  <div class="author">Author: venkatesh.manohar &nbsp;&bull;&nbsp; Generated: April 1, 2026</div>
-</div>
-
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#F5A623"></div> Stripe (Source)</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#29B5E8"></div> Snowflake (Data)</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#334BFA"></div> Workato (Orchestration)</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#2E7D32"></div> NetSuite (Target ERP)</div>
-</div>
-
-<div class="stats">
-  <div class="stat-card"><div class="stat-number">16</div><div class="stat-label">Recipes Documented</div></div>
-  <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Master Orchestrators</div></div>
-  <div class="stat-card"><div class="stat-number">12</div><div class="stat-label">Processing Recipes</div></div>
-  <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Connected Systems</div></div>
-</div>
-
-<div class="controls">
-  <div class="search-box">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="Search recipes by name, ID, or keyword..." autocomplete="off">
-  </div>
-  <div class="filter-btns">
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="master">Master Orchestrators</button>
-    <button class="filter-btn" data-filter="customer">Customer</button>
-    <button class="filter-btn" data-filter="order">Orders &amp; Invoices</button>
-    <button class="filter-btn" data-filter="credit">Credits &amp; Refunds</button>
-  </div>
-</div>
-
-<div class="grid" id="card-grid">
-
-  <!-- 0.0 Scheduled Master -->
-  <a class="card" href="scheduled-master-items-sales-orders-v3.html" data-search="0.0 scheduled master items sales orders 58628330 orchestrator cron" data-category="master">
-    <div class="card-header">
-      <span class="card-rec">Rec 0.0</span>
-      <span class="card-id">#58628330</span>
+<!-- ── Sidebar Tree Navigation ── -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#000000"/>
+      <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="sidebar-brand-text">
+      <span class="brand-title">Documentation Hub</span>
+      <span class="brand-sub">Enterprise Systems</span>
     </div>
-    <div class="card-title">Scheduled Master &mdash; Items &amp; Sales Orders</div>
-    <div class="card-summary">Top-level orchestrator running on a cron schedule 4x daily. Coordinates sequential execution of customer sync, item sync, sales order creation, and downstream invoice/credit/payment recipes.</div>
-    <div class="card-tags">
-      <span class="tag tag-master">Master</span>
-      <span class="tag tag-workato">Scheduler</span>
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">NetSuite</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 1.0 Master Recipe - Invoice -->
-  <a class="card" href="master-recipe-invoice-v3.html" data-search="1.0 master recipe invoice 58628331 stripe netsuite transaction orchestrator" data-category="master">
-    <div class="card-header">
-      <span class="card-rec">Rec 1.0</span>
-      <span class="card-id">#58628331</span>
-    </div>
-    <div class="card-title">Master Recipe &mdash; Invoice Orchestrator</div>
-    <div class="card-summary">Stripe-to-NetSuite transaction orchestrator that coordinates invoice creation, credit memos, customer payments, refunds, and CBAs across the entire Order-to-Cash pipeline.</div>
-    <div class="card-tags">
-      <span class="tag tag-master">Master</span>
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-netsuite">NetSuite</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 2.0 Credit Memo CBAs Payments -->
-  <a class="card" href="credit-memo-cbas-payments-v3.html" data-search="2.0 credit memo cbas payments 58628332 stripe netsuite customer balance adjustment" data-category="master credit">
-    <div class="card-header">
-      <span class="card-rec">Rec 2.0</span>
-      <span class="card-id">#58628332</span>
-    </div>
-    <div class="card-title">Master &mdash; Credit Memo, CBAs &amp; Payments</div>
-    <div class="card-summary">Master orchestrator for three critical financial processes: credit memo creation, Customer Balance Adjustments (CBAs), and customer payment application between Stripe and NetSuite.</div>
-    <div class="card-tags">
-      <span class="tag tag-master">Master</span>
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-netsuite">Credits</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 3.0 Refunds Uncollectible Cancellations -->
-  <a class="card" href="refunds-uncollectible-cancellations-v3.html" data-search="3.0 refunds uncollectible cancellations 58628333 stripe netsuite voided invoices contract" data-category="master credit">
-    <div class="card-header">
-      <span class="card-rec">Rec 3.0</span>
-      <span class="card-id">#58628333</span>
-    </div>
-    <div class="card-title">Master &mdash; Refunds, Uncollectible &amp; Cancellations</div>
-    <div class="card-summary">Master orchestrator handling refund processing, uncollectible invoice write-offs, voided invoice credit memos, and contract cancellation close-outs between Stripe and NetSuite.</div>
-    <div class="card-tags">
-      <span class="tag tag-master">Master</span>
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-netsuite">Refunds</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 1.0b Customer Master Batch -->
-  <a class="card" href="customer-master-batch-v3.html" data-search="1.0 customer master batch 54576818 snowflake netsuite sync" data-category="customer">
-    <div class="card-header">
-      <span class="card-rec">Rec 1.0b</span>
-      <span class="card-id">#54576818</span>
-    </div>
-    <div class="card-title">Customer Master &mdash; Batch Sync</div>
-    <div class="card-summary">Synchronizes customer records in batch from Snowflake staging tables into NetSuite. Reads upstream-prepared customer data and creates/updates NetSuite customer records with company details, billing info, and segmentation.</div>
-    <div class="card-tags">
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Customers</span>
-      <span class="tag tag-child">Batch</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 1.01 Customer Master By ID -->
-  <a class="card" href="customer-master-by-id-v3.html" data-search="1.01 customer master by id 54665259 snowflake netsuite callable recipe function" data-category="customer">
-    <div class="card-header">
-      <span class="card-rec">Rec 1.01</span>
-      <span class="card-id">#54665259</span>
-    </div>
-    <div class="card-title">Customer Master &mdash; By Customer ID</div>
-    <div class="card-summary">A callable recipe function that synchronizes a single customer record from Snowflake to NetSuite by customer ID. Core building block used by other recipes when a customer record needs to be created or updated on-demand.</div>
-    <div class="card-tags">
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Customers</span>
-      <span class="tag tag-child">Callable</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 2.0b Items Master -->
-  <a class="card" href="items-master-recipe-v3.html" data-search="2.0 items master recipe 54620963 snowflake netsuite products catalog sync" data-category="order">
-    <div class="card-header">
-      <span class="card-rec">Rec 2.0b</span>
-      <span class="card-id">#54620963</span>
-    </div>
-    <div class="card-title">Items Master Recipe</div>
-    <div class="card-summary">Synchronizes product/item records from Snowflake into NetSuite. Ensures the NetSuite item catalog is up to date with Intercom's product offerings before sales orders and invoices are created.</div>
-    <div class="card-tags">
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Items</span>
-      <span class="tag tag-child">Sync</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 3.0b Sales Order Master -->
-  <a class="card" href="sales-order-master-v3.html" data-search="3.0 sales order master 54665261 snowflake netsuite salesforce contract" data-category="order">
-    <div class="card-header">
-      <span class="card-rec">Rec 3.0b</span>
-      <span class="card-id">#54665261</span>
-    </div>
-    <div class="card-title">Sales Order Master Recipe</div>
-    <div class="card-summary">Automated Sales Order creation and synchronization from Snowflake to NetSuite. Reads staged order data linked to Salesforce contracts and creates NetSuite Sales Orders with line items, pricing, and revenue recognition dates.</div>
-    <div class="card-tags">
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Sales Orders</span>
-      <span class="tag tag-child">Processing</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 4.0 Invoice Master -->
-  <a class="card" href="invoice-master-recipe-v3.html" data-search="4.0 invoice master recipe 54665262 stripe netsuite self-serve sales-led billing" data-category="order">
-    <div class="card-header">
-      <span class="card-rec">Rec 4.0</span>
-      <span class="card-id">#54665262</span>
-    </div>
-    <div class="card-title">Invoice Master Recipe</div>
-    <div class="card-summary">Automated Stripe-to-NetSuite invoice creation for both Self-Serve and Sales-Led customers. Routes invoices through different flows based on sales channel, matching to sales orders or creating standalone invoices.</div>
-    <div class="card-tags">
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Invoices</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 4.1 Catchup Invoices -->
-  <a class="card" href="catchup-invoices-v3.html" data-search="4.1 catchup invoices system migration 64257157 netsuite legacy billing" data-category="order">
-    <div class="card-header">
-      <span class="card-rec">Rec 4.1</span>
-      <span class="card-id">#64257157</span>
-    </div>
-    <div class="card-title">Catchup Invoices &mdash; System Migration</div>
-    <div class="card-summary">Creates "catchup invoices" in NetSuite for customers migrated from a legacy billing system. When a sales order is successfully created, this recipe generates the corresponding initial invoices to bring NetSuite in sync.</div>
-    <div class="card-tags">
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Invoices</span>
-      <span class="tag tag-child">Migration</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 5.0 Credit Memo Master -->
-  <a class="card" href="credit-memo-master-v3.html" data-search="5.0 credit memo master 54665263 stripe netsuite credit note refund" data-category="credit">
-    <div class="card-header">
-      <span class="card-rec">Rec 5.0</span>
-      <span class="card-id">#54665263</span>
-    </div>
-    <div class="card-title">Credit Memo Master Recipe</div>
-    <div class="card-summary">Automatically creates Credit Memo records in NetSuite when credit notes are issued in Stripe. Reads credit note line items from Snowflake staging, groups them, and creates the corresponding NetSuite credit memos.</div>
-    <div class="card-tags">
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Credit Memos</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 6.0 Customer Payment -->
-  <a class="card" href="customer-payment-v3.html" data-search="6.0 customer payment 54665264 stripe netsuite payment application cash" data-category="credit">
-    <div class="card-header">
-      <span class="card-rec">Rec 6.0</span>
-      <span class="card-id">#54665264</span>
-    </div>
-    <div class="card-title">Customer Payment Recipe</div>
-    <div class="card-summary">Creates Customer Payment records in NetSuite to apply Stripe payments against open invoices. Matches payments to invoices using Stripe charge IDs and applies them to close out receivables.</div>
-    <div class="card-tags">
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-netsuite">Payments</span>
-      <span class="tag tag-child">Processing</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 7.0 Refunds Master -->
-  <a class="card" href="refunds-master-v3.html" data-search="7.0 refunds master 54665265 stripe netsuite customer refund credit" data-category="credit">
-    <div class="card-header">
-      <span class="card-rec">Rec 7.0</span>
-      <span class="card-id">#54665265</span>
-    </div>
-    <div class="card-title">Refunds Master Recipe</div>
-    <div class="card-summary">Automates creation of refund records in NetSuite when customers are refunded through Stripe. Reads pending refunds from Snowflake, validates prerequisites, and creates Customer Refund records linked to the original transaction.</div>
-    <div class="card-tags">
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Refunds</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 8.0 Create CBA -->
-  <a class="card" href="create-cba-v3.html" data-search="8.0 create cba customer balance adjustment 54665266 stripe netsuite credit" data-category="credit">
-    <div class="card-header">
-      <span class="card-rec">Rec 8.0</span>
-      <span class="card-id">#54665266</span>
-    </div>
-    <div class="card-title">Create CBA (Customer Balance Adjustment)</div>
-    <div class="card-summary">Synchronizes Customer Balance Adjustments from Stripe into NetSuite as Credit Memos and Invoice adjustments. Handles credits, refunds, and promotional adjustments applied to customer accounts.</div>
-    <div class="card-tags">
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-netsuite">CBAs</span>
-      <span class="tag tag-child">Processing</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 9.0 Cancelled Sales Orders -->
-  <a class="card" href="cancelled-sales-orders-v3.html" data-search="9.0 cancelled sales orders 54665267 salesforce netsuite contract close" data-category="order">
-    <div class="card-header">
-      <span class="card-rec">Rec 9.0</span>
-      <span class="card-id">#54665267</span>
-    </div>
-    <div class="card-title">Cancelled Sales Orders Master Recipe</div>
-    <div class="card-summary">Automatically cancels (closes) Sales Orders in NetSuite when the corresponding Salesforce contract is marked as "Cancelled." Ensures the financial system stays in sync with contract lifecycle changes.</div>
-    <div class="card-tags">
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Sales Orders</span>
-      <span class="tag tag-child">Cancellation</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- 10.1 Voided Invoice Master -->
-  <a class="card" href="voided-invoice-master-v3.html" data-search="10.1 voided invoice master 69929323 stripe netsuite credit memo bad debt" data-category="credit">
-    <div class="card-header">
-      <span class="card-rec">Rec 10.1</span>
-      <span class="card-id">#69929323</span>
-    </div>
-    <div class="card-title">Voided Invoice Master Recipe</div>
-    <div class="card-summary">Automates Credit Memo creation in NetSuite whenever an invoice is voided in Stripe. Handles bad debt write-offs and uncollectible invoices by creating offsetting credit memos against the original NetSuite invoice.</div>
-    <div class="card-tags">
-      <span class="tag tag-stripe">Stripe</span>
-      <span class="tag tag-snowflake">Snowflake</span>
-      <span class="tag tag-netsuite">Credit Memos</span>
-    </div>
-    <div class="card-footer">
-      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span><span class="fmt-badge fmt-docx">DOCX</span></div>
-      <span class="card-arrow">&rarr;</span>
-    </div>
-  </a>
-
-  <!-- No results message -->
-  <div class="no-results" id="no-results" style="display:none;">
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9E9E9E" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-    <p style="font-size:1.1rem;margin-bottom:4px;">No recipes match your search</p>
-    <p style="font-size:0.85rem;">Try a different keyword or clear the filter</p>
   </div>
 
-</div>
+  <div class="tree-section">Overview</div>
+  <a href="#top" class="tree-node active">Dashboard</a>
 
-<div class="footer">
-  &copy; 2026 Intercom &mdash; Analytics Engineering &nbsp;|&nbsp; NetSuite ARM Integration Documentation &nbsp;|&nbsp; Author: venkatesh.manohar
+  <!-- NetSuite Integration -->
+  <div class="tree-section">NetSuite Integration</div>
+  <a href="netsuite-index.html" class="tree-index-link">View Full Index &rarr;</a>
+  <div class="tree-node tree-toggle open" onclick="toggleTree(this)">
+    <span>Architecture &amp; E2E Flows<span class="tree-count">(7)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children open">
+    <a class="tree-link" href="snowflake-architecture-v1.html">Snowflake Architecture</a>
+    <a class="tree-link" href="sales-order-end-to-end-v1.html">Sales Order E2E</a>
+    <a class="tree-link" href="invoice-end-to-end-v1.html">Invoice E2E</a>
+    <a class="tree-link" href="credit-memo-end-to-end-v1.html">Credit Memo E2E</a>
+    <a class="tree-link" href="payment-end-to-end-v1.html">Payment E2E</a>
+    <a class="tree-link" href="refund-end-to-end-v1.html">Refund E2E</a>
+    <a class="tree-link" href="cba-end-to-end-v1.html">CBA E2E</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Master Orchestrators<span class="tree-count">(4)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="scheduled-master-items-sales-orders-v3.html">Scheduled Master</a>
+    <a class="tree-link" href="master-recipe-invoice-v3.html">Invoice Orchestrator</a>
+    <a class="tree-link" href="credit-memo-cbas-payments-v3.html">Credit Memo &amp; CBAs</a>
+    <a class="tree-link" href="refunds-uncollectible-cancellations-v3.html">Refunds &amp; Cancellations</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Customer Recipes<span class="tree-count">(2)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="customer-master-batch-v3.html">Customer Batch Sync</a>
+    <a class="tree-link" href="customer-master-by-id-v3.html">Customer By ID</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Orders &amp; Invoices<span class="tree-count">(4)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="items-master-recipe-v3.html">Items Master</a>
+    <a class="tree-link" href="sales-order-master-v3.html">Sales Order Master</a>
+    <a class="tree-link" href="invoice-master-recipe-v3.html">Invoice Master</a>
+    <a class="tree-link" href="catchup-invoices-v3.html">Catchup Invoices</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Credits &amp; Refunds<span class="tree-count">(6)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="credit-memo-master-v3.html">Credit Memo Master</a>
+    <a class="tree-link" href="customer-payment-v3.html">Customer Payment</a>
+    <a class="tree-link" href="refunds-master-v3.html">Refunds Master</a>
+    <a class="tree-link" href="create-cba-v3.html">Create CBA</a>
+    <a class="tree-link" href="cancelled-sales-orders-v3.html">Cancelled Sales Orders</a>
+    <a class="tree-link" href="voided-invoice-master-v3.html">Voided Invoice Master</a>
+  </div>
+
+  <!-- Business Systems -->
+  <div class="tree-section">Business Systems</div>
+  <a href="business-systems/business-systems-active-index.html" class="tree-index-link">View Full Index &rarr;</a>
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Marketing &amp; Sales<span class="tree-count">(7)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="business-systems/sfdc-to-zuora-stripe-us-sync-documentation.html">SFDC &rarr; Zuora/Stripe US</a>
+    <a class="tree-link" href="business-systems/sfdc-to-stripe-ie-sync-documentation.html">SFDC &rarr; Stripe IE</a>
+    <a class="tree-link" href="business-systems/marketo-mql-sync-to-intercom-documentation.html">Marketo MQL &rarr; Intercom</a>
+    <a class="tree-link" href="business-systems/intercom-to-marketo-webhook-documentation.html">Intercom &rarr; Marketo</a>
+    <a class="tree-link" href="business-systems/intercom-to-sfdc-assignee-sync-documentation.html">Intercom &rarr; SFDC Sync</a>
+    <a class="tree-link" href="business-systems/outreach-prospect-search-documentation.html">Outreach Prospect Search</a>
+    <a class="tree-link" href="business-systems/sfdc-task-search-documentation.html">SFDC Task Search</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Payroll &amp; NetSuite<span class="tree-count">(4)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="business-systems/adhoc-payroll-report-documentation.html">Adhoc Payroll Report</a>
+    <a class="tree-link" href="business-systems/payroll-wd-netsuite-v2-documentation.html">Payroll WD &rarr; NetSuite</a>
+    <a class="tree-link" href="business-systems/pull-netsuite-account-documentation.html">Pull NS Account</a>
+    <a class="tree-link" href="business-systems/get-accounting-period-id-documentation.html">Get Accounting Period</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>EBANX<span class="tree-count">(1)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="business-systems/automation-ebanx-documentation.html">EBANX Automation</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Pigment<span class="tree-count">(2)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="business-systems/scheduled-job-pigment-documentation.html">Scheduled Pigment Job</a>
+    <a class="tree-link" href="business-systems/pigment-child-documentation.html">Pigment Child</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>NetSuite HR<span class="tree-count">(2)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="business-systems/workday-to-netsuite-integration-documentation.html">Workday &rarr; NetSuite</a>
+    <a class="tree-link" href="business-systems/export-netsuite-hr-documentation.html">Export NS HR Data</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Expensify<span class="tree-count">(2)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="business-systems/workday-to-expensify-v2-documentation.html">Workday &rarr; Expensify</a>
+    <a class="tree-link" href="business-systems/expensify-child-documentation.html">Expensify Child</a>
+  </div>
+
+  <div class="tree-node tree-toggle" onclick="toggleTree(this)">
+    <span>Navan<span class="tree-count">(2)</span></span>
+    <span class="arrow">&#9654;</span>
+  </div>
+  <div class="tree-children">
+    <a class="tree-link" href="business-systems/workday-to-navan-employee-sync-documentation.html">Workday &rarr; Navan Sync</a>
+    <a class="tree-link" href="business-systems/workday-to-navan-notification-documentation.html">Navan Notifications</a>
+  </div>
+</nav>
+
+<!-- ── Main Content ── -->
+<div class="main-content" id="top">
+
+  <div class="hero">
+    <div class="hero-row">
+      <svg width="44" height="44" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="14" fill="#000000"/>
+        <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+        <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+        <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+        <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+        <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+        <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <h1>Documentation Hub</h1>
+    </div>
+    <div class="subtitle">Enterprise Systems Integration &mdash; Workato Recipe Documentation</div>
+    <div class="meta-line">Author: venkatesh.manohar &nbsp;&bull;&nbsp; Last Updated: April 15, 2026 &nbsp;&bull;&nbsp; 43 Recipes Documented &nbsp;&bull;&nbsp; 10+ Connected Systems</div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-num">43</div><div class="stat-label">Total Recipes</div></div>
+    <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Doc Categories</div></div>
+    <div class="stat-card"><div class="stat-num">10+</div><div class="stat-label">Systems</div></div>
+    <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">E2E Flows</div></div>
+    <div class="stat-card"><div class="stat-num">8.4M+</div><div class="stat-label">Jobs Processed</div></div>
+  </div>
+
+  <div class="search-row">
+    <input type="text" class="search-input" id="globalSearch" placeholder="Search all documentation by name, system, or keyword..." autocomplete="off">
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- NETSUITE INTEGRATION PIPELINE                          -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="doc-section" id="netsuite">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg, #F5A623, #E68A00);">NS</div>
+      <div>
+        <div class="section-title">NetSuite Integration Pipeline</div>
+        <div class="section-subtitle">Stripe &rarr; Snowflake &rarr; Workato &rarr; NetSuite &mdash; Order-to-Cash Automation</div>
+      </div>
+      <a href="netsuite-index.html" class="section-index-link">Full Index &rarr;</a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot"></span> Architecture &amp; End-to-End Flows</div>
+    <div class="card-grid">
+      <a class="card" href="snowflake-architecture-v1.html">
+        <div class="card-name">Snowflake Table Architecture</div>
+        <div class="card-desc">OTC Integration Pipeline — table structure, data flow, and staging layer design</div>
+        <div class="card-tags"><span class="tag tag-arch">Architecture</span><span class="tag tag-snowflake">Snowflake</span></div>
+      </a>
+      <a class="card" href="sales-order-end-to-end-v1.html">
+        <div class="card-name">Sales Order — End to End</div>
+        <div class="card-desc">Complete flow from Stripe subscription to NetSuite sales order creation</div>
+        <div class="card-tags"><span class="tag tag-e2e">E2E</span><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="invoice-end-to-end-v1.html">
+        <div class="card-name">Invoice — End to End</div>
+        <div class="card-desc">Stripe invoice finalization through Snowflake staging to NetSuite invoice creation</div>
+        <div class="card-tags"><span class="tag tag-e2e">E2E</span><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="credit-memo-end-to-end-v1.html">
+        <div class="card-name">Credit Memo — End to End</div>
+        <div class="card-desc">Credit note lifecycle from Stripe through to NetSuite credit memo application</div>
+        <div class="card-tags"><span class="tag tag-e2e">E2E</span><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="payment-end-to-end-v1.html">
+        <div class="card-name">Payment — End to End</div>
+        <div class="card-desc">Payment capture and reconciliation from Stripe to NetSuite customer payment</div>
+        <div class="card-tags"><span class="tag tag-e2e">E2E</span><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="refund-end-to-end-v1.html">
+        <div class="card-name">Refund — End to End</div>
+        <div class="card-desc">Refund processing flow from Stripe refund event to NetSuite refund record</div>
+        <div class="card-tags"><span class="tag tag-e2e">E2E</span><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="cba-end-to-end-v1.html">
+        <div class="card-name">CBA — End to End</div>
+        <div class="card-desc">Customer Balance Adjustment lifecycle from Stripe credit through NetSuite application</div>
+        <div class="card-tags"><span class="tag tag-e2e">E2E</span><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot"></span> Master Orchestrators</div>
+    <div class="card-grid">
+      <a class="card" href="scheduled-master-items-sales-orders-v3.html">
+        <div class="card-name">Rec 0.0 — Scheduled Master: Items &amp; Sales Orders</div>
+        <div class="card-desc">Top-level cron orchestrator running 4x daily — coordinates customer sync, items, sales orders, and downstream recipes</div>
+        <div class="card-tags"><span class="tag tag-master">Master</span><span class="tag tag-workato">Scheduler</span></div>
+      </a>
+      <a class="card" href="master-recipe-invoice-v3.html">
+        <div class="card-name">Rec 1.0 — Master: Invoice Orchestrator</div>
+        <div class="card-desc">Stripe-to-NetSuite transaction orchestrator for invoices, credits, payments, refunds, and CBAs</div>
+        <div class="card-tags"><span class="tag tag-master">Master</span><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="credit-memo-cbas-payments-v3.html">
+        <div class="card-name">Rec 2.0 — Master: Credit Memo, CBAs &amp; Payments</div>
+        <div class="card-desc">Master orchestrator for credit memos, Customer Balance Adjustments, and payment application</div>
+        <div class="card-tags"><span class="tag tag-master">Master</span><span class="tag tag-netsuite">Credits</span></div>
+      </a>
+      <a class="card" href="refunds-uncollectible-cancellations-v3.html">
+        <div class="card-name">Rec 3.0 — Master: Refunds &amp; Cancellations</div>
+        <div class="card-desc">Refund processing, uncollectible write-offs, voided invoices, and contract cancellations</div>
+        <div class="card-tags"><span class="tag tag-master">Master</span><span class="tag tag-netsuite">Refunds</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot"></span> Customer Recipes</div>
+    <div class="card-grid">
+      <a class="card" href="customer-master-batch-v3.html">
+        <div class="card-name">Rec 1.0b — Customer Master: Batch Sync</div>
+        <div class="card-desc">Batch synchronization of customer records from Snowflake staging to NetSuite</div>
+        <div class="card-tags"><span class="tag tag-snowflake">Snowflake</span><span class="tag tag-netsuite">Customers</span></div>
+      </a>
+      <a class="card" href="customer-master-by-id-v3.html">
+        <div class="card-name">Rec 1.01 — Customer Master: By Customer ID</div>
+        <div class="card-desc">Callable recipe for on-demand single customer sync from Snowflake to NetSuite</div>
+        <div class="card-tags"><span class="tag tag-snowflake">Snowflake</span><span class="tag tag-netsuite">Callable</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot"></span> Orders &amp; Invoices</div>
+    <div class="card-grid">
+      <a class="card" href="items-master-recipe-v3.html">
+        <div class="card-name">Rec 2.0b — Items Master Recipe</div>
+        <div class="card-desc">Product catalog sync from Snowflake to NetSuite items and pricing</div>
+        <div class="card-tags"><span class="tag tag-snowflake">Snowflake</span><span class="tag tag-netsuite">Items</span></div>
+      </a>
+      <a class="card" href="sales-order-master-v3.html">
+        <div class="card-name">Rec 2.01 — Sales Order Master</div>
+        <div class="card-desc">Sales order creation and management from Snowflake staging into NetSuite</div>
+        <div class="card-tags"><span class="tag tag-snowflake">Snowflake</span><span class="tag tag-netsuite">Orders</span></div>
+      </a>
+      <a class="card" href="invoice-master-recipe-v3.html">
+        <div class="card-name">Rec 4.0 — Invoice Master Recipe</div>
+        <div class="card-desc">Invoice creation from Stripe data through Snowflake into NetSuite</div>
+        <div class="card-tags"><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">Invoices</span></div>
+      </a>
+      <a class="card" href="catchup-invoices-v3.html">
+        <div class="card-name">Rec 4.01 — Catchup Invoices</div>
+        <div class="card-desc">Retroactive invoice processing for missed or delayed Stripe events</div>
+        <div class="card-tags"><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">Catchup</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot"></span> Credits &amp; Refunds</div>
+    <div class="card-grid">
+      <a class="card" href="credit-memo-master-v3.html">
+        <div class="card-name">Rec 5.0 — Credit Memo Master</div>
+        <div class="card-desc">Credit memo creation and application in NetSuite from Stripe credit notes</div>
+        <div class="card-tags"><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">Credits</span></div>
+      </a>
+      <a class="card" href="customer-payment-v3.html">
+        <div class="card-name">Rec 6.0 — Customer Payment</div>
+        <div class="card-desc">Customer payment creation and invoice application in NetSuite</div>
+        <div class="card-tags"><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">Payments</span></div>
+      </a>
+      <a class="card" href="refunds-master-v3.html">
+        <div class="card-name">Rec 7.0 — Refunds Master</div>
+        <div class="card-desc">Refund processing and credit application between Stripe and NetSuite</div>
+        <div class="card-tags"><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">Refunds</span></div>
+      </a>
+      <a class="card" href="create-cba-v3.html">
+        <div class="card-name">Rec 8.0 — Create CBA</div>
+        <div class="card-desc">Customer Balance Adjustment creation in NetSuite from Stripe credit events</div>
+        <div class="card-tags"><span class="tag tag-stripe">Stripe</span><span class="tag tag-netsuite">CBA</span></div>
+      </a>
+      <a class="card" href="cancelled-sales-orders-v3.html">
+        <div class="card-name">Rec 9.0 — Cancelled Sales Orders</div>
+        <div class="card-desc">Sales order cancellation processing and close-out in NetSuite</div>
+        <div class="card-tags"><span class="tag tag-netsuite">Cancellation</span></div>
+      </a>
+      <a class="card" href="voided-invoice-master-v3.html">
+        <div class="card-name">Rec 10.0 — Voided Invoice Master</div>
+        <div class="card-desc">Voided invoice credit memo creation and write-off processing in NetSuite</div>
+        <div class="card-tags"><span class="tag tag-netsuite">Voided</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- BUSINESS SYSTEMS — WORKATO ACTIVE RECIPES              -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="doc-section" id="business-systems">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg, var(--ic-blue), #1A2B8C);">BS</div>
+      <div>
+        <div class="section-title">Business Systems — Active Recipes</div>
+        <div class="section-subtitle">Workato Integration Automation &mdash; Marketing, Sales, HR, Finance &amp; Operations</div>
+      </div>
+      <a href="business-systems/business-systems-active-index.html" class="section-index-link">Full Index &rarr;</a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot" style="background:var(--ic-dark);"></span> Marketing &amp; Sales Syncs</div>
+    <div class="card-grid">
+      <a class="card" href="business-systems/sfdc-to-zuora-stripe-us-sync-documentation.html">
+        <div class="card-name">SFDC &rarr; Zuora &amp; Stripe U.S. Sync</div>
+        <div class="card-desc">Account Owner + Champion metadata sync via Platform Events — 2.87M+ jobs</div>
+        <div class="card-tags"><span class="tag tag-sfdc">SFDC</span><span class="tag tag-stripe">Stripe</span></div>
+      </a>
+      <a class="card" href="business-systems/sfdc-to-stripe-ie-sync-documentation.html">
+        <div class="card-name">SFDC &rarr; Stripe IE Sync</div>
+        <div class="card-desc">Platform Event sync pushing Account Owner + Champion to Stripe IE</div>
+        <div class="card-tags"><span class="tag tag-sfdc">SFDC</span><span class="tag tag-stripe">Stripe</span></div>
+      </a>
+      <a class="card" href="business-systems/marketo-mql-sync-to-intercom-documentation.html">
+        <div class="card-name">Marketo MQL &rarr; Intercom</div>
+        <div class="card-desc">Polls Marketo for MQL Date updates and syncs to Intercom via webhook</div>
+        <div class="card-tags"><span class="tag tag-marketo">Marketo</span><span class="tag tag-intercom">Intercom</span></div>
+      </a>
+      <a class="card" href="business-systems/intercom-to-marketo-webhook-documentation.html">
+        <div class="card-name">Intercom &rarr; Marketo Webhook</div>
+        <div class="card-desc">Contact resubscription events synced to Marketo with 4-branch decision logic</div>
+        <div class="card-tags"><span class="tag tag-intercom">Intercom</span><span class="tag tag-marketo">Marketo</span></div>
+      </a>
+      <a class="card" href="business-systems/intercom-to-sfdc-assignee-sync-documentation.html">
+        <div class="card-name">Intercom &rarr; SFDC Assignee Sync</div>
+        <div class="card-desc">Real-time conversation assignee synchronization from Intercom to Salesforce</div>
+        <div class="card-tags"><span class="tag tag-intercom">Intercom</span><span class="tag tag-sfdc">SFDC</span></div>
+      </a>
+      <a class="card" href="business-systems/outreach-prospect-search-documentation.html">
+        <div class="card-name">Outreach Prospect Search</div>
+        <div class="card-desc">Automated prospect lookup and enrichment in Outreach sales engagement platform</div>
+        <div class="card-tags"><span class="tag tag-sfdc">Outreach</span></div>
+      </a>
+      <a class="card" href="business-systems/sfdc-task-search-documentation.html">
+        <div class="card-name">SFDC Task Search</div>
+        <div class="card-desc">Salesforce task record search and retrieval for activity tracking</div>
+        <div class="card-tags"><span class="tag tag-sfdc">SFDC</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot" style="background:var(--green);"></span> Payroll &amp; NetSuite</div>
+    <div class="card-grid">
+      <a class="card" href="business-systems/adhoc-payroll-report-documentation.html">
+        <div class="card-name">Adhoc Payroll Report</div>
+        <div class="card-desc">On-demand payroll reporting from Workday data into NetSuite</div>
+        <div class="card-tags"><span class="tag tag-workday">Workday</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="business-systems/payroll-wd-netsuite-v2-documentation.html">
+        <div class="card-name">Payroll: Workday &rarr; NetSuite V2</div>
+        <div class="card-desc">Automated payroll journal entry sync from Workday to NetSuite — parent recipe</div>
+        <div class="card-tags"><span class="tag tag-workday">Workday</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="business-systems/pull-netsuite-account-documentation.html">
+        <div class="card-name">Pull NetSuite Account</div>
+        <div class="card-desc">Account data retrieval from NetSuite for payroll mapping and validation</div>
+        <div class="card-tags"><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="business-systems/get-accounting-period-id-documentation.html">
+        <div class="card-name">Get Accounting Period ID</div>
+        <div class="card-desc">NetSuite accounting period lookup for correct journal entry posting</div>
+        <div class="card-tags"><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot" style="background:var(--ic-orange-accent);"></span> EBANX</div>
+    <div class="card-grid">
+      <a class="card" href="business-systems/automation-ebanx-documentation.html">
+        <div class="card-name">EBANX Payment Automation</div>
+        <div class="card-desc">LATAM payment notification processing and routing via EBANX integration</div>
+        <div class="card-tags"><span class="tag tag-ebanx">EBANX</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot" style="background:#1565C0;"></span> Pigment</div>
+    <div class="card-grid">
+      <a class="card" href="business-systems/scheduled-job-pigment-documentation.html">
+        <div class="card-name">Scheduled Pigment Job</div>
+        <div class="card-desc">Scheduled financial planning data ETL from source systems to Pigment</div>
+        <div class="card-tags"><span class="tag tag-pigment">Pigment</span></div>
+      </a>
+      <a class="card" href="business-systems/pigment-child-documentation.html">
+        <div class="card-name">Pigment Child</div>
+        <div class="card-desc">Child recipe handling individual Pigment data transformation tasks</div>
+        <div class="card-tags"><span class="tag tag-pigment">Pigment</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot" style="background:var(--green);"></span> NetSuite HR</div>
+    <div class="card-grid">
+      <a class="card" href="business-systems/workday-to-netsuite-integration-documentation.html">
+        <div class="card-name">Workday &rarr; NetSuite Integration</div>
+        <div class="card-desc">Employee data synchronization from Workday HR to NetSuite</div>
+        <div class="card-tags"><span class="tag tag-workday">Workday</span><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+      <a class="card" href="business-systems/export-netsuite-hr-documentation.html">
+        <div class="card-name">Export NetSuite HR Data</div>
+        <div class="card-desc">HR data export from NetSuite for cross-system synchronization</div>
+        <div class="card-tags"><span class="tag tag-netsuite">NetSuite</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot" style="background:#E8850C;"></span> Expensify</div>
+    <div class="card-grid">
+      <a class="card" href="business-systems/workday-to-expensify-v2-documentation.html">
+        <div class="card-name">Workday &rarr; Expensify V2</div>
+        <div class="card-desc">Employee expense provisioning from Workday to Expensify platform</div>
+        <div class="card-tags"><span class="tag tag-workday">Workday</span><span class="tag tag-expensify">Expensify</span></div>
+      </a>
+      <a class="card" href="business-systems/expensify-child-documentation.html">
+        <div class="card-name">Expensify Child</div>
+        <div class="card-desc">Child recipe handling individual Expensify provisioning operations</div>
+        <div class="card-tags"><span class="tag tag-expensify">Expensify</span></div>
+      </a>
+    </div>
+
+    <div class="subcategory"><span class="subcat-dot" style="background:#0097A7;"></span> Navan</div>
+    <div class="card-grid">
+      <a class="card" href="business-systems/workday-to-navan-employee-sync-documentation.html">
+        <div class="card-name">Workday &rarr; Navan Employee Sync</div>
+        <div class="card-desc">Employee profile synchronization from Workday to Navan travel platform</div>
+        <div class="card-tags"><span class="tag tag-workday">Workday</span><span class="tag tag-navan">Navan</span></div>
+      </a>
+      <a class="card" href="business-systems/workday-to-navan-notification-documentation.html">
+        <div class="card-name">Navan Notification Automation</div>
+        <div class="card-desc">Automated notifications for Navan employee provisioning events</div>
+        <div class="card-tags"><span class="tag tag-navan">Navan</span></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    &copy; 2026 Intercom &mdash; Analytics Engineering &nbsp;|&nbsp; Enterprise Systems Integration Documentation &nbsp;|&nbsp; Author: venkatesh.manohar
+  </div>
+
 </div>
 
 <script>
-(function() {
-  const searchInput = document.getElementById('search');
-  const grid = document.getElementById('card-grid');
-  const cards = Array.from(grid.querySelectorAll('.card'));
-  const noResults = document.getElementById('no-results');
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  let activeFilter = 'all';
-
-  function applyFilters() {
-    const query = searchInput.value.toLowerCase().trim();
-    let visible = 0;
-    cards.forEach(card => {
-      const searchText = (card.getAttribute('data-search') || '').toLowerCase() + ' ' + card.textContent.toLowerCase();
-      const category = (card.getAttribute('data-category') || '');
-      const matchesSearch = !query || searchText.includes(query);
-      const matchesFilter = activeFilter === 'all' || category.includes(activeFilter);
-      const show = matchesSearch && matchesFilter;
-      card.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-    noResults.style.display = visible === 0 ? '' : 'none';
+// Tree toggle
+function toggleTree(el) {
+  el.classList.toggle('open');
+  const children = el.nextElementSibling;
+  if (children && children.classList.contains('tree-children')) {
+    children.classList.toggle('open');
   }
+}
 
-  searchInput.addEventListener('input', applyFilters);
+// Global search
+document.getElementById('globalSearch').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.card');
+  const subcats = document.querySelectorAll('.subcategory');
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      activeFilter = this.getAttribute('data-filter');
-      applyFilters();
-    });
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = (!q || text.includes(q)) ? '' : 'none';
   });
-})();
-</script>
 
+  // Hide empty subcategories
+  subcats.forEach(sub => {
+    const grid = sub.nextElementSibling;
+    if (grid && grid.classList.contains('card-grid')) {
+      const visible = grid.querySelectorAll('.card:not([style*="display: none"])');
+      sub.style.display = visible.length > 0 ? '' : 'none';
+    }
+  });
+});
+</script>
 </body>
 </html>

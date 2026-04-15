@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<title>EXPENSIFY-Child | Recipe 59113811 Documentation</title>
+<style>
+:root {
+  /* Intercom brand — light cream aesthetic */
+  --ic-cream: #F4F3ED;
+  --ic-warm-white: #FEFDFB;
+  --ic-dark: #16100E;
+  --ic-blue: #334BFA;
+  --ic-blue-bg: #DCE1F9;
+  --ic-green: #0F7134;
+  --ic-green-bg: #D7EFDC;
+  --ic-orange-accent: #B24D00;
+  --ic-orange-bg: #FFEBDB;
+  --ic-red: #DF2020;
+  --ic-red-bg: #FFDBDB;
+  /* System-specific brand colors */
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --green: #2E7D32;
+  --sf-blue: #0070d2;
+  --gray: #9E9E9E;
+  --orange-bg: #FFF5E6;
+  --blue-bg: #E8F4FD;
+  --green-bg: #E8F5E9;
+  --sf-bg: #E6F0FA;
+  --gray-bg: #F5F5F5;
+  --text-primary: #1A1A1A;
+  --text-secondary: #737373;
+  --border: #E6E6E6;
+  /* Legacy aliases for SVG diagrams and varied agent output */
+  --source-orange: #F5A623;
+  --source-bg: #FFF5E6;
+  --data-blue: #29B5E8;
+  --data-bg: #E8F4FD;
+  --orchestration-purple: #334BFA;
+  --orchestration-bg: #DCE1F9;
+  --target-green: #2E7D32;
+  --target-bg: #E8F5E9;
+  --audit-gray: #9E9E9E;
+  --audit-bg: #F5F5F5;
+  --card: #ffffff;
+  --text: #1A1A1A;
+  --muted: #737373;
+  --bg: #F4F3ED;
+  --purple: #334BFA;
+  --purple-bg: #DCE1F9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  background: var(--ic-cream);
+}
+
+/* ── Fixed Left Sidebar TOC ── */
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 0 0 20px 0;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04);
+  border-right: 1px solid var(--border);
+  z-index: 1000;
+}
+nav#toc .toc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+nav#toc .toc-brand svg { flex-shrink: 0; }
+nav#toc .toc-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+nav#toc .toc-brand-text .brand-title {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ic-dark);
+  letter-spacing: -0.02em;
+}
+nav#toc .toc-brand-text .brand-sub {
+  font-size: 0.68em;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+nav#toc h3 {
+  font-size: 0.7em;
+  color: var(--text-secondary);
+  margin: 12px 18px 8px;
+  padding: 0;
+  border-bottom: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+nav#toc a {
+  color: #1A1A1A;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.82em;
+  display: block;
+  padding: 6px 18px;
+  border-radius: 0;
+  transition: all 0.15s ease;
+  margin: 0;
+  border-left: 3px solid transparent;
+}
+nav#toc a:hover { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: rgba(51,75,250,0.3); }
+nav#toc a.active { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: var(--ic-blue); font-weight: 600; }
+
+/* ── Main Content ── */
+.main-content { max-width: 1100px; }
+
+h1 {
+  font-size: 2em;
+  color: var(--ic-dark);
+  margin-bottom: 8px;
+  border-bottom: 3px solid var(--ic-blue);
+  padding-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: 1.5em;
+  color: var(--ic-dark);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ic-blue-bg);
+  letter-spacing: -0.02em;
+}
+h3 {
+  font-size: 1.15em;
+  color: var(--text-primary);
+  margin: 24px 0 10px;
+  letter-spacing: -0.01em;
+}
+h4 {
+  font-size: 1em;
+  color: var(--text-secondary);
+  margin: 16px 0 8px;
+}
+
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 24px; }
+li { margin-bottom: 6px; }
+
+/* ── Meta Header ── */
+.meta-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.meta-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.meta-header h1 { color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative; }
+.meta-header .meta-info, .meta-header .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 12px;
+  font-size: 0.9em;
+  opacity: 0.9;
+  position: relative;
+}
+.meta-header .meta-info span, .meta-header .meta span { display: flex; align-items: center; gap: 6px; }
+.meta-header p, .meta-header .subtitle { margin-top: 4px; opacity: 0.85; position: relative; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-active { background: var(--ic-green-bg); color: var(--ic-green); }
+.badge-stopped { background: var(--gray); color: white; }
+.badge-e2e { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+.badge-arch { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* ── Sections ── */
+section, .section {
+  background: white;
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+section h2, .section h2 {
+  margin-top: 0;
+}
+
+/* ── Two-Layer Boxes ── */
+.two-layer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 16px 0;
+}
+.layer-box {
+  padding: 16px 20px;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+.layer-business { background: var(--blue-bg); border-color: var(--blue); }
+.layer-technical { background: var(--ic-blue-bg); border-color: var(--ic-blue); }
+.layer-box h4 { margin-top: 0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+.layer-business h4 { color: var(--blue); }
+.layer-technical h4 { color: var(--ic-blue); }
+
+/* ── System Cards ── */
+.system-card {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  margin: 4px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+.system-salesforce { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-snowflake { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-workato { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-netsuite { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+.system-fivetran { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-stripe { background: var(--orange-bg); color: #635BFF; border: 1px solid #635BFF; }
+.system-marketo { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+.system-sfdc, .system-intercom { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-expensify { background: var(--ic-green-bg); color: var(--ic-green); border: 1px solid var(--ic-green); }
+.system-workday { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-navan { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+.system-pigment { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-outreach { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-zuora { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-ebanx { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.9em;
+  border-radius: 6px;
+  overflow: hidden;
+}
+th {
+  background: var(--ic-dark);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) { background: var(--ic-cream); }
+
+/* ── Code ── */
+code {
+  background: #F4F3ED;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+pre {
+  background: var(--ic-dark);
+  color: #E6E1DC;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+pre code { background: none; padding: 0; color: inherit; }
+
+/* ── Diagrams ── */
+.diagram-container, .svg-container, .architecture-diagram {
+  text-align: center;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+.diagram-container svg, .svg-container svg, .architecture-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Callouts ── */
+.callout {
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin: 12px 0;
+  font-size: 0.92em;
+}
+.callout-info { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); }
+.callout-warn, .callout-warning { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); }
+.callout-success { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); }
+.callout-error, .callout-danger { background: var(--ic-red-bg); border-left: 4px solid var(--ic-red); }
+
+/* ── Details/Collapsible ── */
+details {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ic-blue);
+}
+details[open] summary { margin-bottom: 10px; }
+
+/* ── Steps ── */
+.step-row, .step-card { display: flex; gap: 12px; align-items: flex-start; margin: 10px 0; }
+.step-num, .step-number {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--ic-blue); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+}
+.step-content { flex: 1; }
+
+/* ── Tags (compat aliases for varied agent output) ── */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-right: 6px; }
+.tag-source { background: var(--orange-bg); color: #c77600; }
+.tag-data { background: var(--blue-bg); color: #1a7fa3; }
+.tag-workato, .tag-orchestration { background: var(--ic-blue-bg); color: var(--ic-blue); }
+.tag-target { background: var(--green-bg); color: var(--green); }
+.tag-audit { background: var(--gray-bg); color: var(--gray); }
+.tag-red, .tag-danger { background: var(--ic-red-bg); color: var(--ic-red); }
+.tag-green, .tag-success { background: var(--ic-green-bg); color: var(--ic-green); }
+.tag-blue, .tag-info { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* ── Compat: note/warn boxes (varied agent class names) ── */
+.note-info, .info-box, .note { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-warn, .warn-box, .warning-box, .warning { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-success, .success-box { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-error, .error-box, .danger-box { background: var(--ic-red-bg); border-left: 4px solid var(--ic-red); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+
+/* ── Compat: KPI/value boxes ── */
+.kpi-grid, .stats-grid, .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
+.kpi-card, .stat-card, .metric-card {
+  background: white; border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; text-align: center;
+}
+.kpi-value, .stat-value, .metric-value, .value {
+  font-size: 1.8em; font-weight: 700; color: var(--ic-blue);
+}
+.kpi-label, .stat-label, .metric-label, .label {
+  font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;
+}
+
+/* ── Compat: header aliases ── */
+.doc-header, .header-bar, .hero, .page-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.doc-header h1, .header-bar h1, .hero h1, .page-header h1 {
+  color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative;
+}
+.doc-header .meta, .header-bar .meta, .doc-header .meta-info, .header-bar .meta-info {
+  display: flex; flex-wrap: wrap; gap: 24px; margin-top: 12px;
+  font-size: 0.9em; opacity: 0.9; position: relative;
+}
+.doc-header .subtitle, .header-bar .subtitle, .hero .subtitle, .page-header .subtitle {
+  margin-top: 4px; opacity: 0.85; position: relative;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  body { padding: 24px; }
+  .two-layer { grid-template-columns: 1fr; }
+}
+
+/* ── Print ── */
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; background: white; }
+  section, .section { box-shadow: none; break-inside: avoid; border: 1px solid #ddd; }
+  .meta-header, .doc-header, .header-bar { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2 { break-before: auto; }
+}
+</style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:8px;right:180px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
+
+<a href="business-systems-active-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#16100E;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#334BFA'" onmouseout="this.style.background='#16100E'">&#8592; Back to Index</a>
+
+<nav id="toc">
+  <div class="toc-brand">
+    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#000000"/>
+      <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="toc-brand-text">
+      <span class="brand-title">Intercom</span>
+      <span class="brand-sub">Enterprise Systems</span>
+    </div>
+  </div>
+  <h3>Navigation</h3>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#end-to-end-flow" data-section="end-to-end-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#component-overview" data-section="component-overview">8. Component Overview</a>
+  <a href="#business-logic" data-section="business-logic">9. Key Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<div class="main-content">
+
+ PAGE HEADER 
+<div class="meta-header">
+<h1>EXPENSIFY-Child</h1>
+<div class="subtitle">Callable child recipe for upserting employee records into Expensify via the Integration Server API</div>
+<div class="header-meta">
+<span class="meta-badge"><span class="dot dot-green"></span> Running</span>
+<span class="meta-badge"><span class="dot dot-orange"></span> Recipe 59113811</span>
+<span class="meta-badge"><span class="dot dot-blue"></span> Parent: 59113812</span>
+<span class="meta-badge">Folder: 23453985</span>
+<span class="meta-badge">Project: 370065</span>
+</div>
+</div>
+ 1. EXECUTIVE SUMMARY 
+<div class="section" id="executive-summary">
+<h2>1. Executive Summary</h2>
+<p>
+            The <strong>EXPENSIFY-Child</strong> recipe (ID: 59113811) is a callable child recipe within Intercom's Expensify V2 integration suite. It is invoked asynchronously by its parent recipe, <strong>EXPENSE - Workday to Expensify Parent V2</strong> (ID: 59113812), which runs on a daily schedule at 1:00 AM PT.
+        </p>
+<p>
+            This child recipe receives a batch of employee records (grouped by country) and upserts them into the Expensify Integration Server via a REST API POST call. It handles employee provisioning and deprovisioning, ensuring that Intercom's Expensify workspace stays synchronized with Workday as the source of truth for HR data.
+        </p>
+<div class="kpi-row">
+<div class="kpi-card">
+<div class="kpi-value">1,534</div>
+<div class="kpi-label">Successful Jobs</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value">0</div>
+<div class="kpi-label">Failed Jobs</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value">3,046</div>
+<div class="kpi-label">Lifetime Tasks</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value">100%</div>
+<div class="kpi-label">Success Rate</div>
+</div>
+</div>
+<div class="callout callout-success">
+<strong>Status:</strong> Active and running. Last executed on April 15, 2026, at 1:00 AM PT. Zero failures recorded since deployment.
+        </div>
+</div>
+ 2. BUSINESS OVERVIEW 
+<div class="section" id="business-overview">
+<h2>2. Business Overview</h2>
+<h3>Business Purpose</h3>
+<p>
+            Intercom uses Expensify as its expense reimbursement platform. When employees join, leave, or change roles, their Expensify profiles must be updated to reflect the correct expense policies, manager approval chains, and termination status. This recipe automates the employee lifecycle management in Expensify, eliminating manual provisioning by the Finance/People Operations teams.
+        </p>
+<h3>Business Process</h3>
+<ol>
+<li>Workday serves as the authoritative HR system containing all employee data</li>
+<li>The parent recipe (59113812) extracts employee data from Workday daily, groups by country, and dispatches batches to this child recipe</li>
+<li>This child recipe takes each country batch and upserts employees into Expensify via API</li>
+<li>Expensify policies are mapped per country (via lookup table) ensuring correct expense approval workflows</li>
+<li>Terminated employees are flagged with <code>isTerminated: true</code> to disable their Expensify access</li>
+</ol>
+<h3>Stakeholders</h3>
+<table>
+<thead>
+<tr><th>Stakeholder</th><th>Role</th><th>Interest</th></tr>
+</thead>
+<tbody>
+<tr><td>Finance / Accounts Payable</td><td>Business Owner</td><td>Accurate expense policy enforcement and approval routing</td></tr>
+<tr><td>People Operations</td><td>Data Owner</td><td>Workday accuracy drives downstream provisioning</td></tr>
+<tr><td>Enterprise Systems</td><td>Technical Owner</td><td>Integration reliability and error handling</td></tr>
+<tr><td>All Employees</td><td>End Users</td><td>Ability to submit expenses under correct country policy</td></tr>
+</tbody>
+</table>
+<h3>Business Impact</h3>
+<ul>
+<li><strong>Risk Reduction:</strong> Automated termination flag prevents former employees from submitting expenses</li>
+<li><strong>Compliance:</strong> Country-specific policy assignment ensures correct tax and regulatory treatment</li>
+<li><strong>Efficiency:</strong> Eliminates manual employee onboarding/offboarding in Expensify</li>
+</ul>
+</div>
+ 3. SYSTEM OVERVIEW 
+<div class="section" id="system-overview">
+<h2>3. System Overview</h2>
+<h3>Connected Systems</h3>
+<table>
+<thead>
+<tr><th>System</th><th>Role</th><th>Connection Type</th><th>Details</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="tag tag-orchestration">Workato Recipe Function</span></td>
+<td>Trigger / Orchestration</td>
+<td>Callable Recipe</td>
+<td>Receives employee list + country from parent recipe 59113812</td>
+</tr>
+<tr>
+<td><span class="tag tag-target">Expensify Integration Server</span></td>
+<td>Target System</td>
+<td>REST API (HTTP POST)</td>
+<td><code>https://integrations.expensify.com/Integration-Server/ExpensifyIntegrations</code></td>
+</tr>
+<tr>
+<td><span class="tag tag-orchestration">Workato Pub/Sub (AOF Topic)</span></td>
+<td>Error Notification</td>
+<td>Event Topic</td>
+<td>Publishes error events to <code>AOF | PS-001 | AOF_Topic</code> (Topic ID: 37790)</td>
+</tr>
+<tr>
+<td><span class="tag tag-orchestration">Workato Logger</span></td>
+<td>Logging</td>
+<td>Internal</td>
+<td>Logs incoming payload to job report for debugging</td>
+</tr>
+</tbody>
+</table>
+<h3>Authentication</h3>
+<table>
+<thead>
+<tr><th>System</th><th>Method</th><th>Credential Reference</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Expensify API</td>
+<td>Partner Credentials (form body)</td>
+<td><code>partnerUserID</code>: aa_expensify_workato_workday_service_account_intercom_io<br/><code>partnerUserSecret</code>: Account property <code>expensify_user_secret</code></td>
+</tr>
+<tr>
+<td>REST Connection</td>
+<td>Workato Connection</td>
+<td>Account ID: 16023973</td>
+</tr>
+</tbody>
+</table>
+<h3>Recipe Metadata</h3>
+<table>
+<thead>
+<tr><th>Attribute</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>Recipe ID</td><td>59113811</td></tr>
+<tr><td>Parent Recipe</td><td>59113812 (EXPENSE - Workday to Expensify Parent V2)</td></tr>
+<tr><td>Created</td><td>2025-02-12</td></tr>
+<tr><td>Last Updated</td><td>2025-12-10</td></tr>
+<tr><td>Version</td><td>7</td></tr>
+<tr><td>Version Author</td><td>diana.sy@intercom.io</td></tr>
+<tr><td>Status</td><td>Running</td></tr>
+<tr><td>Trigger Type</td><td>Callable Recipe (Recipe Function)</td></tr>
+</tbody>
+</table>
+</div>
+ 4. ARCHITECTURE OVERVIEW 
+<div class="section" id="architecture-overview">
+<h2>4. Architecture Overview</h2>
+<p>
+            This recipe follows a <strong>Parent-Child Callable Pattern</strong>. The parent recipe (59113812) is scheduled to run daily at 1:00 AM PT. It fetches all employees from Workday via a custom report, groups them by country using a Smart List in-memory database, and dispatches each country batch asynchronously to this child recipe.
+        </p>
+<p>
+            The child recipe acts as a stateless processor: it receives a country-specific employee list, constructs the Expensify API payload, and performs a single POST to the Expensify Integration Server to upsert all employees in that batch. Error handling follows the AOF (Automation Operations Framework) pattern, publishing structured error events to a centralized Pub/Sub topic.
+        </p>
+<h3>Pattern: Async Callable with AOF Error Handling</h3>
+<div class="stage-flow">
+<div class="stage-box" style="background: var(--orange);">Parent Recipe<br/>(Scheduled Daily)</div>
+<div class="stage-arrow">➔</div>
+<div class="stage-box" style="background: var(--purple-mid);">Async Dispatch<br/>(Per Country)</div>
+<div class="stage-arrow">➔</div>
+<div class="stage-box" style="background: var(--blue);">Child Recipe<br/>(This Recipe)</div>
+<div class="stage-arrow">➔</div>
+<div class="stage-box" style="background: var(--green);">Expensify API<br/>(Upsert)</div>
+</div>
+</div>
+ 5. ARCHITECTURE DIAGRAM 
+<div class="section" id="architecture-diagram">
+<h2>5. Architecture Diagram</h2>
+<p>Four-column swimlane showing the integration architecture across Source, Data Processing, Orchestration, and Target layers.</p>
+<div class="diagram-container">
+<svg font-family="Segoe UI, sans-serif" height="520" viewbox="0 0 920 520" width="920" xmlns="http://www.w3.org/2000/svg">
+<!-- Column Headers -->
+<rect fill="#F5A623" height="44" rx="6" width="210" x="10" y="10"></rect>
+<text fill="#fff" font-size="14" font-weight="700" text-anchor="middle" x="115" y="38">Source</text>
+<rect fill="#29B5E8" height="44" rx="6" width="210" x="240" y="10"></rect>
+<text fill="#fff" font-size="14" font-weight="700" text-anchor="middle" x="345" y="38">Data Processing</text>
+<rect fill="#334BFA" height="44" rx="6" width="210" x="470" y="10"></rect>
+<text fill="#fff" font-size="14" font-weight="700" text-anchor="middle" x="575" y="38">Orchestration</text>
+<rect fill="#2E7D32" height="44" rx="6" width="210" x="700" y="10"></rect>
+<text fill="#fff" font-size="14" font-weight="700" text-anchor="middle" x="805" y="38">Target</text>
+<!-- Column backgrounds -->
+<rect fill="#FFF8EE" height="440" rx="4" stroke="#F5A623" stroke-dasharray="4" stroke-width="1" width="210" x="10" y="64"></rect>
+<rect fill="#EBF8FE" height="440" rx="4" stroke="#29B5E8" stroke-dasharray="4" stroke-width="1" width="210" x="240" y="64"></rect>
+<rect fill="#F3EFF8" height="440" rx="4" stroke="#334BFA" stroke-dasharray="4" stroke-width="1" width="210" x="470" y="64"></rect>
+<rect fill="#EDF7ED" height="440" rx="4" stroke="#2E7D32" stroke-dasharray="4" stroke-width="1" width="210" x="700" y="64"></rect>
+<!-- Source: Workday -->
+<rect fill="#fff" height="60" rx="8" stroke="#F5A623" stroke-width="2" width="170" x="30" y="90"></rect>
+<text fill="#E65100" font-size="13" font-weight="700" text-anchor="middle" x="115" y="115">Workday</text>
+<text fill="#666" font-size="11" text-anchor="middle" x="115" y="135">HR Custom Report</text>
+<!-- Source: Parent Recipe -->
+<rect fill="#fff" height="60" rx="8" stroke="#F5A623" stroke-width="2" width="170" x="30" y="180"></rect>
+<text fill="#E65100" font-size="12" font-weight="700" text-anchor="middle" x="115" y="205">Parent Recipe</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="115" y="225">59113812 (Daily 1AM PT)</text>
+<!-- Data: Employee List -->
+<rect fill="#fff" height="60" rx="8" stroke="#29B5E8" stroke-width="2" width="170" x="260" y="90"></rect>
+<text fill="#0D47A1" font-size="12" font-weight="700" text-anchor="middle" x="345" y="115">Employee List</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="345" y="135">JSON Array (per country)</text>
+<!-- Data: Policy Mapping -->
+<rect fill="#fff" height="60" rx="8" stroke="#29B5E8" stroke-width="2" width="170" x="260" y="180"></rect>
+<text fill="#0D47A1" font-size="12" font-weight="700" text-anchor="middle" x="345" y="205">Policy ID Lookup</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="345" y="225">Country -&gt; PolicyID</text>
+<!-- Data: API Payload -->
+<rect fill="#fff" height="60" rx="8" stroke="#29B5E8" stroke-width="2" width="170" x="260" y="280"></rect>
+<text fill="#0D47A1" font-size="12" font-weight="700" text-anchor="middle" x="345" y="305">API Request Body</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="345" y="325">requestJobDescription + data</text>
+<!-- Orchestration: This Recipe -->
+<rect fill="#334BFA" height="70" rx="8" stroke="#334BFA" stroke-width="2" width="170" x="490" y="90"></rect>
+<text fill="#fff" font-size="13" font-weight="700" text-anchor="middle" x="575" y="115">EXPENSIFY-Child</text>
+<text fill="#E8DFF0" font-size="10" text-anchor="middle" x="575" y="135">Recipe 59113811</text>
+<text fill="#E8DFF0" font-size="10" text-anchor="middle" x="575" y="150">Callable Recipe</text>
+<!-- Orchestration: Logger -->
+<rect fill="#fff" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="170" x="490" y="190"></rect>
+<text fill="#334BFA" font-size="12" font-weight="700" text-anchor="middle" x="575" y="215">Logger</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="575" y="230">Job Report Log</text>
+<!-- Orchestration: Try/Catch -->
+<rect fill="#fff" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="170" x="490" y="270"></rect>
+<text fill="#334BFA" font-size="12" font-weight="700" text-anchor="middle" x="575" y="295">Try / Catch Block</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="575" y="310">Error Handling</text>
+<!-- Orchestration: AOF Topic -->
+<rect fill="#fff" height="60" rx="8" stroke="#D32F2F" stroke-width="2" width="170" x="490" y="380"></rect>
+<text fill="#D32F2F" font-size="12" font-weight="700" text-anchor="middle" x="575" y="405">AOF Error Topic</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="575" y="425">PS-001 | Pub/Sub 37790</text>
+<!-- Target: Expensify -->
+<rect fill="#2E7D32" height="70" rx="8" stroke="#2E7D32" stroke-width="2" width="170" x="720" y="90"></rect>
+<text fill="#fff" font-size="13" font-weight="700" text-anchor="middle" x="805" y="115">Expensify</text>
+<text fill="#C8E6C9" font-size="10" text-anchor="middle" x="805" y="135">Integration Server</text>
+<text fill="#C8E6C9" font-size="10" text-anchor="middle" x="805" y="150">REST API (POST)</text>
+<!-- Target: Email Notification -->
+<rect fill="#fff" height="50" rx="8" stroke="#2E7D32" stroke-width="2" width="170" x="720" y="190"></rect>
+<text fill="#2E7D32" font-size="12" font-weight="700" text-anchor="middle" x="805" y="215">Email Notification</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="805" y="230">onFinish callback</text>
+<!-- Arrows -->
+<defs>
+<marker id="arrowhead" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+<polygon fill="#999" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+<marker id="arrowred" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+<polygon fill="#D32F2F" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+</defs>
+<!-- Source -> Data -->
+<line marker-end="url(#arrowhead)" stroke="#999" stroke-width="1.5" x1="200" x2="258" y1="120" y2="120"></line>
+<line marker-end="url(#arrowhead)" stroke="#999" stroke-width="1.5" x1="200" x2="258" y1="210" y2="210"></line>
+<!-- Data -> Orchestration -->
+<line marker-end="url(#arrowhead)" stroke="#999" stroke-width="1.5" x1="430" x2="488" y1="120" y2="120"></line>
+<line marker-end="url(#arrowhead)" stroke="#999" stroke-width="1.5" x1="430" x2="488" y1="310" y2="300"></line>
+<!-- Orchestration -> Target -->
+<line marker-end="url(#arrowhead)" stroke="#999" stroke-width="1.5" x1="660" x2="718" y1="120" y2="120"></line>
+<!-- Internal orchestration flows -->
+<line marker-end="url(#arrowhead)" stroke="#334BFA" stroke-width="1.5" x1="575" x2="575" y1="160" y2="188"></line>
+<line marker-end="url(#arrowhead)" stroke="#334BFA" stroke-width="1.5" x1="575" x2="575" y1="240" y2="268"></line>
+<line marker-end="url(#arrowred)" stroke="#D32F2F" stroke-dasharray="5" stroke-width="1.5" x1="575" x2="575" y1="320" y2="378"></line>
+<!-- Target internal -->
+<line marker-end="url(#arrowhead)" stroke="#2E7D32" stroke-width="1.5" x1="805" x2="805" y1="160" y2="188"></line>
+<!-- Data internal flow -->
+<line marker-end="url(#arrowhead)" stroke="#29B5E8" stroke-width="1.5" x1="345" x2="345" y1="150" y2="178"></line>
+<line marker-end="url(#arrowhead)" stroke="#29B5E8" stroke-width="1.5" x1="345" x2="345" y1="240" y2="278"></line>
+<!-- Error flow label -->
+<text fill="#D32F2F" font-size="10" font-style="italic" x="582" y="352">on error</text>
+</svg>
+</div>
+</div>
+ 6. END-TO-END FLOW 
+<div class="section" id="end-to-end-flow">
+<h2>6. End-to-End Flow</h2>
+<h3>Flow Narrative</h3>
+<ol>
+<li><strong>Trigger (Callable):</strong> The parent recipe (59113812) calls this child recipe asynchronously, passing a <code>List_Of_Employees</code> array and a <code>Country</code> string parameter.</li>
+<li><strong>Log Input:</strong> The incoming payload is logged to the job report for traceability.</li>
+<li><strong>Try Block - Upsert Employee:</strong> A POST request is sent to the Expensify Integration Server endpoint with:
+                <ul>
+<li><code>requestJobDescription</code>: JSON containing credentials, data source type ("employees"), and an onFinish email notification action</li>
+<li><code>data</code>: The employee list serialized as JSON</li>
+</ul>
+</li>
+<li><strong>Catch Block - Error Handling:</strong> If the API call fails, an error event is published to the AOF Pub/Sub topic (37790) with structured error details including job ID, recipe ID, stack trace, and error message.</li>
+</ol>
+<h3>Data Flow Diagram</h3>
+<div class="diagram-container">
+<svg font-family="Segoe UI, sans-serif" height="420" viewbox="0 0 880 420" width="880" xmlns="http://www.w3.org/2000/svg">
+<!-- Background -->
+<rect fill="#FAFAFA" height="420" rx="12" width="880" x="0" y="0"></rect>
+<!-- Title -->
+<text fill="#3A1F5E" font-size="16" font-weight="700" text-anchor="middle" x="440" y="30">End-to-End Data Flow: Workday to Expensify (Child Recipe)</text>
+<!-- Step 1: Parent Calls -->
+<rect fill="#F5A623" height="80" opacity="0.15" rx="10" stroke="#F5A623" stroke-width="2" width="160" x="30" y="60"></rect>
+<rect fill="#fff" height="56" rx="6" stroke="#F5A623" stroke-width="1.5" width="136" x="42" y="72"></rect>
+<text fill="#E65100" font-size="12" font-weight="700" text-anchor="middle" x="110" y="96">Parent Recipe</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="110" y="116">Async Call</text>
+<!-- Step 2: Receive Parameters -->
+<rect fill="#334BFA" height="80" opacity="0.15" rx="10" stroke="#334BFA" stroke-width="2" width="160" x="220" y="60"></rect>
+<rect fill="#fff" height="56" rx="6" stroke="#334BFA" stroke-width="1.5" width="136" x="232" y="72"></rect>
+<text fill="#334BFA" font-size="12" font-weight="700" text-anchor="middle" x="300" y="92">Receive Params</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="300" y="108">List_Of_Employees</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="300" y="122">Country</text>
+<!-- Step 3: Log -->
+<rect fill="#29B5E8" height="80" opacity="0.15" rx="10" stroke="#29B5E8" stroke-width="2" width="140" x="410" y="60"></rect>
+<rect fill="#fff" height="56" rx="6" stroke="#29B5E8" stroke-width="1.5" width="116" x="422" y="72"></rect>
+<text fill="#0D47A1" font-size="12" font-weight="700" text-anchor="middle" x="480" y="96">Log Input</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="480" y="116">Job Report</text>
+<!-- Step 4: Build Request -->
+<rect fill="#29B5E8" height="80" opacity="0.15" rx="10" stroke="#29B5E8" stroke-width="2" width="140" x="580" y="60"></rect>
+<rect fill="#fff" height="56" rx="6" stroke="#29B5E8" stroke-width="1.5" width="116" x="592" y="72"></rect>
+<text fill="#0D47A1" font-size="11" font-weight="700" text-anchor="middle" x="650" y="92">Build Payload</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="650" y="108">requestJobDesc</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="650" y="122">+ employee data</text>
+<!-- Step 5: POST to Expensify -->
+<rect fill="#2E7D32" height="80" opacity="0.15" rx="10" stroke="#2E7D32" stroke-width="2" width="120" x="750" y="60"></rect>
+<rect fill="#2E7D32" height="56" rx="6" stroke="#2E7D32" stroke-width="1.5" width="96" x="762" y="72"></rect>
+<text fill="#fff" font-size="12" font-weight="700" text-anchor="middle" x="810" y="96">Expensify</text>
+<text fill="#C8E6C9" font-size="10" text-anchor="middle" x="810" y="114">POST Upsert</text>
+<!-- Arrows for happy path -->
+<defs>
+<marker id="arr2" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+<polygon fill="#334BFA" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+<marker id="arr3" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+<polygon fill="#D32F2F" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+</defs>
+<line marker-end="url(#arr2)" stroke="#334BFA" stroke-width="2" x1="190" x2="218" y1="100" y2="100"></line>
+<line marker-end="url(#arr2)" stroke="#334BFA" stroke-width="2" x1="380" x2="408" y1="100" y2="100"></line>
+<line marker-end="url(#arr2)" stroke="#334BFA" stroke-width="2" x1="550" x2="578" y1="100" y2="100"></line>
+<line marker-end="url(#arr2)" stroke="#334BFA" stroke-width="2" x1="720" x2="748" y1="100" y2="100"></line>
+<!-- Happy path label -->
+<rect fill="#4CAF50" height="2" opacity="0.3" width="840" x="30" y="170"></rect>
+<text fill="#4CAF50" font-size="11" font-weight="600" text-anchor="middle" x="440" y="166">HAPPY PATH (Success)</text>
+<!-- Error Path -->
+<text fill="#D32F2F" font-size="11" font-weight="600" text-anchor="middle" x="440" y="210">ERROR PATH (Catch Block)</text>
+<rect fill="#D32F2F" height="2" opacity="0.3" width="840" x="30" y="215"></rect>
+<!-- Error Step 1: Catch -->
+<rect fill="#FFEBEE" height="70" rx="10" stroke="#D32F2F" stroke-width="2" width="160" x="220" y="240"></rect>
+<text fill="#D32F2F" font-size="12" font-weight="700" text-anchor="middle" x="300" y="268">Catch Error</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="300" y="288">Extract message</text>
+<!-- Error Step 2: Build Error Event -->
+<rect fill="#FFEBEE" height="70" rx="10" stroke="#D32F2F" stroke-width="2" width="160" x="420" y="240"></rect>
+<text fill="#D32F2F" font-size="12" font-weight="700" text-anchor="middle" x="500" y="268">Build Error Event</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="500" y="288">AOF structured payload</text>
+<!-- Error Step 3: Publish -->
+<rect fill="#FFEBEE" height="70" rx="10" stroke="#D32F2F" stroke-width="2" width="160" x="620" y="240"></rect>
+<text fill="#D32F2F" font-size="12" font-weight="700" text-anchor="middle" x="700" y="268">Publish to AOF</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="700" y="288">Topic: PS-001 (37790)</text>
+<line marker-end="url(#arr3)" stroke="#D32F2F" stroke-width="2" x1="380" x2="418" y1="275" y2="275"></line>
+<line marker-end="url(#arr3)" stroke="#D32F2F" stroke-width="2" x1="580" x2="618" y1="275" y2="275"></line>
+<!-- Error fork arrow from try block -->
+<path d="M 650 140 L 650 180 L 300 180 L 300 238" fill="none" marker-end="url(#arr3)" stroke="#D32F2F" stroke-dasharray="6" stroke-width="1.5"></path>
+<text fill="#D32F2F" font-size="10" font-style="italic" x="470" y="195">on exception</text>
+<!-- Data payload detail box -->
+<rect fill="#fff" height="70" rx="8" stroke="#29B5E8" stroke-width="1.5" width="410" x="30" y="340"></rect>
+<text fill="#0D47A1" font-size="12" font-weight="700" x="40" y="360">Employee Payload Fields:</text>
+<text fill="#333" font-size="11" x="40" y="378">employeeID, employeeEmail, managerEmail, policyID,</text>
+<text fill="#333" font-size="11" x="40" y="394">firstName, lastName, isTerminated, customField1/2, approvesTo</text>
+<!-- API config box -->
+<rect fill="#fff" height="70" rx="8" stroke="#2E7D32" stroke-width="1.5" width="410" x="460" y="340"></rect>
+<text fill="#2E7D32" font-size="12" font-weight="700" x="470" y="360">Expensify API Configuration:</text>
+<text fill="#333" font-size="11" x="470" y="378">type: "update", dry-run: false, entity: "generic"</text>
+<text fill="#333" font-size="11" x="470" y="394">dataSource: "request", inputSettings.type: "employees"</text>
+</svg>
+</div>
+</div>
+ 7. PROCESSING STAGES 
+<div class="section" id="processing-stages">
+<h2>7. Processing Stages</h2>
+<table>
+<thead>
+<tr><th>Step #</th><th>Action</th><th>System</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Trigger: Callable Recipe</td>
+<td><span class="tag tag-orchestration">Workato</span></td>
+<td>Receives <code>List_Of_Employees</code> (array of employee objects) and <code>Country</code> (string) from parent recipe 59113812.</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Log Message</td>
+<td><span class="tag tag-orchestration">Logger</span></td>
+<td>Logs the full incoming payload to the job report for debugging and audit trail.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Try Block (Begin)</td>
+<td><span class="tag tag-orchestration">Workato</span></td>
+<td>Wraps the API call in a try/catch block to handle errors gracefully.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>HTTP POST - Upsert Employee</td>
+<td><span class="tag tag-target">Expensify REST API</span></td>
+<td>Sends form-encoded POST to <code>https://integrations.expensify.com/Integration-Server/ExpensifyIntegrations</code> with two form parameters: <code>requestJobDescription</code> (JSON with credentials + settings) and <code>data</code> (employee array as JSON).</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Catch Block</td>
+<td><span class="tag tag-orchestration">Workato</span></td>
+<td>Catches any exception from Step 3. Max retry count: 0, retry interval: 2 seconds.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Publish Error to AOF Topic</td>
+<td><span class="tag tag-orchestration">Pub/Sub</span></td>
+<td>Publishes a structured error event to <code>AOF | PS-001 | AOF_Topic</code> (ID: 37790) with job details, error message, stack trace, parent job ID, and recipe URL.</td>
+</tr>
+</tbody>
+</table>
+<h3>Request Body Structure</h3>
+<pre>{
+  "requestJobDescription": {
+    "type": "update",
+    "dry-run": false,
+    "credentials": {
+      "partnerUserID": "aa_expensify_workato_workday_...",
+      "partnerUserSecret": "[account_property:expensify_user_secret]"
+    },
+    "dataSource": "request",
+    "inputSettings": {
+      "type": "employees",
+      "entity": "generic"
+    },
+    "onFinish": [
+      { "actionName": "email", "recipients": "[Notification_Recipient]" }
+    ]
+  },
+  "data": "[...employee_list_as_json...]"
+}</pre>
+</div>
+ 8. COMPONENT/MODULE OVERVIEW 
+<div class="section" id="component-overview">
+<h2>8. Component / Module Overview</h2>
+<h3>Recipe Hierarchy</h3>
+<div class="diagram-container">
+<svg font-family="Segoe UI, sans-serif" height="380" viewbox="0 0 800 380" width="800" xmlns="http://www.w3.org/2000/svg">
+<!-- Title -->
+<text fill="#3A1F5E" font-size="15" font-weight="700" text-anchor="middle" x="400" y="28">Recipe Hierarchy: Expensify V2 Integration</text>
+<!-- Scheduler (Clock) -->
+<rect fill="#F5A623" height="56" rx="10" stroke="#E08C00" stroke-width="2" width="240" x="280" y="50"></rect>
+<text fill="#fff" font-size="13" font-weight="700" text-anchor="middle" x="400" y="73">Scheduled Trigger</text>
+<text fill="#FFF3E0" font-size="11" text-anchor="middle" x="400" y="93">Daily at 1:00 AM PT</text>
+<!-- Parent Recipe -->
+<rect fill="#334BFA" height="64" rx="10" stroke="#1A2B8C" stroke-width="2" width="400" x="200" y="140"></rect>
+<text fill="#fff" font-size="14" font-weight="700" text-anchor="middle" x="400" y="165">EXPENSE - Workday to Expensify Parent V2</text>
+<text fill="#E8DFF0" font-size="11" text-anchor="middle" x="400" y="185">Recipe ID: 59113812 | Workday + Smart List + JSON Parser</text>
+<!-- Arrow from clock to parent -->
+<line marker-end="url(#arrowhead)" stroke="#999" stroke-width="2" x1="400" x2="400" y1="106" y2="138"></line>
+<!-- Fork arrows to children -->
+<line marker-end="url(#arrowhead)" stroke="#334BFA" stroke-width="2" x1="300" x2="300" y1="204" y2="250"></line>
+<line marker-end="url(#arrowhead)" stroke="#334BFA" stroke-width="2" x1="500" x2="500" y1="204" y2="250"></line>
+<text fill="#334BFA" font-size="10" font-style="italic" x="250" y="232">async (per country)</text>
+<text fill="#334BFA" font-size="10" font-style="italic" x="460" y="232">async (per country)</text>
+<!-- Child recipe instance 1 -->
+<rect fill="#29B5E8" height="56" rx="10" stroke="#1A8FBB" stroke-width="2" width="280" x="160" y="254"></rect>
+<text fill="#fff" font-size="13" font-weight="700" text-anchor="middle" x="300" y="277">EXPENSIFY-Child (This Recipe)</text>
+<text fill="#E3F2FD" font-size="11" text-anchor="middle" x="300" y="297">Recipe ID: 59113811 | REST API + Pub/Sub</text>
+<!-- Child recipe instance 2 (N) -->
+<rect fill="#29B5E8" height="56" rx="10" stroke="#1A8FBB" stroke-dasharray="5" stroke-width="2" width="180" x="470" y="254"></rect>
+<text fill="#fff" font-size="12" font-weight="600" text-anchor="middle" x="560" y="277">... (N instances)</text>
+<text fill="#E3F2FD" font-size="10" text-anchor="middle" x="560" y="297">One per country</text>
+<!-- Target -->
+<line marker-end="url(#arrowhead)" stroke="#2E7D32" stroke-width="2" x1="300" x2="300" y1="310" y2="340"></line>
+<rect fill="#2E7D32" height="30" rx="6" width="240" x="180" y="342"></rect>
+<text fill="#fff" font-size="12" font-weight="600" text-anchor="middle" x="300" y="362">Expensify Integration Server</text>
+<!-- AOF Error path -->
+<line stroke="#D32F2F" stroke-dasharray="5" stroke-width="1.5" x1="440" x2="680" y1="285" y2="285"></line>
+<rect fill="#FFEBEE" height="38" rx="6" stroke="#D32F2F" stroke-width="1.5" width="110" x="680" y="266"></rect>
+<text fill="#D32F2F" font-size="11" font-weight="600" text-anchor="middle" x="735" y="290">AOF Topic</text>
+<text fill="#D32F2F" font-size="9" font-style="italic" x="556" y="278">on error</text>
+<!-- Lookup Tables -->
+<rect fill="#FFF3E0" height="36" rx="6" stroke="#F5A623" stroke-width="1.5" width="150" x="20" y="160"></rect>
+<text fill="#E65100" font-size="11" font-weight="600" text-anchor="middle" x="95" y="183">PolicyID Lookup Table</text>
+<line marker-end="url(#arrowhead)" stroke="#F5A623" stroke-width="1.5" x1="170" x2="198" y1="178" y2="172"></line>
+</svg>
+</div>
+<h3>Module Descriptions</h3>
+<table>
+<thead>
+<tr><th>Component</th><th>Type</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Parent Recipe (59113812)</td>
+<td>Scheduler + Orchestrator</td>
+<td>Daily extraction from Workday, country grouping via Smart List, async dispatch to child</td>
+</tr>
+<tr>
+<td>EXPENSIFY-Child (59113811)</td>
+<td>Callable Recipe</td>
+<td>Receives employee batch, calls Expensify API to upsert employees</td>
+</tr>
+<tr>
+<td>Expensify Mapping - PolicyID</td>
+<td>Workato Lookup Table</td>
+<td>Maps Country + Account Type to Expensify Policy ID (used by parent)</td>
+</tr>
+<tr>
+<td>AOF Error Topic (PS-001)</td>
+<td>Pub/Sub Event Topic</td>
+<td>Centralized error event bus for the Automation Operations Framework</td>
+</tr>
+</tbody>
+</table>
+</div>
+ 9. KEY BUSINESS LOGIC 
+<div class="section" id="business-logic">
+<h2>9. Key Business Logic</h2>
+<h3>Employee Email Domain Normalization (Parent)</h3>
+<p>The parent recipe normalizes email domains before passing to this child:</p>
+<ul>
+<li>If employee email contains <code>hq.intercom.com</code>, it is replaced with <code>intercom.io</code></li>
+<li>Same normalization applies to manager emails</li>
+<li>This handles legacy domain references in Workday</li>
+</ul>
+<h3>Name Resolution (Parent)</h3>
+<ul>
+<li>If <code>Preferred_FirstName</code> is blank, falls back to <code>Legal_FirstName</code></li>
+<li>If <code>Preferred_LastName</code> is blank, falls back to <code>Legal_LastName</code></li>
+</ul>
+<h3>Termination Detection (Parent)</h3>
+<ul>
+<li><code>isTerminated</code> is set to <code>true</code> when <code>ActiveStatus</code> contains "0"</li>
+<li>Terminated employees are still synced (not excluded) so Expensify can disable their accounts</li>
+</ul>
+<h3>Country-Based Policy Assignment (Parent)</h3>
+<ul>
+<li>Each country maps to a specific Expensify <code>policyID</code> via lookup table: <code>Expensify Mapping - PolicyID</code></li>
+<li>The lookup key is <code>{Country} - Expense Reimbursement</code></li>
+<li>This ensures employees are assigned to the correct country-specific expense policy</li>
+</ul>
+<h3>Manager Cross-Country Inclusion (Parent)</h3>
+<p>The parent's Smart List query includes managers who are in a different country than their reports. The SQL uses an <code>OR</code> clause:</p>
+<ul>
+<li>Include employees where <code>Primary_Work_Address_Country = {Country}</code></li>
+<li>OR include employees whose email is in the manager email list for that country's employees</li>
+<li>This ensures the approval chain is complete even when a manager is in a different country</li>
+</ul>
+<h3>Approval Routing</h3>
+<ul>
+<li>All employees have <code>approvesTo</code> set to <code>accountspayable@intercom.io</code></li>
+<li>This means final expense approval routes to the central Accounts Payable team</li>
+</ul>
+<h3>Custom Fields</h3>
+<ul>
+<li><code>customField1</code>: Full preferred name (<code>FirstName LastName</code>)</li>
+<li><code>customField2</code>: Employee ID (same as <code>employeeID</code>)</li>
+</ul>
+<h3>Expensify API Behavior</h3>
+<ul>
+<li>API type is <code>"update"</code> (upsert semantics: creates if not exists, updates if exists)</li>
+<li><code>dry-run: false</code> means changes are applied immediately</li>
+<li>An <code>onFinish</code> email notification is sent to the configured <code>Notification_Recipient</code> account property</li>
+</ul>
+</div>
+ 10. DATA MODEL 
+<div class="section" id="data-model">
+<h2>10. Data Model</h2>
+<h3>Input Parameters (from Parent)</h3>
+<table>
+<thead>
+<tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>List_Of_Employees</td><td>Array of Objects</td><td>Yes</td><td>Batch of employee records for a specific country</td></tr>
+<tr><td>Country</td><td>String</td><td>No</td><td>Country name for this batch (used in error descriptions)</td></tr>
+</tbody>
+</table>
+<h3>Employee Object Schema</h3>
+<table>
+<thead>
+<tr><th>Field</th><th>Type</th><th>Required</th><th>Source (Workday)</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>employeeID</td><td>String</td><td>Yes</td><td>Employee_ID</td><td>Unique Workday employee identifier</td></tr>
+<tr><td>employeeEmail</td><td>String</td><td>No</td><td>Email_-_Work</td><td>Work email (domain normalized)</td></tr>
+<tr><td>managerEmail</td><td>String</td><td>No</td><td>INT0327_LVAOD_Worker_Manager_Email</td><td>Manager email (domain normalized)</td></tr>
+<tr><td>policyID</td><td>String</td><td>No</td><td>Lookup Table</td><td>Expensify policy ID from country mapping</td></tr>
+<tr><td>firstName</td><td>String</td><td>No</td><td>Preferred/Legal First Name</td><td>Preferred name with legal fallback</td></tr>
+<tr><td>lastName</td><td>String</td><td>No</td><td>Preferred/Legal Last Name</td><td>Preferred name with legal fallback</td></tr>
+<tr><td>isTerminated</td><td>Boolean</td><td>No</td><td>Active_Status</td><td>True if ActiveStatus = "0"</td></tr>
+<tr><td>customField1</td><td>String</td><td>Yes</td><td>Derived</td><td>Full preferred name: "FirstName LastName"</td></tr>
+<tr><td>customField2</td><td>String</td><td>Yes</td><td>Employee_ID</td><td>Duplicate of employeeID</td></tr>
+<tr><td>approvesTo</td><td>String</td><td>Yes</td><td>Static</td><td>Always "accountspayable@intercom.io"</td></tr>
+</tbody>
+</table>
+<h3>Expensify API Response</h3>
+<table>
+<thead>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>responseMessage</td><td>String</td><td>Success or error message from Expensify</td></tr>
+<tr><td>responseCode</td><td>Number</td><td>HTTP-like response code</td></tr>
+</tbody>
+</table>
+<h3>AOF Error Event Schema</h3>
+<table>
+<thead>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>identifier</td><td>String</td><td>"Upsert Expensify Employee - Full Load"</td></tr>
+<tr><td>transactionType</td><td>String</td><td>"Upsert record"</td></tr>
+<tr><td>transactionDescription</td><td>String</td><td>"{Country} - Upsert Employee"</td></tr>
+<tr><td>jobID</td><td>String</td><td>Current job ID</td></tr>
+<tr><td>recipeID</td><td>String</td><td>59113811</td></tr>
+<tr><td>dateTime</td><td>String</td><td>Timestamp of failure</td></tr>
+<tr><td>recipe_path</td><td>String</td><td>Workato recipe URL</td></tr>
+<tr><td>trigger_async</td><td>Boolean</td><td>true (asynchronous trigger source)</td></tr>
+<tr><td>parentJobID</td><td>String</td><td>Calling job ID from parent recipe</td></tr>
+<tr><td>errorMessage</td><td>String</td><td>Caught error message</td></tr>
+<tr><td>stackTrace</td><td>String</td><td>Full error stack trace</td></tr>
+<tr><td>status</td><td>String</td><td>"ERROR"</td></tr>
+</tbody>
+</table>
+</div>
+ 11. EDGE CASES 
+<div class="section" id="edge-cases">
+<h2>11. Edge Cases</h2>
+<table>
+<thead>
+<tr><th>#</th><th>Scenario</th><th>Handling</th><th>Risk</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Expensify API timeout or 5xx error</strong></td>
+<td>Caught by try/catch block. Error published to AOF topic. No retry (max_retry_count = 0).</td>
+<td class="tag-error" style="padding:10px">High - entire country batch fails with no automatic retry</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Expensify returns non-2xx but ignoreHttpErrors is toggled</strong></td>
+<td>The toggle config shows <code>response.ignore_http_errors: true</code> but the response schema checks <code>ignore_http_errors: false</code>. May silently pass on partial failures.</td>
+<td class="tag-error" style="padding:10px">Medium - conflicting config may mask API errors</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Empty employee list for a country</strong></td>
+<td>The child recipe will still fire and POST an empty array. Expensify API should handle gracefully but may return an error.</td>
+<td style="padding:10px">Low</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Country not found in PolicyID lookup table</strong></td>
+<td>Handled by parent: the lookup returns null/empty, which means policyID is blank. Expensify may reject or use a default policy.</td>
+<td style="padding:10px">Medium</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Manager not found in Workday (no manager email)</strong></td>
+<td>The LEFT JOIN in the parent query means employees without managers still appear. Manager email and manager country may be null.</td>
+<td style="padding:10px">Low</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Duplicate employee IDs across batches</strong></td>
+<td>Managers from other countries are included in a country batch. The same employee can appear in multiple batches. Since the API is "update" (upsert), the last write wins.</td>
+<td style="padding:10px">Low - idempotent upsert</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Expensify partner credentials expire</strong></td>
+<td>The secret is stored as a Workato account property. If rotated and not updated, all child invocations will fail simultaneously.</td>
+<td class="tag-error" style="padding:10px">High - global outage risk</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Large country batch exceeds Expensify payload limit</strong></td>
+<td>No chunking logic exists in the child. The entire country employee list is sent as a single POST.</td>
+<td style="padding:10px">Medium - depends on Expensify limits</td>
+</tr>
+</tbody>
+</table>
+</div>
+ 12. OPERATIONAL NOTES 
+<div class="section" id="operational-notes">
+<h2>12. Operational Notes</h2>
+<h3>Scheduling</h3>
+<ul>
+<li><strong>Parent Trigger:</strong> Daily at 1:00 AM Pacific Time</li>
+<li><strong>Child Trigger:</strong> Asynchronous callable - fires once per distinct country in the Workday report</li>
+<li><strong>Expected Concurrency:</strong> Multiple child instances run in parallel (one per country)</li>
+</ul>
+<h3>Monitoring and Alerting</h3>
+<ul>
+<li><strong>Error Handling:</strong> All errors are published to the AOF Pub/Sub topic (PS-001, ID: 37790)</li>
+<li><strong>Email Notifications:</strong> Expensify sends a completion email to the configured <code>Notification_Recipient</code> account property via the <code>onFinish</code> callback</li>
+<li><strong>Job Logging:</strong> Incoming payload is logged to the Workato job report (Step 1)</li>
+<li><strong>No Retry:</strong> <code>max_retry_count = 0</code> in the catch block; failed batches require manual re-run</li>
+</ul>
+<h3>Key Account Properties</h3>
+<table>
+<thead>
+<tr><th>Property</th><th>Usage</th></tr>
+</thead>
+<tbody>
+<tr><td><code>expensify_user_secret</code></td><td>Expensify API partner user secret for authentication</td></tr>
+<tr><td><code>Notification_Recipient</code></td><td>Email recipient for Expensify onFinish callback notifications</td></tr>
+</tbody>
+</table>
+<h3>Lookup Tables</h3>
+<table>
+<thead>
+<tr><th>Table Name</th><th>Key</th><th>Value</th><th>Used By</th></tr>
+</thead>
+<tbody>
+<tr><td>Expensify Mapping - PolicyID</td><td>Country (e.g., "United States of America - Expense Reimbursement")</td><td>PolicyID</td><td>Parent recipe (step 11)</td></tr>
+</tbody>
+</table>
+<h3>Maintenance Notes</h3>
+<ul>
+<li><strong>New Country:</strong> When Intercom expands to a new country, a row must be added to the <code>Expensify Mapping - PolicyID</code> lookup table with the country name and corresponding Expensify policy ID.</li>
+<li><strong>Credential Rotation:</strong> If the Expensify partner secret is rotated, update the <code>expensify_user_secret</code> account property in Workato immediately to prevent global failure.</li>
+<li><strong>Workday Report:</strong> The parent pulls from <code>Workato_Integration_Report_-_Navan_All_EE_s</code>. If the report URL or schema changes, the parent recipe must be updated.</li>
+<li><strong>Version History:</strong> Current version is 7, last edited by diana.sy@intercom.io on 2025-12-10.</li>
+</ul>
+<h3>Performance Metrics</h3>
+<div class="kpi-row">
+<div class="kpi-card">
+<div class="kpi-value" style="font-size:20px;">2025-02-12</div>
+<div class="kpi-label">Created Date</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value" style="font-size:20px;">2025-12-10</div>
+<div class="kpi-label">Last Updated</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value">~2</div>
+<div class="kpi-label">Tasks Per Job</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value">v7</div>
+<div class="kpi-label">Current Version</div>
+</div>
+</div>
+<div class="callout callout-info">
+<strong>Workday Report Note:</strong> The parent recipe uses a Workday custom report named <code>Workato_Integration_Report_-_Navan_All_EE_s</code>. Despite the "Navan" in the name, this same report feeds the Expensify integration. Any schema changes to this report affect both Navan and Expensify workflows.
+        </div>
+<div class="callout callout-warning">
+<strong>No Retry Warning:</strong> The catch block has <code>max_retry_count: 0</code>. If Expensify experiences a temporary outage during the 1 AM run, the entire country batch will fail with no automatic retry. The AOF error topic will notify, but manual intervention is required to re-trigger the child recipe for the failed country.
+        </div>
+</div>
+
+</div>
+
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a[data-section]');
+  var sections = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    var current = sections[0];
+    var scrollY = window.scrollY + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

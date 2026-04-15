@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<title>Payroll-WD-Netsuite-v2 | Integration Documentation</title>
+<style>
+:root {
+  /* Intercom brand — light cream aesthetic */
+  --ic-cream: #F4F3ED;
+  --ic-warm-white: #FEFDFB;
+  --ic-dark: #16100E;
+  --ic-blue: #334BFA;
+  --ic-blue-bg: #DCE1F9;
+  --ic-green: #0F7134;
+  --ic-green-bg: #D7EFDC;
+  --ic-orange-accent: #B24D00;
+  --ic-orange-bg: #FFEBDB;
+  --ic-red: #DF2020;
+  --ic-red-bg: #FFDBDB;
+  /* System-specific brand colors */
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --green: #2E7D32;
+  --sf-blue: #0070d2;
+  --gray: #9E9E9E;
+  --orange-bg: #FFF5E6;
+  --blue-bg: #E8F4FD;
+  --green-bg: #E8F5E9;
+  --sf-bg: #E6F0FA;
+  --gray-bg: #F5F5F5;
+  --text-primary: #1A1A1A;
+  --text-secondary: #737373;
+  --border: #E6E6E6;
+  /* Legacy aliases for SVG diagrams and varied agent output */
+  --source-orange: #F5A623;
+  --source-bg: #FFF5E6;
+  --data-blue: #29B5E8;
+  --data-bg: #E8F4FD;
+  --orchestration-purple: #334BFA;
+  --orchestration-bg: #DCE1F9;
+  --target-green: #2E7D32;
+  --target-bg: #E8F5E9;
+  --audit-gray: #9E9E9E;
+  --audit-bg: #F5F5F5;
+  --card: #ffffff;
+  --text: #1A1A1A;
+  --muted: #737373;
+  --bg: #F4F3ED;
+  --purple: #334BFA;
+  --purple-bg: #DCE1F9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  background: var(--ic-cream);
+}
+
+/* ── Fixed Left Sidebar TOC ── */
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 0 0 20px 0;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04);
+  border-right: 1px solid var(--border);
+  z-index: 1000;
+}
+nav#toc .toc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+nav#toc .toc-brand svg { flex-shrink: 0; }
+nav#toc .toc-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+nav#toc .toc-brand-text .brand-title {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ic-dark);
+  letter-spacing: -0.02em;
+}
+nav#toc .toc-brand-text .brand-sub {
+  font-size: 0.68em;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+nav#toc h3 {
+  font-size: 0.7em;
+  color: var(--text-secondary);
+  margin: 12px 18px 8px;
+  padding: 0;
+  border-bottom: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+nav#toc a {
+  color: #1A1A1A;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.82em;
+  display: block;
+  padding: 6px 18px;
+  border-radius: 0;
+  transition: all 0.15s ease;
+  margin: 0;
+  border-left: 3px solid transparent;
+}
+nav#toc a:hover { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: rgba(51,75,250,0.3); }
+nav#toc a.active { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: var(--ic-blue); font-weight: 600; }
+
+/* ── Main Content ── */
+.main-content { max-width: 1100px; }
+
+h1 {
+  font-size: 2em;
+  color: var(--ic-dark);
+  margin-bottom: 8px;
+  border-bottom: 3px solid var(--ic-blue);
+  padding-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: 1.5em;
+  color: var(--ic-dark);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ic-blue-bg);
+  letter-spacing: -0.02em;
+}
+h3 {
+  font-size: 1.15em;
+  color: var(--text-primary);
+  margin: 24px 0 10px;
+  letter-spacing: -0.01em;
+}
+h4 {
+  font-size: 1em;
+  color: var(--text-secondary);
+  margin: 16px 0 8px;
+}
+
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 24px; }
+li { margin-bottom: 6px; }
+
+/* ── Meta Header ── */
+.meta-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.meta-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.meta-header h1 { color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative; }
+.meta-header .meta-info, .meta-header .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 12px;
+  font-size: 0.9em;
+  opacity: 0.9;
+  position: relative;
+}
+.meta-header .meta-info span, .meta-header .meta span { display: flex; align-items: center; gap: 6px; }
+.meta-header p, .meta-header .subtitle { margin-top: 4px; opacity: 0.85; position: relative; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-active { background: var(--ic-green-bg); color: var(--ic-green); }
+.badge-stopped { background: var(--gray); color: white; }
+.badge-e2e { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+.badge-arch { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* ── Sections ── */
+section, .section {
+  background: white;
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+section h2, .section h2 {
+  margin-top: 0;
+}
+
+/* ── Two-Layer Boxes ── */
+.two-layer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 16px 0;
+}
+.layer-box {
+  padding: 16px 20px;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+.layer-business { background: var(--blue-bg); border-color: var(--blue); }
+.layer-technical { background: var(--ic-blue-bg); border-color: var(--ic-blue); }
+.layer-box h4 { margin-top: 0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+.layer-business h4 { color: var(--blue); }
+.layer-technical h4 { color: var(--ic-blue); }
+
+/* ── System Cards ── */
+.system-card {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  margin: 4px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+.system-salesforce { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-snowflake { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-workato { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-netsuite { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+.system-fivetran { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-stripe { background: var(--orange-bg); color: #635BFF; border: 1px solid #635BFF; }
+.system-marketo { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+.system-sfdc, .system-intercom { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-expensify { background: var(--ic-green-bg); color: var(--ic-green); border: 1px solid var(--ic-green); }
+.system-workday { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-navan { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+.system-pigment { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-outreach { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-zuora { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-ebanx { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.9em;
+  border-radius: 6px;
+  overflow: hidden;
+}
+th {
+  background: var(--ic-dark);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) { background: var(--ic-cream); }
+
+/* ── Code ── */
+code {
+  background: #F4F3ED;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+pre {
+  background: var(--ic-dark);
+  color: #E6E1DC;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+pre code { background: none; padding: 0; color: inherit; }
+
+/* ── Diagrams ── */
+.diagram-container, .svg-container, .architecture-diagram {
+  text-align: center;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+.diagram-container svg, .svg-container svg, .architecture-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Callouts ── */
+.callout {
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin: 12px 0;
+  font-size: 0.92em;
+}
+.callout-info { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); }
+.callout-warn, .callout-warning { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); }
+.callout-success { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); }
+.callout-error, .callout-danger { background: var(--ic-red-bg); border-left: 4px solid var(--ic-red); }
+
+/* ── Details/Collapsible ── */
+details {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ic-blue);
+}
+details[open] summary { margin-bottom: 10px; }
+
+/* ── Steps ── */
+.step-row, .step-card { display: flex; gap: 12px; align-items: flex-start; margin: 10px 0; }
+.step-num, .step-number {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--ic-blue); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+}
+.step-content { flex: 1; }
+
+/* ── Tags (compat aliases for varied agent output) ── */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-right: 6px; }
+.tag-source { background: var(--orange-bg); color: #c77600; }
+.tag-data { background: var(--blue-bg); color: #1a7fa3; }
+.tag-workato, .tag-orchestration { background: var(--ic-blue-bg); color: var(--ic-blue); }
+.tag-target { background: var(--green-bg); color: var(--green); }
+.tag-audit { background: var(--gray-bg); color: var(--gray); }
+.tag-red, .tag-danger { background: var(--ic-red-bg); color: var(--ic-red); }
+.tag-green, .tag-success { background: var(--ic-green-bg); color: var(--ic-green); }
+.tag-blue, .tag-info { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* ── Compat: note/warn boxes (varied agent class names) ── */
+.note-info, .info-box, .note { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-warn, .warn-box, .warning-box, .warning { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-success, .success-box { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-error, .error-box, .danger-box { background: var(--ic-red-bg); border-left: 4px solid var(--ic-red); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+
+/* ── Compat: KPI/value boxes ── */
+.kpi-grid, .stats-grid, .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
+.kpi-card, .stat-card, .metric-card {
+  background: white; border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; text-align: center;
+}
+.kpi-value, .stat-value, .metric-value, .value {
+  font-size: 1.8em; font-weight: 700; color: var(--ic-blue);
+}
+.kpi-label, .stat-label, .metric-label, .label {
+  font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;
+}
+
+/* ── Compat: header aliases ── */
+.doc-header, .header-bar, .hero, .page-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.doc-header h1, .header-bar h1, .hero h1, .page-header h1 {
+  color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative;
+}
+.doc-header .meta, .header-bar .meta, .doc-header .meta-info, .header-bar .meta-info {
+  display: flex; flex-wrap: wrap; gap: 24px; margin-top: 12px;
+  font-size: 0.9em; opacity: 0.9; position: relative;
+}
+.doc-header .subtitle, .header-bar .subtitle, .hero .subtitle, .page-header .subtitle {
+  margin-top: 4px; opacity: 0.85; position: relative;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  body { padding: 24px; }
+  .two-layer { grid-template-columns: 1fr; }
+}
+
+/* ── Print ── */
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; background: white; }
+  section, .section { box-shadow: none; break-inside: avoid; border: 1px solid #ddd; }
+  .meta-header, .doc-header, .header-bar { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2 { break-before: auto; }
+}
+</style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:8px;right:180px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
+
+<a href="business-systems-active-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#16100E;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#334BFA'" onmouseout="this.style.background='#16100E'">&#8592; Back to Index</a>
+
+<nav id="toc">
+  <div class="toc-brand">
+    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#000000"/>
+      <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="toc-brand-text">
+      <span class="brand-title">Intercom</span>
+      <span class="brand-sub">Enterprise Systems</span>
+    </div>
+  </div>
+  <h3>Navigation</h3>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#end-to-end-flow" data-section="end-to-end-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#component-overview" data-section="component-overview">8. Component Overview</a>
+  <a href="#business-logic" data-section="business-logic">9. Key Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<div class="main-content">
+
+<div class="meta-header">
+<h1>Payroll-WD-Netsuite-v2</h1>
+<div class="subtitle">Workday Payroll General Ledger to NetSuite Journal Entry Integration</div>
+<div class="meta-bar">
+<span class="meta-item">Recipe ID: 70791533</span>
+<span class="meta-item">Status: <strong>Running</strong></span>
+<span class="meta-item">Author: diana.sy@intercom.io</span>
+<span class="meta-item">Version: 14</span>
+<span class="meta-item">Created: 2026-03-05</span>
+<span class="meta-item">Last Run: 2026-04-10</span>
+<span class="meta-item">Jobs: 13 succeeded / 0 failed</span>
+<span class="meta-item">Doc Author: venkatesh.manohar</span>
+</div>
+</div>
+ 1. EXECUTIVE SUMMARY 
+<div class="section" id="executive-summary">
+<h2>1. Executive Summary</h2>
+<p>
+<strong>Payroll-WD-Netsuite-v2</strong> is a Workato integration recipe that automates the transfer of US payroll general ledger data from <strong>Workday</strong> to <strong>NetSuite</strong>. When Workday triggers a payroll run, it sends an XML payload via webhook containing GL line items (debits, credits, accounts, departments, locations, and pay components). The recipe parses this data, applies account-mapping and department-reclassification business rules, aggregates the results using Workato Smart Lists, and creates a <strong>Journal Entry</strong> in NetSuite. Slack notifications are sent on both success and failure.
+        </p>
+<div class="callout callout-info">
+<strong>One-line summary:</strong> Receives Workday payroll GL XML via webhook, applies account/department reclassification rules, aggregates line items, and posts a consolidated Journal Entry to NetSuite with Slack alerts.
+        </div>
+<table>
+<tr><th style="width:200px;">Attribute</th><th>Detail</th></tr>
+<tr><td>Trigger</td><td>Webhook (Workday payroll delivery / Workato internal)</td></tr>
+<tr><td>Frequency</td><td>Per payroll run (biweekly; ~2-4 times per month)</td></tr>
+<tr><td>Source System</td><td>Workday (Payroll GL Report)</td></tr>
+<tr><td>Target System</td><td>NetSuite (Journal Entry)</td></tr>
+<tr><td>Notifications</td><td>Slack channel <code>C0ABDPEK2DV</code></td></tr>
+<tr><td>Lifetime Task Count</td><td>17,087</td></tr>
+<tr><td>Success Rate</td><td>100% (13/13 jobs)</td></tr>
+</table>
+</div>
+ 2. BUSINESS OVERVIEW 
+<div class="section" id="business-overview">
+<h2>2. Business Overview</h2>
+<h3>Purpose</h3>
+<p>
+            Intercom processes US payroll through Workday. Each payroll cycle generates a General Ledger report containing hundreds of line items across accounts, departments, and pay components. This integration eliminates manual journal entry creation by automatically transforming Workday's payroll GL data into a NetSuite Journal Entry, ensuring timely and accurate financial close.
+        </p>
+<h3>Business Context</h3>
+<ul>
+<li><strong>Stakeholders:</strong> Finance/Accounting team, Payroll team, FP&amp;A</li>
+<li><strong>Business Process:</strong> Semi-monthly or biweekly payroll processing for US employees</li>
+<li><strong>Value:</strong> Eliminates manual data entry of payroll journal entries, reduces risk of human error, and accelerates month-end close</li>
+<li><strong>Subsidiary:</strong> 10 Intercom US (hardcoded subsidiary = 1 in NetSuite)</li>
+</ul>
+<h3>Key Data Elements</h3>
+<ul>
+<li><strong>Payment Date:</strong> The payroll payment date drives the JE transaction date</li>
+<li><strong>GL Accounts:</strong> Account codes (e.g., 2245, 2246, 6150, 9999) map to NetSuite chart of accounts</li>
+<li><strong>Departments:</strong> Cost center codes (e.g., 9101 IT, 61xx-64xx R&amp;D)</li>
+<li><strong>Locations:</strong> Employee work locations (e.g., US CA Home Office)</li>
+<li><strong>Pay Components:</strong> Payroll elements (wages, taxes, benefits, deductions)</li>
+</ul>
+</div>
+ 3. SYSTEM OVERVIEW 
+<div class="section" id="system-overview">
+<h2>3. System Overview</h2>
+<table>
+<tr><th>System</th><th>Role</th><th>Connection</th><th>Details</th></tr>
+<tr>
+<td><span class="badge badge-orange">Workday</span></td>
+<td>Source</td>
+<td>Webhook (HTTP POST)</td>
+<td>Sends XML payload with payroll GL report data (<code>PAY_General_Ledger_by_Payment_Date</code>). User-agent: <code>workday-delivery</code></td>
+</tr>
+<tr>
+<td><span class="badge badge-purple">Workato</span></td>
+<td>Orchestration</td>
+<td>Recipe 70791533</td>
+<td>XML parsing, data transformation, conditional routing, Smart List aggregation, lookup table mappings</td>
+</tr>
+<tr>
+<td><span class="badge badge-green">NetSuite</span></td>
+<td>Target</td>
+<td>Account ID: 15626184</td>
+<td>Creates JournalEntry records with line items (account, department, location, class, debit/credit)</td>
+</tr>
+<tr>
+<td><span class="badge badge-blue">Slack</span></td>
+<td>Notifications</td>
+<td>Account ID: 15952423</td>
+<td>Success and error alerts to channel <code>C0ABDPEK2DV</code></td>
+</tr>
+</table>
+<h3>Workato Components Used</h3>
+<ul>
+<li><strong>Webhook Trigger:</strong> Raw data webhook for XML payloads</li>
+<li><strong>XML Parser:</strong> Parses SOAP envelope / Workday report XML</li>
+<li><strong>Variables:</strong> Payment date, Workday-Report-Input list, Netsuite-Input list</li>
+<li><strong>Smart Lists:</strong> In-memory table "Workday-Report" for SQL-based aggregation</li>
+<li><strong>Lookup Tables:</strong> <code>Payroll-Netsuite-Lookup</code> and <code>Workday_Payroll_Netsuite_Lookup</code> for account/location/department mapping</li>
+<li><strong>Try/Catch:</strong> Error handling with Slack notification on failure</li>
+<li><strong>Logger:</strong> Debug logging at key stages</li>
+</ul>
+</div>
+ 4. ARCHITECTURE OVERVIEW 
+<div class="section" id="architecture-overview">
+<h2>4. Architecture Overview</h2>
+<p>
+            The integration follows a linear pipeline architecture: <strong>Receive → Parse → Transform → Aggregate → Load → Notify</strong>. The recipe is event-driven, triggered by Workday's payroll delivery webhook. All processing occurs within a single Workato recipe with no child recipes or callable flows.
+        </p>
+<h3>Design Principles</h3>
+<ul>
+<li><strong>Single recipe:</strong> No child recipes or sub-flows; all logic contained in one recipe</li>
+<li><strong>Idempotent aggregation:</strong> Smart List SQL groups and sums line items to produce clean JE lines</li>
+<li><strong>Lookup-driven mapping:</strong> Account, Location, and Department IDs resolved via Workato lookup tables at JE creation time</li>
+<li><strong>Try/Catch pattern:</strong> Entire processing wrapped in error handling with Slack alerts</li>
+<li><strong>Conditional routing:</strong> 6-branch if/elsif/else logic for pay component and account reclassification</li>
+</ul>
+</div>
+ 5. ARCHITECTURE DIAGRAM 
+<div class="section" id="architecture-diagram">
+<h2>5. Architecture Diagram</h2>
+<div class="svg-container">
+<svg height="420" viewbox="0 0 960 420" width="960" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#FAFAFA" height="420" rx="8" width="960"></rect>
+<rect fill="#F5A623" height="40" rx="6" width="220" x="10" y="10"></rect>
+<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="120" y="36">Source</text>
+<rect fill="#29B5E8" height="40" rx="6" width="220" x="250" y="10"></rect>
+<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="360" y="36">Data Layer</text>
+<rect fill="#334BFA" height="40" rx="6" width="220" x="490" y="10"></rect>
+<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="600" y="36">Orchestration</text>
+<rect fill="#2E7D32" height="40" rx="6" width="220" x="730" y="10"></rect>
+<text fill="white" font-size="14" font-weight="bold" text-anchor="middle" x="840" y="36">Target</text>
+<line stroke="#DEE2E6" stroke-dasharray="4" x1="240" x2="240" y1="10" y2="410"></line>
+<line stroke="#DEE2E6" stroke-dasharray="4" x1="480" x2="480" y1="10" y2="410"></line>
+<line stroke="#DEE2E6" stroke-dasharray="4" x1="720" x2="720" y1="10" y2="410"></line>
+<rect fill="#FFF3E0" height="60" rx="8" stroke="#F5A623" stroke-width="2" width="180" x="30" y="80"></rect>
+<text fill="#E65100" font-size="12" font-weight="bold" text-anchor="middle" x="120" y="105">Workday Payroll</text>
+<text fill="#795548" font-size="10" text-anchor="middle" x="120" y="125">GL Report (XML)</text>
+<rect fill="#FFF3E0" height="50" rx="8" stroke="#F5A623" stroke-width="2" width="180" x="30" y="170"></rect>
+<text fill="#E65100" font-size="11" font-weight="bold" text-anchor="middle" x="120" y="195">Webhook POST</text>
+<text fill="#795548" font-size="9" text-anchor="middle" x="120" y="210">SOAP/XML Envelope</text>
+<rect fill="#E3F2FD" height="50" rx="8" stroke="#29B5E8" stroke-width="2" width="180" x="270" y="80"></rect>
+<text fill="#1565C0" font-size="11" font-weight="bold" text-anchor="middle" x="360" y="105">XML Parser</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="360" y="120">Parse SOAP Envelope</text>
+<rect fill="#E3F2FD" height="50" rx="8" stroke="#29B5E8" stroke-width="2" width="180" x="270" y="150"></rect>
+<text fill="#1565C0" font-size="11" font-weight="bold" text-anchor="middle" x="360" y="175">Variables</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="360" y="190">payment_date, lists</text>
+<rect fill="#E3F2FD" height="50" rx="8" stroke="#29B5E8" stroke-width="2" width="180" x="270" y="220"></rect>
+<text fill="#1565C0" font-size="11" font-weight="bold" text-anchor="middle" x="360" y="245">Smart List</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="360" y="260">"Workday-Report" (SQL agg)</text>
+<rect fill="#E3F2FD" height="50" rx="8" stroke="#29B5E8" stroke-width="2" width="180" x="270" y="290"></rect>
+<text fill="#1565C0" font-size="11" font-weight="bold" text-anchor="middle" x="360" y="315">Lookup Tables</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="360" y="330">Acct / Dept / Location maps</text>
+<rect fill="#F3E5F5" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="180" x="510" y="80"></rect>
+<text fill="#334BFA" font-size="11" font-weight="bold" text-anchor="middle" x="600" y="105">Foreach Loop</text>
+<text fill="#7B1FA2" font-size="9" text-anchor="middle" x="600" y="120">Iterate report entries</text>
+<rect fill="#F3E5F5" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="180" x="510" y="150"></rect>
+<text fill="#334BFA" font-size="11" font-weight="bold" text-anchor="middle" x="600" y="175">6-Branch Router</text>
+<text fill="#7B1FA2" font-size="9" text-anchor="middle" x="600" y="190">Reclassification logic</text>
+<rect fill="#F3E5F5" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="180" x="510" y="220"></rect>
+<text fill="#334BFA" font-size="11" font-weight="bold" text-anchor="middle" x="600" y="245">Try / Catch</text>
+<text fill="#7B1FA2" font-size="9" text-anchor="middle" x="600" y="260">Error handling</text>
+<rect fill="#F3E5F5" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="180" x="510" y="290"></rect>
+<text fill="#334BFA" font-size="11" font-weight="bold" text-anchor="middle" x="600" y="315">Logger</text>
+<text fill="#7B1FA2" font-size="9" text-anchor="middle" x="600" y="330">Debug output at stages</text>
+<rect fill="#E8F5E9" height="60" rx="8" stroke="#2E7D32" stroke-width="2" width="180" x="750" y="80"></rect>
+<text fill="#2E7D32" font-size="12" font-weight="bold" text-anchor="middle" x="840" y="105">NetSuite</text>
+<text fill="#388E3C" font-size="10" text-anchor="middle" x="840" y="125">Journal Entry</text>
+<rect fill="#E8F5E9" height="50" rx="8" stroke="#2E7D32" stroke-width="2" width="180" x="750" y="170"></rect>
+<text fill="#2E7D32" font-size="11" font-weight="bold" text-anchor="middle" x="840" y="195">Slack</text>
+<text fill="#388E3C" font-size="9" text-anchor="middle" x="840" y="210">Success / Error alerts</text>
+<defs>
+<marker id="arrow" markerheight="7" markerwidth="10" orient="auto" refx="10" refy="3.5">
+<polygon fill="#334BFA" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+</defs>
+<line marker-end="url(#arrow)" stroke="#F5A623" stroke-width="2" x1="210" x2="270" y1="195" y2="105"></line>
+<line marker-end="url(#arrow)" stroke="#29B5E8" stroke-width="1.5" x1="360" x2="360" y1="130" y2="150"></line>
+<line marker-end="url(#arrow)" stroke="#29B5E8" stroke-width="1.5" x1="360" x2="360" y1="200" y2="220"></line>
+<line marker-end="url(#arrow)" stroke="#334BFA" stroke-width="2" x1="450" x2="510" y1="105" y2="105"></line>
+<line marker-end="url(#arrow)" stroke="#334BFA" stroke-width="1.5" x1="600" x2="600" y1="130" y2="150"></line>
+<line marker-end="url(#arrow)" stroke="#2E7D32" stroke-width="2" x1="690" x2="750" y1="105" y2="105"></line>
+<line marker-end="url(#arrow)" stroke="#2E7D32" stroke-width="2" x1="690" x2="750" y1="240" y2="195"></line>
+<path d="M 450 245 Q 470 310 450 330" fill="none" stroke="#29B5E8" stroke-dasharray="4" stroke-width="1.5"></path>
+<line marker-end="url(#arrow)" stroke="#334BFA" stroke-dasharray="4" stroke-width="1.5" x1="690" x2="750" y1="175" y2="175"></line>
+</svg>
+</div>
+</div>
+ 6. END-TO-END FLOW 
+<div class="section" id="end-to-end-flow">
+<h2>6. End-to-End Flow</h2>
+<ol>
+<li><strong>Webhook Trigger:</strong> Workday sends an HTTP POST with a SOAP XML payload containing the payroll GL report for a specific payment date.</li>
+<li><strong>Log Raw Payload:</strong> The raw webhook body is logged for debugging.</li>
+<li><strong>Parse XML:</strong> The SOAP envelope is parsed using the XML Parser action, extracting structured report entries.</li>
+<li><strong>Extract Payment Date:</strong> The <code>Payment_Date_Prompt</code> field is extracted and stored in a <code>payment_date</code> variable.</li>
+<li><strong>Create Workday-Report-Input List:</strong> A structured list schema is created for staging parsed data (Account_Name, Debit, Credit, memo, Class, Currency, Department, Location, pay_component).</li>
+<li><strong>Populate Initial List:</strong> All report entries are batch-inserted into the Workday-Report-Input list with their raw field values.</li>
+<li><strong>Try Block Begins:</strong> Core processing wrapped in error handling.</li>
+<li><strong>Declare Lists:</strong> Netsuite-Input (Account, Debit, Credit, Department, Class, Location) and a fresh Workday-Report-Input list are declared.</li>
+<li><strong>Foreach Loop:</strong> Each report entry is iterated through a 6-branch conditional router:
+                <ul>
+<li><strong>Branch 1 (WA Industrial Insurance):</strong> Reclassifies Washington Industrial Insurance entries on account 2245 to account 2242 with memo "Washington Industrial"</li>
+<li><strong>Branch 2 (Benefits/Clearing):</strong> Matches specific pay components (Parking, Transit, FSA) or clearing accounts (2245, 2246, 2252, 2253, 2242); uses lookup table for account mapping; flagged for removal (aggregation only)</li>
+<li><strong>Branch 3 (R&amp;D Departments):</strong> Departments starting with 61, 62, 63, 64 get special account extraction</li>
+<li><strong>Branch 4 (Account 9999):</strong> Reclassifies entries with account starting with 9999 via lookup table</li>
+<li><strong>Branch 5 (Employee Taxes + 6150):</strong> Employee Taxes with account 6150 get department hardcoded to 1101</li>
+<li><strong>Branch 6 (Default):</strong> All other entries pass through with standard field extraction</li>
+</ul>
+</li>
+<li><strong>Log Transformed Data:</strong> The processed list items are logged.</li>
+<li><strong>Smart List Insert:</strong> Transformed data is inserted into the "Workday-Report" Smart List table.</li>
+<li><strong>Smart List SQL Aggregation:</strong> A UNION ALL query runs three aggregation passes:
+                <ul>
+<li><strong>Pass 1:</strong> Flagged-for-removal rows grouped by memo only (clearing accounts)</li>
+<li><strong>Pass 2:</strong> Non-removal debit=0 rows grouped by Department, Location, Account, memo</li>
+<li><strong>Pass 3:</strong> Non-removal credit=0 rows grouped by Department, Location, Account, memo</li>
+</ul>
+</li>
+<li><strong>Log Aggregated Results:</strong> The Smart List query results are logged.</li>
+<li><strong>Create NetSuite Journal Entry:</strong> A JournalEntry is created with:
+                <ul>
+<li>Subsidiary: 1 (Intercom US)</li>
+<li>Transaction Date: payment_date from Workday</li>
+<li>Memo: "{payment_date}-US Workday Payroll"</li>
+<li>Line items from Smart List results, with account/location/department/class resolved via Payroll-Netsuite-Lookup</li>
+</ul>
+</li>
+<li><strong>Success Check:</strong> If the JE internal_id is present, a success Slack message is posted.</li>
+<li><strong>Catch Block:</strong> On any error, an error notification is posted to Slack.</li>
+</ol>
+<h3>Data Flow Diagram</h3>
+<div class="svg-container">
+<svg height="520" viewbox="0 0 900 520" width="900" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#FAFAFA" height="520" rx="8" width="900"></rect>
+<defs>
+<marker id="flow-arrow" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3">
+<polygon fill="#334BFA" points="0 0, 8 3, 0 6"></polygon>
+</marker>
+<marker id="flow-arrow-red" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3">
+<polygon fill="#D32F2F" points="0 0, 8 3, 0 6"></polygon>
+</marker>
+</defs>
+<rect fill="#FFF3E0" height="50" rx="8" stroke="#F5A623" stroke-width="2" width="160" x="30" y="20"></rect>
+<text fill="#E65100" font-size="11" font-weight="bold" text-anchor="middle" x="110" y="42">Workday</text>
+<text fill="#795548" font-size="9" text-anchor="middle" x="110" y="58">Payroll GL XML</text>
+<rect fill="#F3E5F5" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="160" x="230" y="20"></rect>
+<text fill="#334BFA" font-size="11" font-weight="bold" text-anchor="middle" x="310" y="42">Webhook Trigger</text>
+<text fill="#7B1FA2" font-size="9" text-anchor="middle" x="310" y="58">Receive XML POST</text>
+<rect fill="#E3F2FD" height="50" rx="8" stroke="#29B5E8" stroke-width="2" width="160" x="430" y="20"></rect>
+<text fill="#1565C0" font-size="11" font-weight="bold" text-anchor="middle" x="510" y="42">XML Parser</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="510" y="58">Extract Report_Entry[]</text>
+<rect fill="#E3F2FD" height="50" rx="8" stroke="#29B5E8" stroke-width="2" width="160" x="630" y="20"></rect>
+<text fill="#1565C0" font-size="11" font-weight="bold" text-anchor="middle" x="710" y="42">Set Variables</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="710" y="58">payment_date, lists</text>
+<line marker-end="url(#flow-arrow)" stroke="#334BFA" stroke-width="2" x1="190" x2="230" y1="45" y2="45"></line>
+<line marker-end="url(#flow-arrow)" stroke="#334BFA" stroke-width="2" x1="390" x2="430" y1="45" y2="45"></line>
+<line marker-end="url(#flow-arrow)" stroke="#334BFA" stroke-width="2" x1="590" x2="630" y1="45" y2="45"></line>
+<line marker-end="url(#flow-arrow)" stroke="#334BFA" stroke-width="2" x1="710" x2="450" y1="70" y2="110"></line>
+<rect fill="#F3E5F5" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="160" x="30" y="110"></rect>
+<text fill="#334BFA" font-size="11" font-weight="bold" text-anchor="middle" x="110" y="132">Foreach Entry</text>
+<text fill="#7B1FA2" font-size="9" text-anchor="middle" x="110" y="148">Iterate GL lines</text>
+<rect fill="#F3E5F5" height="70" rx="8" stroke="#334BFA" stroke-width="2" width="420" x="230" y="100"></rect>
+<text fill="#334BFA" font-size="12" font-weight="bold" text-anchor="middle" x="440" y="125">6-Branch Conditional Router</text>
+<text fill="#7B1FA2" font-size="10" text-anchor="middle" x="440" y="145">Account reclassification &amp; department override logic</text>
+<text fill="#9C27B0" font-size="9" text-anchor="middle" x="440" y="160">WA Insurance | Benefits/Clearing | R&amp;D Depts | Acct 9999 | Employee Tax 6150 | Default</text>
+<line marker-end="url(#flow-arrow)" stroke="#334BFA" stroke-width="2" x1="190" x2="230" y1="135" y2="135"></line>
+<line marker-end="url(#flow-arrow)" stroke="#334BFA" stroke-width="2" x1="440" x2="440" y1="170" y2="210"></line>
+<rect fill="#E3F2FD" height="50" rx="8" stroke="#29B5E8" stroke-width="2" width="280" x="300" y="210"></rect>
+<text fill="#1565C0" font-size="11" font-weight="bold" text-anchor="middle" x="440" y="232">Smart List: Insert Rows</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="440" y="248">"Workday-Report" table</text>
+<line marker-end="url(#flow-arrow)" stroke="#334BFA" stroke-width="2" x1="440" x2="440" y1="260" y2="290"></line>
+<rect fill="#E3F2FD" height="60" rx="8" stroke="#29B5E8" stroke-width="2" width="380" x="250" y="290"></rect>
+<text fill="#1565C0" font-size="11" font-weight="bold" text-anchor="middle" x="440" y="312">Smart List: SQL Aggregation</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="440" y="330">3-part UNION ALL: Clearing (grouped by memo) | Credits (by dept/loc) | Debits (by dept/loc)</text>
+<text fill="#546E7A" font-size="9" text-anchor="middle" x="440" y="344">SUM(debit), SUM(credit) per group</text>
+<line marker-end="url(#flow-arrow)" stroke="#334BFA" stroke-width="2" x1="440" x2="440" y1="350" y2="380"></line>
+<rect fill="#E8F5E9" height="55" rx="8" stroke="#2E7D32" stroke-width="2" width="280" x="300" y="380"></rect>
+<text fill="#2E7D32" font-size="12" font-weight="bold" text-anchor="middle" x="440" y="402">NetSuite: Create JE</text>
+<text fill="#388E3C" font-size="9" text-anchor="middle" x="440" y="420">Subsidiary=1, Date=payment_date, Memo="{date}-US Workday Payroll"</text>
+<text fill="#388E3C" font-size="9" text-anchor="middle" x="440" y="432">Lines: acct/dept/loc/class via Payroll-Netsuite-Lookup</text>
+<rect fill="#FFF3E0" height="50" rx="8" stroke="#F5A623" stroke-dasharray="4" stroke-width="1.5" width="170" x="700" y="320"></rect>
+<text fill="#E65100" font-size="10" font-weight="bold" text-anchor="middle" x="785" y="342">Lookup Tables</text>
+<text fill="#795548" font-size="9" text-anchor="middle" x="785" y="358">Payroll-Netsuite-Lookup</text>
+<line marker-end="url(#flow-arrow)" stroke="#F5A623" stroke-dasharray="4" stroke-width="1.5" x1="700" x2="580" y1="345" y2="405"></line>
+<line marker-end="url(#flow-arrow)" stroke="#2E7D32" stroke-width="2" x1="440" x2="440" y1="435" y2="475"></line>
+<rect fill="#E8F5E9" height="40" rx="8" stroke="#2E7D32" stroke-width="2" width="200" x="340" y="470"></rect>
+<text fill="#2E7D32" font-size="11" font-weight="bold" text-anchor="middle" x="440" y="495">Slack: Success Alert</text>
+<rect fill="#FFEBEE" height="40" rx="8" stroke="#D32F2F" stroke-width="2" width="200" x="660" y="410"></rect>
+<text fill="#D32F2F" font-size="11" font-weight="bold" text-anchor="middle" x="760" y="435">Slack: Error Alert</text>
+<line marker-end="url(#flow-arrow-red)" stroke="#D32F2F" stroke-dasharray="4" stroke-width="1.5" x1="580" x2="660" y1="415" y2="430"></line>
+<text fill="#D32F2F" font-size="9" x="620" y="410">catch</text>
+</svg>
+</div>
+</div>
+ 7. PROCESSING STAGES 
+<div class="section" id="processing-stages">
+<h2>7. Processing Stages</h2>
+<table>
+<tr><th>Stage</th><th>Block(s)</th><th>Action</th><th>Description</th></tr>
+<tr>
+<td><span class="badge badge-orange">1. Receive</span></td>
+<td>Trigger</td>
+<td>Webhook: New Event</td>
+<td>Receives raw XML POST from Workday payroll delivery. Endpoint: <code>workday-payroll-v2</code></td>
+</tr>
+<tr>
+<td><span class="badge badge-blue">2. Log</span></td>
+<td>Block 1</td>
+<td>Logger</td>
+<td>Logs the raw webhook payload for debugging and audit trail</td>
+</tr>
+<tr>
+<td><span class="badge badge-blue">3. Parse</span></td>
+<td>Block 2</td>
+<td>XML Parser</td>
+<td>Parses SOAP envelope to extract <code>Report_Data.Report_Entry[]</code> array with all GL line items</td>
+</tr>
+<tr>
+<td><span class="badge badge-blue">4. Extract</span></td>
+<td>Block 3</td>
+<td>Create Variable</td>
+<td>Extracts <code>Payment_Date_Prompt</code> from first entry into <code>payment_date</code> variable</td>
+</tr>
+<tr>
+<td><span class="badge badge-blue">5. Schema</span></td>
+<td>Blocks 4-5</td>
+<td>Declare List + Batch Insert</td>
+<td>Creates Workday-Report-Input list with 9 fields and batch-inserts all report entries</td>
+</tr>
+<tr>
+<td><span class="badge badge-purple">6. Transform</span></td>
+<td>Blocks 7-21</td>
+<td>Try / Foreach / If-Elsif-Else</td>
+<td>Iterates each entry through 6-branch conditional router for account reclassification, department overrides, and field mapping</td>
+</tr>
+<tr>
+<td><span class="badge badge-blue">7. Aggregate</span></td>
+<td>Blocks 23-25</td>
+<td>Smart List Insert + Query</td>
+<td>Inserts transformed data into Smart List, then runs 3-part UNION ALL SQL to aggregate debits/credits by account group</td>
+</tr>
+<tr>
+<td><span class="badge badge-green">8. Load</span></td>
+<td>Block 26</td>
+<td>NetSuite: Create JournalEntry</td>
+<td>Creates JE with aggregated line items. Account/Department/Location/Class resolved via <code>Payroll-Netsuite-Lookup</code></td>
+</tr>
+<tr>
+<td><span class="badge badge-green">9. Notify</span></td>
+<td>Blocks 27-30</td>
+<td>Slack Messages</td>
+<td>Success message if JE internal_id present; Error message on catch</td>
+</tr>
+</table>
+</div>
+ 8. COMPONENT/MODULE OVERVIEW 
+<div class="section" id="component-overview">
+<h2>8. Component / Module Overview</h2>
+<table>
+<tr><th>Component</th><th>Type</th><th>Purpose</th></tr>
+<tr>
+<td>Webhook Trigger</td>
+<td>Trigger</td>
+<td>Receives Workday XML payroll delivery via HTTP POST</td>
+</tr>
+<tr>
+<td>XML Parser (Block 2)</td>
+<td>Action</td>
+<td>Converts SOAP XML into structured data with Report_Entry array</td>
+</tr>
+<tr>
+<td>payment_date Variable (Block 3)</td>
+<td>Variable</td>
+<td>Stores the payroll payment date for JE transaction date</td>
+</tr>
+<tr>
+<td>Workday-Report-Input List (Block 4-5)</td>
+<td>List Variable</td>
+<td>Staging list for raw parsed data (9 fields per entry)</td>
+</tr>
+<tr>
+<td>6-Branch Router (Blocks 10-21)</td>
+<td>Conditional Logic</td>
+<td>Reclassifies accounts, overrides departments, sets Remove flag for aggregation control</td>
+</tr>
+<tr>
+<td>Smart List "Workday-Report" (Block 23)</td>
+<td>Data Table</td>
+<td>In-memory table for SQL-based aggregation of transformed GL lines</td>
+</tr>
+<tr>
+<td>Smart List SQL Query (Block 24)</td>
+<td>Query</td>
+<td>3-part UNION ALL aggregation query: clearing accounts, credit lines, debit lines</td>
+</tr>
+<tr>
+<td>Payroll-Netsuite-Lookup</td>
+<td>Lookup Table</td>
+<td>Maps Workday account codes, departments, and locations to NetSuite internal IDs</td>
+</tr>
+<tr>
+<td>Workday_Payroll_Netsuite_Lookup</td>
+<td>Lookup Table (Project Property)</td>
+<td>Secondary lookup used in conditional branches for account and location resolution</td>
+</tr>
+<tr>
+<td>NetSuite JournalEntry (Block 26)</td>
+<td>Action</td>
+<td>Creates the final Journal Entry with all line items, subsidiary, date, and memo</td>
+</tr>
+<tr>
+<td>Slack Notifications (Blocks 28, 30)</td>
+<td>Action</td>
+<td>Posts success or error messages to the payroll integration channel</td>
+</tr>
+</table>
+<h3>Recipe Hierarchy Diagram</h3>
+<div class="svg-container">
+<svg height="500" viewbox="0 0 780 500" width="780" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#FAFAFA" height="500" rx="8" width="780"></rect>
+<defs>
+<marker id="hier-arrow" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3">
+<polygon fill="#334BFA" points="0 0, 8 3, 0 6"></polygon>
+</marker>
+</defs>
+<rect fill="#334BFA" height="50" rx="10" width="300" x="240" y="15"></rect>
+<text fill="white" font-size="12" font-weight="bold" text-anchor="middle" x="390" y="38">Payroll-WD-Netsuite-v2</text>
+<text fill="#D4C4F0" font-size="10" text-anchor="middle" x="390" y="54">Recipe 70791533 (Single Recipe)</text>
+<line marker-end="url(#hier-arrow)" stroke="#334BFA" stroke-width="2" x1="390" x2="390" y1="65" y2="90"></line>
+<rect fill="#FFF3E0" height="36" rx="6" stroke="#F5A623" stroke-width="1.5" width="220" x="280" y="90"></rect>
+<text fill="#E65100" font-size="11" font-weight="bold" text-anchor="middle" x="390" y="113">Webhook Trigger (Workday XML)</text>
+<line marker-end="url(#hier-arrow)" stroke="#334BFA" stroke-width="2" x1="390" x2="390" y1="126" y2="150"></line>
+<rect fill="#E3F2FD" height="36" rx="6" stroke="#29B5E8" stroke-width="1.5" width="280" x="250" y="150"></rect>
+<text fill="#1565C0" font-size="11" text-anchor="middle" x="390" y="173">XML Parse + Variables + Lists (Blocks 1-5)</text>
+<line marker-end="url(#hier-arrow)" stroke="#334BFA" stroke-width="2" x1="390" x2="390" y1="186" y2="210"></line>
+<rect fill="#F3E5F5" height="40" rx="8" stroke="#334BFA" stroke-width="2" width="480" x="150" y="210"></rect>
+<text fill="#334BFA" font-size="12" font-weight="bold" text-anchor="middle" x="390" y="228">Try Block (Blocks 6-28)</text>
+<text fill="#7B1FA2" font-size="9" text-anchor="middle" x="390" y="244">Core processing with error handling</text>
+<line marker-end="url(#hier-arrow)" stroke="#334BFA" stroke-width="1.5" x1="300" x2="300" y1="250" y2="275"></line>
+<rect fill="#F3E5F5" height="36" rx="6" stroke="#334BFA" stroke-width="1.5" width="280" x="160" y="275"></rect>
+<text fill="#334BFA" font-size="11" text-anchor="middle" x="300" y="298">Foreach Loop (Block 9)</text>
+<line marker-end="url(#hier-arrow)" stroke="#334BFA" stroke-width="1.5" x1="300" x2="300" y1="311" y2="335"></line>
+<rect fill="#FFF8E1" height="45" rx="5" stroke="#F5A623" stroke-width="1" width="115" x="30" y="335"></rect>
+<text fill="#E65100" font-size="9" font-weight="bold" text-anchor="middle" x="88" y="352">Branch 1</text>
+<text fill="#795548" font-size="8" text-anchor="middle" x="88" y="368">WA Insurance</text>
+<text fill="#795548" font-size="7" text-anchor="middle" x="88" y="378">Acct 2245&gt;2242</text>
+<rect fill="#FFF8E1" height="45" rx="5" stroke="#F5A623" stroke-width="1" width="115" x="155" y="335"></rect>
+<text fill="#E65100" font-size="9" font-weight="bold" text-anchor="middle" x="213" y="352">Branch 2</text>
+<text fill="#795548" font-size="8" text-anchor="middle" x="213" y="368">Benefits/Clearing</text>
+<text fill="#795548" font-size="7" text-anchor="middle" x="213" y="378">Remove=true</text>
+<rect fill="#FFF8E1" height="45" rx="5" stroke="#F5A623" stroke-width="1" width="115" x="280" y="335"></rect>
+<text fill="#E65100" font-size="9" font-weight="bold" text-anchor="middle" x="338" y="352">Branch 3</text>
+<text fill="#795548" font-size="8" text-anchor="middle" x="338" y="368">R&amp;D Depts</text>
+<text fill="#795548" font-size="7" text-anchor="middle" x="338" y="378">61/62/63/64xx</text>
+<rect fill="#FFF8E1" height="45" rx="5" stroke="#F5A623" stroke-width="1" width="115" x="405" y="335"></rect>
+<text fill="#E65100" font-size="9" font-weight="bold" text-anchor="middle" x="463" y="352">Branch 4</text>
+<text fill="#795548" font-size="8" text-anchor="middle" x="463" y="368">Acct 9999</text>
+<text fill="#795548" font-size="7" text-anchor="middle" x="463" y="378">Lookup remap</text>
+<rect fill="#FFF8E1" height="45" rx="5" stroke="#F5A623" stroke-width="1" width="115" x="530" y="335"></rect>
+<text fill="#E65100" font-size="9" font-weight="bold" text-anchor="middle" x="588" y="352">Branch 5</text>
+<text fill="#795548" font-size="8" text-anchor="middle" x="588" y="368">Tax 6150</text>
+<text fill="#795548" font-size="7" text-anchor="middle" x="588" y="378">Dept&gt;1101</text>
+<rect fill="#FFF8E1" height="45" rx="5" stroke="#F5A623" stroke-width="1" width="115" x="655" y="335"></rect>
+<text fill="#E65100" font-size="9" font-weight="bold" text-anchor="middle" x="713" y="352">Branch 6</text>
+<text fill="#795548" font-size="8" text-anchor="middle" x="713" y="368">Default</text>
+<text fill="#795548" font-size="7" text-anchor="middle" x="713" y="378">Pass-through</text>
+<line stroke="#334BFA" stroke-width="1" x1="300" x2="88" y1="335" y2="335"></line>
+<line stroke="#334BFA" stroke-width="1" x1="300" x2="213" y1="335" y2="335"></line>
+<line stroke="#334BFA" stroke-width="1" x1="300" x2="338" y1="335" y2="335"></line>
+<line stroke="#334BFA" stroke-width="1" x1="300" x2="463" y1="335" y2="335"></line>
+<line stroke="#334BFA" stroke-width="1" x1="300" x2="588" y1="335" y2="335"></line>
+<line stroke="#334BFA" stroke-width="1" x1="300" x2="713" y1="335" y2="335"></line>
+<line marker-end="url(#hier-arrow)" stroke="#334BFA" stroke-width="2" x1="390" x2="390" y1="380" y2="405"></line>
+<rect fill="#E3F2FD" height="36" rx="6" stroke="#29B5E8" stroke-width="1.5" width="260" x="260" y="405"></rect>
+<text fill="#1565C0" font-size="11" text-anchor="middle" x="390" y="428">Smart List: Insert + SQL Query (23-25)</text>
+<line marker-end="url(#hier-arrow)" stroke="#334BFA" stroke-width="1.5" x1="390" x2="390" y1="441" y2="460"></line>
+<rect fill="#E8F5E9" height="30" rx="6" stroke="#2E7D32" stroke-width="1.5" width="220" x="280" y="460"></rect>
+<text fill="#2E7D32" font-size="11" text-anchor="middle" x="390" y="480">NetSuite JE + Slack (26-30)</text>
+<line stroke="#D32F2F" stroke-dasharray="4" stroke-width="1.5" x1="530" x2="640" y1="250" y2="275"></line>
+<rect fill="#FFEBEE" height="36" rx="6" stroke="#D32F2F" stroke-width="1.5" width="160" x="590" y="275"></rect>
+<text fill="#D32F2F" font-size="11" text-anchor="middle" x="670" y="298">Catch: Slack Error (29-30)</text>
+</svg>
+</div>
+</div>
+ 9. KEY BUSINESS LOGIC 
+<div class="section" id="business-logic">
+<h2>9. Key Business Logic</h2>
+<h3>6-Branch Account Reclassification Router</h3>
+<p>The core business logic routes each Workday GL line through a 6-branch conditional to apply account reclassification and department overrides before aggregation.</p>
+<table>
+<tr><th>Branch</th><th>Condition</th><th>Action</th><th>Remove Flag</th></tr>
+<tr>
+<td><strong>1. WA Industrial Insurance</strong></td>
+<td><code>pay_component</code> starts with "WA: Washington Industrial Insurance" AND <code>Account_Name</code> starts with "2245"</td>
+<td>Reclassify account to <strong>2242</strong>, set memo to "Washington Industrial"</td>
+<td>true</td>
+</tr>
+<tr>
+<td><strong>2. Benefits / Clearing</strong></td>
+<td><code>pay_component</code> in [Parking, Transit, FSA-Dependent, FSA-Health] OR <code>Account_Name</code> starts with [2245, 2246, 2252, 2253, 2242]</td>
+<td>Account resolved via <code>Workday_Payroll_Netsuite_Lookup</code> project property</td>
+<td>true</td>
+</tr>
+<tr>
+<td><strong>3. R&amp;D Departments</strong></td>
+<td><code>Department</code> starts with 61, 62, 63, or 64</td>
+<td>Account extracted from Account_Name (split). Standard field mapping.</td>
+<td>false</td>
+</tr>
+<tr>
+<td><strong>4. Account 9999</strong></td>
+<td><code>Account_Name</code> starts with "9999"</td>
+<td>Account resolved via <code>Workday_Payroll_Netsuite_Lookup</code></td>
+<td>false</td>
+</tr>
+<tr>
+<td><strong>5. Employee Tax 6150</strong></td>
+<td><code>memo</code> = "Employee Taxes" AND <code>Account_Name</code> starts with "6150"</td>
+<td>Department hardcoded to <strong>1101</strong>; account extracted from Account_Name</td>
+<td>false</td>
+</tr>
+<tr>
+<td><strong>6. Default</strong></td>
+<td>All other entries</td>
+<td>Account extracted from Account_Name. Standard field mapping with department lookup.</td>
+<td>false</td>
+</tr>
+</table>
+<h3>Remove Flag and Aggregation Logic</h3>
+<p>
+            The <code>Remove</code> flag (set to <code>"true"</code> in branches 1 and 2) controls how lines are aggregated in the Smart List SQL query:
+        </p>
+<ul>
+<li><strong>Remove = true (Clearing accounts):</strong> Grouped by <code>memo</code> only. Department, Class, and Location are blanked out. These represent liability/clearing entries that get consolidated.</li>
+<li><strong>Remove = false, Debit = 0:</strong> Grouped by Department, Location, Account, and memo. These are credit entries with full dimensional breakdowns.</li>
+<li><strong>Remove = false, Credit = 0:</strong> Grouped by Department, Location, Account, and memo. These are debit entries with full dimensional breakdowns.</li>
+</ul>
+<h3>Lookup Table Resolution</h3>
+<p>At JE creation time, the following fields are resolved via the <code>Payroll-Netsuite-Lookup</code> lookup table:</p>
+<ul>
+<li><strong>Account:</strong> <code>lookup('Payroll-Netsuite-Lookup', Object: "Account", Key: {account_code})</code></li>
+<li><strong>Location:</strong> <code>lookup('Payroll-Netsuite-Lookup', Object: "Location", Key: {Updated_Location})</code></li>
+<li><strong>Department:</strong> <code>lookup('Payroll-Netsuite-Lookup', Object: "Department", Key: {department_code})</code></li>
+<li><strong>Class:</strong> <code>lookup('Payroll-Netsuite-Lookup', Object: "Department", Key: {Class})</code> (note: uses Department object type)</li>
+</ul>
+<h3>Department Extraction</h3>
+<p>
+            Department codes in Workday come as compound strings (e.g., "9101 IT"). The recipe splits on space and takes the first segment (numeric code) for mapping. For R&amp;D departments (61xx-64xx), a special check determines if the department code includes certain patterns.
+        </p>
+<h3>Currency Handling</h3>
+<p>
+            The <code>Base_Currency</code> field from Workday (e.g., "USA") is passed through. The Workday report is filtered to US GAAP (USD) accounting book entries only.
+        </p>
+</div>
+ 10. DATA MODEL 
+<div class="section" id="data-model">
+<h2>10. Data Model</h2>
+<h3>Workday XML Input (Report_Entry)</h3>
+<table>
+<tr><th>Field</th><th>XML Path</th><th>Example</th></tr>
+<tr><td>Payment_Date_Prompt</td><td>Report_Entry.Payment_Date_Prompt</td><td>2025-11-21-08:00</td></tr>
+<tr><td>Account (Descriptor)</td><td>Report_Entry.Account[@Descriptor]</td><td>2245:Accrued Compensation and Related Benefits</td></tr>
+<tr><td>Account ID</td><td>Report_Entry.Account.ID[@type="Ledger_Account_ID"]</td><td>2245</td></tr>
+<tr><td>Accounting_Date</td><td>Report_Entry.Accounting_Date</td><td>2025-11-14-08:00</td></tr>
+<tr><td>Debit</td><td>Report_Entry.Debit</td><td>0</td></tr>
+<tr><td>Credit</td><td>Report_Entry.Credit</td><td>1441131.19</td></tr>
+<tr><td>Department</td><td>Report_Entry.Department</td><td>9101 IT</td></tr>
+<tr><td>Base_Currency</td><td>Report_Entry.Base_Currency</td><td>USA</td></tr>
+<tr><td>Pay_Component</td><td>Report_Entry.Pay_Component[@Descriptor]</td><td>Additional Medicare Tax [USA]</td></tr>
+<tr><td>Memo</td><td>Report_Entry.Memo</td><td>Net Pay</td></tr>
+<tr><td>Subsidiary</td><td>Report_Entry.Subsidiary</td><td>10 Intercom US</td></tr>
+<tr><td>Class</td><td>Report_Entry.Class</td><td>Core</td></tr>
+<tr><td>Location</td><td>Report_Entry.Location</td><td>United States:US CA Home Office</td></tr>
+<tr><td>Posting Status</td><td>Report_Entry.Posting[@Descriptor]</td><td>Posted</td></tr>
+<tr><td>Journal_Source</td><td>Report_Entry.Journal_Source[@Descriptor]</td><td>Payroll Actual Accrual</td></tr>
+</table>
+<h3>Workday-Report-Input List (Intermediate)</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>Account_Name</td><td>string</td><td>Full account descriptor from Workday (e.g., "2245:Accrued Compensation...")</td></tr>
+<tr><td>Debit</td><td>number</td><td>Debit amount (comma-stripped, float)</td></tr>
+<tr><td>Credit</td><td>number</td><td>Credit amount (comma-stripped, float)</td></tr>
+<tr><td>memo</td><td>string</td><td>Memo from Workday (e.g., "Net Pay", "Employee Taxes")</td></tr>
+<tr><td>Class</td><td>string</td><td>Class segment (e.g., "Core")</td></tr>
+<tr><td>Currency</td><td>string</td><td>Base currency code (e.g., "USA")</td></tr>
+<tr><td>Department</td><td>string</td><td>Department string (e.g., "9101 IT")</td></tr>
+<tr><td>Location</td><td>string</td><td>Location string from Workday</td></tr>
+<tr><td>pay_component</td><td>string</td><td>Pay component descriptor</td></tr>
+</table>
+<h3>Netsuite-Input List (Post-transformation)</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>Account</td><td>string</td><td>Mapped NetSuite account code (after reclassification)</td></tr>
+<tr><td>Debit</td><td>number</td><td>Debit amount (rounded to 2 decimals)</td></tr>
+<tr><td>Credit</td><td>number</td><td>Credit amount (rounded to 2 decimals)</td></tr>
+<tr><td>Department</td><td>string</td><td>Cleaned department code (numeric only)</td></tr>
+<tr><td>Class</td><td>string</td><td>Class value</td></tr>
+<tr><td>Location</td><td>string</td><td>Mapped location value</td></tr>
+<tr><td>Remove</td><td>string</td><td>"true"/"false" flag for aggregation grouping</td></tr>
+<tr><td>memo</td><td>string</td><td>Journal line memo</td></tr>
+<tr><td>Account_Name</td><td>string</td><td>Original Workday account descriptor (retained for reference)</td></tr>
+<tr><td>Currency</td><td>string</td><td>Currency code</td></tr>
+<tr><td>Updated_Location</td><td>string</td><td>Location resolved via lookup (for NS mapping)</td></tr>
+</table>
+<h3>NetSuite Journal Entry (Output)</h3>
+<table>
+<tr><th>Field</th><th>Source</th><th>Description</th></tr>
+<tr><td>subsidiary</td><td>Hardcoded: 1</td><td>Intercom US subsidiary</td></tr>
+<tr><td>tranDate</td><td>payment_date variable</td><td>Payroll payment date</td></tr>
+<tr><td>memo</td><td>"{payment_date}-US Workday Payroll"</td><td>Header memo identifying payroll run</td></tr>
+<tr><td>line[].debit</td><td>Smart List SUM(debit) rounded to 2</td><td>Aggregated debit amount per line</td></tr>
+<tr><td>line[].credit</td><td>Smart List SUM(credit) rounded to 2</td><td>Aggregated credit amount per line</td></tr>
+<tr><td>line[].memo</td><td>Smart List memo</td><td>Line memo (pay category)</td></tr>
+<tr><td>line[].account</td><td>Payroll-Netsuite-Lookup (Account)</td><td>NetSuite internal ID for GL account</td></tr>
+<tr><td>line[].location</td><td>Payroll-Netsuite-Lookup (Location)</td><td>NetSuite internal ID for location</td></tr>
+<tr><td>line[].department</td><td>Payroll-Netsuite-Lookup (Department)</td><td>NetSuite internal ID for department</td></tr>
+<tr><td>line[].class</td><td>Payroll-Netsuite-Lookup (Class)</td><td>NetSuite internal ID for class</td></tr>
+</table>
+</div>
+ 11. EDGE CASES 
+<div class="section" id="edge-cases">
+<h2>11. Edge Cases</h2>
+<div class="callout callout-warn">
+<strong>Washington Industrial Insurance Reclassification:</strong> When pay_component starts with "WA: Washington Industrial Insurance" AND account is 2245, the account is reclassified to 2242 with a static "Washington Industrial" memo. This is an AND condition -- both must match. If WA insurance appears on a different account, it falls to a later branch.
+        </div>
+<div class="callout callout-warn">
+<strong>Benefits/Clearing Account Detection:</strong> Branch 2 uses an OR condition combining specific pay components (Parking, Transit, FSA-Dependent, FSA-Health) with account prefix matching (2245, 2246, 2252, 2253, 2242). This branch sets Remove=true, meaning these lines get aggregated by memo only (no dept/loc breakdown).
+        </div>
+<div class="callout callout-warn">
+<strong>Account 9999 Catch-all:</strong> Account code 9999 is a Workday clearing/suspense account. These entries are reclassified via the lookup table rather than using the Workday account directly.
+        </div>
+<div class="callout callout-error">
+<strong>Employee Taxes with 6150:</strong> When memo = "Employee Taxes" and account starts with 6150, the department is hardcoded to 1101. This overrides whatever department Workday provides. This handles a specific tax expense allocation requirement.
+        </div>
+<div class="callout callout-info">
+<strong>Debit/Credit Separation in Aggregation:</strong> The Smart List SQL separates non-removal entries into two queries: one for debit=0 rows (credit entries) and one for credit=0 rows (debit entries). This prevents netting of debits and credits within the same grouping.
+        </div>
+<div class="callout callout-info">
+<strong>Comma-stripped Amounts:</strong> All Debit and Credit values are processed with <code>.to_s.gsub(',', '').to_f</code> to handle Workday's comma-formatted numbers (e.g., "1,441,131.19" becomes 1441131.19).
+        </div>
+<div class="callout callout-warn">
+<strong>Class Lookup uses Department Object:</strong> The Class field's NetSuite internal ID is resolved via <code>lookup('Payroll-Netsuite-Lookup', Object: "Department", Key: {Class})</code>, which uses the "Department" object type. This is likely intentional (shared lookup table structure) but could be confusing during maintenance.
+        </div>
+<div class="callout callout-info">
+<strong>No Retry on JE Creation:</strong> The NetSuite JE creation step has <code>max_retry_count: 0</code>. If the JE creation fails, it goes directly to the catch block with a Slack error notification. There is no automatic retry.
+        </div>
+</div>
+ 12. OPERATIONAL NOTES 
+<div class="section" id="operational-notes">
+<h2>12. Operational Notes</h2>
+<h3>Monitoring</h3>
+<ul>
+<li><strong>Slack Channel:</strong> <code>C0ABDPEK2DV</code> receives both success and failure notifications</li>
+<li><strong>Success Message:</strong> "New JE posted for Workday -&gt; Netsuite is ready for review"</li>
+<li><strong>Error Message:</strong> "Error notification - Workday-Netsuite Payroll JE Integration"</li>
+<li><strong>Job History:</strong> 13 successful jobs, 0 failures as of 2026-04-10</li>
+<li><strong>Typical Run Duration:</strong> 1-2 minutes (based on job timestamps)</li>
+</ul>
+<h3>Trigger Details</h3>
+<ul>
+<li><strong>Webhook URL:</strong> <code>https://webhooks.workato.com/webhooks/rest/3349a5e1-79a1-4e1d-8096-e7d24fef59f3/workday-payroll-v2</code></li>
+<li><strong>Expected User-Agents:</strong> <code>workday-delivery</code> (direct from Workday) or <code>Workato R*</code> (internal test triggers)</li>
+<li><strong>Payload Format:</strong> Raw XML (SOAP envelope with Workday report namespace)</li>
+</ul>
+<h3>Lookup Table Dependencies</h3>
+<table>
+<tr><th>Lookup Table</th><th>Used In</th><th>Purpose</th></tr>
+<tr>
+<td><code>Payroll-Netsuite-Lookup</code></td>
+<td>Block 26 (JE creation)</td>
+<td>Maps account codes, locations, and departments to NetSuite internal IDs. Must be kept in sync with NetSuite chart of accounts.</td>
+</tr>
+<tr>
+<td><code>Workday_Payroll_Netsuite_Lookup</code></td>
+<td>Branches 2, 4 (project property)</td>
+<td>Secondary lookup for conditional reclassification of benefits/clearing accounts and account 9999. Accessed as a project-level property.</td>
+</tr>
+</table>
+<h3>Maintenance Considerations</h3>
+<ul>
+<li><strong>New GL Accounts:</strong> When Workday adds new GL accounts, the lookup tables must be updated in Workato before the next payroll run.</li>
+<li><strong>New Locations:</strong> New employee locations in Workday must be added to the Location mapping in <code>Payroll-Netsuite-Lookup</code>.</li>
+<li><strong>Department Changes:</strong> If R&amp;D department numbering changes (currently 61xx-64xx), Branch 3 conditions must be updated.</li>
+<li><strong>Pay Component Changes:</strong> New benefit types that should be treated as clearing accounts must be added to Branch 2's inclusion list.</li>
+<li><strong>No Child Recipes:</strong> This is a standalone recipe with no callable sub-recipes or parent recipes.</li>
+</ul>
+<h3>Version History</h3>
+<table>
+<tr><th>Version</th><th>Author</th><th>Date</th><th>Notes</th></tr>
+<tr><td>14 (current)</td><td>diana.sy@intercom.io</td><td>2026-03-23</td><td>Latest version</td></tr>
+<tr><td>1</td><td>Environment Production</td><td>2026-03-05</td><td>Initial creation</td></tr>
+</table>
+<h3>Recent Job History</h3>
+<table>
+<tr><th>Date</th><th>Job ID</th><th>Status</th><th>Duration</th><th>Source</th></tr>
+<tr><td>2026-04-10</td><td>j-AYhErtpo</td><td><span class="badge badge-green">Succeeded</span></td><td>~1.5 min</td><td>Workday delivery</td></tr>
+<tr><td>2026-04-08</td><td>j-AYg9wreJ</td><td><span class="badge badge-green">Succeeded</span></td><td>~1.7 min</td><td>Workato internal</td></tr>
+<tr><td>2026-04-01</td><td>j-AYcRWAEf</td><td><span class="badge badge-green">Succeeded</span></td><td>~5 sec</td><td>Workato internal</td></tr>
+<tr><td>2026-03-31</td><td>j-AYbzKY9a</td><td><span class="badge badge-green">Succeeded</span></td><td>~17 sec</td><td>Workday delivery</td></tr>
+<tr><td>2026-03-27</td><td>j-AYYsATsG</td><td><span class="badge badge-green">Succeeded</span></td><td>~1.8 min</td><td>Workday delivery</td></tr>
+<tr><td>2026-03-13</td><td>j-AYNYPDx8</td><td><span class="badge badge-green">Succeeded</span></td><td>~1.5 min</td><td>Workday delivery</td></tr>
+<tr><td>2026-03-06</td><td>j-AYJsb8LE</td><td><span class="badge badge-green">Succeeded</span></td><td>~1.5 min</td><td>Workday delivery</td></tr>
+</table>
+</div>
+<div class="footer">
+<p>Generated on 2026-04-15 | Author: venkatesh.manohar | Recipe ID: 70791533 | Workato Integration Documentation</p>
+</div>
+
+</div>
+
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a[data-section]');
+  var sections = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    var current = sections[0];
+    var scrollY = window.scrollY + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
