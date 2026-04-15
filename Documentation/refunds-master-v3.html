@@ -322,6 +322,114 @@ footer {
   .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   h2 { break-before: auto; }
 }
+
+
+/* File-specific styles */
+nav#toc .toc-num { display: inline-block; width: 22px; color: var(--gray); font-size: 0.8em; }
+
+header {
+  background: linear-gradient(135deg, var(--ic-blue), #16100E);
+  color: white;
+  padding: 40px 48px;
+  border-radius: 16px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px rgba(51,75,250,0.25);
+}
+
+header h1 { font-size: 2em; font-weight: 700; margin-bottom: 8px; }
+
+header .subtitle { font-size: 1.05em; opacity: 0.85; margin-bottom: 12px; }
+
+header .meta { font-size: 0.85em; opacity: 0.7; display: flex; flex-wrap: wrap; gap: 24px; }
+
+header .meta span { display: flex; align-items: center; gap: 6px; }
+
+header .badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+header .badge.active { background: #4CAF50; }
+
+section h2 {
+  font-size: 1.4em;
+  color: var(--ic-blue);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--ic-blue-bg);
+}
+
+section h3 {
+  font-size: 1.1em;
+  color: var(--text-primary);
+  margin: 20px 0 10px;
+}
+
+section h4 {
+  font-size: 0.95em;
+  color: var(--text-secondary);
+  margin: 16px 0 8px;
+  font-weight: 600;
+}
+
+.callout.info { border-left-color: var(--blue); background: var(--blue-bg); }
+
+.callout.warn { border-left-color: var(--orange); background: var(--orange-bg); }
+
+.callout.success { border-left-color: var(--green); background: var(--green-bg); }
+
+.two-layer .layer {
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.two-layer .business { background: var(--green-bg); border-color: var(--green); }
+
+.two-layer .technical { background: var(--blue-bg); border-color: var(--blue); }
+
+.two-layer .layer h4 { margin-top: 0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.two-layer .business h4 { color: var(--green); }
+
+.two-layer .technical h4 { color: var(--blue); }
+
+.stage-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 12px 0;
+  background: white;
+}
+
+.stage-card h4 {
+  margin-top: 0;
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-block;
+  font-size: 0.9em;
+  color: white;
+}
+
+.stage-card.ingest h4 { background: var(--orange); }
+
+.stage-card.process h4 { background: var(--ic-blue); }
+
+.stage-card.output h4 { background: var(--green); }
+
+.stage-card.log h4 { background: var(--gray); }
+
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; background: white; }
+  section { box-shadow: none; border: 1px solid #CCC; page-break-inside: avoid; }
+  header { background: var(--ic-blue); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .diagram-container { page-break-inside: avoid; }
+}
 </style>
 </head>
 <body>
@@ -497,7 +605,7 @@ footer {
       <defs>
         <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/></marker>
         <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/></marker>
-        <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
         <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/></marker>
         <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%"><feDropShadow dx="1" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
       </defs>
@@ -505,7 +613,7 @@ footer {
       <!-- Column backgrounds -->
       <rect x="10" y="60" width="275" height="640" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.5"/>
       <rect x="305" y="60" width="275" height="640" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.5"/>
-      <rect x="600" y="60" width="275" height="640" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.5"/>
+      <rect x="600" y="60" width="275" height="640" rx="12" fill="#DCE1F9" stroke="#334BFA" stroke-width="1" opacity="0.5"/>
       <rect x="895" y="60" width="275" height="640" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.5"/>
 
       <!-- Column headers -->
@@ -513,7 +621,7 @@ footer {
       <text x="147" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Stripe (Source)</text>
       <rect x="305" y="10" width="275" height="45" rx="8" fill="#29B5E8"/>
       <text x="442" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Snowflake (Data)</text>
-      <rect x="600" y="10" width="275" height="45" rx="8" fill="#6B4C9A"/>
+      <rect x="600" y="10" width="275" height="45" rx="8" fill="#334BFA"/>
       <text x="737" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Workato (Orchestration)</text>
       <rect x="895" y="10" width="275" height="45" rx="8" fill="#2E7D32"/>
       <text x="1032" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="15">NetSuite (Target)</text>
@@ -562,37 +670,37 @@ footer {
       <text x="588" y="290" text-anchor="middle" fill="#29B5E8" font-size="9" font-weight="bold">SQL Query</text>
 
       <!-- Workato: Rec 7.0 Master -->
-      <rect x="625" y="270" width="225" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="625" y="270" width="225" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow)"/>
       <text x="737" y="293" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 7.0 Master Recipe</text>
       <text x="737" y="310" text-anchor="middle" fill="#666" font-size="10">ID: 54665265</text>
 
       <!-- Workato: For Each Loop -->
-      <rect x="650" y="355" width="175" height="40" rx="8" fill="var(--purple-bg)" stroke="#6B4C9A" stroke-width="1" filter="url(#shadow)"/>
-      <text x="737" y="380" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">For Each Refund Row</text>
+      <rect x="650" y="355" width="175" height="40" rx="8" fill="var(--purple-bg)" stroke="#334BFA" stroke-width="1" filter="url(#shadow)"/>
+      <text x="737" y="380" text-anchor="middle" fill="#334BFA" font-size="11" font-weight="bold">For Each Refund Row</text>
 
       <!-- Arrow: Master to For Each -->
-      <line x1="737" y1="325" x2="737" y2="353" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <line x1="737" y1="325" x2="737" y2="353" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
 
       <!-- Workato: RF 7.0 Child -->
-      <rect x="625" y="425" width="225" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="625" y="425" width="225" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow)"/>
       <text x="737" y="448" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">RF 7.0 Create Refunds</text>
       <text x="737" y="465" text-anchor="middle" fill="#666" font-size="10">ID: 54665275</text>
 
       <!-- Arrow: For Each to RF 7.0 -->
-      <line x1="737" y1="395" x2="737" y2="423" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
-      <text x="770" y="413" fill="#6B4C9A" font-size="9" font-weight="bold">Call RF</text>
+      <line x1="737" y1="395" x2="737" y2="423" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <text x="770" y="413" fill="#334BFA" font-size="9" font-weight="bold">Call RF</text>
 
       <!-- Workato: Dedup Check -->
-      <polygon points="737,510 780,540 737,570 694,540" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+      <polygon points="737,510 780,540 737,570 694,540" fill="white" stroke="#334BFA" stroke-width="1.5"/>
       <text x="737" y="538" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">Already</text>
       <text x="737" y="549" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">exists?</text>
 
       <!-- Arrow: RF 7.0 to Dedup -->
-      <line x1="737" y1="480" x2="737" y2="508" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <line x1="737" y1="480" x2="737" y2="508" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
 
       <!-- Arrow: Dedup NO to NetSuite -->
-      <line x1="780" y1="540" x2="917" y2="540" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
-      <text x="848" y="533" text-anchor="middle" fill="#6B4C9A" font-size="9" font-weight="bold">No &rarr; Create</text>
+      <line x1="780" y1="540" x2="917" y2="540" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <text x="848" y="533" text-anchor="middle" fill="#334BFA" font-size="9" font-weight="bold">No &rarr; Create</text>
 
       <!-- Arrow: Dedup YES skip -->
       <line x1="694" y1="540" x2="640" y2="540" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
@@ -604,7 +712,7 @@ footer {
       <text x="1032" y="307" text-anchor="middle" fill="#666" font-size="10">by External ID (dedup)</text>
 
       <!-- Arrow: RF 7.0 to NS Search -->
-      <line x1="850" y1="450" x2="920" y2="305" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-green)" stroke-dasharray="6,3"/>
+      <line x1="850" y1="450" x2="920" y2="305" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-green)" stroke-dasharray="6,3"/>
 
       <!-- NetSuite: Credit Memo -->
       <rect x="920" y="430" width="225" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow)"/>
@@ -667,7 +775,7 @@ footer {
         <marker id="df-arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2196F3"/></marker>
         <marker id="df-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50"/></marker>
         <marker id="df-arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
-        <marker id="df-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="df-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
       </defs>
 
       <!-- Title -->
@@ -697,22 +805,22 @@ footer {
       <text x="445" y="108" text-anchor="middle" fill="#2196F3" font-size="8">JOIN + Filter</text>
 
       <!-- Processing: Workato Logic -->
-      <rect x="470" y="60" width="180" height="110" rx="10" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="560" y="82" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">PROCESSING</text>
+      <rect x="470" y="60" width="180" height="110" rx="10" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+      <text x="560" y="82" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">PROCESSING</text>
       <text x="560" y="100" text-anchor="middle" fill="#333" font-size="10">For each row:</text>
       <text x="560" y="116" text-anchor="middle" fill="#333" font-size="9">1. Dedup check (NS search)</text>
       <text x="560" y="132" text-anchor="middle" fill="#333" font-size="9">2. Map fields</text>
       <text x="560" y="148" text-anchor="middle" fill="#333" font-size="9">3. Custom Ruby transforms</text>
 
       <!-- Decision diamond -->
-      <polygon points="560,200 600,230 560,260 520,230" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+      <polygon points="560,200 600,230 560,260 520,230" fill="white" stroke="#334BFA" stroke-width="1.5"/>
       <text x="560" y="228" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">New?</text>
 
       <!-- Arrow from processing to decision -->
-      <line x1="560" y1="170" x2="560" y2="198" stroke="#6B4C9A" stroke-width="2" marker-end="url(#df-arrow-purple)"/>
+      <line x1="560" y1="170" x2="560" y2="198" stroke="#334BFA" stroke-width="2" marker-end="url(#df-arrow-purple)"/>
 
       <!-- YES path: to Credit Memo -->
-      <line x1="600" y1="230" x2="700" y2="230" stroke="#6B4C9A" stroke-width="2" marker-end="url(#df-arrow-purple)"/>
+      <line x1="600" y1="230" x2="700" y2="230" stroke="#334BFA" stroke-width="2" marker-end="url(#df-arrow-purple)"/>
       <text x="650" y="223" text-anchor="middle" fill="#4CAF50" font-size="9" font-weight="bold">Yes</text>
 
       <!-- NO path: skip -->
@@ -747,7 +855,7 @@ footer {
 
       <!-- Field mapping callouts -->
       <rect x="900" y="100" width="185" height="140" rx="8" fill="white" stroke="#E0E0E0" stroke-width="1"/>
-      <text x="992" y="120" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">Key Field Mappings</text>
+      <text x="992" y="120" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">Key Field Mappings</text>
       <text x="912" y="140" fill="#333" font-size="9">customer &rarr; NS Customer ID</text>
       <text x="912" y="156" fill="#333" font-size="9">stripe_refund_id &rarr; External ID</text>
       <text x="912" y="172" fill="#333" font-size="9">refund_amount &rarr; CM Amount</text>
@@ -880,7 +988,7 @@ footer {
   <div class="diagram-container">
     <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:900px; font-family: 'Segoe UI', Arial, sans-serif;">
       <defs>
-        <marker id="rh-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="rh-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
         <marker id="rh-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/></marker>
         <marker id="rh-arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
         <filter id="rh-shadow" x="-2%" y="-2%" width="104%" height="104%"><feDropShadow dx="1" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
@@ -898,19 +1006,19 @@ footer {
       <text x="465" y="93" fill="#9E9E9E" font-size="9">Start_date param</text>
 
       <!-- Master Recipe: Rec 7.0 -->
-      <rect x="250" y="105" width="400" height="75" rx="12" fill="white" stroke="#6B4C9A" stroke-width="2.5" filter="url(#rh-shadow)"/>
-      <rect x="260" y="112" width="10" height="60" rx="3" fill="#6B4C9A"/>
-      <text x="450" y="133" text-anchor="middle" fill="#6B4C9A" font-size="14" font-weight="bold">Rec 7.0 &mdash; Refunds Master Recipe</text>
+      <rect x="250" y="105" width="400" height="75" rx="12" fill="white" stroke="#334BFA" stroke-width="2.5" filter="url(#rh-shadow)"/>
+      <rect x="260" y="112" width="10" height="60" rx="3" fill="#334BFA"/>
+      <text x="450" y="133" text-anchor="middle" fill="#334BFA" font-size="14" font-weight="bold">Rec 7.0 &mdash; Refunds Master Recipe</text>
       <text x="450" y="152" text-anchor="middle" fill="#666" font-size="11">ID: 54665265 | Snowflake SQL + For Each Loop</text>
       <text x="450" y="170" text-anchor="middle" fill="#999" font-size="10">824 jobs | 0 failures | v17</text>
 
       <!-- Arrow to child -->
-      <line x1="450" y1="180" x2="450" y2="228" stroke="#6B4C9A" stroke-width="2.5" marker-end="url(#rh-arrow-purple)"/>
-      <rect x="400" y="195" width="100" height="22" rx="4" fill="var(--purple-bg)" stroke="#6B4C9A" stroke-width="1"/>
-      <text x="450" y="210" text-anchor="middle" fill="#6B4C9A" font-size="9" font-weight="bold">Sync Call (1:N)</text>
+      <line x1="450" y1="180" x2="450" y2="228" stroke="#334BFA" stroke-width="2.5" marker-end="url(#rh-arrow-purple)"/>
+      <rect x="400" y="195" width="100" height="22" rx="4" fill="var(--purple-bg)" stroke="#334BFA" stroke-width="1"/>
+      <text x="450" y="210" text-anchor="middle" fill="#334BFA" font-size="9" font-weight="bold">Sync Call (1:N)</text>
 
       <!-- Child Recipe: RF 7.0 -->
-      <rect x="200" y="230" width="500" height="75" rx="12" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#rh-shadow)"/>
+      <rect x="200" y="230" width="500" height="75" rx="12" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#rh-shadow)"/>
       <rect x="210" y="237" width="10" height="60" rx="3" fill="#2E7D32"/>
       <text x="450" y="258" text-anchor="middle" fill="#2E7D32" font-size="14" font-weight="bold">RF 7.0 &mdash; Create Refunds</text>
       <text x="450" y="277" text-anchor="middle" fill="#666" font-size="11">ID: 54665275 | NetSuite + Custom Code + Logger</text>
@@ -953,11 +1061,11 @@ footer {
 
       <!-- Legend -->
       <rect x="80" y="440" width="750" height="40" rx="8" fill="#F9F9FB" stroke="#E0E0E0" stroke-width="1"/>
-      <line x1="100" y1="460" x2="130" y2="460" stroke="#6B4C9A" stroke-width="2.5"/>
+      <line x1="100" y1="460" x2="130" y2="460" stroke="#334BFA" stroke-width="2.5"/>
       <text x="140" y="465" fill="#333" font-size="10">Sync call</text>
       <line x1="230" y1="460" x2="260" y2="460" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
       <text x="270" y="465" fill="#333" font-size="10">Internal step</text>
-      <rect x="370" y="452" width="14" height="14" rx="3" fill="#6B4C9A"/>
+      <rect x="370" y="452" width="14" height="14" rx="3" fill="#334BFA"/>
       <text x="394" y="465" fill="#333" font-size="10">Workato</text>
       <rect x="470" y="452" width="14" height="14" rx="3" fill="#2E7D32"/>
       <text x="494" y="465" fill="#333" font-size="10">NetSuite</text>

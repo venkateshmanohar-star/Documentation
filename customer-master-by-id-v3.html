@@ -319,6 +319,158 @@ footer {
   .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   h2 { break-before: auto; }
 }
+
+
+/* File-specific styles */
+.sidebar-toc {
+    position: fixed;
+    left: 0; top: 0;
+    width: 266px;
+    height: 100vh;
+    background: linear-gradient(180deg, #16100E 0%, #2D2118 100%);
+    border-right: 3px solid #334BFA;
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 20px 0;
+  }
+
+.sidebar-toc .toc-header {
+    padding: 0 16px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    margin-bottom: 12px;
+  }
+
+.sidebar-toc .toc-header h3 {
+    color: #fff; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+.sidebar-toc .toc-header .recipe-id {
+    color: rgba(255,255,255,0.6); font-size: 11px;
+  }
+
+.sidebar-toc ul { list-style: none; padding: 0; margin: 0; }
+
+.sidebar-toc li { margin: 0; }
+
+.sidebar-toc a {
+    display: block;
+    padding: 8px 16px 8px 20px;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+.sidebar-toc a:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-left-color: var(--stripe-orange);
+  }
+
+.sidebar-toc a.active {
+    background: rgba(51,75,250,0.4);
+    color: #fff;
+    border-left-color: var(--stripe-orange);
+    font-weight: 600;
+  }
+
+.sidebar-toc .toc-number {
+    display: inline-block;
+    width: 24px;
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+  }
+
+.back-to-index {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    z-index: 1001;
+    background: var(--workato-purple);
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(51,75,250,0.3);
+    transition: background 0.2s;
+  }
+
+.back-to-index:hover { background: #16100E; }
+
+.header {
+    background: linear-gradient(135deg, #16100E 0%, #2D2118 40%, #3D3028 100%);
+    color: white; padding: 40px 32px; border-radius: 12px; margin-bottom: 32px;
+  }
+
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+
+.header .subtitle { font-size: 16px; opacity: 0.9; }
+
+.header .meta { display: flex; gap: 24px; margin-top: 16px; font-size: 13px; opacity: 0.85; flex-wrap: wrap; }
+
+.header .meta span { display: flex; align-items: center; gap: 6px; }
+
+.section { background: white; border-radius: 10px; padding: 28px 32px; margin-bottom: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); scroll-margin-top: 20px; }
+
+.section h2 { font-size: 22px; color: #2c3e50; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; }
+
+.section h3 { font-size: 17px; color: #495057; margin: 18px 0 10px; }
+
+.section h4 { font-size: 15px; color: #6c757d; margin: 14px 0 8px; }
+
+tr:nth-child(even) td { background: #F4F3ED; }
+
+.badge-sync { background: #cce5ff; color: #004085; }
+
+.badge-async { background: #fff3cd; color: #856404; }
+
+.callout-error { background: #fde8e8; border-left-color: #e53935; }
+
+.svg-container { overflow-x: auto; margin: 16px 0; text-align: center; }
+
+.svg-container svg { max-width: 100%; height: auto; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 16px 0; }
+
+.stat-card { background: #F4F3ED; border-radius: 8px; padding: 16px; text-align: center; border: 1px solid #e9ecef; }
+
+.stat-card .value { font-size: 24px; font-weight: 700; color: #334BFA; }
+
+.stat-card .label { font-size: 12px; color: #6c757d; margin-top: 4px; }
+
+.system-tag { display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; margin: 2px 4px; }
+
+.tag-snowflake { background: var(--snowflake-bg); color: #1a8bb5; }
+
+.tag-netsuite { background: var(--netsuite-bg); color: var(--netsuite-green); }
+
+.tag-workato { background: var(--workato-bg); color: var(--workato-purple); }
+
+.tag-fivetran { background: #FFE0B2; color: #E65100; }
+
+.tag-stripe { background: var(--stripe-bg); color: #c47a00; }
+
+.tag-salesforce { background: #E3F2FD; color: #1565C0; }
+
+@media (max-width: 900px) {
+    .sidebar-toc { display: none; }
+    body { padding-left: 0; }
+    .back-to-index { right: 8px; top: 8px; font-size: 12px; padding: 6px 12px; }
+  }
+
+@media print {
+    .sidebar-toc { display: none; }
+    .back-to-index { display: none; }
+    body { padding-left: 0; background: white; }
+    .section { box-shadow: none; border: 1px solid #dee2e6; break-inside: avoid; }
+    .header { break-after: page; }
+    .svg-container { break-inside: avoid; }
+  }
 </style>
 </head>
 <body>
@@ -499,7 +651,7 @@ footer {
           <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
         </marker>
         <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-          <polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/>
+          <polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/>
         </marker>
       </defs>
 
@@ -510,7 +662,7 @@ footer {
       <rect x="310" y="10" width="280" height="50" rx="8" fill="#29B5E8"/>
       <text x="450" y="42" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Snowflake (Data Hub)</text>
 
-      <rect x="610" y="10" width="280" height="50" rx="8" fill="#6B4C9A"/>
+      <rect x="610" y="10" width="280" height="50" rx="8" fill="#334BFA"/>
       <text x="750" y="42" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Workato (Orchestrator)</text>
 
       <rect x="910" y="10" width="280" height="50" rx="8" fill="#2E7D32"/>
@@ -519,7 +671,7 @@ footer {
       <!-- Column Backgrounds -->
       <rect x="10" y="70" width="280" height="740" rx="6" fill="#FFF5E6" opacity="0.4" stroke="#F5A623" stroke-width="1"/>
       <rect x="310" y="70" width="280" height="740" rx="6" fill="#E8F4FD" opacity="0.4" stroke="#29B5E8" stroke-width="1"/>
-      <rect x="610" y="70" width="280" height="740" rx="6" fill="#F0EBF8" opacity="0.4" stroke="#6B4C9A" stroke-width="1"/>
+      <rect x="610" y="70" width="280" height="740" rx="6" fill="#DCE1F9" opacity="0.4" stroke="#334BFA" stroke-width="1"/>
       <rect x="910" y="70" width="280" height="740" rx="6" fill="#E8F5E9" opacity="0.4" stroke="#2E7D32" stroke-width="1"/>
 
       <!-- Source Systems -->
@@ -550,29 +702,29 @@ footer {
       <text x="450" y="540" text-anchor="middle" font-size="10" fill="#666">Integration Audit Trail</text>
 
       <!-- Workato -->
-      <rect x="630" y="100" width="240" height="55" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="750" y="120" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">0.0 Scheduled Master</text>
+      <rect x="630" y="100" width="240" height="55" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="750" y="120" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">0.0 Scheduled Master</text>
       <text x="750" y="138" text-anchor="middle" font-size="10" fill="#666">Cron: 5:30, 10:30, 15:30, 20:30</text>
 
-      <rect x="630" y="175" width="240" height="55" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="750" y="195" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 3.0 Sales Order</text>
+      <rect x="630" y="175" width="240" height="55" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="750" y="195" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">RF 3.0 Sales Order</text>
       <text x="750" y="213" text-anchor="middle" font-size="10" fill="#666">Calls 1.01 for customer ensure</text>
 
-      <rect x="630" y="250" width="240" height="55" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="750" y="270" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 8.0 Create CBA</text>
+      <rect x="630" y="250" width="240" height="55" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="750" y="270" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">RF 8.0 Create CBA</text>
       <text x="750" y="288" text-anchor="middle" font-size="10" fill="#666">Calls 1.01 for customer ensure</text>
 
-      <rect x="630" y="340" width="240" height="70" rx="6" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="3"/>
-      <text x="750" y="362" text-anchor="middle" font-size="13" font-weight="bold" fill="#6B4C9A">Rec 1.01 Customer Master</text>
-      <text x="750" y="380" text-anchor="middle" font-size="11" fill="#6B4C9A">ID: 54665259</text>
+      <rect x="630" y="340" width="240" height="70" rx="6" fill="#DCE1F9" stroke="#334BFA" stroke-width="3"/>
+      <text x="750" y="362" text-anchor="middle" font-size="13" font-weight="bold" fill="#334BFA">Rec 1.01 Customer Master</text>
+      <text x="750" y="380" text-anchor="middle" font-size="11" fill="#334BFA">ID: 54665259</text>
       <text x="750" y="396" text-anchor="middle" font-size="10" fill="#666">Query SF + foreach row</text>
 
-      <rect x="630" y="435" width="240" height="60" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="750" y="457" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 1.0 Create/Update</text>
+      <rect x="630" y="435" width="240" height="60" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="750" y="457" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">RF 1.0 Create/Update</text>
       <text x="750" y="475" text-anchor="middle" font-size="10" fill="#666">ID: 54251831 | Upsert to NS</text>
 
-      <rect x="630" y="520" width="240" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="750" y="540" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Integration Tracker LUT</text>
+      <rect x="630" y="520" width="240" height="50" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="750" y="540" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">Integration Tracker LUT</text>
       <text x="750" y="555" text-anchor="middle" font-size="10" fill="#666">ID: 3347261 | Error Tracking</text>
 
       <!-- NetSuite -->
@@ -605,16 +757,16 @@ footer {
       <text x="585" y="280" font-size="10" fill="#29B5E8" transform="rotate(55, 585, 280)">SQL Query</text>
 
       <!-- Arrows: Master -> RF 3.0 -->
-      <line x1="750" y1="155" x2="750" y2="173" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="750" y1="155" x2="750" y2="173" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
 
       <!-- Arrows: RF 3.0, RF 8.0 -> Rec 1.01 -->
-      <line x1="750" y1="230" x2="750" y2="338" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
-      <text x="758" y="295" font-size="10" fill="#6B4C9A">call_recipe (sync)</text>
-      <line x1="780" y1="305" x2="760" y2="338" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <line x1="750" y1="230" x2="750" y2="338" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <text x="758" y="295" font-size="10" fill="#334BFA">call_recipe (sync)</text>
+      <line x1="780" y1="305" x2="760" y2="338" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
 
       <!-- Arrow: Rec 1.01 -> RF 1.0 -->
-      <line x1="750" y1="410" x2="750" y2="433" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
-      <text x="758" y="425" font-size="10" fill="#6B4C9A">foreach row</text>
+      <line x1="750" y1="410" x2="750" y2="433" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <text x="758" y="425" font-size="10" fill="#334BFA">foreach row</text>
 
       <!-- Arrow: RF 1.0 -> NetSuite Customer -->
       <line x1="870" y1="460" x2="928" y2="210" stroke="#2E7D32" stroke-width="2" marker-end="url(#arrow-green)"/>
@@ -624,7 +776,7 @@ footer {
       <line x1="870" y1="470" x2="928" y2="285" stroke="#2E7D32" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-green)"/>
 
       <!-- Arrow: RF 1.0 -> Workato Logs -> Snowflake -->
-      <line x1="750" y1="495" x2="750" y2="518" stroke="#6B4C9A" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
+      <line x1="750" y1="495" x2="750" y2="518" stroke="#334BFA" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-purple)"/>
       <line x1="628" y1="540" x2="572" y2="530" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow-blue)"/>
       <text x="600" y="555" font-size="10" fill="#9E9E9E">Fivetran sync</text>
 
@@ -719,8 +871,8 @@ footer {
       <text x="609" y="105" font-size="9" fill="#FF9800">SQL</text>
 
       <!-- Stage 4: Rec 1.01 -->
-      <rect x="630" y="80" width="150" height="65" rx="6" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="705" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Rec 1.01</text>
+      <rect x="630" y="80" width="150" height="65" rx="6" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+      <text x="705" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">Rec 1.01</text>
       <text x="705" y="118" text-anchor="middle" font-size="10" fill="#666">foreach customer row</text>
       <text x="705" y="134" text-anchor="middle" font-size="10" fill="#666">call RF 1.0</text>
 
@@ -728,8 +880,8 @@ footer {
       <line x1="780" y1="112" x2="818" y2="112" stroke="#FF9800" stroke-width="2" marker-end="url(#df-arrow-cust)"/>
 
       <!-- Stage 5: RF 1.0 -->
-      <rect x="820" y="65" width="160" height="95" rx="6" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="900" y="87" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 1.0</text>
+      <rect x="820" y="65" width="160" height="95" rx="6" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+      <text x="900" y="87" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">RF 1.0</text>
       <text x="900" y="103" text-anchor="middle" font-size="10" fill="#666">Upsert Customer</text>
       <text x="900" y="118" text-anchor="middle" font-size="10" fill="#666">Manage Subsidiaries</text>
       <text x="900" y="133" text-anchor="middle" font-size="10" fill="#666">Log Results</text>
@@ -881,7 +1033,7 @@ footer {
       <td>63,086</td>
       <td>Caller; invokes 1.01 to ensure customer exists before CBA processing</td>
     </tr>
-    <tr style="background: #F0EBF8;">
+    <tr style="background: #DCE1F9;">
       <td><strong>54665259</strong></td>
       <td><strong>Rec 1.01 Customer Master By Customer ID</strong></td>
       <td>Recipe Function</td>
@@ -936,7 +1088,7 @@ footer {
     <svg viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">
       <defs>
         <marker id="rh-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#6B4C9A"/>
+          <polygon points="0 0, 8 3, 0 6" fill="#334BFA"/>
         </marker>
         <marker id="rh-arrow-dash" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#999"/>
@@ -944,17 +1096,17 @@ footer {
       </defs>
 
       <!-- Level 0: Root -->
-      <rect x="350" y="15" width="320" height="55" rx="8" fill="#6B4C9A" stroke="#4a3570" stroke-width="2"/>
+      <rect x="350" y="15" width="320" height="55" rx="8" fill="#334BFA" stroke="#4a3570" stroke-width="2"/>
       <text x="510" y="38" text-anchor="middle" fill="white" font-size="13" font-weight="bold">0.0 Scheduled Master</text>
       <text x="510" y="55" text-anchor="middle" fill="#ddd" font-size="11">ID: 58628330 | Cron 4x/day</text>
 
       <!-- Level 1 branches -->
-      <rect x="30" y="120" width="220" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="140" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Rec 2.0 Items Master</text>
+      <rect x="30" y="120" width="220" height="50" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="140" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">Rec 2.0 Items Master</text>
       <text x="140" y="158" text-anchor="middle" font-size="10" fill="#999">ID: 54620963 | sync</text>
 
-      <rect x="280" y="120" width="220" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="390" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Rec 3.0 SO Master</text>
+      <rect x="280" y="120" width="220" height="50" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="390" y="142" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">Rec 3.0 SO Master</text>
       <text x="390" y="158" text-anchor="middle" font-size="10" fill="#999">ID: 54665261 | sync</text>
 
       <rect x="530" y="120" width="250" height="50" rx="6" fill="white" stroke="#999" stroke-width="2" stroke-dasharray="6,3"/>
@@ -962,50 +1114,50 @@ footer {
       <text x="655" y="158" text-anchor="middle" font-size="10" fill="#999">ID: 58628331 | async</text>
 
       <!-- Lines: Root -> Level 1 -->
-      <line x1="430" y1="70" x2="140" y2="118" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-      <line x1="510" y1="70" x2="390" y2="118" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="430" y1="70" x2="140" y2="118" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="510" y1="70" x2="390" y2="118" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
       <line x1="590" y1="70" x2="655" y2="118" stroke="#999" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#rh-arrow-dash)"/>
-      <text x="260" y="92" font-size="10" fill="#6B4C9A">sync</text>
-      <text x="440" y="92" font-size="10" fill="#6B4C9A">sync</text>
+      <text x="260" y="92" font-size="10" fill="#334BFA">sync</text>
+      <text x="440" y="92" font-size="10" fill="#334BFA">sync</text>
       <text x="640" y="92" font-size="10" fill="#999">async</text>
 
       <!-- Level 2 -->
-      <rect x="200" y="220" width="220" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="310" y="242" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 3.0 Create/Update SO</text>
+      <rect x="200" y="220" width="220" height="50" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="310" y="242" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">RF 3.0 Create/Update SO</text>
       <text x="310" y="258" text-anchor="middle" font-size="10" fill="#999">ID: 54665270 | sync</text>
 
-      <rect x="530" y="220" width="220" height="50" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="640" y="242" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 8.0 Create CBA</text>
+      <rect x="530" y="220" width="220" height="50" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="640" y="242" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">RF 8.0 Create CBA</text>
       <text x="640" y="258" text-anchor="middle" font-size="10" fill="#999">ID: 54665276 | sync</text>
 
-      <line x1="390" y1="170" x2="310" y2="218" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-      <line x1="390" y1="170" x2="640" y2="218" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="390" y1="170" x2="310" y2="218" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="390" y1="170" x2="640" y2="218" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
 
       <!-- Level 3: THIS RECIPE -->
-      <rect x="370" y="320" width="260" height="60" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="3"/>
-      <text x="500" y="343" text-anchor="middle" font-size="13" font-weight="bold" fill="#6B4C9A">Rec 1.01 Customer Master</text>
-      <text x="500" y="360" text-anchor="middle" font-size="11" fill="#6B4C9A">ID: 54665259</text>
+      <rect x="370" y="320" width="260" height="60" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="3"/>
+      <text x="500" y="343" text-anchor="middle" font-size="13" font-weight="bold" fill="#334BFA">Rec 1.01 Customer Master</text>
+      <text x="500" y="360" text-anchor="middle" font-size="11" fill="#334BFA">ID: 54665259</text>
       <text x="500" y="375" text-anchor="middle" font-size="10" fill="#999">THIS RECIPE</text>
 
-      <line x1="310" y1="270" x2="440" y2="318" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-      <line x1="640" y1="270" x2="560" y2="318" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-      <text x="355" y="296" font-size="10" fill="#6B4C9A">sync call</text>
-      <text x="580" y="296" font-size="10" fill="#6B4C9A">sync call</text>
+      <line x1="310" y1="270" x2="440" y2="318" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="640" y1="270" x2="560" y2="318" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <text x="355" y="296" font-size="10" fill="#334BFA">sync call</text>
+      <text x="580" y="296" font-size="10" fill="#334BFA">sync call</text>
 
       <!-- RF 2.0 Items -->
-      <rect x="30" y="220" width="150" height="45" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
-      <text x="105" y="240" text-anchor="middle" font-size="11" font-weight="bold" fill="#6B4C9A">RF 2.0 Items</text>
+      <rect x="30" y="220" width="150" height="45" rx="6" fill="white" stroke="#334BFA" stroke-width="1.5"/>
+      <text x="105" y="240" text-anchor="middle" font-size="11" font-weight="bold" fill="#334BFA">RF 2.0 Items</text>
       <text x="105" y="255" text-anchor="middle" font-size="10" fill="#999">ID: 54665268</text>
-      <line x1="310" y1="270" x2="105" y2="218" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+      <line x1="310" y1="270" x2="105" y2="218" stroke="#334BFA" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
 
       <!-- Level 4: RF 1.0 -->
-      <rect x="400" y="430" width="200" height="55" rx="6" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-      <text x="500" y="452" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">RF 1.0 Create/Update</text>
-      <text x="500" y="468" text-anchor="middle" font-size="12" font-weight="bold" fill="#6B4C9A">Customer</text>
+      <rect x="400" y="430" width="200" height="55" rx="6" fill="white" stroke="#334BFA" stroke-width="2"/>
+      <text x="500" y="452" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">RF 1.0 Create/Update</text>
+      <text x="500" y="468" text-anchor="middle" font-size="12" font-weight="bold" fill="#334BFA">Customer</text>
       <text x="500" y="480" text-anchor="middle" font-size="10" fill="#999">ID: 54251831 | sync</text>
 
-      <line x1="500" y1="380" x2="500" y2="428" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-      <text x="508" y="408" font-size="10" fill="#6B4C9A">foreach row</text>
+      <line x1="500" y1="380" x2="500" y2="428" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <text x="508" y="408" font-size="10" fill="#334BFA">foreach row</text>
 
       <!-- NetSuite target -->
       <rect x="750" y="430" width="160" height="55" rx="6" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
@@ -1018,11 +1170,11 @@ footer {
       <!-- Legend -->
       <rect x="830" y="15" width="250" height="95" rx="6" fill="white" stroke="#dee2e6"/>
       <text x="845" y="35" font-size="12" font-weight="bold" fill="#333">Legend</text>
-      <line x1="845" y1="50" x2="895" y2="50" stroke="#6B4C9A" stroke-width="2"/>
+      <line x1="845" y1="50" x2="895" y2="50" stroke="#334BFA" stroke-width="2"/>
       <text x="900" y="54" font-size="10" fill="#666">Synchronous call</text>
       <line x1="845" y1="68" x2="895" y2="68" stroke="#999" stroke-width="2" stroke-dasharray="6,3"/>
       <text x="900" y="72" font-size="10" fill="#666">Asynchronous call</text>
-      <rect x="845" y="80" width="45" height="18" rx="4" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
+      <rect x="845" y="80" width="45" height="18" rx="4" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
       <text x="900" y="93" font-size="10" fill="#666">Current recipe</text>
     </svg>
   </div>

@@ -543,7 +543,7 @@ footer {
         <marker id="arrow-sf" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0070d2"/></marker>
         <marker id="arrow-fivetran" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/></marker>
         <marker id="arrow-snowflake" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/></marker>
-        <marker id="arrow-workato" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="arrow-workato" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
         <marker id="arrow-netsuite" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/></marker>
         <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
         <marker id="arrow-fivetran-rev" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="10 0, 0 3.5, 10 7" fill="#F5A623"/></marker>
@@ -557,7 +557,7 @@ footer {
       <rect x="10" y="60" width="230" height="920" rx="12" fill="#E6F0FA" stroke="#0070d2" stroke-width="1" opacity="0.4"/>
       <rect x="250" y="60" width="170" height="920" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.4"/>
       <rect x="430" y="60" width="420" height="920" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.4"/>
-      <rect x="860" y="60" width="340" height="920" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.4"/>
+      <rect x="860" y="60" width="340" height="920" rx="12" fill="#DCE1F9" stroke="#334BFA" stroke-width="1" opacity="0.4"/>
       <rect x="1210" y="60" width="280" height="920" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.4"/>
 
       <!-- ================================================ -->
@@ -572,7 +572,7 @@ footer {
       <rect x="430" y="10" width="420" height="45" rx="8" fill="#29B5E8" filter="url(#shadow)"/>
       <text x="640" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Snowflake (Data Warehouse)</text>
 
-      <rect x="860" y="10" width="340" height="45" rx="8" fill="#6B4C9A" filter="url(#shadow)"/>
+      <rect x="860" y="10" width="340" height="45" rx="8" fill="#334BFA" filter="url(#shadow)"/>
       <text x="1030" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Workato (Orchestration)</text>
 
       <rect x="1210" y="10" width="280" height="45" rx="8" fill="#2E7D32" filter="url(#shadow)"/>
@@ -669,27 +669,27 @@ footer {
       <text x="509" y="378" text-anchor="middle" fill="#29B5E8" font-size="8">Analytics (54K)</text>
 
       <!-- Main flow: INT -> NETSUITE_EXPORT_SALES_ORDER -->
-      <line x1="640" y1="307" x2="640" y2="340" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="660" y="324" fill="#6B4C9A" font-size="7" font-weight="600">dbt model</text>
+      <line x1="640" y1="307" x2="640" y2="340" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="660" y="324" fill="#334BFA" font-size="7" font-weight="600">dbt model</text>
 
       <!-- Step 4: Export Table (main output for Workato) -->
-      <rect x="575" y="340" width="245" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="575" y="340" width="245" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="697" y="358" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_SALES_ORDER</text>
-      <text x="697" y="374" text-anchor="middle" fill="#6B4C9A" font-size="8">340K rows | 48 cols | team-enterprise-systems</text>
+      <text x="697" y="374" text-anchor="middle" fill="#334BFA" font-size="8">340K rows | 48 cols | team-enterprise-systems</text>
       <text x="697" y="388" text-anchor="middle" fill="#888" font-size="7">Joins: order items + contracts + customers + item mapping</text>
 
       <!-- Supporting export tables below -->
-      <line x1="697" y1="395" x2="697" y2="416" stroke="#6B4C9A" stroke-width="1.2" marker-end="url(#arrow-workato)"/>
+      <line x1="697" y1="395" x2="697" y2="416" stroke="#334BFA" stroke-width="1.2" marker-end="url(#arrow-workato)"/>
 
-      <rect x="575" y="416" width="120" height="35" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="575" y="416" width="120" height="35" rx="6" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="635" y="432" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">EXPORT_CUSTOMER</text>
       <text x="635" y="444" text-anchor="middle" fill="#888" font-size="7">Customer dimension</text>
 
-      <rect x="700" y="416" width="120" height="35" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="700" y="416" width="120" height="35" rx="6" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="760" y="432" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">EXPORT_ITEM</text>
       <text x="760" y="444" text-anchor="middle" fill="#888" font-size="7">Billing &#8594; item map</text>
 
-      <text x="697" y="478" text-anchor="middle" fill="#6B4C9A" font-size="8" font-style="italic">Consumed by Workato Rec 3.0 SQL query</text>
+      <text x="697" y="478" text-anchor="middle" fill="#334BFA" font-size="8" font-style="italic">Consumed by Workato Rec 3.0 SQL query</text>
 
       <!-- ---- WORKATO_LOGS (bottom of Snowflake) ---- -->
       <rect x="520" y="510" width="240" height="48" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -708,41 +708,41 @@ footer {
       <!-- ================================================ -->
       <!-- WORKATO COLUMN                                    -->
       <!-- ================================================ -->
-      <rect x="885" y="85" width="290" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="85" width="290" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="106" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">0.0 Scheduler</text>
-      <text x="1030" y="122" text-anchor="middle" fill="#6B4C9A" font-size="9">Cron 4x/day (5:30, 10:30, 15:30, 20:30 PT)</text>
+      <text x="1030" y="122" text-anchor="middle" fill="#334BFA" font-size="9">Cron 4x/day (5:30, 10:30, 15:30, 20:30 PT)</text>
 
-      <line x1="1030" y1="135" x2="1030" y2="170" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <line x1="1030" y1="135" x2="1030" y2="170" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
 
-      <rect x="885" y="170" width="290" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="170" width="290" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="192" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Rec 3.0 SO Master</text>
-      <text x="1030" y="207" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665261 | Query + Group by contract</text>
+      <text x="1030" y="207" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665261 | Query + Group by contract</text>
       <text x="1030" y="220" text-anchor="middle" fill="#888" font-size="9">Queries Snowflake, groups SOs per contract</text>
 
-      <line x1="1030" y1="225" x2="1030" y2="265" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="1055" y="246" fill="#6B4C9A" font-size="9" font-weight="600">For Each Contract</text>
+      <line x1="1030" y1="225" x2="1030" y2="265" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="1055" y="246" fill="#334BFA" font-size="9" font-weight="600">For Each Contract</text>
 
-      <rect x="885" y="265" width="290" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="885" y="265" width="290" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1030" y="287" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">RF 3.0 Create/Update SO</text>
-      <text x="1030" y="302" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665270 | 16,544 jobs, 0 fail</text>
+      <text x="1030" y="302" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665270 | 16,544 jobs, 0 fail</text>
       <text x="1030" y="315" text-anchor="middle" fill="#888" font-size="9">Core: customer lookup, build lines, NS API</text>
 
-      <line x1="1030" y1="320" x2="1030" y2="363" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <line x1="1030" y1="320" x2="1030" y2="363" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
 
       <!-- Decision Diamond -->
-      <polygon points="1030,363 1078,395 1030,427 982,395" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <polygon points="1030,363 1078,395 1030,427 982,395" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1030" y="392" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Existing</text>
       <text x="1030" y="404" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">SO?</text>
 
       <!-- NO branch (left) -->
-      <line x1="982" y1="395" x2="942" y2="395" stroke="#6B4C9A" stroke-width="1.5"/>
-      <text x="960" y="388" fill="#6B4C9A" font-size="9" font-weight="bold">No</text>
-      <line x1="942" y1="395" x2="942" y2="453" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
+      <line x1="982" y1="395" x2="942" y2="395" stroke="#334BFA" stroke-width="1.5"/>
+      <text x="960" y="388" fill="#334BFA" font-size="9" font-weight="bold">No</text>
+      <line x1="942" y1="395" x2="942" y2="453" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
 
       <!-- YES branch (right) -->
-      <line x1="1078" y1="395" x2="1117" y2="395" stroke="#6B4C9A" stroke-width="1.5"/>
-      <text x="1098" y="388" fill="#6B4C9A" font-size="9" font-weight="bold">Yes</text>
-      <line x1="1117" y1="395" x2="1117" y2="453" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
+      <line x1="1078" y1="395" x2="1117" y2="395" stroke="#334BFA" stroke-width="1.5"/>
+      <text x="1098" y="388" fill="#334BFA" font-size="9" font-weight="bold">Yes</text>
+      <line x1="1117" y1="395" x2="1117" y2="453" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
 
       <!-- Add SO box -->
       <rect x="885" y="453" width="115" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -763,15 +763,15 @@ footer {
       <text x="1117" y="566" text-anchor="middle" fill="#2E7D32" font-size="8">Form 114 | Proration</text>
 
       <!-- Cancellation pipeline -->
-      <rect x="885" y="610" width="290" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="610" width="290" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="630" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Rec 9.0 Cancel SO Master</text>
-      <text x="1030" y="647" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665267 | Queries cancelled contracts</text>
+      <text x="1030" y="647" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665267 | Queries cancelled contracts</text>
 
-      <line x1="1030" y1="660" x2="1030" y2="690" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <line x1="1030" y1="660" x2="1030" y2="690" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
 
-      <rect x="885" y="690" width="290" height="45" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="690" width="290" height="45" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="710" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">RF 9.0 Cancel SO</text>
-      <text x="1030" y="726" text-anchor="middle" fill="#6B4C9A" font-size="9">15,553 jobs | Close all SO lines</text>
+      <text x="1030" y="726" text-anchor="middle" fill="#334BFA" font-size="9">15,553 jobs | Close all SO lines</text>
 
       <!-- Logging node -->
       <rect x="885" y="775" width="290" height="45" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -870,9 +870,9 @@ footer {
       <text x="545" y="944" fill="#333" font-size="9">Solid = data flow</text>
       <line x1="630" y1="940" x2="670" y2="940" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
       <text x="675" y="944" fill="#333" font-size="9">Dashed = logging / reverse</text>
-      <polygon points="810,934 822,940 810,946" fill="#6B4C9A"/>
+      <polygon points="810,934 822,940 810,946" fill="#334BFA"/>
       <text x="828" y="944" fill="#333" font-size="9">Arrow = direction</text>
-      <polygon points="920,928 932,940 920,952 908,940" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+      <polygon points="920,928 932,940 920,952 908,940" fill="white" stroke="#334BFA" stroke-width="1"/>
       <text x="938" y="944" fill="#333" font-size="9">Decision</text>
 
       <!-- Legend: Color key -->
@@ -882,7 +882,7 @@ footer {
       <text x="548" y="967" fill="#555" font-size="9">Fivetran</text>
       <rect x="602" y="958" width="14" height="10" rx="2" fill="#29B5E8"/>
       <text x="620" y="967" fill="#555" font-size="9">Snowflake</text>
-      <rect x="685" y="958" width="14" height="10" rx="2" fill="#6B4C9A"/>
+      <rect x="685" y="958" width="14" height="10" rx="2" fill="#334BFA"/>
       <text x="703" y="967" fill="#555" font-size="9">Workato</text>
       <rect x="762" y="958" width="14" height="10" rx="2" fill="#2E7D32"/>
       <text x="780" y="967" fill="#555" font-size="9">NetSuite</text>
@@ -980,7 +980,7 @@ footer {
   <svg viewBox="0 0 1120 700" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1120px;font-family:'Segoe UI',Arial,sans-serif;">
     <defs>
       <marker id="so-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/>
       </marker>
       <marker id="so-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
         <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
@@ -996,7 +996,7 @@ footer {
     <!-- ================================================================ -->
     <!-- LEVEL 0: Scheduled Master (top center)                           -->
     <!-- ================================================================ -->
-    <rect x="350" y="12" width="340" height="58" rx="10" fill="#6B4C9A" stroke="#4a3470" stroke-width="2"/>
+    <rect x="350" y="12" width="340" height="58" rx="10" fill="#334BFA" stroke="#4a3470" stroke-width="2"/>
     <text x="520" y="36" text-anchor="middle" fill="white" font-size="14" font-weight="bold">0.0 Scheduled Master</text>
     <text x="520" y="52" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">ID: 58628330 | Cron 4x/day (5:30, 10:30, 15:30, 20:30 PT)</text>
     <text x="520" y="64" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">804 jobs | 0 failures</text>
@@ -1004,40 +1004,40 @@ footer {
     <!-- ================================================================ -->
     <!-- LEVEL 1a: Items Master (left branch)                             -->
     <!-- ================================================================ -->
-    <line x1="430" y1="70" x2="220" y2="116" stroke="#6B4C9A" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
-    <text x="305" y="87" fill="#6B4C9A" font-size="9" font-weight="600" transform="rotate(-10, 305, 87)">sync call (step 1)</text>
+    <line x1="430" y1="70" x2="220" y2="116" stroke="#334BFA" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
+    <text x="305" y="87" fill="#334BFA" font-size="9" font-weight="600" transform="rotate(-10, 305, 87)">sync call (step 1)</text>
 
-    <rect x="90" y="116" width="260" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-    <text x="220" y="139" text-anchor="middle" fill="#6B4C9A" font-size="12" font-weight="bold">Rec 2.0 Items Master</text>
+    <rect x="90" y="116" width="260" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+    <text x="220" y="139" text-anchor="middle" fill="#334BFA" font-size="12" font-weight="bold">Rec 2.0 Items Master</text>
     <text x="220" y="157" text-anchor="middle" fill="#555" font-size="10">Pre-step: syncs item catalog to NetSuite</text>
 
     <!-- ================================================================ -->
     <!-- LEVEL 1b: SO Master (center branch)                              -->
     <!-- ================================================================ -->
-    <line x1="520" y1="70" x2="520" y2="116" stroke="#6B4C9A" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
-    <text x="540" y="96" fill="#6B4C9A" font-size="9" font-weight="600">sync call (step 2)</text>
+    <line x1="520" y1="70" x2="520" y2="116" stroke="#334BFA" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
+    <text x="540" y="96" fill="#334BFA" font-size="9" font-weight="600">sync call (step 2)</text>
 
-    <rect x="390" y="116" width="260" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-    <text x="520" y="139" text-anchor="middle" fill="#6B4C9A" font-size="13" font-weight="bold">Rec 3.0 SO Master</text>
+    <rect x="390" y="116" width="260" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+    <text x="520" y="139" text-anchor="middle" fill="#334BFA" font-size="13" font-weight="bold">Rec 3.0 SO Master</text>
     <text x="520" y="157" text-anchor="middle" fill="#555" font-size="10">ID: 54665261 | 975 jobs, 0 fail</text>
 
     <!-- ================================================================ -->
     <!-- LEVEL 1c: Cancel SO Master (right branch)                        -->
     <!-- ================================================================ -->
-    <line x1="610" y1="70" x2="810" y2="116" stroke="#6B4C9A" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
-    <text x="725" y="87" fill="#6B4C9A" font-size="9" font-weight="600" transform="rotate(12, 725, 87)">sync call (step 3)</text>
+    <line x1="610" y1="70" x2="810" y2="116" stroke="#334BFA" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
+    <text x="725" y="87" fill="#334BFA" font-size="9" font-weight="600" transform="rotate(12, 725, 87)">sync call (step 3)</text>
 
-    <rect x="680" y="116" width="260" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-    <text x="810" y="139" text-anchor="middle" fill="#6B4C9A" font-size="12" font-weight="bold">Rec 9.0 Cancel SO Master</text>
+    <rect x="680" y="116" width="260" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+    <text x="810" y="139" text-anchor="middle" fill="#334BFA" font-size="12" font-weight="bold">Rec 9.0 Cancel SO Master</text>
     <text x="810" y="157" text-anchor="middle" fill="#555" font-size="10">ID: 54665267 | 861 jobs, 1 fail</text>
 
     <!-- ================================================================ -->
     <!-- LEVEL 2 (center): RF 3.0 Create/Update SO                       -->
     <!-- ================================================================ -->
-    <line x1="520" y1="166" x2="520" y2="211" stroke="#6B4C9A" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
-    <text x="540" y="192" fill="#6B4C9A" font-size="9" font-weight="600">for each contract</text>
+    <line x1="520" y1="166" x2="520" y2="211" stroke="#334BFA" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
+    <text x="540" y="192" fill="#334BFA" font-size="9" font-weight="600">for each contract</text>
 
-    <rect x="355" y="211" width="330" height="58" rx="10" fill="#6B4C9A" stroke="#4a3470" stroke-width="2"/>
+    <rect x="355" y="211" width="330" height="58" rx="10" fill="#334BFA" stroke="#4a3470" stroke-width="2"/>
     <text x="520" y="234" text-anchor="middle" fill="white" font-size="13" font-weight="bold">RF 3.0 Create/Update SO</text>
     <text x="520" y="250" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">ID: 54665270 | 16,544 jobs, 0 fail | 213K tasks</text>
     <text x="520" y="263" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">Core recipe &#8212; builds &amp; upserts Sales Orders</text>
@@ -1045,10 +1045,10 @@ footer {
     <!-- ================================================================ -->
     <!-- LEVEL 2 (right): RF 9.0 Cancel SO                               -->
     <!-- ================================================================ -->
-    <line x1="810" y1="166" x2="810" y2="211" stroke="#6B4C9A" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
-    <text x="830" y="192" fill="#6B4C9A" font-size="9" font-weight="600">for each contract</text>
+    <line x1="810" y1="166" x2="810" y2="211" stroke="#334BFA" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
+    <text x="830" y="192" fill="#334BFA" font-size="9" font-weight="600">for each contract</text>
 
-    <rect x="680" y="211" width="260" height="50" rx="8" fill="#DDD5ED" stroke="#6B4C9A" stroke-width="1.5"/>
+    <rect x="680" y="211" width="260" height="50" rx="8" fill="#DDD5ED" stroke="#334BFA" stroke-width="1.5"/>
     <text x="810" y="234" text-anchor="middle" fill="#4a3470" font-size="12" font-weight="bold">RF 9.0 Cancel SO</text>
     <text x="810" y="252" text-anchor="middle" fill="#555" font-size="10">ID: 54665277 | 15,553 jobs, 0 fail</text>
 
@@ -1057,10 +1057,10 @@ footer {
     <!-- ================================================================ -->
 
     <!-- Left child: Rec 1.01 Customer Master by ID -->
-    <line x1="430" y1="269" x2="235" y2="331" stroke="#6B4C9A" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
-    <text x="310" y="295" fill="#6B4C9A" font-size="9" font-weight="600" transform="rotate(-16, 310, 295)">sync call (customer lookup)</text>
+    <line x1="430" y1="269" x2="235" y2="331" stroke="#334BFA" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
+    <text x="310" y="295" fill="#334BFA" font-size="9" font-weight="600" transform="rotate(-16, 310, 295)">sync call (customer lookup)</text>
 
-    <rect x="70" y="331" width="330" height="50" rx="8" fill="#DDD5ED" stroke="#6B4C9A" stroke-width="1.5"/>
+    <rect x="70" y="331" width="330" height="50" rx="8" fill="#DDD5ED" stroke="#334BFA" stroke-width="1.5"/>
     <text x="235" y="353" text-anchor="middle" fill="#4a3470" font-size="12" font-weight="bold">Rec 1.01 Customer Master by ID</text>
     <text x="235" y="371" text-anchor="middle" fill="#555" font-size="10">ID: 54665259 | 178K jobs</text>
 
@@ -1083,8 +1083,8 @@ footer {
     <!-- ================================================================ -->
     <!-- LEVEL 4 (from Rec 1.01): RF 1.0 Create/Update Customer          -->
     <!-- ================================================================ -->
-    <line x1="235" y1="381" x2="235" y2="431" stroke="#6B4C9A" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
-    <text x="255" y="410" fill="#6B4C9A" font-size="9" font-weight="600">sync (for each customer)</text>
+    <line x1="235" y1="381" x2="235" y2="431" stroke="#334BFA" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
+    <text x="255" y="410" fill="#334BFA" font-size="9" font-weight="600">sync (for each customer)</text>
 
     <rect x="70" y="431" width="330" height="50" rx="8" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
     <text x="235" y="453" text-anchor="middle" fill="#2E7D32" font-size="12" font-weight="bold">RF 1.0 Create/Update Customer</text>
@@ -1125,7 +1125,7 @@ footer {
     <text x="685" y="545" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Legend</text>
 
     <!-- Sync call -->
-    <line x1="540" y1="567" x2="585" y2="567" stroke="#6B4C9A" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
+    <line x1="540" y1="567" x2="585" y2="567" stroke="#334BFA" stroke-width="2" marker-end="url(#so-arrow-purple)"/>
     <text x="595" y="571" fill="#555" font-size="10">Synchronous recipe call</text>
 
     <!-- Conditional -->
@@ -1141,9 +1141,9 @@ footer {
     <text x="595" y="643" fill="#555" font-size="10">Manual / ad-hoc recipe</text>
 
     <!-- Node color key -->
-    <rect x="540" y="656" width="14" height="10" rx="2" fill="#6B4C9A"/>
+    <rect x="540" y="656" width="14" height="10" rx="2" fill="#334BFA"/>
     <text x="560" y="665" fill="#555" font-size="9">Scheduler / Core</text>
-    <rect x="640" y="656" width="14" height="10" rx="2" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1"/>
+    <rect x="640" y="656" width="14" height="10" rx="2" fill="#DCE1F9" stroke="#334BFA" stroke-width="1"/>
     <text x="660" y="665" fill="#555" font-size="9">Master</text>
     <rect x="710" y="656" width="14" height="10" rx="2" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
     <text x="730" y="665" fill="#555" font-size="9">NetSuite</text>
