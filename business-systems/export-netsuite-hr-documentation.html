@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="venkatesh.manohar">
+<title>Export-Netsuite-HR | Integration Documentation</title>
+<style>
+:root {
+  /* Intercom brand — light cream aesthetic */
+  --ic-cream: #F4F3ED;
+  --ic-warm-white: #FEFDFB;
+  --ic-dark: #16100E;
+  --ic-blue: #334BFA;
+  --ic-blue-bg: #DCE1F9;
+  --ic-green: #0F7134;
+  --ic-green-bg: #D7EFDC;
+  --ic-orange-accent: #B24D00;
+  --ic-orange-bg: #FFEBDB;
+  --ic-red: #DF2020;
+  --ic-red-bg: #FFDBDB;
+  /* System-specific brand colors */
+  --orange: #F5A623;
+  --blue: #29B5E8;
+  --green: #2E7D32;
+  --sf-blue: #0070d2;
+  --gray: #9E9E9E;
+  --orange-bg: #FFF5E6;
+  --blue-bg: #E8F4FD;
+  --green-bg: #E8F5E9;
+  --sf-bg: #E6F0FA;
+  --gray-bg: #F5F5F5;
+  --text-primary: #1A1A1A;
+  --text-secondary: #737373;
+  --border: #E6E6E6;
+  /* Legacy aliases for SVG diagrams and varied agent output */
+  --source-orange: #F5A623;
+  --source-bg: #FFF5E6;
+  --data-blue: #29B5E8;
+  --data-bg: #E8F4FD;
+  --orchestration-purple: #334BFA;
+  --orchestration-bg: #DCE1F9;
+  --target-green: #2E7D32;
+  --target-bg: #E8F5E9;
+  --audit-gray: #9E9E9E;
+  --audit-bg: #F5F5F5;
+  --card: #ffffff;
+  --text: #1A1A1A;
+  --muted: #737373;
+  --bg: #F4F3ED;
+  --purple: #334BFA;
+  --purple-bg: #DCE1F9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  margin: 0;
+  padding: 24px 24px 24px 290px;
+  background: var(--ic-cream);
+}
+
+/* ── Fixed Left Sidebar TOC ── */
+nav#toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 266px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 0 0 20px 0;
+  box-shadow: 1px 0 4px rgba(0,0,0,0.04);
+  border-right: 1px solid var(--border);
+  z-index: 1000;
+}
+nav#toc .toc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+nav#toc .toc-brand svg { flex-shrink: 0; }
+nav#toc .toc-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+nav#toc .toc-brand-text .brand-title {
+  font-size: 0.85em;
+  font-weight: 700;
+  color: var(--ic-dark);
+  letter-spacing: -0.02em;
+}
+nav#toc .toc-brand-text .brand-sub {
+  font-size: 0.68em;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+nav#toc h3 {
+  font-size: 0.7em;
+  color: var(--text-secondary);
+  margin: 12px 18px 8px;
+  padding: 0;
+  border-bottom: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+nav#toc a {
+  color: #1A1A1A;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.82em;
+  display: block;
+  padding: 6px 18px;
+  border-radius: 0;
+  transition: all 0.15s ease;
+  margin: 0;
+  border-left: 3px solid transparent;
+}
+nav#toc a:hover { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: rgba(51,75,250,0.3); }
+nav#toc a.active { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: var(--ic-blue); font-weight: 600; }
+
+/* ── Main Content ── */
+.main-content { max-width: 1100px; }
+
+h1 {
+  font-size: 2em;
+  color: var(--ic-dark);
+  margin-bottom: 8px;
+  border-bottom: 3px solid var(--ic-blue);
+  padding-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: 1.5em;
+  color: var(--ic-dark);
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ic-blue-bg);
+  letter-spacing: -0.02em;
+}
+h3 {
+  font-size: 1.15em;
+  color: var(--text-primary);
+  margin: 24px 0 10px;
+  letter-spacing: -0.01em;
+}
+h4 {
+  font-size: 1em;
+  color: var(--text-secondary);
+  margin: 16px 0 8px;
+}
+
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 24px; }
+li { margin-bottom: 6px; }
+
+/* ── Meta Header ── */
+.meta-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.meta-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.meta-header h1 { color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative; }
+.meta-header .meta-info, .meta-header .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 12px;
+  font-size: 0.9em;
+  opacity: 0.9;
+  position: relative;
+}
+.meta-header .meta-info span, .meta-header .meta span { display: flex; align-items: center; gap: 6px; }
+.meta-header p, .meta-header .subtitle { margin-top: 4px; opacity: 0.85; position: relative; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+.badge-active { background: var(--ic-green-bg); color: var(--ic-green); }
+.badge-stopped { background: var(--gray); color: white; }
+.badge-e2e { background: var(--ic-orange-bg); color: var(--ic-orange-accent); }
+.badge-arch { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* ── Sections ── */
+section, .section {
+  background: white;
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+}
+section h2, .section h2 {
+  margin-top: 0;
+}
+
+/* ── Two-Layer Boxes ── */
+.two-layer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 16px 0;
+}
+.layer-box {
+  padding: 16px 20px;
+  border-radius: 6px;
+  border-left: 4px solid;
+}
+.layer-business { background: var(--blue-bg); border-color: var(--blue); }
+.layer-technical { background: var(--ic-blue-bg); border-color: var(--ic-blue); }
+.layer-box h4 { margin-top: 0; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; }
+.layer-business h4 { color: var(--blue); }
+.layer-technical h4 { color: var(--ic-blue); }
+
+/* ── System Cards ── */
+.system-card {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  margin: 4px;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+.system-salesforce { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-snowflake { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-workato { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-netsuite { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+.system-fivetran { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-stripe { background: var(--orange-bg); color: #635BFF; border: 1px solid #635BFF; }
+.system-marketo { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+.system-sfdc, .system-intercom { background: var(--sf-bg); color: var(--sf-blue); border: 1px solid var(--sf-blue); }
+.system-expensify { background: var(--ic-green-bg); color: var(--ic-green); border: 1px solid var(--ic-green); }
+.system-workday { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-navan { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+.system-pigment { background: var(--ic-blue-bg); color: var(--ic-blue); border: 1px solid var(--ic-blue); }
+.system-outreach { background: var(--orange-bg); color: var(--orange); border: 1px solid var(--orange); }
+.system-zuora { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue); }
+.system-ebanx { background: var(--ic-orange-bg); color: var(--ic-orange-accent); border: 1px solid var(--ic-orange-accent); }
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.9em;
+  border-radius: 6px;
+  overflow: hidden;
+}
+th {
+  background: var(--ic-dark);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) { background: var(--ic-cream); }
+
+/* ── Code ── */
+code {
+  background: #F4F3ED;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+pre {
+  background: var(--ic-dark);
+  color: #E6E1DC;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+pre code { background: none; padding: 0; color: inherit; }
+
+/* ── Diagrams ── */
+.diagram-container, .svg-container, .architecture-diagram {
+  text-align: center;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+.diagram-container svg, .svg-container svg, .architecture-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Callouts ── */
+.callout {
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin: 12px 0;
+  font-size: 0.92em;
+}
+.callout-info { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); }
+.callout-warn, .callout-warning { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); }
+.callout-success { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); }
+.callout-error, .callout-danger { background: var(--ic-red-bg); border-left: 4px solid var(--ic-red); }
+
+/* ── Details/Collapsible ── */
+details {
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ic-blue);
+}
+details[open] summary { margin-bottom: 10px; }
+
+/* ── Steps ── */
+.step-row, .step-card { display: flex; gap: 12px; align-items: flex-start; margin: 10px 0; }
+.step-num, .step-number {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--ic-blue); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+}
+.step-content { flex: 1; }
+
+/* ── Tags (compat aliases for varied agent output) ── */
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-right: 6px; }
+.tag-source { background: var(--orange-bg); color: #c77600; }
+.tag-data { background: var(--blue-bg); color: #1a7fa3; }
+.tag-workato, .tag-orchestration { background: var(--ic-blue-bg); color: var(--ic-blue); }
+.tag-target { background: var(--green-bg); color: var(--green); }
+.tag-audit { background: var(--gray-bg); color: var(--gray); }
+.tag-red, .tag-danger { background: var(--ic-red-bg); color: var(--ic-red); }
+.tag-green, .tag-success { background: var(--ic-green-bg); color: var(--ic-green); }
+.tag-blue, .tag-info { background: var(--ic-blue-bg); color: var(--ic-blue); }
+
+/* ── Compat: note/warn boxes (varied agent class names) ── */
+.note-info, .info-box, .note { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-warn, .warn-box, .warning-box, .warning { background: var(--ic-orange-bg); border-left: 4px solid var(--ic-orange-accent); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-success, .success-box { background: var(--ic-green-bg); border-left: 4px solid var(--ic-green); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+.note-error, .error-box, .danger-box { background: var(--ic-red-bg); border-left: 4px solid var(--ic-red); padding: 14px 18px; border-radius: 6px; margin: 12px 0; }
+
+/* ── Compat: KPI/value boxes ── */
+.kpi-grid, .stats-grid, .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
+.kpi-card, .stat-card, .metric-card {
+  background: white; border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px; text-align: center;
+}
+.kpi-value, .stat-value, .metric-value, .value {
+  font-size: 1.8em; font-weight: 700; color: var(--ic-blue);
+}
+.kpi-label, .stat-label, .metric-label, .label {
+  font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;
+}
+
+/* ── Compat: header aliases ── */
+.doc-header, .header-bar, .hero, .page-header {
+  background: linear-gradient(135deg, var(--ic-dark) 0%, #2D2118 40%, #3D3028 100%);
+  color: white;
+  padding: 28px 32px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.doc-header h1, .header-bar h1, .hero h1, .page-header h1 {
+  color: white; border-bottom-color: rgba(255,255,255,0.15); position: relative;
+}
+.doc-header .meta, .header-bar .meta, .doc-header .meta-info, .header-bar .meta-info {
+  display: flex; flex-wrap: wrap; gap: 24px; margin-top: 12px;
+  font-size: 0.9em; opacity: 0.9; position: relative;
+}
+.doc-header .subtitle, .header-bar .subtitle, .hero .subtitle, .page-header .subtitle {
+  margin-top: 4px; opacity: 0.85; position: relative;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  nav#toc { position: relative; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  body { padding: 24px; }
+  .two-layer { grid-template-columns: 1fr; }
+}
+
+/* ── Print ── */
+@media print {
+  nav#toc { display: none; }
+  body { padding: 0; background: white; }
+  section, .section { box-shadow: none; break-inside: avoid; border: 1px solid #ddd; }
+  .meta-header, .doc-header, .header-bar { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h2 { break-before: auto; }
+}
+</style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:8px;right:180px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
+
+<a href="business-systems-active-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#16100E;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#334BFA'" onmouseout="this.style.background='#16100E'">&#8592; Back to Index</a>
+
+<nav id="toc">
+  <div class="toc-brand">
+    <svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#000000"/>
+      <rect x="14" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <rect x="22" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="30" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="38" y="10" width="5" height="28" rx="2.5" fill="white"/>
+      <rect x="46" y="14" width="5" height="24" rx="2.5" fill="white"/>
+      <path d="M16 46 C16 46, 24 54, 32.5 54 C41 54, 49 46, 49 46" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="toc-brand-text">
+      <span class="brand-title">Intercom</span>
+      <span class="brand-sub">Enterprise Systems</span>
+    </div>
+  </div>
+  <h3>Navigation</h3>
+  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+  <a href="#end-to-end-flow" data-section="end-to-end-flow">6. End-to-End Flow</a>
+  <a href="#processing-stages" data-section="processing-stages">7. Processing Stages</a>
+  <a href="#component-overview" data-section="component-overview">8. Component Overview</a>
+  <a href="#business-logic" data-section="business-logic">9. Key Business Logic</a>
+  <a href="#data-model" data-section="data-model">10. Data Model</a>
+  <a href="#edge-cases" data-section="edge-cases">11. Edge Cases</a>
+  <a href="#operational-notes" data-section="operational-notes">12. Operational Notes</a>
+</nav>
+
+<div class="main-content">
+
+<div class="meta-header">
+<h1>Export-Netsuite-HR</h1>
+<p class="subtitle">NetSuite Employee Data Export to Workato Lookup Table</p>
+<div class="meta-bar">
+<span class="meta-item"><strong>Recipe ID:</strong> 61814301</span>
+<span class="meta-item"><strong>Status:</strong> Stopped</span>
+<span class="meta-item"><strong>Author:</strong> venkatesh.manohar</span>
+<span class="meta-item"><strong>Last Updated:</strong> 2025-04-25</span>
+<span class="meta-item"><strong>Version:</strong> 2 (diana.sy)</span>
+<span class="meta-item"><strong>Lifetime Tasks:</strong> 93</span>
+</div>
+</div>
+ 1. Executive Summary 
+<section id="executive-summary">
+<h2>1. Executive Summary</h2>
+<p>
+<strong>Export-Netsuite-HR</strong> is a scheduled Workato recipe that performs a daily full extract of all Employee records
+            from NetSuite and loads them into the <code>Netsuite_Employee</code> Workato Lookup Table. The recipe runs a
+            truncate-and-reload pattern: it clears the lookup table each run, paginates through all NetSuite employees
+            via saved search, collects key identifiers (External ID, Email, Internal ID, Workday ID, Inactive flag), and
+            batch-inserts the results into the lookup table for downstream consumption by other Workato recipes.
+        </p>
+<div class="callout stopped">
+<strong>Current Status: STOPPED</strong> — This recipe was stopped on 2025-04-25 after a single successful run (93 tasks consumed).
+            It ran once and has not been reactivated.
+        </div>
+<table>
+<tr><th>Attribute</th><th>Value</th></tr>
+<tr><td>Recipe Name</td><td>Export-Netsuite-HR</td></tr>
+<tr><td>Recipe ID</td><td>61814301</td></tr>
+<tr><td>Folder ID</td><td>24523671 (Netsuite subfolder)</td></tr>
+<tr><td>Project ID</td><td>370065</td></tr>
+<tr><td>Trigger</td><td>Scheduler — every 1 day at 01:00:00 AM</td></tr>
+<tr><td>Created</td><td>2025-04-25 13:59 PDT</td></tr>
+<tr><td>Last Run</td><td>2025-04-25 15:19 PDT (succeeded)</td></tr>
+<tr><td>Total Jobs</td><td>1 succeeded, 0 failed</td></tr>
+<tr><td>Version Author</td><td>diana.sy@intercom.io</td></tr>
+<tr><td>Environment Author</td><td>Environment Production</td></tr>
+</table>
+</section>
+ 2. Business Overview 
+<section id="business-overview">
+<h2>2. Business Overview</h2>
+<h3>Purpose</h3>
+<p>
+            This recipe maintains a centralized, up-to-date cache of NetSuite Employee records inside a Workato Lookup Table.
+            By refreshing the <code>Netsuite_Employee</code> lookup table daily, other Workato integrations can perform
+            fast lookups of employee data (email, External ID, Internal ID, Workday ID, active/inactive status) without
+            making real-time API calls to NetSuite. This pattern reduces NetSuite API consumption and improves the
+            reliability and speed of downstream HR and billing integrations.
+        </p>
+<h3>Business Context</h3>
+<ul>
+<li><strong>HR Data Synchronization:</strong> Employee records in NetSuite are the system of record for internal HR entities.
+                Other systems (Workday, billing, provisioning) need to cross-reference employees by their various IDs.</li>
+<li><strong>Workday-NetSuite ID Mapping:</strong> The recipe captures the <code>custentity_workday_id</code> custom field,
+                enabling mappings between Workday and NetSuite employee identifiers.</li>
+<li><strong>Active/Inactive Tracking:</strong> The <code>isInactive</code> flag allows downstream recipes to skip or
+                filter terminated employees.</li>
+</ul>
+<h3>Stakeholders</h3>
+<table>
+<tr><th>Role</th><th>Interest</th></tr>
+<tr><td>Finance/Billing Operations</td><td>Employee ID mappings for billing and commission calculations</td></tr>
+<tr><td>People Operations / HR</td><td>Ensuring employee data flows correctly between Workday and NetSuite</td></tr>
+<tr><td>Enterprise Integrations</td><td>Maintaining the lookup table used by downstream Workato recipes</td></tr>
+</table>
+</section>
+ 3. System Overview 
+<section id="system-overview">
+<h2>3. System Overview</h2>
+<h3>Connected Systems</h3>
+<table>
+<tr><th>System</th><th>Role</th><th>Connection</th><th>Details</th></tr>
+<tr>
+<td><span class="tag tag-orange">NetSuite</span></td>
+<td>Source</td>
+<td>Account ID: 15626184</td>
+<td>Employee search via SOAP/SuiteTalk API; searches all Employee records extracting email, externalId, internalId, isInactive, and custentity_workday_id</td>
+</tr>
+<tr>
+<td><span class="tag tag-purple">Workato Lookup Table</span></td>
+<td>Target</td>
+<td>Table ID: 4222656</td>
+<td><code>Netsuite_Employee</code> lookup table with columns: External_ID, Email, Internal_ID, Inactive</td>
+</tr>
+<tr>
+<td><span class="tag tag-blue">Workato Variables</span></td>
+<td>Orchestration</td>
+<td>In-recipe</td>
+<td>Three lists (No-external-id, counter, NetsuiteEmployee) and two scalar variables (search_id, page_num) for pagination control</td>
+</tr>
+<tr>
+<td><span class="tag tag-green">Workato Logger</span></td>
+<td>Observability</td>
+<td>In-recipe</td>
+<td>Logs pagination counter and full employee list to job report for debugging</td>
+</tr>
+<tr>
+<td><span class="tag tag-blue">Clock (Scheduler)</span></td>
+<td>Trigger</td>
+<td>Built-in</td>
+<td>Daily trigger at 01:00 AM</td>
+</tr>
+</table>
+</section>
+ 4. Architecture Overview 
+<section id="architecture-overview">
+<h2>4. Architecture Overview</h2>
+<p>
+            The recipe follows a <strong>Truncate-and-Reload</strong> extract pattern. On each scheduled run, it completely
+            clears the target lookup table, then performs a paginated search against the NetSuite Employee object.
+            Each page of results (up to 200 records) is accumulated into an in-memory list variable. After all pages
+            are consumed (controlled by a while-loop comparing current page to total pages), the full dataset is
+            batch-inserted into the lookup table.
+        </p>
+<div class="callout callout-info">
+<strong>Pattern:</strong> Full Extract + Truncate-and-Reload. This ensures the lookup table always reflects the
+            complete, current state of NetSuite employee records rather than incremental deltas.
+        </div>
+<h3>Key Architectural Decisions</h3>
+<ul>
+<li><strong>Full reload vs. incremental:</strong> Chosen for simplicity and data consistency; avoids handling deletes or
+                complex change detection.</li>
+<li><strong>Pagination via search ID:</strong> NetSuite's search API returns a search ID on the first call, which is
+                reused for subsequent page requests for consistent results.</li>
+<li><strong>In-memory accumulation:</strong> All employee records are collected in a Workato list variable before a
+                single batch insert, minimizing API calls to the lookup table.</li>
+<li><strong>Lookup Table as cache:</strong> Other recipes can do fast key-value lookups without hitting NetSuite's API
+                limits or incurring latency.</li>
+</ul>
+</section>
+ 5. Architecture Diagram 
+<section id="architecture-diagram">
+<h2>5. Architecture Diagram</h2>
+<div class="diagram-container">
+<svg style="max-width:960px;width:100%;" viewbox="0 0 960 420" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#999"></path></marker>
+<marker id="arrowOrange" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#F5A623"></path></marker>
+<marker id="arrowBlue" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#29B5E8"></path></marker>
+<marker id="arrowGreen" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#2E7D32"></path></marker>
+</defs>
+<rect fill="#FFF5E6" height="420" rx="8" stroke="#F5A623" stroke-width="1.5" width="240" x="0" y="0"></rect>
+<rect fill="#E8F6FC" height="420" rx="8" stroke="#29B5E8" stroke-width="1.5" width="240" x="240" y="0"></rect>
+<rect fill="#F0E8FA" height="420" rx="8" stroke="#334BFA" stroke-width="1.5" width="240" x="480" y="0"></rect>
+<rect fill="#E8F5E8" height="420" rx="8" stroke="#2E7D32" stroke-width="1.5" width="240" x="720" y="0"></rect>
+<text fill="#B87A00" font-size="14" font-weight="700" text-anchor="middle" x="120" y="30">SOURCE</text>
+<text fill="#1976A8" font-size="14" font-weight="700" text-anchor="middle" x="360" y="30">DATA</text>
+<text fill="#334BFA" font-size="14" font-weight="700" text-anchor="middle" x="600" y="30">ORCHESTRATION</text>
+<text fill="#2E7D32" font-size="14" font-weight="700" text-anchor="middle" x="840" y="30">TARGET</text>
+<rect fill="#fff" height="80" rx="8" stroke="#F5A623" stroke-width="2" width="180" x="30" y="60"></rect>
+<text fill="#B87A00" font-size="13" font-weight="700" text-anchor="middle" x="120" y="90">NetSuite</text>
+<text fill="#666" font-size="11" text-anchor="middle" x="120" y="108">Employee Records</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="120" y="124">SOAP/SuiteTalk API</text>
+<rect fill="#fff" height="110" rx="6" stroke="#F5A623" stroke-width="1" width="180" x="30" y="160"></rect>
+<text fill="#B87A00" font-size="11" font-weight="600" text-anchor="middle" x="120" y="180">Extracted Fields</text>
+<text fill="#666" font-size="10" x="45" y="198">- email</text>
+<text fill="#666" font-size="10" x="45" y="212">- externalId</text>
+<text fill="#666" font-size="10" x="45" y="226">- internalId</text>
+<text fill="#666" font-size="10" x="45" y="240">- isInactive</text>
+<text fill="#666" font-size="10" x="45" y="254">- custentity_workday_id</text>
+<rect fill="#fff" height="70" rx="8" stroke="#29B5E8" stroke-width="2" width="180" x="270" y="60"></rect>
+<text fill="#1976A8" font-size="13" font-weight="700" text-anchor="middle" x="360" y="87">Workato Variables</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="360" y="105">search_id, page_num</text>
+<rect fill="#fff" height="90" rx="8" stroke="#29B5E8" stroke-width="2" width="180" x="270" y="150"></rect>
+<text fill="#1976A8" font-size="12" font-weight="700" text-anchor="middle" x="360" y="173">In-Memory Lists</text>
+<text fill="#666" font-size="10" x="285" y="192">- NetsuiteEmployee</text>
+<text fill="#666" font-size="10" x="285" y="206">- No-external-id</text>
+<text fill="#666" font-size="10" x="285" y="220">- counter</text>
+<rect fill="#fff" height="55" rx="8" stroke="#334BFA" stroke-width="2" width="180" x="510" y="60"></rect>
+<text fill="#334BFA" font-size="12" font-weight="700" text-anchor="middle" x="600" y="83">Daily Scheduler</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="600" y="99">01:00 AM</text>
+<rect fill="#fff" height="60" rx="8" stroke="#334BFA" stroke-width="2" width="180" x="510" y="135"></rect>
+<text fill="#334BFA" font-size="12" font-weight="700" text-anchor="middle" x="600" y="158">Pagination Loop</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="600" y="176">While page != totalPages+1</text>
+<rect fill="#fff" height="50" rx="8" stroke="#334BFA" stroke-width="2" width="180" x="510" y="215"></rect>
+<text fill="#334BFA" font-size="12" font-weight="700" text-anchor="middle" x="600" y="238">Logger</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="600" y="252">Job report logging</text>
+<rect fill="#fff" height="80" rx="8" stroke="#2E7D32" stroke-width="2" width="180" x="750" y="60"></rect>
+<text fill="#2E7D32" font-size="13" font-weight="700" text-anchor="middle" x="840" y="87">Lookup Table</text>
+<text fill="#666" font-size="11" text-anchor="middle" x="840" y="105">Netsuite_Employee</text>
+<text fill="#999" font-size="10" text-anchor="middle" x="840" y="120">Table ID: 4222656</text>
+<rect fill="#fff" height="90" rx="6" stroke="#2E7D32" stroke-width="1" width="180" x="750" y="160"></rect>
+<text fill="#2E7D32" font-size="11" font-weight="600" text-anchor="middle" x="840" y="180">Columns</text>
+<text fill="#666" font-size="10" x="765" y="198">- External_ID</text>
+<text fill="#666" font-size="10" x="765" y="212">- Email</text>
+<text fill="#666" font-size="10" x="765" y="226">- Internal_ID</text>
+<text fill="#666" font-size="10" x="765" y="240">- Inactive</text>
+<line marker-end="url(#arrow)" stroke="#999" stroke-width="1.5" x1="210" x2="270" y1="100" y2="95"></line>
+<line marker-end="url(#arrow)" stroke="#999" stroke-width="1.5" x1="450" x2="510" y1="95" y2="87"></line>
+<line marker-end="url(#arrow)" stroke="#334BFA" stroke-width="1.5" x1="600" x2="600" y1="115" y2="135"></line>
+<path d="M 510 165 Q 350 320 120 260" fill="none" marker-end="url(#arrowOrange)" stroke="#F5A623" stroke-dasharray="5,3" stroke-width="1.5"></path>
+<line marker-end="url(#arrowBlue)" stroke="#29B5E8" stroke-width="1.5" x1="210" x2="270" y1="195" y2="195"></line>
+<path d="M 450 195 L 750 120" fill="none" marker-end="url(#arrowGreen)" stroke="#2E7D32" stroke-width="2"></path>
+<rect fill="#fff" height="80" rx="6" stroke="#ddd" stroke-width="1" width="900" x="30" y="320"></rect>
+<text fill="#333" font-size="12" font-weight="700" x="50" y="345">Legend</text>
+<rect fill="#FFF5E6" height="14" stroke="#F5A623" stroke-width="1.5" width="14" x="50" y="355"></rect>
+<text fill="#666" font-size="11" x="70" y="367">Source (NetSuite)</text>
+<rect fill="#E8F6FC" height="14" stroke="#29B5E8" stroke-width="1.5" width="14" x="200" y="355"></rect>
+<text fill="#666" font-size="11" x="220" y="367">Data (Variables/Lists)</text>
+<rect fill="#F0E8FA" height="14" stroke="#334BFA" stroke-width="1.5" width="14" x="380" y="355"></rect>
+<text fill="#666" font-size="11" x="400" y="367">Orchestration (Scheduler/Loop)</text>
+<rect fill="#E8F5E8" height="14" stroke="#2E7D32" stroke-width="1.5" width="14" x="590" y="355"></rect>
+<text fill="#666" font-size="11" x="610" y="367">Target (Lookup Table)</text>
+<line stroke="#F5A623" stroke-dasharray="5,3" stroke-width="1.5" x1="780" x2="810" y1="362" y2="362"></line>
+<text fill="#666" font-size="11" x="815" y="367">Pagination callback</text>
+</svg>
+</div>
+</section>
+ 6. End-to-End Flow 
+<section id="end-to-end-flow">
+<h2>6. End-to-End Flow</h2>
+<h3>Flow Summary</h3>
+<p>
+            The recipe executes in a linear sequence with one loop. It begins by initializing all variables and lists,
+            truncating the target lookup table, then entering a paginated loop that searches NetSuite employees page by page.
+            After all pages are collected, the accumulated records are batch-inserted into the lookup table.
+        </p>
+<div class="step-flow">
+<div class="step-item">
+<div class="step-number"><div class="circle">1</div><div class="line"></div></div>
+<div class="step-content">
+<h4>Trigger: Daily Schedule (01:00 AM)</h4>
+<p>The Clock trigger fires once daily at 1:00 AM to initiate the employee data refresh.</p>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number"><div class="circle">2</div><div class="line"></div></div>
+<div class="step-content">
+<h4>Initialize Variables and Lists</h4>
+<p>Creates three lists (No-external-id, counter, NetsuiteEmployee) and two scalar variables (search_id, page_num starting at 1).</p>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number"><div class="circle">3</div><div class="line"></div></div>
+<div class="step-content">
+<h4>Truncate Lookup Table</h4>
+<p>Clears all existing entries from the <code>Netsuite_Employee</code> lookup table (ID: 4222656) to prepare for fresh data.</p>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number"><div class="circle">4</div><div class="line"></div></div>
+<div class="step-content">
+<h4>Pagination Loop (Repeat While)</h4>
+<p>Loops while <code>page_num != totalPages + 1</code>. Each iteration: searches NetSuite Employees (200 per page), updates search_id and page_num, appends results to the NetsuiteEmployee list.</p>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number"><div class="circle">5</div><div class="line"></div></div>
+<div class="step-content">
+<h4>Batch Insert to Lookup Table</h4>
+<p>After the loop completes, all collected employee records are batch-inserted into the Netsuite_Employee lookup table with columns: External_ID, Email, Internal_ID, Inactive.</p>
+</div>
+</div>
+<div class="step-item">
+<div class="step-number"><div class="circle">6</div><div class="line"></div></div>
+<div class="step-content">
+<h4>Log Results</h4>
+<p>Two logger steps write the counter list (pagination history) and the full NetsuiteEmployee list to the job report for debugging.</p>
+</div>
+</div>
+</div>
+<h3>Data Flow Diagram</h3>
+<div class="diagram-container">
+<svg style="max-width:880px;width:100%;" viewbox="0 0 880 380" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow2" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#999"></path></marker>
+<marker id="arrowOrange2" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#F5A623"></path></marker>
+<marker id="arrowBlue2" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#29B5E8"></path></marker>
+<marker id="arrowGreen2" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#2E7D32"></path></marker>
+<marker id="arrowRed2" markerheight="6" markerwidth="8" orient="auto" refx="8" refy="3"><path d="M0,0 L8,3 L0,6" fill="#C62828"></path></marker>
+</defs>
+<rect fill="#334BFA" height="50" rx="25" stroke="none" width="140" x="20" y="20"></rect>
+<text fill="#fff" font-size="12" font-weight="600" text-anchor="middle" x="90" y="50">Daily Trigger</text>
+<text fill="#D8DDFA" font-size="9" text-anchor="middle" x="90" y="62">01:00 AM</text>
+<line marker-end="url(#arrow2)" stroke="#334BFA" stroke-width="2" x1="160" x2="200" y1="45" y2="45"></line>
+<rect fill="#E8F6FC" height="50" rx="6" stroke="#29B5E8" stroke-width="1.5" width="150" x="200" y="20"></rect>
+<text fill="#1976A8" font-size="11" font-weight="600" text-anchor="middle" x="275" y="42">Initialize</text>
+<text fill="#666" font-size="9" text-anchor="middle" x="275" y="57">3 lists + 2 variables</text>
+<line marker-end="url(#arrowBlue2)" stroke="#29B5E8" stroke-width="2" x1="350" x2="390" y1="45" y2="45"></line>
+<rect fill="#FFCDD2" height="50" rx="6" stroke="#C62828" stroke-width="1.5" width="150" x="390" y="20"></rect>
+<text fill="#B71C1C" font-size="11" font-weight="600" text-anchor="middle" x="465" y="42">Truncate</text>
+<text fill="#666" font-size="9" text-anchor="middle" x="465" y="57">Clear lookup table</text>
+<line marker-end="url(#arrowRed2)" stroke="#C62828" stroke-width="2" x1="465" x2="465" y1="70" y2="110"></line>
+<rect fill="none" height="160" rx="8" stroke="#334BFA" stroke-dasharray="8,4" stroke-width="2" width="680" x="100" y="110"></rect>
+<text fill="#334BFA" font-size="11" font-weight="700" x="115" y="130">REPEAT WHILE page_num != totalPages + 1</text>
+<rect fill="#FFF5E6" height="50" rx="6" stroke="#F5A623" stroke-width="1.5" width="160" x="130" y="145"></rect>
+<text fill="#B87A00" font-size="11" font-weight="600" text-anchor="middle" x="210" y="167">Search Employees</text>
+<text fill="#666" font-size="9" text-anchor="middle" x="210" y="182">NetSuite (200/page)</text>
+<line marker-end="url(#arrowOrange2)" stroke="#F5A623" stroke-width="1.5" x1="290" x2="330" y1="170" y2="170"></line>
+<rect fill="#E8F6FC" height="50" rx="6" stroke="#29B5E8" stroke-width="1.5" width="160" x="330" y="145"></rect>
+<text fill="#1976A8" font-size="11" font-weight="600" text-anchor="middle" x="410" y="167">Update Variables</text>
+<text fill="#666" font-size="9" text-anchor="middle" x="410" y="182">search_id, page_num++</text>
+<line marker-end="url(#arrowBlue2)" stroke="#29B5E8" stroke-width="1.5" x1="490" x2="530" y1="170" y2="170"></line>
+<rect fill="#E8F6FC" height="50" rx="6" stroke="#29B5E8" stroke-width="1.5" width="160" x="530" y="145"></rect>
+<text fill="#1976A8" font-size="11" font-weight="600" text-anchor="middle" x="610" y="167">Append to List</text>
+<text fill="#666" font-size="9" text-anchor="middle" x="610" y="182">NetsuiteEmployee[]</text>
+<rect fill="#F0E8FA" height="40" rx="6" stroke="#334BFA" stroke-width="1" width="160" x="330" y="210"></rect>
+<text fill="#334BFA" font-size="10" text-anchor="middle" x="410" y="234">Log page index</text>
+<line marker-end="url(#arrow2)" stroke="#334BFA" stroke-width="2" x1="465" x2="465" y1="270" y2="310"></line>
+<rect fill="#E8F5E8" height="50" rx="6" stroke="#2E7D32" stroke-width="2" width="190" x="370" y="310"></rect>
+<text fill="#2E7D32" font-size="12" font-weight="700" text-anchor="middle" x="465" y="332">Batch Insert</text>
+<text fill="#666" font-size="9" text-anchor="middle" x="465" y="348">Netsuite_Employee lookup table</text>
+<line marker-end="url(#arrowGreen2)" stroke="#2E7D32" stroke-width="1.5" x1="560" x2="620" y1="335" y2="335"></line>
+<rect fill="#F0E8FA" height="50" rx="6" stroke="#334BFA" stroke-width="1" width="160" x="620" y="310"></rect>
+<text fill="#334BFA" font-size="11" font-weight="600" text-anchor="middle" x="700" y="332">Log Results</text>
+<text fill="#666" font-size="9" text-anchor="middle" x="700" y="348">Counter + Employee list</text>
+</svg>
+</div>
+</section>
+ 7. Processing Stages 
+<section id="processing-stages">
+<h2>7. Processing Stages</h2>
+<table>
+<tr><th>Step</th><th>Action</th><th>System</th><th>Description</th><th>Error Handling</th></tr>
+<tr><td>0</td><td>Trigger</td><td>Clock</td><td>Fires daily at 01:00 AM</td><td>N/A (scheduled)</td></tr>
+<tr><td>1</td><td>Create No-external-id list</td><td>Workato Variables</td><td>Declares a list with schema: Email (string), InternalID (number), ExternalID (integer). Intended to track employees missing an external ID.</td><td>Recipe fails if variable creation fails</td></tr>
+<tr><td>2</td><td>Create counter list</td><td>Workato Variables</td><td>Declares a list with schema: pages (number), search_id (string). Tracks pagination progress.</td><td>Recipe fails if variable creation fails</td></tr>
+<tr><td>3</td><td>Truncate lookup table</td><td>Lookup Table</td><td>Removes all entries from Netsuite_Employee (ID: 4222656). This is the destructive reset before reload.</td><td>If truncation fails, stale data persists but new data appends</td></tr>
+<tr><td>4</td><td>Create variables</td><td>Workato Variables</td><td>Initializes <code>search_id</code> (empty) and <code>page_num</code> (1)</td><td>Recipe fails if variable creation fails</td></tr>
+<tr><td>5</td><td>Create NetsuiteEmployee list</td><td>Workato Variables</td><td>Declares the main accumulation list with schema: ExternalID, Email, WorkdayID, Internal_ID, Inactive</td><td>Recipe fails if variable creation fails</td></tr>
+<tr><td>6</td><td>Repeat (loop start)</td><td>Workato</td><td>Begins the paginated loop</td><td>Controlled by while condition at step 12</td></tr>
+<tr><td>7</td><td>Add to counter list</td><td>Workato Variables</td><td>Appends current loop index and search_id to the counter list</td><td>Non-critical; logging only</td></tr>
+<tr><td>8</td><td>Search Employees</td><td>NetSuite</td><td>Searches Employee records (200 per page) via SuiteTalk API. Fields: email, externalId, internalId, isInactive, custentity_workday_id. Uses searchId and pageIndex for pagination.</td><td>NetSuite API errors cause recipe failure</td></tr>
+<tr><td>9</td><td>Update search_id, page_num</td><td>Workato Variables</td><td>Sets search_id from the NetSuite response, increments page_num by 1</td><td>Critical for loop continuation</td></tr>
+<tr><td>10</td><td>Batch append to list</td><td>Workato Variables</td><td>Adds all employees from the current page to the in-memory list. Maps: ExternalID, Email, WorkdayID, Internal_ID, Inactive</td><td>Large datasets may hit memory limits</td></tr>
+<tr><td>11</td><td>Log page index</td><td>Logger</td><td>Logs the current loop index to the job report</td><td>Non-critical</td></tr>
+<tr><td>12</td><td>While condition</td><td>Workato</td><td>Continues loop while <code>page_num != totalPages + 1</code></td><td>Incorrect totalPages could cause infinite loop</td></tr>
+<tr><td>13</td><td>Batch insert to lookup table</td><td>Lookup Table</td><td>Inserts all accumulated employees into the Netsuite_Employee lookup table. Maps: External_ID (col1), Email (col2), Internal_ID (col3), Inactive (col4)</td><td>Partial insert possible on failure</td></tr>
+<tr><td>14</td><td>Log counter list</td><td>Logger</td><td>Logs the full pagination counter list to the job report</td><td>Non-critical</td></tr>
+<tr><td>15</td><td>Log employee list</td><td>Logger</td><td>Logs the full NetsuiteEmployee list to the job report</td><td>Large datasets may produce very large log output</td></tr>
+</table>
+</section>
+ 8. Component/Module Overview 
+<section id="component-overview">
+<h2>8. Component / Module Overview</h2>
+<p>
+            This is a single standalone recipe with no child recipes or callable sub-recipes. It is self-contained
+            and manages all logic (initialization, extraction, accumulation, loading, logging) within one recipe flow.
+        </p>
+<h3>Module Breakdown</h3>
+<table>
+<tr><th>Module</th><th>Steps</th><th>Purpose</th></tr>
+<tr><td>Initialization</td><td>1-5</td><td>Declare all lists and variables; truncate target table</td></tr>
+<tr><td>Extraction Loop</td><td>6-12</td><td>Paginated NetSuite Employee search with in-memory accumulation</td></tr>
+<tr><td>Loading</td><td>13</td><td>Batch insert accumulated records into lookup table</td></tr>
+<tr><td>Logging</td><td>14-15</td><td>Write pagination history and full dataset to job report</td></tr>
+</table>
+<h3>Recipe Hierarchy Diagram</h3>
+<div class="diagram-container">
+<svg style="max-width:700px;width:100%;" viewbox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#334BFA" height="60" rx="8" stroke="none" width="260" x="220" y="20"></rect>
+<text fill="#fff" font-size="14" font-weight="700" text-anchor="middle" x="350" y="45">Export-Netsuite-HR</text>
+<text fill="#D8DDFA" font-size="10" text-anchor="middle" x="350" y="62">Recipe ID: 61814301</text>
+<line stroke="#334BFA" stroke-width="2" x1="170" x2="530" y1="80" y2="80"></line>
+<line stroke="#334BFA" stroke-width="2" x1="170" x2="170" y1="80" y2="120"></line>
+<line stroke="#334BFA" stroke-width="2" x1="350" x2="350" y1="80" y2="120"></line>
+<line stroke="#334BFA" stroke-width="2" x1="530" x2="530" y1="80" y2="120"></line>
+<rect fill="#E8F6FC" height="55" rx="6" stroke="#29B5E8" stroke-width="1.5" width="200" x="70" y="120"></rect>
+<text fill="#1976A8" font-size="12" font-weight="700" text-anchor="middle" x="170" y="143">Initialization</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="170" y="160">Steps 1-5: Variables, Lists, Truncate</text>
+<rect fill="#FFF5E6" height="55" rx="6" stroke="#F5A623" stroke-width="1.5" width="200" x="250" y="120"></rect>
+<text fill="#B87A00" font-size="12" font-weight="700" text-anchor="middle" x="350" y="143">Extraction Loop</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="350" y="160">Steps 6-12: Paginated NS Search</text>
+<rect fill="#E8F5E8" height="55" rx="6" stroke="#2E7D32" stroke-width="1.5" width="200" x="430" y="120"></rect>
+<text fill="#2E7D32" font-size="12" font-weight="700" text-anchor="middle" x="530" y="143">Load + Log</text>
+<text fill="#666" font-size="10" text-anchor="middle" x="530" y="160">Steps 13-15: Batch Insert, Log</text>
+<line stroke="#F5A623" stroke-width="1.5" x1="290" x2="410" y1="200" y2="200"></line>
+<line stroke="#F5A623" stroke-width="1.5" x1="290" x2="290" y1="175" y2="210"></line>
+<line stroke="#F5A623" stroke-width="1.5" x1="350" x2="350" y1="175" y2="210"></line>
+<line stroke="#F5A623" stroke-width="1.5" x1="410" x2="410" y1="175" y2="210"></line>
+<rect fill="#fff" height="45" rx="4" stroke="#F5A623" stroke-width="1" width="100" x="240" y="210"></rect>
+<text fill="#B87A00" font-size="10" text-anchor="middle" x="290" y="230">NS Search</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="290" y="243">Step 8</text>
+<rect fill="#fff" height="45" rx="4" stroke="#29B5E8" stroke-width="1" width="100" x="300" y="210"></rect>
+<text fill="#1976A8" font-size="10" text-anchor="middle" x="350" y="230">Update Vars</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="350" y="243">Step 9</text>
+<rect fill="#fff" height="45" rx="4" stroke="#29B5E8" stroke-width="1" width="100" x="360" y="210"></rect>
+<text fill="#1976A8" font-size="10" text-anchor="middle" x="410" y="230">Append List</text>
+<text fill="#999" font-size="9" text-anchor="middle" x="410" y="243">Step 10</text>
+<rect fill="#F0E8FA" height="30" rx="4" stroke="#334BFA" stroke-dasharray="4,3" stroke-width="1" width="180" x="260" y="265"></rect>
+<text fill="#334BFA" font-size="10" text-anchor="middle" x="350" y="284">While: page != total+1</text>
+</svg>
+</div>
+</section>
+ 9. Key Business Logic 
+<section id="business-logic">
+<h2>9. Key Business Logic</h2>
+<h3>Truncate-and-Reload Pattern</h3>
+<p>
+            The recipe performs a full replacement of the lookup table data on every run. Step 3 truncates the table,
+            and Step 13 batch-inserts the freshly extracted data. This means between Steps 3 and 13, the lookup table
+            is empty -- any downstream recipe querying it during this window will get no results.
+        </p>
+<h3>Pagination Control</h3>
+<p>
+            NetSuite's search API uses a search ID + page index model. On the first search request, <code>searchId</code>
+            is empty and <code>pageIndex</code> is 1. NetSuite returns a <code>searchId</code> and <code>totalPages</code>.
+            Subsequent requests reuse the <code>searchId</code> with an incremented <code>pageIndex</code>. The loop
+            continues while <code>page_num != totalPages + 1</code>.
+        </p>
+<h3>Field Mapping</h3>
+<table>
+<tr><th>NetSuite Field</th><th>In-Memory List Field</th><th>Lookup Table Column</th></tr>
+<tr><td>externalId</td><td>ExternalID</td><td>External_ID (col1)</td></tr>
+<tr><td>email</td><td>Email</td><td>Email (col2)</td></tr>
+<tr><td>internalId</td><td>Internal_ID</td><td>Internal_ID (col3)</td></tr>
+<tr><td>isInactive</td><td>Inactive</td><td>Inactive (col4)</td></tr>
+<tr><td>custentity_workday_id</td><td>WorkdayID</td><td><em>Not stored in lookup table</em></td></tr>
+</table>
+<div class="callout callout-warning">
+<strong>Note:</strong> The <code>WorkdayID</code> (from NetSuite custom field <code>custentity_workday_id</code>)
+            is collected into the in-memory list but is <strong>not written</strong> to the lookup table. The lookup table only
+            has 4 columns (External_ID, Email, Internal_ID, Inactive). This may be an oversight or the WorkdayID
+            may be intended for future use.
+        </div>
+<h3>No-External-ID Tracking</h3>
+<p>
+            Step 1 creates a <code>No-external-id</code> list with fields Email, InternalID, and ExternalID.
+            However, no step in the recipe populates this list. It appears to be scaffolding for planned logic to
+            track employees that lack an external ID -- possibly intended for future error reporting or data quality checks.
+        </p>
+</section>
+ 10. Data Model 
+<section id="data-model">
+<h2>10. Data Model</h2>
+<h3>Source: NetSuite Employee Object</h3>
+<table>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>email</td><td>String</td><td>Employee email address</td></tr>
+<tr><td>externalId</td><td>String</td><td>External identifier (e.g., HRIS system ID)</td></tr>
+<tr><td>internalId</td><td>Integer</td><td>NetSuite internal record ID</td></tr>
+<tr><td>isInactive</td><td>Boolean</td><td>Whether the employee is marked inactive/terminated</td></tr>
+<tr><td>custentity_workday_id</td><td>String</td><td>Custom field: Workday employee ID</td></tr>
+</table>
+<h3>Target: Netsuite_Employee Lookup Table (ID: 4222656)</h3>
+<table>
+<tr><th>Column</th><th>Internal Name</th><th>Type</th><th>Source Field</th></tr>
+<tr><td>External_ID</td><td>col1</td><td>String</td><td>externalId</td></tr>
+<tr><td>Email</td><td>col2</td><td>String</td><td>email</td></tr>
+<tr><td>Internal_ID</td><td>col3</td><td>String</td><td>internalId</td></tr>
+<tr><td>Inactive</td><td>col4</td><td>String</td><td>isInactive</td></tr>
+</table>
+<h3>In-Memory Lists</h3>
+<table>
+<tr><th>List Name</th><th>Fields</th><th>Purpose</th></tr>
+<tr><td>NetsuiteEmployee</td><td>ExternalID (number), Email (string), WorkdayID (string), Internal_ID (integer), Inactive (boolean)</td><td>Primary accumulation list for all fetched employee records</td></tr>
+<tr><td>counter</td><td>pages (number), search_id (string)</td><td>Tracks pagination progress for debugging</td></tr>
+<tr><td>No-external-id</td><td>Email (string), InternalID (number), ExternalID (integer)</td><td>Declared but unused; intended for employees missing external IDs</td></tr>
+</table>
+</section>
+ 11. Edge Cases 
+<section id="edge-cases">
+<h2>11. Edge Cases &amp; Risks</h2>
+<h3>Data Window Gap</h3>
+<p>
+            Between the truncation (Step 3) and the batch insert (Step 13), the lookup table is empty. If any
+            downstream recipe performs a lookup during this window, it will receive no results. The window duration
+            depends on the number of employees and pagination speed -- typically a few minutes for small organizations
+            but could be longer for large employee counts.
+        </p>
+<h3>WorkdayID Not Persisted</h3>
+<p>
+            The recipe extracts <code>custentity_workday_id</code> from NetSuite and stores it in the in-memory
+            <code>NetsuiteEmployee</code> list as <code>WorkdayID</code>, but does not map it to any lookup table column.
+            If downstream processes need Workday-to-NetSuite ID mapping, this field must be added to the lookup table schema.
+        </p>
+<h3>Large Dataset Memory Limits</h3>
+<p>
+            All employee records are accumulated in a single Workato list variable before batch insert. For organizations
+            with very large employee counts (10,000+), this could approach Workato's in-memory limits, potentially
+            causing the recipe to fail or slow down significantly.
+        </p>
+<h3>No-External-ID List Unused</h3>
+<p>
+            The <code>No-external-id</code> list is declared in Step 1 but never populated. This suggests either
+            incomplete implementation or planned future functionality.
+        </p>
+<h3>Pagination Termination</h3>
+<p>
+            The while condition checks <code>page_num != totalPages + 1</code>. If the NetSuite search returns
+            0 results (no employees), <code>totalPages</code> may be 0 or null, and <code>page_num</code> starts at 1.
+            This could cause unexpected behavior depending on how Workato evaluates the condition with null values.
+        </p>
+<h3>Single Job History</h3>
+<p>
+            The recipe has only run once (2025-04-25) and is currently stopped. Its behavior under recurring
+            daily operation, edge cases with large datasets, or NetSuite API throttling has not been validated
+            in production over time.
+        </p>
+</section>
+ 12. Operational Notes 
+<section id="operational-notes">
+<h2>12. Operational Notes</h2>
+<h3>Current Status</h3>
+<div class="callout stopped">
+<strong>STOPPED</strong> since 2025-04-25 15:19 PDT. The recipe ran once successfully, consuming 93 tasks,
+            and was not restarted. No stop cause was recorded.
+        </div>
+<h3>Job History Summary</h3>
+<table>
+<tr><th>Job ID</th><th>Status</th><th>Started</th><th>Completed</th><th>Duration</th></tr>
+<tr>
+<td><code>j-ARYs3oLR-mccPrW</code></td>
+<td><span class="tag tag-green">succeeded</span></td>
+<td>2025-04-25 15:19:21 PDT</td>
+<td>2025-04-25 15:19:40 PDT</td>
+<td>~19 seconds</td>
+</tr>
+</table>
+<h3>Dependencies</h3>
+<ul>
+<li><strong>NetSuite Connection:</strong> Account ID 15626184. Must be authenticated and have search permissions on the Employee record type.</li>
+<li><strong>Lookup Table:</strong> ID 4222656 (<code>Netsuite_Employee</code>). Must exist with the expected column schema (External_ID, Email, Internal_ID, Inactive).</li>
+<li><strong>Downstream Consumers:</strong> Any Workato recipe that queries the Netsuite_Employee lookup table depends on this recipe to keep it populated.</li>
+</ul>
+<h3>Monitoring Recommendations</h3>
+<ul>
+<li>Set up Workato job failure alerts to detect if the recipe fails during the extraction or loading phase.</li>
+<li>Monitor the lookup table row count after each run to detect unexpected drops in employee count.</li>
+<li>Consider adding error handling around the truncate step to avoid leaving the table empty on failure.</li>
+<li>Log the total employee count at the end of the recipe for trend tracking.</li>
+</ul>
+<h3>Restart Considerations</h3>
+<ul>
+<li>Before restarting, verify the NetSuite connection (Account 15626184) is still active and authenticated.</li>
+<li>Confirm the lookup table (ID 4222656) still exists and has not been modified.</li>
+<li>Verify no downstream recipes are relying on the lookup table being continuously populated (since restart will truncate first).</li>
+<li>Consider whether the WorkdayID field should be added to the lookup table before reactivation.</li>
+</ul>
+<h3>Recipe Configuration</h3>
+<table>
+<tr><th>Parameter</th><th>Value</th></tr>
+<tr><td>Trigger Frequency</td><td>Every 1 day</td></tr>
+<tr><td>Trigger Time</td><td>01:00:00 AM</td></tr>
+<tr><td>NetSuite Page Size</td><td>200 records per page</td></tr>
+<tr><td>NetSuite Object</td><td>Employee@@script</td></tr>
+<tr><td>NetSuite Account</td><td>15626184</td></tr>
+<tr><td>Lookup Table ID</td><td>4222656</td></tr>
+<tr><td>Project ID</td><td>370065</td></tr>
+<tr><td>Folder ID</td><td>24523671</td></tr>
+</table>
+</section>
+<div class="footer">
+<p>Generated on 2026-04-15 | Author: venkatesh.manohar | Recipe ID: 61814301</p>
+<p>Export-Netsuite-HR Integration Documentation</p>
+</div>
+
+</div>
+
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('#toc a[data-section]');
+  var sections = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  function onScroll() {
+    var current = sections[0];
+    var scrollY = window.scrollY + 120;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].el.offsetTop <= scrollY) current = sections[i];
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById(this.getAttribute('data-section'));
+      if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
