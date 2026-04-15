@@ -319,6 +319,179 @@ footer {
   .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   h2 { break-before: auto; }
 }
+
+
+/* File-specific styles */
+.back-to-index {
+    position: fixed;
+    top: 16px;
+    right: 24px;
+    z-index: 1000;
+    background: var(--ic-blue);
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(51,75,250,0.25);
+    transition: background 0.2s;
+  }
+
+.back-to-index:hover { background: #16100E; }
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 266px;
+    height: 100vh;
+    background: linear-gradient(180deg, #16100E 0%, #16100E 100%);
+    border-right: 3px solid #334BFA;
+    overflow-y: auto;
+    z-index: 999;
+    padding: 24px 0;
+  }
+
+.sidebar-title {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 0 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 8px;
+  }
+
+.sidebar a {
+    display: block;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    padding: 8px 20px;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+
+.sidebar a:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.05);
+    border-left-color: var(--orange);
+  }
+
+.sidebar a.active {
+    color: #fff;
+    background: rgba(51,75,250,0.2);
+    border-left-color: var(--ic-blue);
+    font-weight: 600;
+  }
+
+.sidebar .toc-number {
+    display: inline-block;
+    width: 22px;
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+.doc-header {
+    background: linear-gradient(135deg, #16100E 0%, #16100E 60%, var(--ic-blue) 100%);
+    color: #fff;
+    padding: 48px 40px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+
+.doc-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+
+.doc-header .subtitle { color: rgba(255,255,255,0.7); font-size: 15px; }
+
+.doc-header .meta-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+.doc-header .meta-item {
+    background: rgba(255,255,255,0.1);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+
+.doc-header .meta-item strong { color: var(--orange); }
+
+.section {
+    background: white;
+    border-radius: 10px;
+    padding: 32px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+.section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ic-blue);
+    color: var(--ic-blue);
+  }
+
+.section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 16px 0 8px;
+    color: #333;
+  }
+
+.section p, .section li { font-size: 14px; line-height: 1.7; }
+
+.section ul, .section ol { margin-left: 20px; margin-bottom: 12px; }
+
+.section li { margin-bottom: 4px; }
+
+tr:nth-child(even) td { background: #F4F3ED; }
+
+tr:hover td { background: #DCE1F9; }
+
+.inline-code {
+    background: #DCE1F9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--ic-blue);
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 12px;
+  }
+
+.badge-info { background: #e3f2fd; color: #1565c0; }
+
+.diagram-container svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+details .detail-content { padding: 16px; }
+
+@media print {
+    body { padding-left: 0; }
+    .sidebar, .back-to-index { display: none; }
+    .main-content { max-width: 100%; padding: 0; }
+    .section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    .doc-header { background: #333 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    pre { white-space: pre-wrap; word-break: break-all; }
+  }
+
+@media (max-width: 768px) {
+    body { padding-left: 0; }
+    .sidebar { display: none; }
+    .main-content { padding: 16px; }
+    .doc-header { padding: 24px 20px; }
+    .doc-header h1 { font-size: 22px; }
+    .section { padding: 20px; }
+  }
 </style>
 </head>
 <body>
@@ -462,7 +635,7 @@ footer {
             <polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/>
           </marker>
           <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/>
+            <polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/>
           </marker>
           <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
             <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
@@ -483,12 +656,12 @@ footer {
         <text x="440" y="154" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="10" fill="#333">For-Each Loop Processing</text>
 
         <!-- Arrow: Master -> Child -->
-        <line x1="440" y1="180" x2="440" y2="230" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
-        <text x="460" y="210" font-family="Segoe UI, sans-serif" font-size="10" fill="#6B4C9A">Per Item</text>
+        <line x1="440" y1="180" x2="440" y2="230" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
+        <text x="460" y="210" font-family="Segoe UI, sans-serif" font-size="10" fill="#334BFA">Per Item</text>
 
         <!-- Child Recipe Box -->
-        <rect x="330" y="240" width="220" height="80" rx="10" fill="#6B4C9A" fill-opacity="0.12" stroke="#6B4C9A" stroke-width="2"/>
-        <text x="440" y="268" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#6B4C9A">Child Recipe</text>
+        <rect x="330" y="240" width="220" height="80" rx="10" fill="#334BFA" fill-opacity="0.12" stroke="#334BFA" stroke-width="2"/>
+        <text x="440" y="268" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#334BFA">Child Recipe</text>
         <text x="440" y="288" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="11" fill="#333">RF 2.0 Create/Update Item</text>
         <text x="440" y="305" text-anchor="middle" font-family="monospace" font-size="10" fill="#666">ID: 54620964</text>
 
@@ -514,7 +687,7 @@ footer {
         <text x="50" y="258" font-family="Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#333">Legend</text>
         <line x1="50" y1="274" x2="80" y2="274" stroke="#F5A623" stroke-width="2"/>
         <text x="86" y="278" font-family="Segoe UI, sans-serif" font-size="10" fill="#333">Query / Read</text>
-        <line x1="50" y1="294" x2="80" y2="294" stroke="#6B4C9A" stroke-width="2"/>
+        <line x1="50" y1="294" x2="80" y2="294" stroke="#334BFA" stroke-width="2"/>
         <text x="86" y="298" font-family="Segoe UI, sans-serif" font-size="10" fill="#333">Recipe Call</text>
         <line x1="50" y1="314" x2="80" y2="314" stroke="#2E7D32" stroke-width="2"/>
         <text x="86" y="318" font-family="Segoe UI, sans-serif" font-size="10" fill="#333">NetSuite Write</text>
@@ -662,9 +835,9 @@ WHERE
         <text x="45" y="455" font-family="monospace" font-size="11" fill="#999">ERROR_TYPE / ERROR_MSG</text>
 
         <!-- JOIN indicator -->
-        <line x1="155" y1="265" x2="155" y2="290" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="4,3"/>
-        <rect x="100" y="268" width="110" height="18" rx="4" fill="#6B4C9A" fill-opacity="0.15" stroke="#6B4C9A" stroke-width="1"/>
-        <text x="155" y="281" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="9" font-weight="600" fill="#6B4C9A">LEFT JOIN ON external_id</text>
+        <line x1="155" y1="265" x2="155" y2="290" stroke="#334BFA" stroke-width="2" stroke-dasharray="4,3"/>
+        <rect x="100" y="268" width="110" height="18" rx="4" fill="#334BFA" fill-opacity="0.15" stroke="#334BFA" stroke-width="1"/>
+        <text x="155" y="281" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="9" font-weight="600" fill="#334BFA">LEFT JOIN ON external_id</text>
 
         <!-- Recipe Processing Box -->
         <rect x="340" y="80" width="200" height="180" rx="8" fill="#fff" stroke="#F5A623" stroke-width="2"/>
@@ -867,11 +1040,11 @@ WHERE
         <text x="440" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" font-weight="700" fill="#16100E">Item Sync Decision Tree</text>
 
         <!-- Start -->
-        <rect x="340" y="50" width="200" height="40" rx="20" fill="#6B4C9A" stroke="#6B4C9A" stroke-width="2"/>
+        <rect x="340" y="50" width="200" height="40" rx="20" fill="#334BFA" stroke="#334BFA" stroke-width="2"/>
         <text x="440" y="75" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#fff">Recipe Triggered</text>
 
         <!-- Arrow down -->
-        <line x1="440" y1="90" x2="440" y2="120" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
+        <line x1="440" y1="90" x2="440" y2="120" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
 
         <!-- Query Snowflake -->
         <rect x="320" y="120" width="240" height="44" rx="8" fill="#29B5E8" fill-opacity="0.15" stroke="#29B5E8" stroke-width="2"/>
@@ -897,11 +1070,11 @@ WHERE
         <text x="455" y="292" font-family="Segoe UI, sans-serif" font-size="11" font-weight="600" fill="#2E7D32">Yes</text>
 
         <!-- Log results -->
-        <rect x="350" y="304" width="180" height="36" rx="8" fill="#f9f9fc" stroke="#6B4C9A" stroke-width="1.5"/>
+        <rect x="350" y="304" width="180" height="36" rx="8" fill="#f9f9fc" stroke="#334BFA" stroke-width="1.5"/>
         <text x="440" y="326" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="11" fill="#333">Log query results</text>
 
         <!-- Arrow down -->
-        <line x1="440" y1="340" x2="440" y2="360" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+        <line x1="440" y1="340" x2="440" y2="360" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
 
         <!-- For-each -->
         <rect x="330" y="360" width="220" height="36" rx="8" fill="#F5A623" fill-opacity="0.15" stroke="#F5A623" stroke-width="2"/>

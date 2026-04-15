@@ -320,6 +320,36 @@ footer {
   .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   h2 { break-before: auto; }
 }
+
+
+/* File-specific styles */
+.header-meta { color: var(--text-secondary); font-size: 0.88em; margin-bottom: 24px; }
+
+.header-meta span { margin-right: 18px; }
+
+tr:hover td { background: #F4F3ED; }
+
+.callout-blue { background: var(--blue-bg); border-left: 4px solid var(--blue); }
+
+.callout-orange { background: var(--orange-bg); border-left: 4px solid var(--orange); }
+
+.callout-green { background: var(--green-bg); border-left: 4px solid var(--green); }
+
+.callout-purple { background: var(--ic-blue-bg); border-left: 4px solid var(--ic-blue); }
+
+.two-layer > div { padding: 14px; border-radius: 8px; }
+
+.layer-biz { background: var(--green-bg); border-left: 4px solid var(--green); }
+
+.layer-tech { background: var(--blue-bg); border-left: 4px solid var(--blue); }
+
+.layer-label { font-weight: 600; font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+
+details summary:hover { color: var(--orange); }
+
+@media print {
+    .back-to-index { display: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -503,7 +533,7 @@ footer {
   <defs>
     <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#F5A623"/></marker>
     <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#29B5E8"/></marker>
-    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6B4C9A"/></marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#334BFA"/></marker>
     <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2E7D32"/></marker>
     <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#9E9E9E"/></marker>
   </defs>
@@ -511,7 +541,7 @@ footer {
   <!-- Column backgrounds -->
   <rect x="10" y="60" width="270" height="840" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.5"/>
   <rect x="300" y="60" width="280" height="840" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.5"/>
-  <rect x="600" y="60" width="300" height="840" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.5"/>
+  <rect x="600" y="60" width="300" height="840" rx="12" fill="#DCE1F9" stroke="#334BFA" stroke-width="1" opacity="0.5"/>
   <rect x="920" y="60" width="270" height="840" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.5"/>
 
   <!-- Column headers -->
@@ -519,7 +549,7 @@ footer {
   <text x="145" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Stripe (Source)</text>
   <rect x="300" y="10" width="280" height="45" rx="8" fill="#29B5E8"/>
   <text x="440" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Snowflake (Data)</text>
-  <rect x="600" y="10" width="300" height="45" rx="8" fill="#6B4C9A"/>
+  <rect x="600" y="10" width="300" height="45" rx="8" fill="#334BFA"/>
   <text x="750" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">Workato (Orchestration)</text>
   <rect x="920" y="10" width="270" height="45" rx="8" fill="#2E7D32"/>
   <text x="1055" y="38" text-anchor="middle" fill="white" font-weight="bold" font-size="15">NetSuite (Target)</text>
@@ -588,61 +618,61 @@ footer {
   <line x1="560" y1="535" x2="620" y2="595" stroke="#29B5E8" stroke-width="2" marker-end="url(#arrow-blue)"/>
 
   <!-- Workato recipes -->
-  <rect x="620" y="90" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-  <text x="750" y="110" text-anchor="middle" fill="#6B4C9A" font-size="12" font-weight="bold">2.0 Master Recipe</text>
+  <rect x="620" y="90" width="260" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="2"/>
+  <text x="750" y="110" text-anchor="middle" fill="#334BFA" font-size="12" font-weight="bold">2.0 Master Recipe</text>
   <text x="750" y="128" text-anchor="middle" fill="#666" font-size="10">ID: 58628332 (Orchestrator)</text>
 
-  <rect x="620" y="155" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <rect x="620" y="155" width="260" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5"/>
   <text x="750" y="175" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 5.0 Credit Memo Master</text>
   <text x="750" y="193" text-anchor="middle" fill="#666" font-size="10">ID: 54665263 &rarr; RF 5.0 (54665273)</text>
 
-  <rect x="620" y="225" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <rect x="620" y="225" width="260" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5"/>
   <text x="750" y="245" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 1.01 Customer Master</text>
   <text x="750" y="263" text-anchor="middle" fill="#666" font-size="10">ID: 54665259 (shared helper)</text>
 
-  <rect x="620" y="295" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <rect x="620" y="295" width="260" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5"/>
   <text x="750" y="315" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 8.0 Create CBA</text>
   <text x="750" y="333" text-anchor="middle" fill="#666" font-size="10">ID: 54665266 &rarr; RF 8.0 (54665276)</text>
 
-  <rect x="620" y="435" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <rect x="620" y="435" width="260" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5"/>
   <text x="750" y="455" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 6.0 Create Payment</text>
   <text x="750" y="473" text-anchor="middle" fill="#666" font-size="10">ID: 54665264 &rarr; RF 6.0 (54665274)</text>
 
-  <rect x="620" y="575" width="260" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5"/>
+  <rect x="620" y="575" width="260" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5"/>
   <text x="750" y="595" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">3.0 Refunds Master (async)</text>
   <text x="750" y="613" text-anchor="middle" fill="#666" font-size="10">ID: 58628333</text>
 
-  <rect x="630" y="645" width="115" height="40" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <rect x="630" y="645" width="115" height="40" rx="6" fill="white" stroke="#334BFA" stroke-width="1"/>
   <text x="687" y="665" text-anchor="middle" fill="#333" font-size="9" font-weight="600">Rec 7.0 Refunds</text>
   <text x="687" y="678" text-anchor="middle" fill="#666" font-size="8">54665265</text>
 
-  <rect x="755" y="645" width="115" height="40" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <rect x="755" y="645" width="115" height="40" rx="6" fill="white" stroke="#334BFA" stroke-width="1"/>
   <text x="812" y="665" text-anchor="middle" fill="#333" font-size="9" font-weight="600">Rec 10.1 Voided</text>
   <text x="812" y="678" text-anchor="middle" fill="#666" font-size="8">69929323</text>
 
-  <rect x="630" y="695" width="115" height="40" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <rect x="630" y="695" width="115" height="40" rx="6" fill="white" stroke="#334BFA" stroke-width="1"/>
   <text x="687" y="715" text-anchor="middle" fill="#333" font-size="9" font-weight="600">Rec 9.0 Cancelled</text>
   <text x="687" y="728" text-anchor="middle" fill="#666" font-size="8">54665267</text>
 
   <!-- Vertical arrows in Workato -->
-  <line x1="750" y1="140" x2="750" y2="155" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
-  <line x1="750" y1="205" x2="750" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
-  <line x1="750" y1="275" x2="750" y2="295" stroke="#6B4C9A" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <text x="770" y="288" fill="#6B4C9A" font-size="9">then</text>
-  <line x1="750" y1="345" x2="750" y2="435" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
-  <text x="770" y="390" fill="#6B4C9A" font-size="9">then</text>
-  <line x1="750" y1="485" x2="750" y2="575" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-purple)"/>
-  <text x="760" y="530" fill="#6B4C9A" font-size="9">async</text>
-  <line x1="750" y1="625" x2="687" y2="645" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
-  <line x1="750" y1="625" x2="812" y2="645" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
-  <line x1="750" y1="625" x2="687" y2="695" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="140" x2="750" y2="155" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="205" x2="750" y2="225" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="275" x2="750" y2="295" stroke="#334BFA" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="770" y="288" fill="#334BFA" font-size="9">then</text>
+  <line x1="750" y1="345" x2="750" y2="435" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="770" y="390" fill="#334BFA" font-size="9">then</text>
+  <line x1="750" y1="485" x2="750" y2="575" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="760" y="530" fill="#334BFA" font-size="9">async</text>
+  <line x1="750" y1="625" x2="687" y2="645" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="625" x2="812" y2="645" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <line x1="750" y1="625" x2="687" y2="695" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
 
   <!-- Arrows from Workato to NetSuite -->
-  <line x1="880" y1="180" x2="940" y2="115" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <line x1="880" y1="250" x2="940" y2="195" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <line x1="880" y1="315" x2="940" y2="290" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <line x1="880" y1="460" x2="940" y2="390" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <line x1="880" y1="600" x2="940" y2="480" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="180" x2="940" y2="115" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="250" x2="940" y2="195" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="315" x2="940" y2="290" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="460" x2="940" y2="390" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <line x1="880" y1="600" x2="940" y2="480" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-green)"/>
 
   <!-- NetSuite records -->
   <rect x="940" y="90" width="230" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
@@ -675,9 +705,9 @@ footer {
 
   <!-- Legend -->
   <rect x="30" y="860" width="230" height="30" rx="6" fill="white" stroke="#ccc" stroke-width="1"/>
-  <line x1="45" y1="875" x2="75" y2="875" stroke="#6B4C9A" stroke-width="2"/>
+  <line x1="45" y1="875" x2="75" y2="875" stroke="#334BFA" stroke-width="2"/>
   <text x="80" y="879" fill="#666" font-size="10">Sync call</text>
-  <line x1="140" y1="875" x2="170" y2="875" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="140" y1="875" x2="170" y2="875" stroke="#334BFA" stroke-width="2" stroke-dasharray="5,3"/>
   <text x="175" y="879" fill="#666" font-size="10">Async call</text>
 </svg>
 </div>
@@ -768,33 +798,33 @@ footer {
   <line x1="220" y1="292" x2="288" y2="292" stroke="#2196F3" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
 
   <!-- Processing (middle) -->
-  <rect x="560" y="45" width="230" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
-  <text x="675" y="66" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">WORKATO RF 5.0</text>
+  <rect x="560" y="45" width="230" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="1.5"/>
+  <text x="675" y="66" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">WORKATO RF 5.0</text>
   <text x="675" y="82" text-anchor="middle" fill="#333" font-size="10">Group by credit_note &rarr; line items</text>
 
-  <rect x="560" y="115" width="230" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
-  <text x="675" y="136" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">WORKATO RF 8.0</text>
+  <rect x="560" y="115" width="230" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="1.5"/>
+  <text x="675" y="136" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">WORKATO RF 8.0</text>
   <text x="675" y="152" text-anchor="middle" fill="#333" font-size="10">Lookup sales order &rarr; map CBA</text>
 
-  <rect x="560" y="185" width="230" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
-  <text x="675" y="206" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">WORKATO RF 6.0</text>
+  <rect x="560" y="185" width="230" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="1.5"/>
+  <text x="675" y="206" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">WORKATO RF 6.0</text>
   <text x="675" y="222" text-anchor="middle" fill="#333" font-size="10">Find invoice &rarr; apply payment</text>
 
-  <rect x="560" y="255" width="230" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
-  <text x="675" y="276" text-anchor="middle" fill="#6B4C9A" font-size="10" font-weight="bold">WORKATO Rec 7.0 / 10.1 / 9.0</text>
+  <rect x="560" y="255" width="230" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="1.5"/>
+  <text x="675" y="276" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">WORKATO Rec 7.0 / 10.1 / 9.0</text>
   <text x="675" y="292" text-anchor="middle" fill="#333" font-size="10">Process refunds, voids, cancellations</text>
 
   <!-- Arrows staging to processing -->
-  <line x1="500" y1="82" x2="558" y2="70" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
-  <line x1="500" y1="152" x2="558" y2="140" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
-  <line x1="500" y1="222" x2="558" y2="210" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
-  <line x1="500" y1="292" x2="558" y2="280" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="500" y1="82" x2="558" y2="70" stroke="#334BFA" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="500" y1="152" x2="558" y2="140" stroke="#334BFA" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="500" y1="222" x2="558" y2="210" stroke="#334BFA" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
+  <line x1="500" y1="292" x2="558" y2="280" stroke="#334BFA" stroke-width="1.5" marker-end="url(#df-arrow-blue)"/>
 
   <!-- Labels on arrows -->
-  <text x="525" y="68" fill="#6B4C9A" font-size="8" font-weight="600">For Each</text>
-  <text x="525" y="138" fill="#6B4C9A" font-size="8" font-weight="600">For Each</text>
-  <text x="525" y="208" fill="#6B4C9A" font-size="8" font-weight="600">For Each (async)</text>
-  <text x="525" y="278" fill="#6B4C9A" font-size="8" font-weight="600">Sequential</text>
+  <text x="525" y="68" fill="#334BFA" font-size="8" font-weight="600">For Each</text>
+  <text x="525" y="138" fill="#334BFA" font-size="8" font-weight="600">For Each</text>
+  <text x="525" y="208" fill="#334BFA" font-size="8" font-weight="600">For Each (async)</text>
+  <text x="525" y="278" fill="#334BFA" font-size="8" font-weight="600">Sequential</text>
 
   <!-- Target records (right) -->
   <rect x="860" y="45" width="200" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="2"/>
@@ -982,73 +1012,73 @@ footer {
 <div class="diagram-container">
 <svg viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:1100px; font-family:'Segoe UI',Arial,sans-serif;">
   <defs>
-    <marker id="rh-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#6B4C9A"/></marker>
-    <marker id="rh-arrow-dash" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#6B4C9A" opacity="0.6"/></marker>
+    <marker id="rh-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#334BFA"/></marker>
+    <marker id="rh-arrow-dash" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#334BFA" opacity="0.6"/></marker>
     <marker id="rh-arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2E7D32"/></marker>
   </defs>
 
   <!-- Level 0: Master -->
-  <rect x="380" y="20" width="340" height="55" rx="10" fill="#6B4C9A" stroke="#6B4C9A" stroke-width="2"/>
+  <rect x="380" y="20" width="340" height="55" rx="10" fill="#334BFA" stroke="#334BFA" stroke-width="2"/>
   <text x="550" y="44" text-anchor="middle" fill="white" font-size="13" font-weight="bold">2.0 Master Recipe (58628332)</text>
   <text x="550" y="62" text-anchor="middle" fill="#D4C4E8" font-size="10">Orchestrator &mdash; called by 0.0 Scheduler</text>
 
   <!-- Level 1: Children -->
   <!-- Rec 5.0 -->
-  <line x1="440" y1="75" x2="140" y2="125" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-  <rect x="20" y="125" width="240" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-  <text x="140" y="148" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Rec 5.0 Credit Memo Master</text>
+  <line x1="440" y1="75" x2="140" y2="125" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+  <rect x="20" y="125" width="240" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="2"/>
+  <text x="140" y="148" text-anchor="middle" fill="#334BFA" font-size="11" font-weight="bold">Rec 5.0 Credit Memo Master</text>
   <text x="140" y="165" text-anchor="middle" fill="#666" font-size="9">54665263 (sync)</text>
 
   <!-- Rec 8.0 -->
-  <line x1="480" y1="75" x2="380" y2="125" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-  <rect x="280" y="125" width="200" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-  <text x="380" y="148" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Rec 8.0 Create CBA</text>
+  <line x1="480" y1="75" x2="380" y2="125" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+  <rect x="280" y="125" width="200" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="2"/>
+  <text x="380" y="148" text-anchor="middle" fill="#334BFA" font-size="11" font-weight="bold">Rec 8.0 Create CBA</text>
   <text x="380" y="165" text-anchor="middle" fill="#666" font-size="9">54665266 (sync)</text>
 
   <!-- Rec 6.0 -->
-  <line x1="620" y1="75" x2="620" y2="125" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-  <rect x="500" y="125" width="240" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2"/>
-  <text x="620" y="148" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">Rec 6.0 Create Payment</text>
+  <line x1="620" y1="75" x2="620" y2="125" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+  <rect x="500" y="125" width="240" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="2"/>
+  <text x="620" y="148" text-anchor="middle" fill="#334BFA" font-size="11" font-weight="bold">Rec 6.0 Create Payment</text>
   <text x="620" y="165" text-anchor="middle" fill="#666" font-size="9">54665264 (sync)</text>
 
   <!-- 3.0 Refunds Master (async) -->
-  <line x1="660" y1="75" x2="880" y2="125" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#rh-arrow-dash)"/>
-  <rect x="760" y="125" width="280" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="4,3"/>
-  <text x="900" y="148" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="bold">3.0 Refunds Master (async)</text>
+  <line x1="660" y1="75" x2="880" y2="125" stroke="#334BFA" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#rh-arrow-dash)"/>
+  <rect x="760" y="125" width="280" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="900" y="148" text-anchor="middle" fill="#334BFA" font-size="11" font-weight="bold">3.0 Refunds Master (async)</text>
   <text x="900" y="165" text-anchor="middle" fill="#666" font-size="9">58628333 (async call)</text>
 
   <!-- Level 2: Recipe Functions -->
   <!-- RF 5.0 -->
-  <line x1="140" y1="175" x2="140" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <line x1="140" y1="175" x2="140" y2="225" stroke="#334BFA" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
   <rect x="30" y="225" width="220" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
   <text x="140" y="248" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">RF 5.0 Create Credit Memo</text>
   <text x="140" y="265" text-anchor="middle" fill="#666" font-size="9">54665273 &rarr; NetSuite</text>
 
   <!-- RF 8.0 -->
-  <line x1="380" y1="175" x2="380" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <line x1="380" y1="175" x2="380" y2="225" stroke="#334BFA" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
   <rect x="270" y="225" width="220" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
   <text x="380" y="248" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">RF 8.0 Create CBA</text>
   <text x="380" y="265" text-anchor="middle" fill="#666" font-size="9">54665276 &rarr; NetSuite</text>
 
   <!-- RF 6.0 -->
-  <line x1="620" y1="175" x2="620" y2="225" stroke="#6B4C9A" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#rh-arrow-dash)"/>
+  <line x1="620" y1="175" x2="620" y2="225" stroke="#334BFA" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#rh-arrow-dash)"/>
   <rect x="510" y="225" width="220" height="50" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
   <text x="620" y="248" text-anchor="middle" fill="#2E7D32" font-size="11" font-weight="bold">RF 6.0 Create Payment</text>
   <text x="620" y="265" text-anchor="middle" fill="#666" font-size="9">54665274 &rarr; NetSuite (async)</text>
 
   <!-- 3.0 children -->
-  <line x1="830" y1="175" x2="790" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
-  <rect x="700" y="225" width="180" height="45" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <line x1="830" y1="175" x2="790" y2="225" stroke="#334BFA" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="700" y="225" width="180" height="45" rx="8" fill="white" stroke="#334BFA" stroke-width="1"/>
   <text x="790" y="248" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Rec 7.0 Refunds</text>
   <text x="790" y="262" text-anchor="middle" fill="#666" font-size="9">54665265</text>
 
-  <line x1="930" y1="175" x2="960" y2="225" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
-  <rect x="880" y="225" width="180" height="45" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <line x1="930" y1="175" x2="960" y2="225" stroke="#334BFA" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="880" y="225" width="180" height="45" rx="8" fill="white" stroke="#334BFA" stroke-width="1"/>
   <text x="970" y="248" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Rec 10.1 Voided Inv</text>
   <text x="970" y="262" text-anchor="middle" fill="#666" font-size="9">69929323</text>
 
-  <line x1="880" y1="175" x2="790" y2="290" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
-  <rect x="700" y="290" width="180" height="45" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+  <line x1="880" y1="175" x2="790" y2="290" stroke="#334BFA" stroke-width="1.5" marker-end="url(#rh-arrow)"/>
+  <rect x="700" y="290" width="180" height="45" rx="8" fill="white" stroke="#334BFA" stroke-width="1"/>
   <text x="790" y="313" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Rec 9.0 Cancelled SO</text>
   <text x="790" y="327" text-anchor="middle" fill="#666" font-size="9">54665267</text>
 
@@ -1067,9 +1097,9 @@ footer {
   <!-- Legend -->
   <rect x="30" y="555" width="500" height="50" rx="8" fill="white" stroke="#ccc" stroke-width="1"/>
   <text x="50" y="575" fill="#333" font-size="11" font-weight="bold">Legend:</text>
-  <line x1="110" y1="572" x2="150" y2="572" stroke="#6B4C9A" stroke-width="2"/>
+  <line x1="110" y1="572" x2="150" y2="572" stroke="#334BFA" stroke-width="2"/>
   <text x="155" y="576" fill="#666" font-size="10">Sync call</text>
-  <line x1="220" y1="572" x2="260" y2="572" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="220" y1="572" x2="260" y2="572" stroke="#334BFA" stroke-width="2" stroke-dasharray="6,4"/>
   <text x="265" y="576" fill="#666" font-size="10">Async call</text>
   <rect x="340" y="563" width="18" height="18" rx="3" fill="white" stroke="#2E7D32" stroke-width="1.5"/>
   <text x="363" y="576" fill="#666" font-size="10">NetSuite writer</text>

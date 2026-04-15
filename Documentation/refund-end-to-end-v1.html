@@ -320,6 +320,13 @@ footer {
   .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   h2 { break-before: auto; }
 }
+
+
+/* File-specific styles */
+.callout-stripe {
+  background: #F3F0FF;
+  border-left: 4px solid #635BFF;
+}
 </style>
 </head>
 <body>
@@ -542,7 +549,7 @@ footer {
         <marker id="arrow-stripe" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#635BFF"/></marker>
         <marker id="arrow-fivetran" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/></marker>
         <marker id="arrow-snowflake" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/></marker>
-        <marker id="arrow-workato" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="arrow-workato" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
         <marker id="arrow-netsuite" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/></marker>
         <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
         <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter>
@@ -555,7 +562,7 @@ footer {
       <rect x="10" y="60" width="200" height="920" rx="12" fill="#EEEDFF" stroke="#635BFF" stroke-width="1" opacity="0.4"/>
       <rect x="220" y="60" width="170" height="920" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.4"/>
       <rect x="400" y="60" width="420" height="920" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.4"/>
-      <rect x="830" y="60" width="370" height="920" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.4"/>
+      <rect x="830" y="60" width="370" height="920" rx="12" fill="#DCE1F9" stroke="#334BFA" stroke-width="1" opacity="0.4"/>
       <rect x="1210" y="60" width="280" height="920" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.4"/>
 
       <!-- ================================================ -->
@@ -570,7 +577,7 @@ footer {
       <rect x="400" y="10" width="420" height="45" rx="8" fill="#29B5E8" filter="url(#shadow)"/>
       <text x="610" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Snowflake (Data Warehouse)</text>
 
-      <rect x="830" y="10" width="370" height="45" rx="8" fill="#6B4C9A" filter="url(#shadow)"/>
+      <rect x="830" y="10" width="370" height="45" rx="8" fill="#334BFA" filter="url(#shadow)"/>
       <text x="1015" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Workato (Orchestration)</text>
 
       <rect x="1210" y="10" width="280" height="45" rx="8" fill="#2E7D32" filter="url(#shadow)"/>
@@ -639,38 +646,38 @@ footer {
       <text x="630" y="164" fill="#29B5E8" font-size="7" font-weight="600">dbt model</text>
 
       <!-- Step 2: Export table (refunds) -->
-      <rect x="480" y="177" width="260" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="480" y="177" width="260" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="610" y="195" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">NETSUITE_EXPORT_REFUNDS</text>
-      <text x="610" y="211" text-anchor="middle" fill="#6B4C9A" font-size="8">1,926 rows | 18 cols | team-enterprise-systems</text>
+      <text x="610" y="211" text-anchor="middle" fill="#334BFA" font-size="8">1,926 rows | 18 cols | team-enterprise-systems</text>
       <text x="610" y="225" text-anchor="middle" fill="#888" font-size="7">Joins: refund + customer + payment + subsidiary</text>
 
       <!-- Supporting export tables (voided invoice) -->
       <line x1="610" y1="232" x2="610" y2="260" stroke="#29B5E8" stroke-width="1.5" marker-end="url(#arrow-snowflake)"/>
 
-      <rect x="480" y="260" width="260" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="480" y="260" width="260" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="610" y="278" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">NETSUITE_EXPORT_VOIDED_INVOICE</text>
-      <text x="610" y="294" text-anchor="middle" fill="#6B4C9A" font-size="8">6,749 rows | 24 cols</text>
+      <text x="610" y="294" text-anchor="middle" fill="#334BFA" font-size="8">6,749 rows | 24 cols</text>
       <text x="610" y="308" text-anchor="middle" fill="#888" font-size="7">Voided invoices with line items + rev-rec dates</text>
 
       <!-- Supporting export table (uncollectible) -->
       <line x1="610" y1="315" x2="610" y2="340" stroke="#29B5E8" stroke-width="1.5" marker-end="url(#arrow-snowflake)"/>
 
-      <rect x="480" y="340" width="260" height="48" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="480" y="340" width="260" height="48" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="610" y="358" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">EXT_NETSUITE_EXPORT_UNCOLLECTIBLE</text>
-      <text x="610" y="375" text-anchor="middle" fill="#6B4C9A" font-size="8">11,268 rows | 12 cols | Bad debt write-offs</text>
+      <text x="610" y="375" text-anchor="middle" fill="#334BFA" font-size="8">11,268 rows | 12 cols | Bad debt write-offs</text>
 
       <!-- Supporting export tables (helpers) -->
-      <line x1="610" y1="388" x2="610" y2="410" stroke="#6B4C9A" stroke-width="1.2" marker-end="url(#arrow-workato)"/>
+      <line x1="610" y1="388" x2="610" y2="410" stroke="#334BFA" stroke-width="1.2" marker-end="url(#arrow-workato)"/>
 
-      <rect x="480" y="410" width="120" height="35" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="480" y="410" width="120" height="35" rx="6" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="540" y="426" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">EXPORT_CUSTOMER</text>
       <text x="540" y="438" text-anchor="middle" fill="#888" font-size="7">Category lookup</text>
 
-      <rect x="610" y="410" width="120" height="35" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="610" y="410" width="120" height="35" rx="6" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="670" y="426" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">EXPORT_PAYMENT</text>
       <text x="670" y="438" text-anchor="middle" fill="#888" font-size="7">Charge mapping</text>
 
-      <text x="610" y="468" text-anchor="middle" fill="#6B4C9A" font-size="8" font-style="italic">Consumed by Workato Rec 7.0 / 10.1 / 10.0 SQL queries</text>
+      <text x="610" y="468" text-anchor="middle" fill="#334BFA" font-size="8" font-style="italic">Consumed by Workato Rec 7.0 / 10.1 / 10.0 SQL queries</text>
 
       <!-- Sandbox table -->
       <rect x="432" y="490" width="170" height="35" rx="6" fill="white" stroke="#29B5E8" stroke-width="1.2" stroke-dasharray="4,2" filter="url(#shadow-sm)"/>
@@ -678,7 +685,7 @@ footer {
       <text x="517" y="518" text-anchor="middle" fill="#888" font-size="7">6,439 rows (testing)</text>
 
       <!-- EXPORT_ITEM table -->
-      <rect x="615" y="490" width="170" height="35" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="615" y="490" width="170" height="35" rx="6" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="700" y="506" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">EXPORT_ITEM</text>
       <text x="700" y="518" text-anchor="middle" fill="#888" font-size="7">Billing plan &rarr; NS item</text>
 
@@ -700,25 +707,25 @@ footer {
       <!-- ================================================ -->
       <!-- WORKATO COLUMN                                    -->
       <!-- ================================================ -->
-      <rect x="855" y="85" width="320" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="855" y="85" width="320" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1015" y="105" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">3.0 Master Orchestrator</text>
-      <text x="1015" y="120" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 58628333 | 721 jobs | Calls all 3 sub-pipelines</text>
+      <text x="1015" y="120" text-anchor="middle" fill="#334BFA" font-size="9">ID: 58628333 | 721 jobs | Calls all 3 sub-pipelines</text>
       <text x="1015" y="133" text-anchor="middle" fill="#888" font-size="8">Trigger: callable recipe function | try/catch + email</text>
 
       <!-- Branch lines from orchestrator -->
-      <line x1="1015" y1="140" x2="1015" y2="170" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <line x1="1015" y1="140" x2="1015" y2="170" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
 
       <!-- Refund sub-pipeline -->
-      <rect x="855" y="170" width="320" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="855" y="170" width="320" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1015" y="190" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 7.0 &mdash; Refunds Master</text>
-      <text x="1015" y="206" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665265 | 858 jobs | Snowflake SQL + WORKATO_LOGS dedup</text>
+      <text x="1015" y="206" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665265 | 858 jobs | Snowflake SQL + WORKATO_LOGS dedup</text>
 
-      <line x1="1015" y1="220" x2="1015" y2="245" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="1040" y="234" fill="#6B4C9A" font-size="8" font-weight="600">For Each Refund</text>
+      <line x1="1015" y1="220" x2="1015" y2="245" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="1040" y="234" fill="#334BFA" font-size="8" font-weight="600">For Each Refund</text>
 
-      <rect x="855" y="245" width="320" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="855" y="245" width="320" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1015" y="265" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">RF 7.0 &mdash; Create Refund</text>
-      <text x="1015" y="282" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665275 | 2,065 jobs, 0 fail | NetSuite CUSTREFUND</text>
+      <text x="1015" y="282" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665275 | 2,065 jobs, 0 fail | NetSuite CUSTREFUND</text>
 
       <!-- Arrow from RF 7.0 to NetSuite -->
       <path d="M 1175,265 L 1200,265 L 1200,130 L 1230,130" stroke="#2E7D32" stroke-width="2" fill="none" marker-end="url(#arrow-netsuite)"/>
@@ -728,16 +735,16 @@ footer {
       <line x1="870" y1="310" x2="1160" y2="310" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="4,3"/>
 
       <!-- Voided Invoice sub-pipeline -->
-      <rect x="855" y="340" width="320" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="855" y="340" width="320" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1015" y="360" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 10.1 &mdash; Voided Invoice Master</text>
-      <text x="1015" y="376" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 69929323 | 239 jobs | Groups by invoice, builds lines</text>
+      <text x="1015" y="376" text-anchor="middle" fill="#334BFA" font-size="9">ID: 69929323 | 239 jobs | Groups by invoice, builds lines</text>
 
-      <line x1="1015" y1="390" x2="1015" y2="415" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="1040" y="404" fill="#6B4C9A" font-size="8" font-weight="600">For Each Invoice</text>
+      <line x1="1015" y1="390" x2="1015" y2="415" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="1040" y="404" fill="#334BFA" font-size="8" font-weight="600">For Each Invoice</text>
 
-      <rect x="855" y="415" width="320" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="855" y="415" width="320" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1015" y="435" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">RF 10.1 &mdash; Voided Invoice</text>
-      <text x="1015" y="452" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 69929324 | 903 jobs, 0 fail | NetSuite CREDMEMO</text>
+      <text x="1015" y="452" text-anchor="middle" fill="#334BFA" font-size="9">ID: 69929324 | 903 jobs, 0 fail | NetSuite CREDMEMO</text>
 
       <!-- Arrow from RF 10.1 to NetSuite -->
       <path d="M 1175,435 L 1208,435 L 1208,310 L 1230,310" stroke="#2E7D32" stroke-width="2" fill="none" marker-end="url(#arrow-netsuite)"/>
@@ -746,7 +753,7 @@ footer {
       <line x1="870" y1="480" x2="1160" y2="480" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="4,3"/>
 
       <!-- Uncollectible Invoice sub-pipeline -->
-      <rect x="855" y="510" width="320" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="855" y="510" width="320" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1015" y="530" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 10.0 &mdash; Uncollectible Master</text>
       <text x="1015" y="546" text-anchor="middle" fill="#9E9E9E" font-size="9">ID: 54665260 | 561 jobs | STOPPED (replaced by 10.1)</text>
 
@@ -763,9 +770,9 @@ footer {
       <line x1="870" y1="650" x2="1160" y2="650" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="4,3"/>
 
       <!-- Manual Recipe -->
-      <rect x="855" y="670" width="320" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="855" y="670" width="320" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="1015" y="690" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">5.02.7 &mdash; Refunds Manual</text>
-      <text x="1015" y="706" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54968408 | 17 jobs | By Stripe Refund ID</text>
+      <text x="1015" y="706" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54968408 | 17 jobs | By Stripe Refund ID</text>
 
       <!-- Logging node -->
       <rect x="855" y="750" width="320" height="45" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -817,7 +824,7 @@ footer {
       <text x="515" y="944" fill="#333" font-size="9">Solid = data flow</text>
       <line x1="600" y1="940" x2="640" y2="940" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
       <text x="645" y="944" fill="#333" font-size="9">Dashed = logging / stopped</text>
-      <polygon points="780,934 792,940 780,946" fill="#6B4C9A"/>
+      <polygon points="780,934 792,940 780,946" fill="#334BFA"/>
       <text x="798" y="944" fill="#333" font-size="9">Arrow = direction</text>
 
       <!-- Legend: Color key -->
@@ -827,7 +834,7 @@ footer {
       <text x="503" y="967" fill="#555" font-size="9">Fivetran</text>
       <rect x="558" y="958" width="14" height="10" rx="2" fill="#29B5E8"/>
       <text x="576" y="967" fill="#555" font-size="9">Snowflake</text>
-      <rect x="645" y="958" width="14" height="10" rx="2" fill="#6B4C9A"/>
+      <rect x="645" y="958" width="14" height="10" rx="2" fill="#334BFA"/>
       <text x="663" y="967" fill="#555" font-size="9">Workato</text>
       <rect x="718" y="958" width="14" height="10" rx="2" fill="#2E7D32"/>
       <text x="736" y="967" fill="#555" font-size="9">NetSuite</text>
@@ -995,45 +1002,45 @@ footer {
   <div class="diagram-container">
     <svg viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1000px;font-family:'Segoe UI',Arial,sans-serif;">
       <defs>
-        <marker id="rh-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="rh-arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
         <marker id="rh-arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
         <filter id="rh-shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
       </defs>
 
       <!-- Title -->
-      <text x="500" y="25" text-anchor="middle" fill="#6B4C9A" font-size="14" font-weight="bold">Refund Pipeline &mdash; Workato Recipe Hierarchy</text>
+      <text x="500" y="25" text-anchor="middle" fill="#334BFA" font-size="14" font-weight="bold">Refund Pipeline &mdash; Workato Recipe Hierarchy</text>
 
       <!-- Scheduler layer -->
       <text x="20" y="62" fill="#888" font-size="10" font-weight="600">SCHEDULER</text>
-      <rect x="130" y="42" width="740" height="44" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#rh-shadow)"/>
+      <rect x="130" y="42" width="740" height="44" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#rh-shadow)"/>
       <text x="500" y="62" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">0.0 Scheduler &mdash; Cron 4x/day (5:30, 10:30, 15:30, 20:30 PT)</text>
-      <text x="500" y="78" text-anchor="middle" fill="#6B4C9A" font-size="9">Calls 3.0 Master with Date parameter</text>
+      <text x="500" y="78" text-anchor="middle" fill="#334BFA" font-size="9">Calls 3.0 Master with Date parameter</text>
 
-      <line x1="500" y1="86" x2="500" y2="110" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="500" y1="86" x2="500" y2="110" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
 
       <!-- Orchestrator layer -->
       <text x="20" y="132" fill="#888" font-size="10" font-weight="600">ORCHESTRATOR</text>
-      <rect x="130" y="112" width="740" height="44" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#rh-shadow)"/>
+      <rect x="130" y="112" width="740" height="44" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#rh-shadow)"/>
       <text x="500" y="132" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">3.0 Master &mdash; Refunds, Uncollectible Invoices, and Contract Cancellations</text>
-      <text x="500" y="148" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 58628333 | 721 jobs | try/catch + email alerts | Calls Rec 7.0, Rec 10.1, Rec 10.0, Rec 9.0</text>
+      <text x="500" y="148" text-anchor="middle" fill="#334BFA" font-size="9">ID: 58628333 | 721 jobs | try/catch + email alerts | Calls Rec 7.0, Rec 10.1, Rec 10.0, Rec 9.0</text>
 
       <!-- Branch lines from orchestrator to three masters -->
-      <line x1="300" y1="156" x2="300" y2="190" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-      <line x1="500" y1="156" x2="500" y2="190" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="300" y1="156" x2="300" y2="190" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="500" y1="156" x2="500" y2="190" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
       <line x1="700" y1="156" x2="700" y2="190" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#rh-arrow-gray)"/>
 
       <!-- Master recipe layer -->
       <text x="20" y="212" fill="#888" font-size="10" font-weight="600">MASTERS</text>
 
       <!-- Rec 7.0 -->
-      <rect x="140" y="192" width="320" height="44" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#rh-shadow)"/>
+      <rect x="140" y="192" width="320" height="44" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#rh-shadow)"/>
       <text x="300" y="210" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 7.0 &mdash; Refunds Master</text>
-      <text x="300" y="228" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665265 | 858 jobs | Snowflake SQL + dedup</text>
+      <text x="300" y="228" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665265 | 858 jobs | Snowflake SQL + dedup</text>
 
       <!-- Rec 10.1 -->
-      <rect x="340" y="192" width="320" height="44" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#rh-shadow)"/>
+      <rect x="340" y="192" width="320" height="44" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#rh-shadow)"/>
       <text x="500" y="210" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">Rec 10.1 &mdash; Voided Invoice Master</text>
-      <text x="500" y="228" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 69929323 | 239 jobs | Group by invoice</text>
+      <text x="500" y="228" text-anchor="middle" fill="#334BFA" font-size="9">ID: 69929323 | 239 jobs | Group by invoice</text>
 
       <!-- Rec 10.0 (stopped) -->
       <rect x="540" y="192" width="320" height="44" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#rh-shadow)"/>
@@ -1041,21 +1048,21 @@ footer {
       <text x="700" y="228" text-anchor="middle" fill="#9E9E9E" font-size="9">ID: 54665260 | 561 jobs | STOPPED</text>
 
       <!-- Child recipe layer -->
-      <line x1="300" y1="236" x2="300" y2="270" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
-      <line x1="500" y1="236" x2="500" y2="270" stroke="#6B4C9A" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="300" y1="236" x2="300" y2="270" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
+      <line x1="500" y1="236" x2="500" y2="270" stroke="#334BFA" stroke-width="2" marker-end="url(#rh-arrow)"/>
       <line x1="700" y1="236" x2="700" y2="270" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#rh-arrow-gray)"/>
 
       <text x="20" y="292" fill="#888" font-size="10" font-weight="600">CHILDREN</text>
 
       <!-- RF 7.0 -->
-      <rect x="140" y="272" width="320" height="44" rx="8" fill="#EEEDFF" stroke="#6B4C9A" stroke-width="2" filter="url(#rh-shadow)"/>
+      <rect x="140" y="272" width="320" height="44" rx="8" fill="#EEEDFF" stroke="#334BFA" stroke-width="2" filter="url(#rh-shadow)"/>
       <text x="300" y="290" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">RF 7.0 &mdash; Create Refunds</text>
-      <text x="300" y="308" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665275 | 2,065 jobs | CUSTREFUND via SuiteTalk</text>
+      <text x="300" y="308" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665275 | 2,065 jobs | CUSTREFUND via SuiteTalk</text>
 
       <!-- RF 10.1 -->
-      <rect x="340" y="272" width="320" height="44" rx="8" fill="#EEEDFF" stroke="#6B4C9A" stroke-width="2" filter="url(#rh-shadow)"/>
+      <rect x="340" y="272" width="320" height="44" rx="8" fill="#EEEDFF" stroke="#334BFA" stroke-width="2" filter="url(#rh-shadow)"/>
       <text x="500" y="290" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">RF 10.1 &mdash; Voided Invoice</text>
-      <text x="500" y="308" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 69929324 | 903 jobs | CREDMEMO via SuiteTalk</text>
+      <text x="500" y="308" text-anchor="middle" fill="#334BFA" font-size="9">ID: 69929324 | 903 jobs | CREDMEMO via SuiteTalk</text>
 
       <!-- RF 10.0 -->
       <rect x="540" y="272" width="320" height="44" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#rh-shadow)"/>
@@ -1080,12 +1087,12 @@ footer {
 
       <!-- Manual recipe (side branch) -->
       <text x="20" y="430" fill="#888" font-size="10" font-weight="600">MANUAL</text>
-      <rect x="140" y="412" width="320" height="44" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#rh-shadow)"/>
+      <rect x="140" y="412" width="320" height="44" rx="8" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#rh-shadow)"/>
       <text x="300" y="430" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">5.02.7 &mdash; Refunds Manual</text>
-      <text x="300" y="448" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54968408 | 17 jobs | Input: Stripe Refund ID &rarr; Calls RF 7.0</text>
+      <text x="300" y="448" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54968408 | 17 jobs | Input: Stripe Refund ID &rarr; Calls RF 7.0</text>
 
-      <path d="M 300,456 L 300,470 L 150,470 L 150,295 L 140,295" stroke="#6B4C9A" stroke-width="1.2" stroke-dasharray="4,3" fill="none"/>
-      <text x="130" y="470" fill="#6B4C9A" font-size="8" font-style="italic">Reuses RF 7.0</text>
+      <path d="M 300,456 L 300,470 L 150,470 L 150,295 L 140,295" stroke="#334BFA" stroke-width="1.2" stroke-dasharray="4,3" fill="none"/>
+      <text x="130" y="470" fill="#334BFA" font-size="8" font-style="italic">Reuses RF 7.0</text>
 
       <!-- Also-called: Rec 9.0 (cancellation, not refund-specific but in same orchestrator) -->
       <text x="20" y="502" fill="#888" font-size="10" font-weight="600">ALSO CALLED</text>

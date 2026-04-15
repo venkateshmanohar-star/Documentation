@@ -322,6 +322,57 @@ footer {
   .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   h2 { break-before: auto; }
 }
+
+
+/* File-specific styles */
+header.doc-header { background: linear-gradient(135deg, #16100E 0%, #2D2118 40%, #3D3028 100%); color: white; padding: 36px 40px; border-radius: 16px; margin-bottom: 32px; }
+
+header.doc-header h1 { font-size: 1.8em; font-weight: 800; margin-bottom: 8px; }
+
+header.doc-header .meta { display: flex; gap: 24px; flex-wrap: wrap; font-size: 0.88em; opacity: 0.9; }
+
+header.doc-header .meta span { display: flex; align-items: center; gap: 6px; }
+
+section.doc-section { background: white; border-radius: 12px; padding: 28px 32px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--border); }
+
+section.doc-section h2 { font-size: 1.35em; font-weight: 700; color: var(--ic-blue); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+
+section.doc-section h2::after { content: '\25B2'; font-size: 0.6em; color: var(--text-secondary); transition: transform 0.3s; }
+
+section.doc-section.collapsed h2::after { transform: rotate(180deg); }
+
+section.doc-section.collapsed .section-body { display: none; }
+
+tr:hover td { background: #F4F3ED; }
+
+.badge-orange { background: #FFF3E0; color: #E65100; }
+
+.badge-blue { background: #E1F5FE; color: #0277BD; }
+
+.badge-purple { background: #DCE1F9; color: var(--ic-blue); }
+
+.badge-green { background: #E8F5E9; color: var(--green); }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 16px 0; }
+
+.kpi-card { background: var(--ic-cream); border-radius: 10px; padding: 16px; text-align: center; border: 1px solid var(--border); }
+
+.kpi-card .kpi-value { font-size: 1.6em; font-weight: 800; }
+
+.kpi-card .kpi-label { font-size: 0.78em; color: var(--text-secondary); margin-top: 4px; }
+
+.svg-container { background: var(--ic-cream); border-radius: 10px; padding: 16px; margin: 16px 0; overflow-x: auto; border: 1px solid var(--border); }
+
+@media print {
+    nav#toc { display: none !important; }
+    body { padding-left: 0 !important; }
+    .main-content { max-width: 100%; padding: 0; }
+    section.doc-section { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+    section.doc-section.collapsed .section-body { display: block !important; }
+    header.doc-header { background: var(--ic-blue) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .svg-container { break-inside: avoid; }
+    a.back-to-index { display: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -498,7 +549,7 @@ footer {
     <div class="svg-container">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" style="width:100%;max-width:900px;">
         <!-- Swimlane backgrounds -->
-        <rect x="0" y="0" width="900" height="60" fill="#6B4C9A" rx="8"/>
+        <rect x="0" y="0" width="900" height="60" fill="#334BFA" rx="8"/>
         <text x="450" y="38" text-anchor="middle" fill="white" font-size="16" font-weight="700">NetSuite ARM Integration - Architecture Swimlane</text>
 
         <!-- Stripe/Snowflake Lane -->
@@ -519,10 +570,10 @@ footer {
 
         <!-- Workato Orchestration Lane -->
         <rect x="10" y="160" width="880" height="200" fill="#F3E5F5" rx="6" opacity="0.4"/>
-        <text x="25" y="185" fill="#6B4C9A" font-size="11" font-weight="700">WORKATO (Orchestration)</text>
+        <text x="25" y="185" fill="#334BFA" font-size="11" font-weight="700">WORKATO (Orchestration)</text>
 
         <!-- Master Recipe 1.0 -->
-        <rect x="350" y="190" width="200" height="40" fill="#6B4C9A" rx="8"/>
+        <rect x="350" y="190" width="200" height="40" fill="#334BFA" rx="8"/>
         <text x="450" y="215" text-anchor="middle" fill="white" font-size="11" font-weight="700">1.0 Master Recipe - Invoice</text>
 
         <!-- Branch 1: Invoices -->
@@ -535,12 +586,12 @@ footer {
         <text x="260" y="339" text-anchor="middle" fill="white" font-size="9">RF 4.00 Sales-Led</text>
 
         <!-- Branch 2: CBAs, Credit Memos, Payments -->
-        <line x1="450" y1="230" x2="450" y2="270" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="6,3"/>
-        <rect x="350" y="270" width="200" height="35" fill="#6B4C9A" rx="6" opacity="0.85"/>
+        <line x1="450" y1="230" x2="450" y2="270" stroke="#334BFA" stroke-width="2" stroke-dasharray="6,3"/>
+        <rect x="350" y="270" width="200" height="35" fill="#334BFA" rx="6" opacity="0.85"/>
         <text x="450" y="293" text-anchor="middle" fill="white" font-size="10" font-weight="600">2.0 Master - CM/CBA/Pay (async)</text>
-        <rect x="340" y="320" width="90" height="28" fill="#6B4C9A" rx="5" opacity="0.7"/>
+        <rect x="340" y="320" width="90" height="28" fill="#334BFA" rx="5" opacity="0.7"/>
         <text x="385" y="339" text-anchor="middle" fill="white" font-size="9">Rec 5.0 CM</text>
-        <rect x="440" y="320" width="90" height="28" fill="#6B4C9A" rx="5" opacity="0.7"/>
+        <rect x="440" y="320" width="90" height="28" fill="#334BFA" rx="5" opacity="0.7"/>
         <text x="485" y="339" text-anchor="middle" fill="white" font-size="9">Rec 8.0 CBA</text>
         <rect x="540" y="320" width="90" height="28" fill="#2E7D32" rx="5" opacity="0.8"/>
         <text x="585" y="339" text-anchor="middle" fill="white" font-size="9">Rec 6.0 Pay</text>
@@ -563,9 +614,9 @@ footer {
         <text x="100" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Invoices</text>
         <rect x="170" y="400" width="100" height="36" fill="#F5A623" rx="6"/>
         <text x="220" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Sales Orders</text>
-        <rect x="290" y="400" width="100" height="36" fill="#6B4C9A" rx="6"/>
+        <rect x="290" y="400" width="100" height="36" fill="#334BFA" rx="6"/>
         <text x="340" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Credit Memos</text>
-        <rect x="410" y="400" width="80" height="36" fill="#6B4C9A" rx="6"/>
+        <rect x="410" y="400" width="80" height="36" fill="#334BFA" rx="6"/>
         <text x="450" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">CBAs</text>
         <rect x="510" y="400" width="100" height="36" fill="#2E7D32" rx="6"/>
         <text x="560" y="423" text-anchor="middle" fill="white" font-size="10" font-weight="600">Payments</text>
@@ -577,8 +628,8 @@ footer {
         <!-- Arrows from processing to NetSuite -->
         <line x1="100" y1="348" x2="100" y2="400" stroke="#F5A623" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
         <line x1="260" y1="348" x2="220" y2="400" stroke="#F5A623" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
-        <line x1="385" y1="348" x2="340" y2="400" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
-        <line x1="485" y1="348" x2="450" y2="400" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+        <line x1="385" y1="348" x2="340" y2="400" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+        <line x1="485" y1="348" x2="450" y2="400" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
         <line x1="585" y1="348" x2="560" y2="400" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#arrow-green)"/>
         <line x1="660" y1="348" x2="670" y2="400" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#arrow-green)"/>
         <line x1="835" y1="348" x2="800" y2="400" stroke="#2E7D32" stroke-width="1.5" marker-end="url(#arrow-green)"/>
@@ -590,7 +641,7 @@ footer {
 
         <defs>
           <marker id="arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="#F5A623" fill="#F5A623" d="M0,0 L8,3 L0,6 Z"/></marker>
-          <marker id="arrow-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#6B4C9A" d="M0,0 L8,3 L0,6 Z"/></marker>
+          <marker id="arrow-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#334BFA" d="M0,0 L8,3 L0,6 Z"/></marker>
           <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#2E7D32" d="M0,0 L8,3 L0,6 Z"/></marker>
         </defs>
       </svg>
@@ -650,12 +701,12 @@ footer {
         <text x="320" y="128" text-anchor="middle" fill="var(--muted)" font-size="8">...+ 9 more tables</text>
 
         <!-- Arrow -->
-        <line x1="420" y1="95" x2="470" y2="95" stroke="#6B4C9A" stroke-width="2.5" marker-end="url(#df-arrow-purple)"/>
+        <line x1="420" y1="95" x2="470" y2="95" stroke="#334BFA" stroke-width="2.5" marker-end="url(#df-arrow-purple)"/>
         <text x="445" y="88" text-anchor="middle" fill="var(--muted)" font-size="8">SQL</text>
 
         <!-- Workato -->
-        <rect x="470" y="60" width="180" height="80" fill="white" rx="8" stroke="#6B4C9A" stroke-width="2"/>
-        <text x="560" y="85" text-anchor="middle" fill="#6B4C9A" font-size="11" font-weight="700">Workato Recipes</text>
+        <rect x="470" y="60" width="180" height="80" fill="white" rx="8" stroke="#334BFA" stroke-width="2"/>
+        <text x="560" y="85" text-anchor="middle" fill="#334BFA" font-size="11" font-weight="700">Workato Recipes</text>
         <text x="560" y="102" text-anchor="middle" fill="var(--muted)" font-size="9">1.0 Master Orchestrator</text>
         <text x="560" y="116" text-anchor="middle" fill="var(--muted)" font-size="8">Query, Transform, Iterate</text>
         <text x="560" y="128" text-anchor="middle" fill="var(--muted)" font-size="8">Idempotency via WORKATO_LOGS</text>
@@ -679,14 +730,14 @@ footer {
         <rect x="250" y="195" width="340" height="18" fill="#F5A623" rx="3" opacity="0.7"/>
         <text x="600" y="209" fill="var(--muted)" font-size="10">886 succeeded | 141 failed | Self-serve + Sales-led</text>
 
-        <rect x="30" y="224" width="800" height="28" fill="#6B4C9A" rx="4" opacity="0.1"/>
+        <rect x="30" y="224" width="800" height="28" fill="#334BFA" rx="4" opacity="0.1"/>
         <text x="40" y="243" fill="var(--text)" font-size="10" font-weight="600">Credit Memos (Rec 5.0)</text>
-        <rect x="250" y="229" width="330" height="18" fill="#6B4C9A" rx="3" opacity="0.6"/>
+        <rect x="250" y="229" width="330" height="18" fill="#334BFA" rx="3" opacity="0.6"/>
         <text x="600" y="243" fill="var(--muted)" font-size="10">833 succeeded | 0 failed | 15,246 tasks</text>
 
-        <rect x="30" y="258" width="800" height="28" fill="#6B4C9A" rx="4" opacity="0.1"/>
+        <rect x="30" y="258" width="800" height="28" fill="#334BFA" rx="4" opacity="0.1"/>
         <text x="40" y="277" fill="var(--text)" font-size="10" font-weight="600">CBAs (Rec 8.0)</text>
-        <rect x="250" y="263" width="330" height="18" fill="#6B4C9A" rx="3" opacity="0.6"/>
+        <rect x="250" y="263" width="330" height="18" fill="#334BFA" rx="3" opacity="0.6"/>
         <text x="600" y="277" fill="var(--muted)" font-size="10">839 succeeded | 9 failed | 63,773 tasks</text>
 
         <rect x="30" y="292" width="800" height="28" fill="#2E7D32" rx="4" opacity="0.1"/>
@@ -706,7 +757,7 @@ footer {
 
         <defs>
           <marker id="df-arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#29B5E8" d="M0,0 L8,3 L0,6 Z"/></marker>
-          <marker id="df-arrow-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#6B4C9A" d="M0,0 L8,3 L0,6 Z"/></marker>
+          <marker id="df-arrow-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#334BFA" d="M0,0 L8,3 L0,6 Z"/></marker>
           <marker id="df-arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path fill="#F5A623" d="M0,0 L8,3 L0,6 Z"/></marker>
         </defs>
       </svg>
@@ -791,25 +842,25 @@ footer {
     <h3>Recipe Hierarchy Diagram</h3>
     <div class="svg-container">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 480" style="width:100%;max-width:860px;">
-        <rect x="0" y="0" width="860" height="40" fill="#6B4C9A" rx="8"/>
+        <rect x="0" y="0" width="860" height="40" fill="#334BFA" rx="8"/>
         <text x="430" y="27" text-anchor="middle" fill="white" font-size="14" font-weight="700">Recipe Hierarchy Tree</text>
 
         <!-- Level 0: Master -->
-        <rect x="310" y="55" width="240" height="38" fill="#6B4C9A" rx="8"/>
+        <rect x="310" y="55" width="240" height="38" fill="#334BFA" rx="8"/>
         <text x="430" y="79" text-anchor="middle" fill="white" font-size="11" font-weight="700">1.0 Master Recipe - Invoice (58628331)</text>
 
         <!-- Lines to Level 1 -->
         <line x1="370" y1="93" x2="140" y2="120" stroke="#F5A623" stroke-width="2"/>
-        <line x1="430" y1="93" x2="430" y2="120" stroke="#6B4C9A" stroke-width="2" stroke-dasharray="5,3"/>
+        <line x1="430" y1="93" x2="430" y2="120" stroke="#334BFA" stroke-width="2" stroke-dasharray="5,3"/>
         <text x="370" y="110" fill="#F5A623" font-size="8" font-weight="600">sync</text>
-        <text x="445" y="110" fill="#6B4C9A" font-size="8" font-weight="600">async</text>
+        <text x="445" y="110" fill="#334BFA" font-size="8" font-weight="600">async</text>
 
         <!-- Level 1: Rec 4.0 -->
         <rect x="30" y="120" width="220" height="34" fill="#F5A623" rx="6"/>
         <text x="140" y="142" text-anchor="middle" fill="white" font-size="10" font-weight="600">Rec 4.0 Invoice Master (54665262)</text>
 
         <!-- Level 1: Recipe 2.0 -->
-        <rect x="320" y="120" width="220" height="34" fill="#6B4C9A" rx="6" opacity="0.85"/>
+        <rect x="320" y="120" width="220" height="34" fill="#334BFA" rx="6" opacity="0.85"/>
         <text x="430" y="142" text-anchor="middle" fill="white" font-size="10" font-weight="600">2.0 CM/CBA/Pay Master (58628332)</text>
 
         <!-- Level 2 from Rec 4.0 -->
@@ -821,15 +872,15 @@ footer {
         <text x="225" y="194" text-anchor="middle" fill="white" font-size="9">RF 4.00 Sales-Led</text>
 
         <!-- Level 2 from Recipe 2.0 -->
-        <line x1="370" y1="154" x2="340" y2="225" stroke="#6B4C9A" stroke-width="1.5"/>
-        <line x1="430" y1="154" x2="470" y2="225" stroke="#6B4C9A" stroke-width="1.5"/>
+        <line x1="370" y1="154" x2="340" y2="225" stroke="#334BFA" stroke-width="1.5"/>
+        <line x1="430" y1="154" x2="470" y2="225" stroke="#334BFA" stroke-width="1.5"/>
         <line x1="490" y1="154" x2="600" y2="225" stroke="#2E7D32" stroke-width="1.5"/>
         <line x1="500" y1="154" x2="730" y2="225" stroke="#2E7D32" stroke-width="1.5" stroke-dasharray="5,3"/>
         <text x="510" y="200" fill="#2E7D32" font-size="8" font-weight="600">async</text>
 
-        <rect x="285" y="225" width="140" height="28" fill="#6B4C9A" rx="5" opacity="0.7"/>
+        <rect x="285" y="225" width="140" height="28" fill="#334BFA" rx="5" opacity="0.7"/>
         <text x="355" y="244" text-anchor="middle" fill="white" font-size="9">Rec 5.0 Credit Memo</text>
-        <rect x="440" y="225" width="110" height="28" fill="#6B4C9A" rx="5" opacity="0.7"/>
+        <rect x="440" y="225" width="110" height="28" fill="#334BFA" rx="5" opacity="0.7"/>
         <text x="495" y="244" text-anchor="middle" fill="white" font-size="9">Rec 8.0 CBA</text>
         <rect x="565" y="225" width="120" height="28" fill="#2E7D32" rx="5" opacity="0.8"/>
         <text x="625" y="244" text-anchor="middle" fill="white" font-size="9">Rec 6.0 Payment</text>
@@ -839,8 +890,8 @@ footer {
         <text x="768" y="244" text-anchor="middle" fill="white" font-size="9" font-weight="600">3.0 Refund/Void/Cancel</text>
 
         <!-- Sub-recipes for CBA and Payment -->
-        <line x1="495" y1="253" x2="495" y2="275" stroke="#6B4C9A" stroke-width="1"/>
-        <rect x="440" y="275" width="110" height="24" fill="#6B4C9A" rx="4" opacity="0.5"/>
+        <line x1="495" y1="253" x2="495" y2="275" stroke="#334BFA" stroke-width="1"/>
+        <rect x="440" y="275" width="110" height="24" fill="#334BFA" rx="4" opacity="0.5"/>
         <text x="495" y="292" text-anchor="middle" fill="white" font-size="8">RF 8.0 Create CBA</text>
 
         <line x1="625" y1="253" x2="625" y2="275" stroke="#2E7D32" stroke-width="1"/>
@@ -884,7 +935,7 @@ footer {
         <text x="50" y="455" fill="var(--text)" font-size="10" font-weight="600">Legend:</text>
         <rect x="110" y="442" width="14" height="14" fill="#F5A623" rx="2"/>
         <text x="130" y="454" fill="var(--text)" font-size="9">Invoice Branch</text>
-        <rect x="230" y="442" width="14" height="14" fill="#6B4C9A" rx="2"/>
+        <rect x="230" y="442" width="14" height="14" fill="#334BFA" rx="2"/>
         <text x="250" y="454" fill="var(--text)" font-size="9">Credit/CBA Branch</text>
         <rect x="370" y="442" width="14" height="14" fill="#2E7D32" rx="2"/>
         <text x="390" y="454" fill="var(--text)" font-size="9">Refund/Void/Cancel Branch</text>

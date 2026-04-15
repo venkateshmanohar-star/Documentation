@@ -320,6 +320,13 @@ footer {
   .meta-header { background: var(--ic-dark) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   h2 { break-before: auto; }
 }
+
+
+/* File-specific styles */
+.callout-danger {
+  background: #FFDBDB;
+  border-left: 4px solid #DF2020;
+}
 </style>
 </head>
 <body>
@@ -545,7 +552,7 @@ footer {
         <marker id="arrow-stripe" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#635BFF"/></marker>
         <marker id="arrow-fivetran" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/></marker>
         <marker id="arrow-snowflake" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/></marker>
-        <marker id="arrow-workato" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="arrow-workato" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
         <marker id="arrow-netsuite" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/></marker>
         <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
         <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter>
@@ -558,7 +565,7 @@ footer {
       <rect x="10" y="60" width="220" height="810" rx="12" fill="#EEEDFF" stroke="#635BFF" stroke-width="1" opacity="0.4"/>
       <rect x="240" y="60" width="170" height="810" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.4"/>
       <rect x="420" y="60" width="420" height="810" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.4"/>
-      <rect x="850" y="60" width="340" height="810" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.4"/>
+      <rect x="850" y="60" width="340" height="810" rx="12" fill="#DCE1F9" stroke="#334BFA" stroke-width="1" opacity="0.4"/>
       <rect x="1200" y="60" width="280" height="810" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.4"/>
 
       <!-- ================================================ -->
@@ -573,7 +580,7 @@ footer {
       <rect x="420" y="10" width="420" height="45" rx="8" fill="#29B5E8" filter="url(#shadow)"/>
       <text x="630" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Snowflake (Data Warehouse)</text>
 
-      <rect x="850" y="10" width="340" height="45" rx="8" fill="#6B4C9A" filter="url(#shadow)"/>
+      <rect x="850" y="10" width="340" height="45" rx="8" fill="#334BFA" filter="url(#shadow)"/>
       <text x="1020" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Workato (Orchestration)</text>
 
       <rect x="1200" y="10" width="280" height="45" rx="8" fill="#2E7D32" filter="url(#shadow)"/>
@@ -664,23 +671,23 @@ footer {
       <text x="505" y="378" text-anchor="middle" fill="#29B5E8" font-size="8">Stmt by Invoice (1.6M)</text>
 
       <!-- Main flow: Base -> Export table -->
-      <line x1="630" y1="300" x2="630" y2="340" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="650" y="320" fill="#6B4C9A" font-size="7" font-weight="600">dbt model</text>
+      <line x1="630" y1="300" x2="630" y2="340" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="650" y="320" fill="#334BFA" font-size="7" font-weight="600">dbt model</text>
 
       <!-- Step 4: Export Table -->
-      <rect x="565" y="340" width="250" height="60" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="565" y="340" width="250" height="60" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="690" y="358" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_</text>
       <text x="690" y="373" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">CUSTOMER_CREDIT_ADJUSTMENTS</text>
-      <text x="690" y="392" text-anchor="middle" fill="#6B4C9A" font-size="8">20,924 rows | 14 cols | team-enterprise-systems</text>
+      <text x="690" y="392" text-anchor="middle" fill="#334BFA" font-size="8">20,924 rows | 14 cols | team-enterprise-systems</text>
 
       <!-- Supporting export table -->
-      <line x1="690" y1="400" x2="690" y2="420" stroke="#6B4C9A" stroke-width="1.2" marker-end="url(#arrow-workato)"/>
+      <line x1="690" y1="400" x2="690" y2="420" stroke="#334BFA" stroke-width="1.2" marker-end="url(#arrow-workato)"/>
 
-      <rect x="580" y="420" width="220" height="35" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="580" y="420" width="220" height="35" rx="6" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="690" y="436" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">NETSUITE_EXPORT_CUSTOMER</text>
       <text x="690" y="448" text-anchor="middle" fill="#888" font-size="7">327K rows | Subsidiary, NS Internal ID</text>
 
-      <text x="690" y="478" text-anchor="middle" fill="#6B4C9A" font-size="8" font-style="italic">Consumed by Workato Rec 8.0 SQL query</text>
+      <text x="690" y="478" text-anchor="middle" fill="#334BFA" font-size="8" font-style="italic">Consumed by Workato Rec 8.0 SQL query</text>
 
       <!-- WORKATO_LOGS -->
       <rect x="510" y="500" width="240" height="48" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -694,43 +701,43 @@ footer {
       <!-- ================================================ -->
       <!-- WORKATO COLUMN                                    -->
       <!-- ================================================ -->
-      <rect x="875" y="85" width="290" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="875" y="85" width="290" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1020" y="106" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">2.0 Master Recipe</text>
-      <text x="1020" y="122" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 58628332 | CM, CBA, Payments</text>
+      <text x="1020" y="122" text-anchor="middle" fill="#334BFA" font-size="9">ID: 58628332 | CM, CBA, Payments</text>
       <text x="1020" y="134" text-anchor="middle" fill="#888" font-size="8">734 jobs | Calls Rec 5.0, 8.0, 6.0 sequentially</text>
 
-      <line x1="1020" y1="140" x2="1020" y2="170" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="1045" y="158" fill="#6B4C9A" font-size="9" font-weight="600">Step 2</text>
+      <line x1="1020" y1="140" x2="1020" y2="170" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="1045" y="158" fill="#334BFA" font-size="9" font-weight="600">Step 2</text>
 
-      <rect x="875" y="170" width="290" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="875" y="170" width="290" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1020" y="192" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Rec 8.0 Create CBA</text>
-      <text x="1020" y="207" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665266 | 873 jobs, 9 fail</text>
+      <text x="1020" y="207" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665266 | 873 jobs, 9 fail</text>
       <text x="1020" y="220" text-anchor="middle" fill="#888" font-size="9">Queries Snowflake, foreach CBA row</text>
 
-      <line x1="1020" y1="225" x2="1020" y2="265" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="1045" y="248" fill="#6B4C9A" font-size="9" font-weight="600">For Each CBA</text>
+      <line x1="1020" y1="225" x2="1020" y2="265" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="1045" y="248" fill="#334BFA" font-size="9" font-weight="600">For Each CBA</text>
 
-      <rect x="875" y="265" width="290" height="60" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="875" y="265" width="290" height="60" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1020" y="287" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">RF 8.0 Create CBA</text>
-      <text x="1020" y="302" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665276 | 66,869 jobs, 0 fail</text>
+      <text x="1020" y="302" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665276 | 66,869 jobs, 0 fail</text>
       <text x="1020" y="317" text-anchor="middle" fill="#888" font-size="8">900K tasks | NS API, custom code, mapper</text>
 
-      <line x1="1020" y1="325" x2="1020" y2="363" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <line x1="1020" y1="325" x2="1020" y2="363" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
 
       <!-- Decision Diamond: CBA Type -->
-      <polygon points="1020,363 1068,395 1020,427 972,395" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <polygon points="1020,363 1068,395 1020,427 972,395" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1020" y="392" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">CBA</text>
       <text x="1020" y="404" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Type?</text>
 
       <!-- Adjustment branch (left) -->
-      <line x1="972" y1="395" x2="932" y2="395" stroke="#6B4C9A" stroke-width="1.5"/>
-      <text x="950" y="388" fill="#6B4C9A" font-size="8" font-weight="bold">adj</text>
-      <line x1="932" y1="395" x2="932" y2="453" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
+      <line x1="972" y1="395" x2="932" y2="395" stroke="#334BFA" stroke-width="1.5"/>
+      <text x="950" y="388" fill="#334BFA" font-size="8" font-weight="bold">adj</text>
+      <line x1="932" y1="395" x2="932" y2="453" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
 
       <!-- Applied branch (right) -->
-      <line x1="1068" y1="395" x2="1107" y2="395" stroke="#6B4C9A" stroke-width="1.5"/>
-      <text x="1088" y="388" fill="#6B4C9A" font-size="8" font-weight="bold">applied</text>
-      <line x1="1107" y1="395" x2="1107" y2="453" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
+      <line x1="1068" y1="395" x2="1107" y2="395" stroke="#334BFA" stroke-width="1.5"/>
+      <text x="1088" y="388" fill="#334BFA" font-size="8" font-weight="bold">applied</text>
+      <line x1="1107" y1="395" x2="1107" y2="453" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
 
       <!-- Create Deposit box -->
       <rect x="875" y="453" width="115" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -813,9 +820,9 @@ footer {
       <text x="535" y="834" fill="#333" font-size="9">Solid = data flow</text>
       <line x1="620" y1="830" x2="660" y2="830" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
       <text x="665" y="834" fill="#333" font-size="9">Dashed = logging</text>
-      <polygon points="760,824 772,830 760,836" fill="#6B4C9A"/>
+      <polygon points="760,824 772,830 760,836" fill="#334BFA"/>
       <text x="778" y="834" fill="#333" font-size="9">Arrow = direction</text>
-      <polygon points="870,818 882,830 870,842 858,830" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+      <polygon points="870,818 882,830 870,842 858,830" fill="white" stroke="#334BFA" stroke-width="1"/>
       <text x="888" y="834" fill="#333" font-size="9">Decision</text>
 
       <!-- Legend: Color key -->
@@ -825,7 +832,7 @@ footer {
       <text x="523" y="857" fill="#555" font-size="9">Fivetran</text>
       <rect x="577" y="848" width="14" height="10" rx="2" fill="#29B5E8"/>
       <text x="595" y="857" fill="#555" font-size="9">Snowflake</text>
-      <rect x="660" y="848" width="14" height="10" rx="2" fill="#6B4C9A"/>
+      <rect x="660" y="848" width="14" height="10" rx="2" fill="#334BFA"/>
       <text x="678" y="857" fill="#555" font-size="9">Workato</text>
       <rect x="737" y="848" width="14" height="10" rx="2" fill="#2E7D32"/>
       <text x="755" y="857" fill="#555" font-size="9">NetSuite</text>
@@ -918,7 +925,7 @@ footer {
   <svg viewBox="0 0 1100 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1100px;font-family:'Segoe UI',Arial,sans-serif;">
     <defs>
       <marker id="cba-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/>
       </marker>
       <marker id="cba-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
         <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
@@ -931,7 +938,7 @@ footer {
     <!-- ================================================================ -->
     <!-- LEVEL 0: 2.0 Master Recipe (top center)                          -->
     <!-- ================================================================ -->
-    <rect x="300" y="12" width="400" height="58" rx="10" fill="#6B4C9A" stroke="#4a3470" stroke-width="2"/>
+    <rect x="300" y="12" width="400" height="58" rx="10" fill="#334BFA" stroke="#4a3470" stroke-width="2"/>
     <text x="500" y="34" text-anchor="middle" fill="white" font-size="13" font-weight="bold">2.0 Master Recipe &mdash; CM, CBAs and Payments</text>
     <text x="500" y="50" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">ID: 58628332 | 734 jobs, 3 fail | Calls Rec 5.0, 8.0, 6.0, 3.0</text>
     <text x="500" y="64" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">Invoked by scheduled trigger</text>
@@ -941,37 +948,37 @@ footer {
     <!-- ================================================================ -->
 
     <!-- Left: Rec 5.0 Credit Memo (step 1) -->
-    <line x1="400" y1="70" x2="180" y2="116" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#cba-arrow-purple)"/>
-    <text x="270" y="87" fill="#6B4C9A" font-size="9" font-weight="600" transform="rotate(-12, 270, 87)">sync call (step 1)</text>
+    <line x1="400" y1="70" x2="180" y2="116" stroke="#334BFA" stroke-width="1.5" marker-end="url(#cba-arrow-purple)"/>
+    <text x="270" y="87" fill="#334BFA" font-size="9" font-weight="600" transform="rotate(-12, 270, 87)">sync call (step 1)</text>
 
-    <rect x="50" y="116" width="260" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
-    <text x="180" y="139" text-anchor="middle" fill="#6B4C9A" font-size="12" font-weight="bold">Rec 5.0 Credit Memo Master</text>
+    <rect x="50" y="116" width="260" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="1.5"/>
+    <text x="180" y="139" text-anchor="middle" fill="#334BFA" font-size="12" font-weight="bold">Rec 5.0 Credit Memo Master</text>
     <text x="180" y="157" text-anchor="middle" fill="#555" font-size="10">ID: 54665263 | Pre-step: credit memos</text>
 
     <!-- Center: Rec 8.0 Create CBA (step 2, the main CBA path) -->
-    <line x1="500" y1="70" x2="500" y2="116" stroke="#6B4C9A" stroke-width="2.5" marker-end="url(#cba-arrow-purple)"/>
-    <text x="520" y="96" fill="#6B4C9A" font-size="9" font-weight="600">sync call (step 2)</text>
+    <line x1="500" y1="70" x2="500" y2="116" stroke="#334BFA" stroke-width="2.5" marker-end="url(#cba-arrow-purple)"/>
+    <text x="520" y="96" fill="#334BFA" font-size="9" font-weight="600">sync call (step 2)</text>
 
-    <rect x="350" y="116" width="300" height="55" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2.5"/>
-    <text x="500" y="139" text-anchor="middle" fill="#6B4C9A" font-size="14" font-weight="bold">Rec 8.0 Create CBA</text>
+    <rect x="350" y="116" width="300" height="55" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2.5"/>
+    <text x="500" y="139" text-anchor="middle" fill="#334BFA" font-size="14" font-weight="bold">Rec 8.0 Create CBA</text>
     <text x="500" y="157" text-anchor="middle" fill="#555" font-size="10">ID: 54665266 | 873 jobs, 9 fail | 67K tasks</text>
     <text x="500" y="167" text-anchor="middle" fill="#888" font-size="9">Queries Snowflake, foreach loop</text>
 
     <!-- Right: Rec 6.0 Payments (step 3) -->
-    <line x1="600" y1="70" x2="820" y2="116" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#cba-arrow-purple)"/>
-    <text x="730" y="87" fill="#6B4C9A" font-size="9" font-weight="600" transform="rotate(12, 730, 87)">sync call (step 3)</text>
+    <line x1="600" y1="70" x2="820" y2="116" stroke="#334BFA" stroke-width="1.5" marker-end="url(#cba-arrow-purple)"/>
+    <text x="730" y="87" fill="#334BFA" font-size="9" font-weight="600" transform="rotate(12, 730, 87)">sync call (step 3)</text>
 
-    <rect x="690" y="116" width="260" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1.5"/>
-    <text x="820" y="139" text-anchor="middle" fill="#6B4C9A" font-size="12" font-weight="bold">Rec 6.0 Customer Payment</text>
+    <rect x="690" y="116" width="260" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="1.5"/>
+    <text x="820" y="139" text-anchor="middle" fill="#334BFA" font-size="12" font-weight="bold">Rec 6.0 Customer Payment</text>
     <text x="820" y="157" text-anchor="middle" fill="#555" font-size="10">ID: 54665264 | Post-step: payments</text>
 
     <!-- ================================================================ -->
     <!-- LEVEL 2: RF 8.0 Create CBA (child of Rec 8.0)                    -->
     <!-- ================================================================ -->
-    <line x1="500" y1="171" x2="500" y2="216" stroke="#6B4C9A" stroke-width="2" marker-end="url(#cba-arrow-purple)"/>
-    <text x="520" y="198" fill="#6B4C9A" font-size="9" font-weight="600">for each CBA row</text>
+    <line x1="500" y1="171" x2="500" y2="216" stroke="#334BFA" stroke-width="2" marker-end="url(#cba-arrow-purple)"/>
+    <text x="520" y="198" fill="#334BFA" font-size="9" font-weight="600">for each CBA row</text>
 
-    <rect x="320" y="216" width="360" height="62" rx="10" fill="#6B4C9A" stroke="#4a3470" stroke-width="2"/>
+    <rect x="320" y="216" width="360" height="62" rx="10" fill="#334BFA" stroke="#4a3470" stroke-width="2"/>
     <text x="500" y="239" text-anchor="middle" fill="white" font-size="14" font-weight="bold">RF 8.0 Create CBA</text>
     <text x="500" y="255" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">ID: 54665276 | 66,869 jobs, 0 fail | 900K tasks</text>
     <text x="500" y="271" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">Core recipe &mdash; custom code, mapper, NS API</text>
@@ -1007,7 +1014,7 @@ footer {
     <rect x="560" y="410" width="310" height="125" rx="8" fill="#f9f9fb" stroke="#ddd" stroke-width="1"/>
     <text x="715" y="435" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Legend</text>
 
-    <line x1="580" y1="457" x2="625" y2="457" stroke="#6B4C9A" stroke-width="2" marker-end="url(#cba-arrow-purple)"/>
+    <line x1="580" y1="457" x2="625" y2="457" stroke="#334BFA" stroke-width="2" marker-end="url(#cba-arrow-purple)"/>
     <text x="635" y="461" fill="#555" font-size="10">Synchronous recipe call</text>
 
     <line x1="580" y1="481" x2="625" y2="481" stroke="#2E7D32" stroke-width="2" marker-end="url(#cba-arrow-green)"/>
@@ -1016,9 +1023,9 @@ footer {
     <line x1="580" y1="505" x2="625" y2="505" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#cba-arrow-gray)"/>
     <text x="635" y="509" fill="#555" font-size="10">Manual / ad-hoc recipe</text>
 
-    <rect x="580" y="520" width="14" height="10" rx="2" fill="#6B4C9A"/>
+    <rect x="580" y="520" width="14" height="10" rx="2" fill="#334BFA"/>
     <text x="600" y="529" fill="#555" font-size="9">Core</text>
-    <rect x="640" y="520" width="14" height="10" rx="2" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1"/>
+    <rect x="640" y="520" width="14" height="10" rx="2" fill="#DCE1F9" stroke="#334BFA" stroke-width="1"/>
     <text x="660" y="529" fill="#555" font-size="9">Master</text>
     <rect x="710" y="520" width="14" height="10" rx="2" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
     <text x="730" y="529" fill="#555" font-size="9">NetSuite</text>

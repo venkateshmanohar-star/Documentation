@@ -542,7 +542,7 @@ footer {
         <marker id="arrow-stripe" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#635BFF"/></marker>
         <marker id="arrow-fivetran" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#F5A623"/></marker>
         <marker id="arrow-snowflake" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/></marker>
-        <marker id="arrow-workato" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/></marker>
+        <marker id="arrow-workato" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
         <marker id="arrow-netsuite" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/></marker>
         <marker id="arrow-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
         <marker id="arrow-fivetran-rev" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="10 0, 0 3.5, 10 7" fill="#F5A623"/></marker>
@@ -556,7 +556,7 @@ footer {
       <rect x="10" y="60" width="230" height="920" rx="12" fill="#EEEDFF" stroke="#635BFF" stroke-width="1" opacity="0.4"/>
       <rect x="250" y="60" width="170" height="920" rx="12" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.4"/>
       <rect x="430" y="60" width="420" height="920" rx="12" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.4"/>
-      <rect x="860" y="60" width="340" height="920" rx="12" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1" opacity="0.4"/>
+      <rect x="860" y="60" width="340" height="920" rx="12" fill="#DCE1F9" stroke="#334BFA" stroke-width="1" opacity="0.4"/>
       <rect x="1210" y="60" width="280" height="920" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.4"/>
 
       <!-- ================================================ -->
@@ -571,7 +571,7 @@ footer {
       <rect x="430" y="10" width="420" height="45" rx="8" fill="#29B5E8" filter="url(#shadow)"/>
       <text x="640" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Snowflake (Data Warehouse)</text>
 
-      <rect x="860" y="10" width="340" height="45" rx="8" fill="#6B4C9A" filter="url(#shadow)"/>
+      <rect x="860" y="10" width="340" height="45" rx="8" fill="#334BFA" filter="url(#shadow)"/>
       <text x="1030" y="39" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Workato (Orchestration)</text>
 
       <rect x="1210" y="10" width="280" height="45" rx="8" fill="#2E7D32" filter="url(#shadow)"/>
@@ -674,27 +674,27 @@ footer {
       <text x="509" y="378" text-anchor="middle" fill="#29B5E8" font-size="8">_PAYMENTS (9.4M)</text>
 
       <!-- Main flow: INT -> NETSUITE_EXPORT_PAYMENT -->
-      <line x1="640" y1="307" x2="640" y2="340" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="660" y="324" fill="#6B4C9A" font-size="7" font-weight="600">dbt model</text>
+      <line x1="640" y1="307" x2="640" y2="340" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="660" y="324" fill="#334BFA" font-size="7" font-weight="600">dbt model</text>
 
       <!-- Step 4: Export Table -->
-      <rect x="575" y="340" width="245" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="575" y="340" width="245" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="697" y="358" text-anchor="middle" fill="#333" font-size="11" font-weight="bold">NETSUITE_EXPORT_PAYMENT</text>
-      <text x="697" y="374" text-anchor="middle" fill="#6B4C9A" font-size="8">420K rows | 29 cols | team-enterprise-systems</text>
+      <text x="697" y="374" text-anchor="middle" fill="#334BFA" font-size="8">420K rows | 29 cols | team-enterprise-systems</text>
       <text x="697" y="388" text-anchor="middle" fill="#888" font-size="7">Joins: charges + customers + subsidiary mapping</text>
 
       <!-- Supporting export tables below -->
-      <line x1="697" y1="395" x2="697" y2="416" stroke="#6B4C9A" stroke-width="1.2" marker-end="url(#arrow-workato)"/>
+      <line x1="697" y1="395" x2="697" y2="416" stroke="#334BFA" stroke-width="1.2" marker-end="url(#arrow-workato)"/>
 
-      <rect x="575" y="416" width="120" height="35" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="575" y="416" width="120" height="35" rx="6" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="635" y="432" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">EXPORT_CUSTOMER</text>
       <text x="635" y="444" text-anchor="middle" fill="#888" font-size="7">Customer (327K)</text>
 
-      <rect x="700" y="416" width="120" height="35" rx="6" fill="white" stroke="#6B4C9A" stroke-width="1.2" filter="url(#shadow-sm)"/>
+      <rect x="700" y="416" width="120" height="35" rx="6" fill="white" stroke="#334BFA" stroke-width="1.2" filter="url(#shadow-sm)"/>
       <text x="760" y="432" text-anchor="middle" fill="#333" font-size="9" font-weight="bold">EXPORT_CBA</text>
       <text x="760" y="444" text-anchor="middle" fill="#888" font-size="7">Credit adjustments (21K)</text>
 
-      <text x="697" y="478" text-anchor="middle" fill="#6B4C9A" font-size="8" font-style="italic">Consumed by Workato Rec 6.0 SQL query</text>
+      <text x="697" y="478" text-anchor="middle" fill="#334BFA" font-size="8" font-style="italic">Consumed by Workato Rec 6.0 SQL query</text>
 
       <!-- WORKATO_LOGS -->
       <rect x="520" y="510" width="240" height="48" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -713,43 +713,43 @@ footer {
       <!-- ================================================ -->
       <!-- WORKATO COLUMN                                    -->
       <!-- ================================================ -->
-      <rect x="885" y="85" width="290" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="85" width="290" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="106" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">0.0 Scheduler</text>
-      <text x="1030" y="122" text-anchor="middle" fill="#6B4C9A" font-size="9">Cron 4x/day (5:30, 10:30, 15:30, 20:30 PT)</text>
+      <text x="1030" y="122" text-anchor="middle" fill="#334BFA" font-size="9">Cron 4x/day (5:30, 10:30, 15:30, 20:30 PT)</text>
 
-      <line x1="1030" y1="135" x2="1030" y2="170" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <line x1="1030" y1="135" x2="1030" y2="170" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
 
-      <rect x="885" y="170" width="290" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="170" width="290" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="192" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">2.0 Master (CM/CBA/Pay)</text>
-      <text x="1030" y="207" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 58628332 | Calls CREDMEMs, CBAs, Payments</text>
+      <text x="1030" y="207" text-anchor="middle" fill="#334BFA" font-size="9">ID: 58628332 | Calls CREDMEMs, CBAs, Payments</text>
       <text x="1030" y="220" text-anchor="middle" fill="#888" font-size="9">734 jobs | 3 failures</text>
 
-      <line x1="1030" y1="225" x2="1030" y2="260" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="1055" y="244" fill="#6B4C9A" font-size="9" font-weight="600">sync call (step 3)</text>
+      <line x1="1030" y1="225" x2="1030" y2="260" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="1055" y="244" fill="#334BFA" font-size="9" font-weight="600">sync call (step 3)</text>
 
-      <rect x="885" y="260" width="290" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="260" width="290" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="282" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Rec 6.0 Payment Master</text>
-      <text x="1030" y="297" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665264 | Query + Iterate payments</text>
+      <text x="1030" y="297" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665264 | Query + Iterate payments</text>
       <text x="1030" y="310" text-anchor="middle" fill="#888" font-size="9">912 jobs | 0 failures | 838K tasks</text>
 
-      <line x1="1030" y1="315" x2="1030" y2="355" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <text x="1055" y="336" fill="#6B4C9A" font-size="9" font-weight="600">For Each Payment (async)</text>
+      <line x1="1030" y1="315" x2="1030" y2="355" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <text x="1055" y="336" fill="#334BFA" font-size="9" font-weight="600">For Each Payment (async)</text>
 
-      <rect x="885" y="355" width="290" height="55" rx="8" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <rect x="885" y="355" width="290" height="55" rx="8" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1030" y="377" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">RF 6.0 Create Payment</text>
-      <text x="1030" y="392" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665274 | 819,410 jobs, 0 fail</text>
+      <text x="1030" y="392" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665274 | 819,410 jobs, 0 fail</text>
       <text x="1030" y="405" text-anchor="middle" fill="#888" font-size="9">Core: customer lookup, build payment, NS API</text>
 
       <!-- Decision Diamond -->
-      <line x1="1030" y1="410" x2="1030" y2="443" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
-      <polygon points="1030,443 1078,475 1030,507 982,475" fill="white" stroke="#6B4C9A" stroke-width="2" filter="url(#shadow-sm)"/>
+      <line x1="1030" y1="410" x2="1030" y2="443" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <polygon points="1030,443 1078,475 1030,507 982,475" fill="white" stroke="#334BFA" stroke-width="2" filter="url(#shadow-sm)"/>
       <text x="1030" y="472" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Invoice</text>
       <text x="1030" y="484" text-anchor="middle" fill="#333" font-size="10" font-weight="bold">Match?</text>
 
       <!-- YES branch (right) -->
-      <line x1="1078" y1="475" x2="1117" y2="475" stroke="#6B4C9A" stroke-width="1.5"/>
-      <text x="1098" y="468" fill="#6B4C9A" font-size="9" font-weight="bold">Yes</text>
-      <line x1="1117" y1="475" x2="1117" y2="530" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
+      <line x1="1078" y1="475" x2="1117" y2="475" stroke="#334BFA" stroke-width="1.5"/>
+      <text x="1098" y="468" fill="#334BFA" font-size="9" font-weight="bold">Yes</text>
+      <line x1="1117" y1="475" x2="1117" y2="530" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
 
       <!-- Applied Payment box -->
       <rect x="1060" y="530" width="115" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -758,9 +758,9 @@ footer {
       <text x="1117" y="580" text-anchor="middle" fill="#888" font-size="8">CustPymt</text>
 
       <!-- NO branch (left) -->
-      <line x1="982" y1="475" x2="942" y2="475" stroke="#6B4C9A" stroke-width="1.5"/>
-      <text x="960" y="468" fill="#6B4C9A" font-size="9" font-weight="bold">No</text>
-      <line x1="942" y1="475" x2="942" y2="530" stroke="#6B4C9A" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
+      <line x1="982" y1="475" x2="942" y2="475" stroke="#334BFA" stroke-width="1.5"/>
+      <text x="960" y="468" fill="#334BFA" font-size="9" font-weight="bold">No</text>
+      <line x1="942" y1="475" x2="942" y2="530" stroke="#334BFA" stroke-width="1.5" marker-end="url(#arrow-workato)"/>
 
       <!-- Unapplied Payment box -->
       <rect x="885" y="530" width="115" height="55" rx="8" fill="white" stroke="#2E7D32" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -769,15 +769,15 @@ footer {
       <text x="942" y="580" text-anchor="middle" fill="#888" font-size="8">CustPymt</text>
 
       <!-- CBA pipeline -->
-      <rect x="885" y="640" width="290" height="50" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="640" width="290" height="50" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="660" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Rec 8.0 CBA Master</text>
-      <text x="1030" y="677" text-anchor="middle" fill="#6B4C9A" font-size="9">ID: 54665266 | 873 jobs, 9 fail</text>
+      <text x="1030" y="677" text-anchor="middle" fill="#334BFA" font-size="9">ID: 54665266 | 873 jobs, 9 fail</text>
 
-      <line x1="1030" y1="690" x2="1030" y2="720" stroke="#6B4C9A" stroke-width="2" marker-end="url(#arrow-workato)"/>
+      <line x1="1030" y1="690" x2="1030" y2="720" stroke="#334BFA" stroke-width="2" marker-end="url(#arrow-workato)"/>
 
-      <rect x="885" y="720" width="290" height="45" rx="8" fill="white" stroke="#6B4C9A" stroke-width="1.5" filter="url(#shadow-sm)"/>
+      <rect x="885" y="720" width="290" height="45" rx="8" fill="white" stroke="#334BFA" stroke-width="1.5" filter="url(#shadow-sm)"/>
       <text x="1030" y="740" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">RF 8.0 Create CBA</text>
-      <text x="1030" y="756" text-anchor="middle" fill="#6B4C9A" font-size="9">66,869 jobs | 0 fail</text>
+      <text x="1030" y="756" text-anchor="middle" fill="#334BFA" font-size="9">66,869 jobs | 0 fail</text>
 
       <!-- Logging node -->
       <rect x="885" y="805" width="290" height="45" rx="8" fill="white" stroke="#9E9E9E" stroke-width="1.5" filter="url(#shadow-sm)"/>
@@ -870,9 +870,9 @@ footer {
       <text x="545" y="944" fill="#333" font-size="9">Solid = data flow</text>
       <line x1="630" y1="940" x2="670" y2="940" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
       <text x="675" y="944" fill="#333" font-size="9">Dashed = logging / reverse</text>
-      <polygon points="810,934 822,940 810,946" fill="#6B4C9A"/>
+      <polygon points="810,934 822,940 810,946" fill="#334BFA"/>
       <text x="828" y="944" fill="#333" font-size="9">Arrow = direction</text>
-      <polygon points="920,928 932,940 920,952 908,940" fill="white" stroke="#6B4C9A" stroke-width="1"/>
+      <polygon points="920,928 932,940 920,952 908,940" fill="white" stroke="#334BFA" stroke-width="1"/>
       <text x="938" y="944" fill="#333" font-size="9">Decision</text>
 
       <!-- Legend: Color key -->
@@ -882,7 +882,7 @@ footer {
       <text x="534" y="967" fill="#555" font-size="9">Fivetran</text>
       <rect x="588" y="958" width="14" height="10" rx="2" fill="#29B5E8"/>
       <text x="606" y="967" fill="#555" font-size="9">Snowflake</text>
-      <rect x="670" y="958" width="14" height="10" rx="2" fill="#6B4C9A"/>
+      <rect x="670" y="958" width="14" height="10" rx="2" fill="#334BFA"/>
       <text x="688" y="967" fill="#555" font-size="9">Workato</text>
       <rect x="746" y="958" width="14" height="10" rx="2" fill="#2E7D32"/>
       <text x="764" y="967" fill="#555" font-size="9">NetSuite</text>
@@ -978,7 +978,7 @@ footer {
   <svg viewBox="0 0 1120 680" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1120px;font-family:'Segoe UI',Arial,sans-serif;">
     <defs>
       <marker id="pay-arrow-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#6B4C9A"/>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/>
       </marker>
       <marker id="pay-arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
         <polygon points="0 0, 10 3.5, 0 7" fill="#2E7D32"/>
@@ -994,7 +994,7 @@ footer {
     <!-- ================================================================ -->
     <!-- LEVEL 0: 0.0 Scheduled Master (top center)                       -->
     <!-- ================================================================ -->
-    <rect x="350" y="12" width="340" height="58" rx="10" fill="#6B4C9A" stroke="#4a3470" stroke-width="2"/>
+    <rect x="350" y="12" width="340" height="58" rx="10" fill="#334BFA" stroke="#4a3470" stroke-width="2"/>
     <text x="520" y="36" text-anchor="middle" fill="white" font-size="14" font-weight="bold">0.0 Scheduled Master</text>
     <text x="520" y="52" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">ID: 58628330 | Cron 4x/day (5:30, 10:30, 15:30, 20:30 PT)</text>
     <text x="520" y="64" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">805 jobs | 0 failures</text>
@@ -1002,11 +1002,11 @@ footer {
     <!-- ================================================================ -->
     <!-- LEVEL 1: 2.0 Master Recipe (CM/CBA/Payments)                     -->
     <!-- ================================================================ -->
-    <line x1="520" y1="70" x2="520" y2="116" stroke="#6B4C9A" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
-    <text x="540" y="96" fill="#6B4C9A" font-size="9" font-weight="600">sync call (step 2+3)</text>
+    <line x1="520" y1="70" x2="520" y2="116" stroke="#334BFA" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
+    <text x="540" y="96" fill="#334BFA" font-size="9" font-weight="600">sync call (step 2+3)</text>
 
-    <rect x="350" y="116" width="340" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-    <text x="520" y="139" text-anchor="middle" fill="#6B4C9A" font-size="12" font-weight="bold">2.0 Master - CM/CBA/Payments</text>
+    <rect x="350" y="116" width="340" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+    <text x="520" y="139" text-anchor="middle" fill="#334BFA" font-size="12" font-weight="bold">2.0 Master - CM/CBA/Payments</text>
     <text x="520" y="157" text-anchor="middle" fill="#555" font-size="10">ID: 58628332 | 734 jobs, 3 fail</text>
 
     <!-- ================================================================ -->
@@ -1022,28 +1022,28 @@ footer {
     <text x="200" y="253" text-anchor="middle" fill="#aaa" font-size="9">ID: 54665263 | (separate pipeline)</text>
 
     <!-- Center branch: Rec 8.0 CBA Master -->
-    <line x1="520" y1="166" x2="520" y2="216" stroke="#6B4C9A" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
-    <text x="540" y="195" fill="#6B4C9A" font-size="9" font-weight="600">sync call (step 2)</text>
+    <line x1="520" y1="166" x2="520" y2="216" stroke="#334BFA" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
+    <text x="540" y="195" fill="#334BFA" font-size="9" font-weight="600">sync call (step 2)</text>
 
-    <rect x="390" y="216" width="260" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-    <text x="520" y="239" text-anchor="middle" fill="#6B4C9A" font-size="12" font-weight="bold">Rec 8.0 CBA Master</text>
+    <rect x="390" y="216" width="260" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+    <text x="520" y="239" text-anchor="middle" fill="#334BFA" font-size="12" font-weight="bold">Rec 8.0 CBA Master</text>
     <text x="520" y="257" text-anchor="middle" fill="#555" font-size="10">ID: 54665266 | 873 jobs, 9 fail</text>
 
     <!-- Right branch: Rec 6.0 Payment Master -->
-    <line x1="610" y1="166" x2="830" y2="216" stroke="#6B4C9A" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
-    <text x="740" y="185" fill="#6B4C9A" font-size="9" font-weight="600" transform="rotate(12, 740, 185)">sync call (step 3)</text>
+    <line x1="610" y1="166" x2="830" y2="216" stroke="#334BFA" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
+    <text x="740" y="185" fill="#334BFA" font-size="9" font-weight="600" transform="rotate(12, 740, 185)">sync call (step 3)</text>
 
-    <rect x="700" y="216" width="260" height="50" rx="8" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="2"/>
-    <text x="830" y="239" text-anchor="middle" fill="#6B4C9A" font-size="13" font-weight="bold">Rec 6.0 Payment Master</text>
+    <rect x="700" y="216" width="260" height="50" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2"/>
+    <text x="830" y="239" text-anchor="middle" fill="#334BFA" font-size="13" font-weight="bold">Rec 6.0 Payment Master</text>
     <text x="830" y="257" text-anchor="middle" fill="#555" font-size="10">ID: 54665264 | 912 jobs, 0 fail</text>
 
     <!-- ================================================================ -->
     <!-- LEVEL 3a: RF 8.0 Create CBA (from Rec 8.0)                      -->
     <!-- ================================================================ -->
-    <line x1="520" y1="266" x2="520" y2="316" stroke="#6B4C9A" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
-    <text x="540" y="295" fill="#6B4C9A" font-size="9" font-weight="600">for each CBA</text>
+    <line x1="520" y1="266" x2="520" y2="316" stroke="#334BFA" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
+    <text x="540" y="295" fill="#334BFA" font-size="9" font-weight="600">for each CBA</text>
 
-    <rect x="355" y="316" width="330" height="58" rx="10" fill="#6B4C9A" stroke="#4a3470" stroke-width="2"/>
+    <rect x="355" y="316" width="330" height="58" rx="10" fill="#334BFA" stroke="#4a3470" stroke-width="2"/>
     <text x="520" y="340" text-anchor="middle" fill="white" font-size="13" font-weight="bold">RF 8.0 Create CBA</text>
     <text x="520" y="356" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">ID: 54665276 | 66,869 jobs, 0 fail</text>
     <text x="520" y="369" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">Creates Customer Balance Adjustments in NetSuite</text>
@@ -1051,10 +1051,10 @@ footer {
     <!-- ================================================================ -->
     <!-- LEVEL 3b: RF 6.0 Create Payment (from Rec 6.0)                  -->
     <!-- ================================================================ -->
-    <line x1="830" y1="266" x2="830" y2="316" stroke="#6B4C9A" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
-    <text x="850" y="295" fill="#6B4C9A" font-size="9" font-weight="600">for each payment (async)</text>
+    <line x1="830" y1="266" x2="830" y2="316" stroke="#334BFA" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
+    <text x="850" y="295" fill="#334BFA" font-size="9" font-weight="600">for each payment (async)</text>
 
-    <rect x="665" y="316" width="330" height="58" rx="10" fill="#6B4C9A" stroke="#4a3470" stroke-width="2"/>
+    <rect x="665" y="316" width="330" height="58" rx="10" fill="#334BFA" stroke="#4a3470" stroke-width="2"/>
     <text x="830" y="340" text-anchor="middle" fill="white" font-size="13" font-weight="bold">RF 6.0 Create Customer Payment</text>
     <text x="830" y="356" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-size="10">ID: 54665274 | 819,410 jobs, 0 fail | 6.5M tasks</text>
     <text x="830" y="369" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9">Core recipe: customer lookup, build payment, NS API</text>
@@ -1102,7 +1102,7 @@ footer {
     <rect x="580" y="510" width="330" height="155" rx="8" fill="#f9f9fb" stroke="#ddd" stroke-width="1"/>
     <text x="745" y="535" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Legend</text>
 
-    <line x1="600" y1="557" x2="645" y2="557" stroke="#6B4C9A" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
+    <line x1="600" y1="557" x2="645" y2="557" stroke="#334BFA" stroke-width="2" marker-end="url(#pay-arrow-purple)"/>
     <text x="655" y="561" fill="#555" font-size="10">Synchronous / async recipe call</text>
 
     <line x1="600" y1="581" x2="645" y2="581" stroke="#2E7D32" stroke-width="2" marker-end="url(#pay-arrow-green)"/>
@@ -1111,9 +1111,9 @@ footer {
     <line x1="600" y1="605" x2="645" y2="605" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#pay-arrow-gray)"/>
     <text x="655" y="609" fill="#555" font-size="10">Manual / separate pipeline</text>
 
-    <rect x="600" y="626" width="14" height="10" rx="2" fill="#6B4C9A"/>
+    <rect x="600" y="626" width="14" height="10" rx="2" fill="#334BFA"/>
     <text x="620" y="635" fill="#555" font-size="9">Core recipe</text>
-    <rect x="700" y="626" width="14" height="10" rx="2" fill="#F0EBF8" stroke="#6B4C9A" stroke-width="1"/>
+    <rect x="700" y="626" width="14" height="10" rx="2" fill="#DCE1F9" stroke="#334BFA" stroke-width="1"/>
     <text x="720" y="635" fill="#555" font-size="9">Master</text>
     <rect x="780" y="626" width="14" height="10" rx="2" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
     <text x="800" y="635" fill="#555" font-size="9">NetSuite</text>
