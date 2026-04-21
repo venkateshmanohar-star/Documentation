@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <meta name="author" content="venkatesh.manohar">
 <title>Snowflake Table Architecture — OTC Integration Pipeline</title>
 <style>
@@ -59,6 +60,41 @@ nav#toc {
   box-shadow: 1px 0 4px rgba(0,0,0,0.04);
   border-right: 1px solid var(--border);
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+nav#toc .toc-links { flex: 1; overflow-y: auto; }
+nav#toc .toc-nav-buttons {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  background: #ffffff;
+}
+nav#toc .toc-nav-buttons a.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.82em;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  border-left: none;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  background: var(--ic-cream);
+}
+nav#toc .toc-nav-buttons a.nav-btn:hover {
+  background: var(--ic-blue-bg);
+  color: var(--ic-blue);
+  border-color: var(--ic-blue);
+}
+nav#toc .toc-nav-buttons a.nav-btn .material-icons-outlined {
+  font-size: 18px;
 }
 nav#toc .toc-brand {
   display: flex;
@@ -324,9 +360,6 @@ footer {
 </head>
 <body>
 
-<!-- Back to Index -->
-<a href="netsuite-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#16100E;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#334BFA'" onmouseout="this.style.background='#16100E'">&#8592; Back to Index</a>
-<a href="index.html" style="position:fixed;top:8px;right:180px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
 
 <!-- Fixed Left Sidebar TOC -->
 <nav id="toc">
@@ -345,19 +378,25 @@ footer {
       <span class="brand-sub">Enterprise Systems</span>
     </div>
   </div>
-  <h3>Navigation</h3>
-  <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
-  <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
-  <a href="#system-overview" data-section="system-overview">3. System Overview</a>
-  <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
-  <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
-  <a href="#sales-order-lineage" data-section="sales-order-lineage">6. Sales Order Lineage</a>
-  <a href="#invoice-lineage" data-section="invoice-lineage">7. Invoice Lineage</a>
-  <a href="#payment-lineage" data-section="payment-lineage">8. Payment Lineage</a>
-  <a href="#supporting-pipelines" data-section="supporting-pipelines">9. Supporting Pipelines</a>
-  <a href="#cross-cutting" data-section="cross-cutting">10. Cross-Cutting Tables</a>
-  <a href="#table-inventory" data-section="table-inventory">11. Full Table Inventory</a>
-  <a href="#ownership" data-section="ownership">12. Ownership &amp; Governance</a>
+  <div class="toc-links">
+    <h3>Navigation</h3>
+    <a href="#executive-summary" data-section="executive-summary">1. Executive Summary</a>
+    <a href="#business-overview" data-section="business-overview">2. Business Overview</a>
+    <a href="#system-overview" data-section="system-overview">3. System Overview</a>
+    <a href="#architecture-overview" data-section="architecture-overview">4. Architecture Overview</a>
+    <a href="#architecture-diagram" data-section="architecture-diagram">5. Architecture Diagram</a>
+    <a href="#sales-order-lineage" data-section="sales-order-lineage">6. Sales Order Lineage</a>
+    <a href="#invoice-lineage" data-section="invoice-lineage">7. Invoice Lineage</a>
+    <a href="#payment-lineage" data-section="payment-lineage">8. Payment Lineage</a>
+    <a href="#supporting-pipelines" data-section="supporting-pipelines">9. Supporting Pipelines</a>
+    <a href="#cross-cutting" data-section="cross-cutting">10. Cross-Cutting Tables</a>
+    <a href="#table-inventory" data-section="table-inventory">11. Full Table Inventory</a>
+    <a href="#ownership" data-section="ownership">12. Ownership &amp; Governance</a>
+  </div>
+  <div class="toc-nav-buttons">
+    <a href="index.html" class="nav-btn"><span class="material-icons-outlined">home</span> Home</a>
+    <a href="netsuite-index.html" class="nav-btn"><span class="material-icons-outlined">arrow_back</span> Back to Index</a>
+  </div>
 </nav>
 
 <div class="main-content">
@@ -367,14 +406,14 @@ footer {
 <!-- ============================================================ -->
 <div class="meta-header">
   <h1>Snowflake Table Architecture &mdash; OTC Integration Pipeline</h1>
-  <p style="margin-top:4px;opacity:0.85;">Table lineage &amp; data flow: Source Systems &rarr; Fivetran &rarr; Snowflake (STG &rarr; INT &rarr; EXPORT) &rarr; Workato &rarr; NetSuite</p>
+  <p style="margin-top:4px;opacity:0.85;">Table lineage &amp; data flow: Fan-in DAG &mdash; Export tables pull from Fivetran RAW, STG, INT &amp; other EXPORT tables simultaneously</p>
   <div class="meta-info">
     <span><strong>Type:</strong> <span class="badge badge-arch">Architecture</span></span>
     <span><strong>Author:</strong> venkatesh.manohar</span>
     <span><strong>Generated:</strong> April 9, 2026</span>
     <span><strong>Database:</strong> INTERCOM_PROD</span>
     <span><strong>Export Tables:</strong> 14 (SHARED_EXTERNAL_WORKATO)</span>
-    <span><strong>Layers:</strong> 6 (RAW &rarr; STG &rarr; INT &rarr; EXPORT &rarr; CORE)</span>
+    <span><strong>Layers:</strong> 5 (RAW, STG, INT, EXPORT, CORE) &mdash; fan-in DAG, not linear</span>
   </div>
 </div>
 
@@ -386,17 +425,17 @@ footer {
   <div class="two-layer">
     <div class="layer-box layer-business">
       <h4>Business View</h4>
-      <p>Intercom's Order-to-Cash (OTC) integration pipeline transforms data from two upstream source systems &mdash; <strong>Salesforce</strong> (CRM / contracts) and <strong>Stripe</strong> (billing / payments) &mdash; through a multi-layer dbt pipeline in Snowflake. The pipeline produces export tables that Workato reads to create records in NetSuite (ERP).</p>
+      <p>Intercom's Order-to-Cash (OTC) integration pipeline transforms data from two upstream source systems &mdash; <strong>Salesforce</strong> (CRM / contracts) and <strong>Stripe</strong> (billing / payments) &mdash; through Snowflake. The pipeline produces export tables in <code>SHARED_EXTERNAL_WORKATO</code> that Workato reads to create records in NetSuite (ERP).</p>
       <p>Six transaction types flow through this architecture: <strong>Sales Orders</strong>, <strong>Invoices</strong>, <strong>Payments</strong>, <strong>Credit Memos</strong>, <strong>Refunds</strong>, and <strong>Customer Balance Adjustments (CBAs)</strong>.</p>
     </div>
     <div class="layer-box layer-technical">
       <h4>Technical View</h4>
-      <p>Data flows through 6 layers: <strong>RAW</strong> (Fivetran-managed) &rarr; <strong>STG</strong> (dbt views) &rarr; <strong>INT</strong> (dbt materialized tables) &rarr; <strong>EXPORT</strong> (SHARED_EXTERNAL_WORKATO, Workato-readable) &rarr; <strong>CORE</strong> (analytics side branch). All export tables are TRANSIENT BASE TABLEs tagged with <code>OWNER_TEAM='team-enterprise-systems'</code> and <code>APP='dbt'</code>.</p>
-      <p>The same STG/INT layers feed two consumers: (1) export tables for Workato/NetSuite integration, and (2) CORE analytics tables for Looker/Mode.</p>
+      <p>Five logical layers exist: <strong>RAW</strong> (Fivetran-managed), <strong>STG</strong> (dbt views), <strong>INT</strong> (dbt materialized tables), <strong>EXPORT</strong> (SHARED_EXTERNAL_WORKATO), and <strong>CORE</strong> (analytics). However, data does <strong>NOT</strong> flow in a strict linear pipeline. Export tables use a <strong>fan-in DAG pattern</strong> &mdash; each export model pulls from whichever upstream layers it needs: some sources come through the full RAW &rarr; STG &rarr; INT path, others skip straight from Fivetran RAW or STG into the export table, and some export tables reference other export tables within the same schema.</p>
+      <p>All export tables are TRANSIENT BASE TABLEs tagged with <code>OWNER_TEAM='team-enterprise-systems'</code> and <code>APP='dbt'</code>. CORE analytics tables branch off from INT &mdash; they are <strong>not</strong> downstream of export tables.</p>
     </div>
   </div>
   <div class="callout callout-success">
-    <strong>Scale:</strong> The largest export table is <code>NETSUITE_EXPORT_INVOICE</code> at <strong>6.7M rows (1.07 GB)</strong>. The integration tracking table <code>WORKATO_LOGS</code> holds <strong>67M rows (10.5 GB)</strong> across all pipelines. Total export layer: 14 production tables.
+    <strong>Scale:</strong> The largest export table is <code>NETSUITE_EXPORT_INVOICE</code> at <strong>6.7M rows (1.07 GB)</strong>. The integration tracking table <code>WORKATO_LOGS</code> holds <strong>67M rows (10.2 GB)</strong> across all pipelines. Total export layer: 21 tables (14 core + 7 supplementary).
   </div>
 </section>
 
@@ -487,57 +526,61 @@ footer {
 <section id="architecture-overview">
   <h2>4. Architecture Overview</h2>
 
+  <div class="callout callout-warn">
+    <strong>Key architectural insight (from Select Star lineage):</strong> Data does NOT flow in strict sequential stages. Export tables use a <strong>fan-in DAG pattern</strong> where each dbt model pulls from whichever upstream sources it needs &mdash; Fivetran RAW, Staging views, Intermediate tables, and even other Export tables &mdash; all simultaneously. The "layers" below describe where tables <em>live</em>, not a mandatory sequential flow.
+  </div>
+
   <div class="two-layer">
     <div class="layer-box layer-business">
-      <h4>Layer 0 &mdash; Raw (Fivetran)</h4>
-      <p>Fivetran continuously replicates data from Salesforce and Stripe into Snowflake. These are untransformed, schema-for-schema copies of the source systems. Salesforce data lands in <code>STAGING_SALESFORCE</code>; Stripe data lands in <code>SNAPSHOT_STRIPE</code> and <code>BASE</code>.</p>
+      <h4>RAW Layer (Fivetran)</h4>
+      <p>Fivetran continuously replicates data from Salesforce and Stripe into Snowflake. These are untransformed, schema-for-schema copies of the source systems. <strong>Some RAW tables feed directly into EXPORT models</strong>, bypassing STG and INT entirely (e.g., <code>PRICEBOOK_2</code>, <code>ORDER_ITEM</code>, <code>PRICEBOOK_ENTRY</code> for Sales Orders).</p>
     </div>
     <div class="layer-box layer-technical">
-      <h4>Layer 0 &mdash; Technical</h4>
-      <p>Fivetran manages 232+ raw tables across 3 schemas. Key raw tables: <code>BASE.STRIPE_INVOICES</code> (4.4M rows, 448 MB), <code>BASE.STRIPE_CUSTOMER</code> (1.8M rows, 99 MB), <code>BASE.STRIPE_REFUND</code> (237K rows, 16 MB). Salesforce tables are in <code>STAGING_SALESFORCE</code> (76 tables).</p>
+      <h4>RAW Layer &mdash; Technical</h4>
+      <p>Fivetran manages 232+ raw tables across 3 schemas. Salesforce raw: <code>FIVETRAN_SALESFORCE</code> (includes <code>ORDER_ITEM</code>, <code>PRICEBOOK_2</code>, <code>PRICEBOOK_ENTRY</code>, <code>SRQQ_QUOTE_C</code>). Stripe raw: <code>BASE</code> (135 tables, including <code>STRIPE_INVOICES</code> 4.4M rows, <code>STRIPE_CUSTOMER</code> 1.8M rows, <code>STRIPE_REFUND</code> 237K rows). Some tables replicate to <code>STAGING_SALESFORCE</code> (76 tables).</p>
     </div>
   </div>
 
   <div class="two-layer">
     <div class="layer-box layer-business">
-      <h4>Layer 1 &mdash; Staging (dbt Views)</h4>
-      <p>Staging views rename columns, cast types, and apply light filtering. They are <strong>live views</strong> with zero storage cost &mdash; always in sync with the raw data. These are the "clean interface" to raw data.</p>
+      <h4>Staging Layer (dbt Views)</h4>
+      <p>Staging views rename columns, cast types, and apply light filtering. They are <strong>live views</strong> with zero storage cost. Some staging tables are consumed directly by export models (e.g., <code>STG_WORKATO_LOG</code> and <code>STG_BILLING_CUSTOMERS</code> feed directly into <code>NETSUITE_EXPORT_SALES_ORDER</code>).</p>
     </div>
     <div class="layer-box layer-technical">
-      <h4>Layer 1 &mdash; Technical</h4>
-      <p>Schemas: <code>STAGING_SALESFORCE</code>, <code>STAGING_PRODUCT</code>, <code>STAGING_BILLING</code>, <code>STAGING_STRIPE_DATA_SHARE</code>. Key views: <code>STG_SALESFORCE_ORDER_ITEM</code> (27 columns), <code>STG_STRIPE_INVOICES</code> (4.4M rows), <code>STG_STRIPE_PAYMENTS</code> (4.0M rows). Owner: <code>team-data-eng</code>.</p>
+      <h4>Staging Layer &mdash; Technical</h4>
+      <p>Schemas: <code>STAGING_SALESFORCE</code>, <code>STAGING_PRODUCT</code>, <code>STAGING_BILLING</code>, <code>STAGING_STRIPE_DATA_SHARE</code>. Key views: <code>STG_SALESFORCE_ORDER_ITEM</code> (27 columns), <code>STG_STRIPE_INVOICES</code> (4.4M rows), <code>STG_STRIPE_PAYMENTS</code> (4.0M rows), <code>STG_WORKATO_LOG</code>, <code>STG_BILLING_CUSTOMERS</code>. Owner: <code>team-data-eng</code>.</p>
     </div>
   </div>
 
   <div class="two-layer">
     <div class="layer-box layer-business">
-      <h4>Layer 2 &mdash; Intermediate (dbt Tables)</h4>
-      <p>Business logic, joins, deduplication, and enrichment happen here. These are <strong>materialized tables</strong> (not views) for performance. The intermediate layer is shared by both the export path (to NetSuite) and the analytics path (to CORE).</p>
+      <h4>Intermediate Layer (dbt Tables)</h4>
+      <p>Business logic, joins, deduplication, and enrichment happen here. These are <strong>materialized tables</strong> (not views) for performance. Export tables pull from intermediate tables across <strong>multiple schemas</strong> (GTM, FINANCE, COMMON), not just from one.</p>
     </div>
     <div class="layer-box layer-technical">
-      <h4>Layer 2 &mdash; Technical</h4>
-      <p>Schemas: <code>INTERMEDIATE_GTM</code>, <code>INTERMEDIATE_FINANCE</code>, <code>INTERMEDIATE_ACCOUNTING</code>. Largest: <code>INT_STRIPE_INVOICE_LINES</code> (35.3M rows, 2.0 GB), <code>INT_STRIPE_PAYMENTS</code> (4.0M rows, 386 MB). Owner: <code>team-data-eng</code>.</p>
+      <h4>Intermediate Layer &mdash; Technical</h4>
+      <p>Schemas: <code>INTERMEDIATE_GTM</code> (INT_SALESFORCE_ORDER, INT_SALESFORCE_CONTRACT, INT_OPPORTUNITIES, INT_SALESFORCE_APP_TO_SUBSCRIPTION), <code>INTERMEDIATE_FINANCE</code> (INT_STRIPE_INVOICE_LINES 35.3M rows, INT_STRIPE_PAYMENTS 4.0M, INT_STRIPE_METERING_FEATURES), <code>INTERMEDIATE_COMMON</code> (INT_SALESFORCE_ACCOUNT, INT_SNAP_STRIPE_CUSTOMER). Owner: <code>team-data-eng</code>.</p>
     </div>
   </div>
 
   <div class="two-layer">
     <div class="layer-box layer-business">
-      <h4>Layer 3 &mdash; Export (Workato)</h4>
-      <p>The <code>SHARED_EXTERNAL_WORKATO</code> schema contains all NetSuite-ready export tables. These are the tables that Workato recipes query to create/update ERP records. Each table maps to a specific NetSuite record type.</p>
+      <h4>Export Layer (Workato)</h4>
+      <p>The <code>SHARED_EXTERNAL_WORKATO</code> schema contains all NetSuite-ready export tables. These are the <strong>fan-in convergence point</strong> &mdash; each export model's dbt SQL joins sources from RAW, STG, INT, and even other export tables. Export tables also have <strong>downstream dependents</strong> within the same schema (e.g., <code>NETSUITE_EXPORT_SALES_ORDER</code> feeds <code>NETSUITE_EXPORT_CUSTOMER</code> and <code>NETSUITE_EXPORT_ADJUSTMENT_RECORDS</code>).</p>
     </div>
     <div class="layer-box layer-technical">
-      <h4>Layer 3 &mdash; Technical</h4>
-      <p>12 TRANSIENT tables in <code>SHARED_EXTERNAL_WORKATO</code>. All tagged <code>APP='dbt'</code>, <code>OWNER_TEAM='team-enterprise-systems'</code>. TRANSIENT = 1-day Time Travel (vs 90-day default) to save storage. Largest: <code>NETSUITE_EXPORT_INVOICE</code> (6.7M rows, 1.07 GB).</p>
+      <h4>Export Layer &mdash; Technical</h4>
+      <p>14 TRANSIENT tables in <code>SHARED_EXTERNAL_WORKATO</code>. All tagged <code>APP='dbt'</code>, <code>OWNER_TEAM='team-enterprise-systems'</code>. TRANSIENT = 1-day Time Travel (vs 90-day default). Largest: <code>NETSUITE_EXPORT_INVOICE</code> (6.7M rows, 1.07 GB). Self-referencing: some export tables depend on other export tables (e.g., <code>NETSUITE_EXPORT_PRODUCTS</code> feeds into <code>NETSUITE_EXPORT_SALES_ORDER</code>).</p>
     </div>
   </div>
 
   <div class="two-layer">
     <div class="layer-box layer-business">
-      <h4>Layer 4 &mdash; Core (Analytics)</h4>
+      <h4>Core Layer (Analytics)</h4>
       <p>Analytics-ready models consumed by Looker, Mode, and downstream dbt models. These branch off from the intermediate layer &mdash; they are <strong>not downstream of the export tables</strong>.</p>
     </div>
     <div class="layer-box layer-technical">
-      <h4>Layer 4 &mdash; Technical</h4>
+      <h4>Core Layer &mdash; Technical</h4>
       <p>Schemas: <code>CORE_GTM</code> (98 tables), <code>CORE_FINANCE</code> (40 tables), <code>CORE_COMMON</code> (38 tables). Key tables: <code>FCT_ORDERS</code> (54.7K rows), <code>FCT_INVOICES</code> (6.8M rows, combines Stripe + Zuora). Owner: <code>team-data-eng</code>.</p>
     </div>
   </div>
@@ -548,287 +591,251 @@ footer {
 <!-- ============================================================ -->
 <section id="architecture-diagram">
   <h2>5. Architecture Diagram</h2>
-  <p>Master lineage showing all six OTC pipelines flowing through the Snowflake layers. Each row is a pipeline; columns represent schema layers:</p>
+  <p>Master lineage showing all OTC pipelines as <strong>fan-in DAGs</strong>, not linear chains. Every export table pulls from multiple upstream sources across layers. The Sales Order pipeline (Section 6) has the most complex fan-in (15 sources, verified via Select Star). Column analysis of all other export tables confirmed multi-source joins: Invoice (71 cols), Credit Memo (34 cols), Customer (32 cols), Payment (29 cols), Refund (18 cols, cross-pipeline), CBA (14 cols, cross-pipeline). Dashed arrows indicate skip-layer connections; gray arrows show cross-pipeline dependencies.</p>
 
   <div class="diagram-container">
-    <svg viewBox="0 0 1340 760" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1340px;font-family:'Segoe UI',Arial,sans-serif;">
+    <svg viewBox="0 0 1420 580" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1420px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
       <defs>
-        <marker id="arr-sf" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#0070d2"/></marker>
-        <marker id="arr-stripe" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#635BFF"/></marker>
-        <marker id="arr-cyan" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#29B5E8"/></marker>
-        <marker id="arr-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334BFA"/></marker>
-        <marker id="arr-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#4CAF50"/></marker>
-        <marker id="arr-gray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#9E9E9E"/></marker>
-        <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter>
+        <filter id="cs"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#1E293B" flood-opacity="0.07"/></filter>
+        <marker id="ag" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0.5,6 2.5,0 4.5" fill="#94A3B8"/></marker>
+        <marker id="askip" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0.5,6 2.5,0 4.5" fill="#F59E0B"/></marker>
+        <marker id="axp" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0.5,6 2.5,0 4.5" fill="#A78BFA"/></marker>
+        <marker id="acore" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0.5,6 2.5,0 4.5" fill="#10B981"/></marker>
       </defs>
 
-      <!-- ================================================ -->
-      <!-- COLUMN BACKGROUNDS                                -->
-      <!-- ================================================ -->
-      <rect x="10" y="55" width="185" height="640" rx="10" fill="#FFF5E6" stroke="#F5A623" stroke-width="1" opacity="0.5"/>
-      <rect x="205" y="55" width="200" height="640" rx="10" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1" opacity="0.4"/>
-      <rect x="415" y="55" width="220" height="640" rx="10" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1" opacity="0.4"/>
-      <rect x="645" y="55" width="280" height="640" rx="10" fill="#DCE1F9" stroke="#334BFA" stroke-width="1" opacity="0.5"/>
-      <rect x="935" y="55" width="195" height="640" rx="10" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1" opacity="0.4"/>
-
-      <!-- ================================================ -->
-      <!-- COLUMN HEADERS                                    -->
-      <!-- ================================================ -->
-      <rect x="10" y="8" width="185" height="42" rx="8" fill="#F5A623" filter="url(#shadow)"/>
-      <text x="102" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="13">RAW / BASE</text>
-
-      <rect x="205" y="8" width="200" height="42" rx="8" fill="#29B5E8" filter="url(#shadow)"/>
-      <text x="305" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="13">STAGING</text>
-
-      <rect x="415" y="8" width="220" height="42" rx="8" fill="#00ACC1" filter="url(#shadow)"/>
-      <text x="525" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="13">INTERMEDIATE</text>
-
-      <rect x="645" y="8" width="280" height="42" rx="8" fill="#334BFA" filter="url(#shadow)"/>
-      <text x="785" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="13">EXPORT (Workato)</text>
-
-      <rect x="935" y="8" width="195" height="42" rx="8" fill="#4CAF50" filter="url(#shadow)"/>
-      <text x="1032" y="35" text-anchor="middle" fill="white" font-weight="bold" font-size="13">CORE (Analytics)</text>
-
-      <!-- ================================================ -->
-      <!-- ROW 1: SALES ORDER                                -->
-      <!-- ================================================ -->
-      <text x="1155" y="93" fill="#0070d2" font-size="11" font-weight="bold">SALES ORDER</text>
-
-      <!-- Raw -->
-      <rect x="20" y="72" width="165" height="40" rx="6" fill="#FFF8E1" stroke="#F5A623" stroke-width="1.5"/>
-      <text x="102" y="89" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">FIVETRAN_SALESFORCE</text>
-      <text x="102" y="103" text-anchor="middle" fill="#999" font-size="8">ORDER_ITEM, CONTRACT, OPP</text>
-
-      <!-- Arrow -->
-      <line x1="185" y1="92" x2="225" y2="92" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-cyan)"/>
-
-      <!-- STG -->
-      <rect x="225" y="72" width="170" height="40" rx="6" fill="#E3F2FD" stroke="#29B5E8" stroke-width="1.5"/>
-      <text x="310" y="89" text-anchor="middle" fill="#1976D2" font-size="9" font-weight="600">STG_SF_ORDER_ITEM</text>
-      <text x="310" y="103" text-anchor="middle" fill="#999" font-size="8">View | 27 columns</text>
-
-      <!-- Arrow -->
-      <line x1="395" y1="92" x2="435" y2="92" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-cyan)"/>
-
-      <!-- INT -->
-      <rect x="435" y="72" width="190" height="40" rx="6" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1.5"/>
-      <text x="530" y="89" text-anchor="middle" fill="#00838F" font-size="9" font-weight="bold">INT_SF_ORDER_ITEM</text>
-      <text x="530" y="103" text-anchor="middle" fill="#999" font-size="8">496K rows | 17.9 MB</text>
-
-      <!-- Arrow to Export -->
-      <line x1="625" y1="92" x2="665" y2="92" stroke="#334BFA" stroke-width="2" marker-end="url(#arr-purple)"/>
-
-      <!-- EXPORT -->
-      <rect x="665" y="68" width="250" height="48" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2.5"/>
-      <text x="790" y="87" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">NETSUITE_EXPORT_SALES_ORDER</text>
-      <text x="790" y="103" text-anchor="middle" fill="#888" font-size="9">340,394 rows | 22.5 MB | 48 cols</text>
-
-      <!-- Analytics branch (dashed green) -->
-      <path d="M 625,100 L 640,100 L 640,86 L 955,86" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#arr-green)"/>
-
-      <!-- CORE -->
-      <rect x="955" y="72" width="165" height="40" rx="6" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="5,3"/>
-      <text x="1037" y="89" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="600">FCT_ORDERS</text>
-      <text x="1037" y="103" text-anchor="middle" fill="#999" font-size="8">54.7K rows | 2.2 MB</text>
-
-      <!-- ================================================ -->
-      <!-- ROW 2: INVOICE                                    -->
-      <!-- ================================================ -->
-      <line x1="10" y1="130" x2="1130" y2="130" stroke="#eee" stroke-width="1"/>
-      <text x="1155" y="163" fill="#635BFF" font-size="11" font-weight="bold">INVOICE</text>
-
-      <rect x="20" y="142" width="165" height="40" rx="6" fill="#FFF8E1" stroke="#F5A623" stroke-width="1.5"/>
-      <text x="102" y="159" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">BASE.STRIPE_INVOICES</text>
-      <text x="102" y="173" text-anchor="middle" fill="#999" font-size="8">4.4M rows | 447.5 MB</text>
-
-      <line x1="185" y1="162" x2="225" y2="162" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-cyan)"/>
-
-      <rect x="225" y="142" width="170" height="40" rx="6" fill="#E3F2FD" stroke="#29B5E8" stroke-width="1.5"/>
-      <text x="310" y="159" text-anchor="middle" fill="#1976D2" font-size="9" font-weight="600">STG_STRIPE_INVOICES</text>
-      <text x="310" y="173" text-anchor="middle" fill="#999" font-size="8">4.4M rows (view)</text>
-
-      <line x1="395" y1="162" x2="435" y2="162" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-cyan)"/>
-
-      <rect x="435" y="142" width="190" height="40" rx="6" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1.5"/>
-      <text x="530" y="159" text-anchor="middle" fill="#00838F" font-size="9" font-weight="bold">INT_STRIPE_INVOICES</text>
-      <text x="530" y="173" text-anchor="middle" fill="#999" font-size="8">4.4M rows | 297 MB</text>
-
-      <line x1="625" y1="162" x2="665" y2="162" stroke="#334BFA" stroke-width="2" marker-end="url(#arr-purple)"/>
-
-      <rect x="665" y="138" width="250" height="48" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2.5"/>
-      <text x="790" y="157" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">NETSUITE_EXPORT_INVOICE</text>
-      <text x="790" y="173" text-anchor="middle" fill="#888" font-size="9">6,678,430 rows | 1,071 MB</text>
-
-      <path d="M 625,170 L 640,170 L 640,156 L 955,156" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#arr-green)"/>
-
-      <rect x="955" y="142" width="165" height="40" rx="6" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="5,3"/>
-      <text x="1037" y="159" text-anchor="middle" fill="#2E7D32" font-size="10" font-weight="600">FCT_INVOICES</text>
-      <text x="1037" y="173" text-anchor="middle" fill="#999" font-size="8">6.8M rows | 357 MB</text>
-
-      <!-- Invoice line items sub-row -->
-      <rect x="225" y="192" width="170" height="30" rx="5" fill="#EDE7F6" stroke="#9575CD" stroke-width="1"/>
-      <text x="310" y="210" text-anchor="middle" fill="#7B1FA2" font-size="8" font-weight="600">STG_STRIPE_INVOICE_LINES (35.3M)</text>
-
-      <rect x="435" y="192" width="190" height="30" rx="5" fill="#EDE7F6" stroke="#9575CD" stroke-width="1"/>
-      <text x="530" y="210" text-anchor="middle" fill="#7B1FA2" font-size="8" font-weight="600">INT_STRIPE_INVOICE_LINES (35.3M)</text>
-
-      <line x1="395" y1="207" x2="435" y2="207" stroke="#9575CD" stroke-width="1" marker-end="url(#arr-purple)"/>
-      <path d="M 625,207 L 640,207 L 640,170 L 665,170" stroke="#334BFA" stroke-width="1" stroke-dasharray="4,3" fill="none"/>
-
-      <!-- ================================================ -->
-      <!-- ROW 3: PAYMENT                                    -->
-      <!-- ================================================ -->
-      <line x1="10" y1="238" x2="1130" y2="238" stroke="#eee" stroke-width="1"/>
-      <text x="1155" y="273" fill="#635BFF" font-size="11" font-weight="bold">PAYMENT</text>
-
-      <rect x="20" y="252" width="165" height="50" rx="6" fill="#FFF8E1" stroke="#F5A623" stroke-width="1.5"/>
-      <text x="102" y="271" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">Stripe Sources</text>
-      <text x="102" y="283" text-anchor="middle" fill="#999" font-size="8">invoices, balance_txn,</text>
-      <text x="102" y="294" text-anchor="middle" fill="#999" font-size="8">payment_intent, events</text>
-
-      <line x1="185" y1="277" x2="225" y2="277" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-cyan)"/>
-
-      <rect x="225" y="257" width="170" height="40" rx="6" fill="#E3F2FD" stroke="#29B5E8" stroke-width="1.5"/>
-      <text x="310" y="274" text-anchor="middle" fill="#1976D2" font-size="9" font-weight="600">STG_STRIPE_PAYMENTS</text>
-      <text x="310" y="288" text-anchor="middle" fill="#999" font-size="8">4.0M rows + 3 more STGs</text>
-
-      <line x1="395" y1="277" x2="435" y2="277" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-cyan)"/>
-
-      <rect x="435" y="257" width="190" height="40" rx="6" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1.5"/>
-      <text x="530" y="274" text-anchor="middle" fill="#00838F" font-size="9" font-weight="bold">INT_STRIPE_PAYMENTS</text>
-      <text x="530" y="288" text-anchor="middle" fill="#999" font-size="8">4.0M rows | 386 MB</text>
-
-      <line x1="625" y1="277" x2="665" y2="277" stroke="#334BFA" stroke-width="2" marker-end="url(#arr-purple)"/>
-
-      <rect x="665" y="253" width="250" height="48" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2.5"/>
-      <text x="790" y="272" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">NETSUITE_EXPORT_PAYMENT</text>
-      <text x="790" y="288" text-anchor="middle" fill="#888" font-size="9">419,951 rows | 61.4 MB</text>
-
-      <!-- ================================================ -->
-      <!-- ROW 4: REFUND                                     -->
-      <!-- ================================================ -->
-      <line x1="10" y1="318" x2="1130" y2="318" stroke="#eee" stroke-width="1"/>
-      <text x="1155" y="353" fill="#E91E63" font-size="11" font-weight="bold">REFUND</text>
-
-      <rect x="20" y="337" width="165" height="40" rx="6" fill="#FFF8E1" stroke="#F5A623" stroke-width="1.5"/>
-      <text x="102" y="354" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">BASE.STRIPE_REFUND</text>
-      <text x="102" y="368" text-anchor="middle" fill="#999" font-size="8">236,683 rows | 16 MB</text>
-
-      <!-- Direct transform (shorter pipeline) -->
-      <path d="M 185,357 L 665,357" stroke="#334BFA" stroke-width="2" marker-end="url(#arr-purple)"/>
-      <text x="420" y="349" text-anchor="middle" fill="#999" font-size="8" font-style="italic">dbt model (direct transform, no INT)</text>
-
-      <rect x="665" y="337" width="250" height="40" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2.5"/>
-      <text x="790" y="354" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">NETSUITE_EXPORT_REFUNDS</text>
-      <text x="790" y="368" text-anchor="middle" fill="#888" font-size="9">1,926 rows | 0.5 MB</text>
-
-      <!-- ================================================ -->
-      <!-- ROW 5: CREDIT MEMO                                -->
-      <!-- ================================================ -->
-      <line x1="10" y1="393" x2="1130" y2="393" stroke="#eee" stroke-width="1"/>
-      <text x="1155" y="428" fill="#FF6F00" font-size="11" font-weight="bold">CREDIT MEMO</text>
-
-      <rect x="20" y="412" width="165" height="40" rx="6" fill="#FFF8E1" stroke="#F5A623" stroke-width="1.5"/>
-      <text x="102" y="429" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">Stripe Invoices</text>
-      <text x="102" y="443" text-anchor="middle" fill="#999" font-size="8">(credit note source)</text>
-
-      <path d="M 185,432 L 665,432" stroke="#334BFA" stroke-width="2" marker-end="url(#arr-purple)"/>
-      <text x="420" y="424" text-anchor="middle" fill="#999" font-size="8" font-style="italic">dbt model (direct transform)</text>
-
-      <rect x="665" y="408" width="250" height="48" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2.5"/>
-      <text x="790" y="426" text-anchor="middle" fill="#334BFA" font-size="9" font-weight="bold">NETSUITE_EXPORT_CREDIT_MEMO</text>
-      <text x="790" y="440" text-anchor="middle" fill="#334BFA" font-size="9" font-weight="bold">..._CREDIT_NOTES</text>
-      <text x="790" y="452" text-anchor="middle" fill="#888" font-size="8">3,849 rows | 1.1 MB</text>
-
-      <!-- ================================================ -->
-      <!-- ROW 6: CBA                                        -->
-      <!-- ================================================ -->
-      <line x1="10" y1="472" x2="1130" y2="472" stroke="#eee" stroke-width="1"/>
-      <text x="1155" y="503" fill="#795548" font-size="11" font-weight="bold">CBA</text>
-
-      <rect x="20" y="487" width="165" height="40" rx="6" fill="#FFF8E1" stroke="#F5A623" stroke-width="1.5"/>
-      <text x="102" y="504" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">Stripe Balance Txn</text>
-      <text x="102" y="518" text-anchor="middle" fill="#999" font-size="8">(credit balance adj.)</text>
-
-      <path d="M 185,507 L 665,507" stroke="#334BFA" stroke-width="2" marker-end="url(#arr-purple)"/>
-      <text x="420" y="499" text-anchor="middle" fill="#999" font-size="8" font-style="italic">dbt model (direct transform)</text>
-
-      <rect x="665" y="483" width="250" height="48" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2.5"/>
-      <text x="790" y="501" text-anchor="middle" fill="#334BFA" font-size="9" font-weight="bold">NETSUITE_EXPORT_CUSTOMER</text>
-      <text x="790" y="515" text-anchor="middle" fill="#334BFA" font-size="9" font-weight="bold">_CREDIT_ADJUSTMENTS</text>
-      <text x="790" y="527" text-anchor="middle" fill="#888" font-size="8">20,924 rows | 1.8 MB</text>
-
-      <!-- ================================================ -->
-      <!-- ROW 7: CUSTOMER (shared)                          -->
-      <!-- ================================================ -->
-      <line x1="10" y1="548" x2="1130" y2="548" stroke="#eee" stroke-width="1"/>
-      <text x="1155" y="578" fill="#607D8B" font-size="11" font-weight="bold">CUSTOMER</text>
-
-      <rect x="20" y="562" width="165" height="40" rx="6" fill="#FFF8E1" stroke="#F5A623" stroke-width="1.5"/>
-      <text x="102" y="579" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">BASE.STRIPE_CUSTOMER</text>
-      <text x="102" y="593" text-anchor="middle" fill="#999" font-size="8">1.8M rows | 98.9 MB</text>
-
-      <path d="M 185,582 L 665,582" stroke="#334BFA" stroke-width="2" marker-end="url(#arr-purple)"/>
-      <text x="420" y="574" text-anchor="middle" fill="#999" font-size="8" font-style="italic">enriched with Salesforce account mapping</text>
-
-      <rect x="665" y="562" width="250" height="40" rx="8" fill="#DCE1F9" stroke="#334BFA" stroke-width="2.5"/>
-      <text x="790" y="579" text-anchor="middle" fill="#334BFA" font-size="10" font-weight="bold">NETSUITE_EXPORT_CUSTOMER</text>
-      <text x="790" y="593" text-anchor="middle" fill="#888" font-size="9">327,064 rows | 22.8 MB</text>
-
-      <!-- Cross-pipeline Customer lookup arrows (dashed gray) -->
-      <path d="M 915,577 L 928,577 L 928,92 L 915,92" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-gray)"/>
-      <path d="M 928,162 L 915,162" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-gray)"/>
-      <path d="M 928,277 L 915,277" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3" fill="none" marker-end="url(#arr-gray)"/>
-      <text x="936" y="340" fill="#9E9E9E" font-size="8" font-style="italic" transform="rotate(-90, 936, 340)">Customer lookup (shared)</text>
-
-      <!-- ================================================ -->
-      <!-- WORKATO_LOGS                                      -->
-      <!-- ================================================ -->
-      <line x1="10" y1="618" x2="1130" y2="618" stroke="#eee" stroke-width="1"/>
-
-      <rect x="665" y="635" width="250" height="40" rx="8" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="5,3"/>
-      <text x="790" y="652" text-anchor="middle" fill="#666" font-size="10" font-weight="bold">WORKATO_LOGS</text>
-      <text x="790" y="666" text-anchor="middle" fill="#999" font-size="8">67M rows | 10.5 GB | dedup tracking</text>
-      <path d="M 790,635 L 790,531" stroke="#9E9E9E" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
-      <text x="798" y="625" fill="#9E9E9E" font-size="8" font-style="italic">all pipelines write</text>
-
-      <!-- ================================================ -->
-      <!-- LEGEND                                            -->
-      <!-- ================================================ -->
-      <rect x="20" y="695" width="1100" height="50" rx="8" fill="white" stroke="#ddd" stroke-width="1"/>
-      <text x="50" y="718" fill="#333" font-size="11" font-weight="bold">Legend</text>
-
-      <rect x="110" y="710" width="14" height="10" rx="2" fill="#FFF8E1" stroke="#F5A623" stroke-width="1"/>
-      <text x="130" y="719" fill="#666" font-size="9">Raw/Fivetran</text>
-
-      <rect x="220" y="710" width="14" height="10" rx="2" fill="#E3F2FD" stroke="#29B5E8" stroke-width="1"/>
-      <text x="240" y="719" fill="#666" font-size="9">Staging (views)</text>
-
-      <rect x="340" y="710" width="14" height="10" rx="2" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1"/>
-      <text x="360" y="719" fill="#666" font-size="9">Intermediate</text>
-
-      <rect x="460" y="710" width="14" height="10" rx="2" fill="#DCE1F9" stroke="#334BFA" stroke-width="1.5"/>
-      <text x="480" y="719" fill="#666" font-size="9">Export (Workato)</text>
-
-      <rect x="590" y="710" width="14" height="10" rx="2" fill="#E8F5E9" stroke="#4CAF50" stroke-width="1"/>
-      <text x="610" y="719" fill="#666" font-size="9">Core (Analytics)</text>
-
-      <line x1="710" y1="712" x2="745" y2="712" stroke="#29B5E8" stroke-width="2" marker-end="url(#arr-cyan)"/>
-      <text x="755" y="716" fill="#666" font-size="9">Layer flow</text>
-
-      <line x1="840" y1="712" x2="875" y2="712" stroke="#334BFA" stroke-width="2" marker-end="url(#arr-purple)"/>
-      <text x="885" y="716" fill="#666" font-size="9">Export flow</text>
-
-      <line x1="710" y1="730" x2="745" y2="730" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-green)"/>
-      <text x="755" y="734" fill="#666" font-size="9">Analytics branch</text>
-
-      <line x1="840" y1="730" x2="875" y2="730" stroke="#9E9E9E" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-gray)"/>
-      <text x="885" y="734" fill="#666" font-size="9">Lookup ref</text>
+      <!-- Background -->
+      <rect width="1420" height="580" fill="white" rx="12"/>
+
+      <!-- Subtle column lanes -->
+      <rect x="8" y="44" width="192" height="490" rx="12" fill="#FEF3C7" opacity="0.15"/>
+      <rect x="264" y="44" width="192" height="490" rx="12" fill="#DBEAFE" opacity="0.12"/>
+      <rect x="520" y="44" width="192" height="490" rx="12" fill="#CFFAFE" opacity="0.12"/>
+      <rect x="780" y="44" width="262" height="490" rx="12" fill="#E0E7FF" opacity="0.15"/>
+      <rect x="1120" y="44" width="192" height="490" rx="12" fill="#D1FAE5" opacity="0.12"/>
+
+      <!-- Column headers with accent underlines -->
+      <text x="104" y="28" text-anchor="middle" fill="#92400E" font-size="11" font-weight="700" letter-spacing="0.8">RAW</text>
+      <line x1="70" y1="34" x2="138" y2="34" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="360" y="28" text-anchor="middle" fill="#1E40AF" font-size="11" font-weight="700" letter-spacing="0.8">STAGING</text>
+      <line x1="316" y1="34" x2="404" y2="34" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="616" y="28" text-anchor="middle" fill="#155E75" font-size="11" font-weight="700" letter-spacing="0.8">INTERMEDIATE</text>
+      <line x1="553" y1="34" x2="679" y2="34" stroke="#06B6D4" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="911" y="28" text-anchor="middle" fill="#3730A3" font-size="11" font-weight="700" letter-spacing="0.8">EXPORT</text>
+      <line x1="870" y1="34" x2="952" y2="34" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="1216" y="28" text-anchor="middle" fill="#065F46" font-size="11" font-weight="700" letter-spacing="0.8">CORE</text>
+      <line x1="1180" y1="34" x2="1252" y2="34" stroke="#10B981" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- ===== RAW NODES (white cards, amber accent bar) ===== -->
+      <rect x="14" y="55" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="16" y="59" width="3.5" height="28" rx="1.5" fill="#F59E0B"/>
+      <text x="28" y="78" fill="#1E293B" font-size="9.5" font-weight="500">stripe_invoices</text>
+
+      <rect x="14" y="101" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="16" y="105" width="3.5" height="28" rx="1.5" fill="#F59E0B"/>
+      <text x="28" y="124" fill="#1E293B" font-size="9.5" font-weight="500">stripe_customer</text>
+
+      <rect x="14" y="155" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="16" y="159" width="3.5" height="28" rx="1.5" fill="#F59E0B"/>
+      <text x="28" y="178" fill="#1E293B" font-size="9.5" font-weight="500">stripe_payments</text>
+
+      <rect x="14" y="205" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="16" y="209" width="3.5" height="28" rx="1.5" fill="#F59E0B"/>
+      <text x="28" y="228" fill="#1E293B" font-size="9.5" font-weight="500">stripe_refund</text>
+
+      <rect x="14" y="305" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="16" y="309" width="3.5" height="28" rx="1.5" fill="#F59E0B"/>
+      <text x="28" y="328" fill="#1E293B" font-size="9.5" font-weight="500">sf_contract</text>
+
+      <rect x="14" y="355" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="16" y="359" width="3.5" height="28" rx="1.5" fill="#F59E0B"/>
+      <text x="28" y="378" fill="#1E293B" font-size="9.5" font-weight="500">sf_order</text>
+
+      <!-- Skip-layer RAW (amber tint background) -->
+      <rect x="14" y="440" width="180" height="36" rx="8" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1" filter="url(#cs)"/>
+      <rect x="16" y="444" width="3.5" height="28" rx="1.5" fill="#F59E0B"/>
+      <text x="28" y="463" fill="#92400E" font-size="9.5" font-weight="600">pricebook_2</text>
+
+      <rect x="14" y="490" width="180" height="36" rx="8" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1" filter="url(#cs)"/>
+      <rect x="16" y="494" width="3.5" height="28" rx="1.5" fill="#F59E0B"/>
+      <text x="28" y="513" fill="#92400E" font-size="9.5" font-weight="600">srqq_quote_c</text>
+
+      <!-- ===== STG NODES (white cards, blue accent bar) ===== -->
+      <rect x="270" y="55" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="272" y="59" width="3.5" height="28" rx="1.5" fill="#3B82F6"/>
+      <text x="284" y="78" fill="#1E293B" font-size="9.5" font-weight="500">stg_stripe_invoices</text>
+
+      <rect x="270" y="101" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="272" y="105" width="3.5" height="28" rx="1.5" fill="#3B82F6"/>
+      <text x="284" y="124" fill="#1E293B" font-size="9.5" font-weight="500">stg_stripe_lines</text>
+
+      <rect x="270" y="155" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="272" y="159" width="3.5" height="28" rx="1.5" fill="#3B82F6"/>
+      <text x="284" y="178" fill="#1E293B" font-size="9.5" font-weight="500">stg_stripe_payments</text>
+
+      <rect x="270" y="205" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="272" y="209" width="3.5" height="28" rx="1.5" fill="#3B82F6"/>
+      <text x="284" y="228" fill="#1E293B" font-size="9.5" font-weight="500">stg_stripe_refunds</text>
+
+      <rect x="270" y="305" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="272" y="309" width="3.5" height="28" rx="1.5" fill="#3B82F6"/>
+      <text x="284" y="328" fill="#1E293B" font-size="9.5" font-weight="500">stg_sf_contract</text>
+
+      <rect x="270" y="355" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="272" y="359" width="3.5" height="28" rx="1.5" fill="#3B82F6"/>
+      <text x="284" y="378" fill="#1E293B" font-size="9.5" font-weight="500">stg_sf_order</text>
+
+      <!-- Skip-layer STG (blue tint) -->
+      <rect x="270" y="440" width="180" height="36" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1" filter="url(#cs)"/>
+      <rect x="272" y="444" width="3.5" height="28" rx="1.5" fill="#3B82F6"/>
+      <text x="284" y="463" fill="#1E40AF" font-size="9.5" font-weight="600">stg_workato_log</text>
+
+      <!-- ===== INT NODES (white cards, cyan accent bar) ===== -->
+      <rect x="526" y="55" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="528" y="59" width="3.5" height="28" rx="1.5" fill="#06B6D4"/>
+      <text x="540" y="78" fill="#1E293B" font-size="9.5" font-weight="500">int_stripe_invoices</text>
+
+      <rect x="526" y="101" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="528" y="105" width="3.5" height="28" rx="1.5" fill="#06B6D4"/>
+      <text x="540" y="124" fill="#1E293B" font-size="9.5" font-weight="500">int_stripe_lines</text>
+
+      <rect x="526" y="155" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="528" y="159" width="3.5" height="28" rx="1.5" fill="#06B6D4"/>
+      <text x="540" y="178" fill="#1E293B" font-size="9.5" font-weight="500">int_stripe_payments</text>
+
+      <rect x="526" y="305" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="528" y="309" width="3.5" height="28" rx="1.5" fill="#06B6D4"/>
+      <text x="540" y="328" fill="#1E293B" font-size="9.5" font-weight="500">int_sf_order</text>
+
+      <rect x="526" y="355" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="528" y="359" width="3.5" height="28" rx="1.5" fill="#06B6D4"/>
+      <text x="540" y="378" fill="#1E293B" font-size="9.5" font-weight="500">int_sf_contract</text>
+
+      <rect x="526" y="405" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="528" y="409" width="3.5" height="28" rx="1.5" fill="#06B6D4"/>
+      <text x="540" y="428" fill="#1E293B" font-size="9.5" font-weight="500">int_opportunities</text>
+
+      <rect x="526" y="455" width="180" height="36" rx="8" fill="white" stroke="#E5E7EB" stroke-width="0.8" filter="url(#cs)"/>
+      <rect x="528" y="459" width="3.5" height="28" rx="1.5" fill="#06B6D4"/>
+      <text x="540" y="478" fill="#1E293B" font-size="9.5" font-weight="500">int_sf_account</text>
+
+      <!-- ===== EXPORT NODES (white cards, indigo accent, stats) ===== -->
+      <rect x="786" y="55" width="248" height="44" rx="8" fill="white" stroke="#6366F1" stroke-width="1.2" filter="url(#cs)"/>
+      <rect x="788" y="59" width="4" height="36" rx="2" fill="#6366F1"/>
+      <text x="802" y="76" fill="#1E293B" font-size="10" font-weight="600">NETSUITE_EXPORT_INVOICE</text>
+      <text x="802" y="91" fill="#94A3B8" font-size="8">6.7M rows &middot; 71 cols</text>
+
+      <rect x="786" y="112" width="248" height="44" rx="8" fill="white" stroke="#6366F1" stroke-width="1.2" filter="url(#cs)"/>
+      <rect x="788" y="116" width="4" height="36" rx="2" fill="#6366F1"/>
+      <text x="802" y="133" fill="#1E293B" font-size="10" font-weight="600">NETSUITE_EXPORT_PAYMENT</text>
+      <text x="802" y="148" fill="#94A3B8" font-size="8">420K rows &middot; 29 cols</text>
+
+      <rect x="786" y="172" width="248" height="44" rx="8" fill="white" stroke="#6366F1" stroke-width="1.2" filter="url(#cs)"/>
+      <rect x="788" y="176" width="4" height="36" rx="2" fill="#6366F1"/>
+      <text x="802" y="193" fill="#1E293B" font-size="10" font-weight="600">NETSUITE_EXPORT_REFUNDS</text>
+      <text x="802" y="208" fill="#94A3B8" font-size="8">1,926 rows &middot; 18 cols</text>
+
+      <rect x="786" y="232" width="248" height="44" rx="8" fill="white" stroke="#6366F1" stroke-width="1.2" filter="url(#cs)"/>
+      <rect x="788" y="236" width="4" height="36" rx="2" fill="#6366F1"/>
+      <text x="802" y="253" fill="#1E293B" font-size="10" font-weight="600">NETSUITE_EXPORT_CREDIT_MEMO</text>
+      <text x="802" y="268" fill="#94A3B8" font-size="8">3,849 rows &middot; 34 cols</text>
+
+      <rect x="786" y="308" width="248" height="48" rx="8" fill="white" stroke="#6366F1" stroke-width="1.8" filter="url(#cs)"/>
+      <rect x="788" y="312" width="4" height="40" rx="2" fill="#6366F1"/>
+      <text x="802" y="331" fill="#1E293B" font-size="10" font-weight="700">NETSUITE_EXPORT_SALES_ORDER</text>
+      <text x="802" y="348" fill="#94A3B8" font-size="8">340K rows &middot; 48 cols &middot; 15 sources</text>
+
+      <rect x="786" y="380" width="248" height="44" rx="8" fill="white" stroke="#6366F1" stroke-width="1.2" filter="url(#cs)"/>
+      <rect x="788" y="384" width="4" height="36" rx="2" fill="#6366F1"/>
+      <text x="802" y="401" fill="#1E293B" font-size="10" font-weight="600">NETSUITE_EXPORT_CUSTOMER</text>
+      <text x="802" y="416" fill="#94A3B8" font-size="8">327K rows &middot; 32 cols</text>
+
+      <rect x="786" y="440" width="248" height="44" rx="8" fill="white" stroke="#6366F1" stroke-width="1.2" filter="url(#cs)"/>
+      <rect x="788" y="444" width="4" height="36" rx="2" fill="#6366F1"/>
+      <text x="802" y="461" fill="#1E293B" font-size="10" font-weight="600">NETSUITE_EXPORT_CBA</text>
+      <text x="802" y="476" fill="#94A3B8" font-size="8">20,924 rows &middot; 14 cols</text>
+
+      <!-- ===== CORE NODES (white cards, green accent) ===== -->
+      <rect x="1126" y="55" width="180" height="40" rx="8" fill="white" stroke="#10B981" stroke-width="1.2" filter="url(#cs)"/>
+      <rect x="1128" y="59" width="3.5" height="32" rx="1.5" fill="#10B981"/>
+      <text x="1140" y="80" fill="#1E293B" font-size="10" font-weight="600">fct_invoices</text>
+
+      <rect x="1126" y="308" width="180" height="40" rx="8" fill="white" stroke="#10B981" stroke-width="1.2" filter="url(#cs)"/>
+      <rect x="1128" y="312" width="3.5" height="32" rx="1.5" fill="#10B981"/>
+      <text x="1140" y="333" fill="#1E293B" font-size="10" font-weight="600">fct_orders</text>
+
+      <!-- ========================================= -->
+      <!-- CONNECTIONS (smooth bezier curves)        -->
+      <!-- ========================================= -->
+
+      <!-- RAW to STG (light gray, standard flow) -->
+      <path d="M 194,73 C 224,73 240,73 270,73" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 194,173 C 224,173 240,173 270,173" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 194,223 C 224,223 240,223 270,223" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 194,323 C 224,323 240,323 270,323" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 194,373 C 224,373 240,373 270,373" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+
+      <!-- STG to INT (light gray, includes fan-in at int_stripe_payments) -->
+      <path d="M 450,73 C 480,73 498,73 526,73" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 450,119 C 480,119 498,119 526,119" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 450,173 C 480,173 498,173 526,173" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 450,223 C 482,223 500,173 526,173" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 450,323 C 482,323 500,373 526,373" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+      <path d="M 450,373 C 482,373 500,323 526,323" stroke="#CBD5E1" stroke-width="1.2" fill="none" marker-end="url(#ag)"/>
+
+      <!-- INT to EXPORT: fan-in convergence (darker gray, thicker) -->
+      <!-- Invoice fan-in -->
+      <path d="M 706,73 C 738,73 754,77 786,77" stroke="#94A3B8" stroke-width="1.8" fill="none" marker-end="url(#ag)"/>
+      <path d="M 706,119 C 740,119 756,77 786,77" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#ag)"/>
+      <!-- Payment -->
+      <path d="M 706,173 C 738,173 756,134 786,134" stroke="#94A3B8" stroke-width="1.8" fill="none" marker-end="url(#ag)"/>
+      <!-- Sales Order fan-in (4 INT tables converge) -->
+      <path d="M 706,323 C 738,323 756,332 786,332" stroke="#94A3B8" stroke-width="1.8" fill="none" marker-end="url(#ag)"/>
+      <path d="M 706,373 C 740,373 758,332 786,332" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#ag)"/>
+      <path d="M 706,423 C 742,423 760,336 786,336" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#ag)"/>
+      <path d="M 706,473 C 744,473 762,340 786,340" stroke="#94A3B8" stroke-width="1.3" fill="none" marker-end="url(#ag)"/>
+      <!-- Customer fan-in -->
+      <path d="M 706,473 C 740,473 756,402 786,402" stroke="#94A3B8" stroke-width="1.5" fill="none" marker-end="url(#ag)"/>
+
+      <!-- SKIP-LAYER: RAW direct to EXPORT (amber dashed, long curves) -->
+      <path d="M 194,458 C 400,458 600,332 786,332" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#askip)" opacity="0.8"/>
+      <path d="M 194,508 C 400,508 600,340 786,340" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#askip)" opacity="0.8"/>
+      <!-- SKIP-LAYER: STG direct to EXPORT -->
+      <path d="M 450,458 C 580,458 680,336 786,336" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#askip)" opacity="0.8"/>
+
+      <!-- CROSS-PIPELINE: Export to Export (purple dashed) -->
+      <!-- Invoice feeds Refunds -->
+      <path d="M 786,99 L 775,99 L 775,194 L 786,194" stroke="#A78BFA" stroke-width="1.2" stroke-dasharray="4,2" fill="none" marker-end="url(#axp)" opacity="0.7"/>
+      <!-- Sales Order feeds Customer -->
+      <path d="M 1034,356 L 1045,356 L 1045,402 L 1034,402" stroke="#A78BFA" stroke-width="1.2" stroke-dasharray="4,2" fill="none" marker-end="url(#axp)" opacity="0.7"/>
+
+      <!-- ANALYTICS BRANCH: INT to CORE (green dashed) -->
+      <path d="M 706,73 C 870,58 990,66 1126,75" stroke="#10B981" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#acore)"/>
+      <path d="M 706,323 C 870,318 990,324 1126,328" stroke="#10B981" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#acore)"/>
+
+      <!-- ===== LEGEND ===== -->
+      <rect x="14" y="538" width="1390" height="34" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="0.5"/>
+      <line x1="30" y1="555" x2="58" y2="555" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#ag)"/>
+      <text x="65" y="559" fill="#64748B" font-size="8.5">Standard flow</text>
+      <line x1="176" y1="555" x2="204" y2="555" stroke="#94A3B8" stroke-width="2" marker-end="url(#ag)"/>
+      <text x="211" y="559" fill="#64748B" font-size="8.5">Fan-in convergence</text>
+      <line x1="350" y1="555" x2="378" y2="555" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#askip)"/>
+      <text x="385" y="559" fill="#64748B" font-size="8.5">Skip-layer (direct to Export)</text>
+      <line x1="560" y1="555" x2="588" y2="555" stroke="#A78BFA" stroke-width="1.3" stroke-dasharray="5,3" marker-end="url(#axp)"/>
+      <text x="595" y="559" fill="#64748B" font-size="8.5">Cross-pipeline ref</text>
+      <line x1="730" y1="555" x2="758" y2="555" stroke="#10B981" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#acore)"/>
+      <text x="765" y="559" fill="#64748B" font-size="8.5">Analytics (INT &rarr; Core)</text>
     </svg>
   </div>
 
   <div class="callout callout-info">
-    <strong>Pipeline depth varies by source:</strong> Salesforce-sourced pipelines (Sales Orders) traverse the full 5-layer stack (RAW &rarr; STG &rarr; INT &rarr; EXPORT + CORE). Stripe-sourced pipelines for Refunds, Credit Memos, and CBAs use a shorter path with fewer intermediate steps, since Stripe data is already well-structured from the billing API.
+    <strong>Every pipeline is fan-in &mdash; none follow a simple linear chain:</strong>
+    <br/><strong>Sales Order</strong> (verified via Select Star): 15 sources from 4 layers. See Section 6 for detailed lineage diagram.
+    <br/><strong>Invoice</strong> (71 cols): joins invoices + invoice lines + SF contracts/orders + subscriptions + charges + payment intents + discounts.
+    <br/><strong>Payment</strong> (29 cols): 5 STG tables from 2 schemas converge at <code>INT_STRIPE_PAYMENTS</code>. See Section 8.
+    <br/><strong>Refund</strong> (18 cols): cross-pipeline &mdash; joins Stripe refunds + charges + balance txns + <code>NETSUITE_EXPORT_INVOICE</code>.
+    <br/><strong>Credit Memo</strong> (34 cols): cross-pipeline &mdash; joins credit notes + invoices + invoice lines + refunds + SF contracts.
+    <br/><strong>CBA</strong> (14 cols): cross-pipeline &mdash; joins balance transactions + credit notes + invoices.
+    <br/><strong>Customer</strong> (32 cols): 3-layer fan-in &mdash; Stripe customers + SF accounts + Sales Order export ref.
   </div>
 </section>
 
@@ -836,36 +843,188 @@ footer {
 <!-- 6. Sales Order Lineage                                        -->
 <!-- ============================================================ -->
 <section id="sales-order-lineage">
-  <h2>6. Sales Order Pipeline Lineage</h2>
+  <h2>6. Sales Order Pipeline Lineage (Corrected via Select Star)</h2>
   <div class="two-layer">
     <div class="layer-box layer-business">
       <h4>Business View</h4>
-      <p>The Sales Order pipeline is the most complex, sourcing from 4 Salesforce objects (Order, OrderItem, Contract, Opportunity). It transforms 496K order items through staging and intermediate layers, producing 340K export rows that Workato reads to create/update NetSuite Sales Orders.</p>
+      <p>The Sales Order pipeline is the most complex, with a <strong>fan-in of 15 source tables from 4 layers</strong>. It sources from Salesforce CRM (contracts, orders, opportunities), Stripe (customer &amp; metering data), billing metadata, and Workato integration logs &mdash; all converging into a single export table for NetSuite.</p>
     </div>
     <div class="layer-box layer-technical">
       <h4>Technical View</h4>
-      <p>Full lineage: <code>FIVETRAN_SALESFORCE.ORDER_ITEM__C</code> &rarr; <code>STG_SALESFORCE_ORDER_ITEM</code> (view, 27 cols) &rarr; <code>INT_SALESFORCE_ORDER_ITEM</code> (496K rows, 17.9 MB) &rarr; <code>NETSUITE_EXPORT_SALES_ORDER</code> (340K rows, 22.5 MB, 48 cols). Side branch: <code>INT &rarr; FCT_ORDERS</code> (54.7K rows, CORE_GTM).</p>
+      <p>Fan-in DAG, NOT a linear chain. The dbt model <code>NETSUITE_EXPORT_SALES_ORDER</code> (340K rows, 22.5 MB, 48 cols) joins directly from: <strong>4 Fivetran RAW tables</strong> (SRQQ_QUOTE_C, PRICEBOOK_2, ORDER_ITEM, PRICEBOOK_ENTRY &mdash; these skip STG/INT entirely), <strong>2 Staging tables</strong> (STG_WORKATO_LOG, STG_BILLING_CUSTOMERS &mdash; skip INT), <strong>7 Intermediate tables</strong> from 3 schemas (GTM, FINANCE, COMMON), and <strong>1 other Export table</strong> (NETSUITE_EXPORT_PRODUCTS &mdash; self-reference). Side branch: <code>INT &rarr; FCT_ORDERS</code> (54.7K rows, CORE_GTM).</p>
     </div>
   </div>
 
-  <h3>Table Chain</h3>
+  <h3>Fan-In Lineage Diagram (from Select Star)</h3>
+  <p>This diagram shows all 15 upstream sources converging into <code>NETSUITE_EXPORT_SALES_ORDER</code>, grouped by layer. Dashed arrows indicate skip-layer connections that bypass the standard STG &rarr; INT chain.</p>
+  <div class="diagram-container">
+    <svg viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:1100px;font-family:'Segoe UI',Arial,sans-serif;">
+      <defs>
+        <marker id="arr-so-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#F5A623"/></marker>
+        <marker id="arr-so-cyan" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#29B5E8"/></marker>
+        <marker id="arr-so-teal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#00ACC1"/></marker>
+        <marker id="arr-so-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#334BFA"/></marker>
+        <filter id="so-shadow"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.10"/></filter>
+      </defs>
+
+      <!-- Title -->
+      <text x="550" y="22" text-anchor="middle" fill="#334BFA" font-size="14" font-weight="bold">Sales Order Fan-In DAG &mdash; 15 Sources from 4 Layers</text>
+
+      <!-- ========== RAW LAYER (4 tables) ========== -->
+      <rect x="10" y="40" width="200" height="200" rx="10" fill="#FFF5E6" stroke="#F5A623" stroke-width="1.5" opacity="0.6"/>
+      <text x="110" y="58" text-anchor="middle" fill="#E08A00" font-size="11" font-weight="bold">RAW / Fivetran (4)</text>
+
+      <rect x="20" y="68" width="180" height="28" rx="5" fill="#FFF8E1" stroke="#F5A623" stroke-width="1"/>
+      <text x="110" y="87" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">SRQQ_QUOTE_C</text>
+
+      <rect x="20" y="102" width="180" height="28" rx="5" fill="#FFF8E1" stroke="#F5A623" stroke-width="1"/>
+      <text x="110" y="121" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">PRICEBOOK_2</text>
+
+      <rect x="20" y="136" width="180" height="28" rx="5" fill="#FFF8E1" stroke="#F5A623" stroke-width="1"/>
+      <text x="110" y="155" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">ORDER_ITEM</text>
+
+      <rect x="20" y="170" width="180" height="28" rx="5" fill="#FFF8E1" stroke="#F5A623" stroke-width="1"/>
+      <text x="110" y="189" text-anchor="middle" fill="#E08A00" font-size="9" font-weight="600">PRICEBOOK_ENTRY</text>
+
+      <text x="110" y="225" text-anchor="middle" fill="#E08A00" font-size="8" font-style="italic">All skip STG &amp; INT</text>
+
+      <!-- RAW direct arrows to EXPORT -->
+      <path d="M 200,82 Q 500,50 700,260" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#arr-so-orange)"/>
+      <path d="M 200,116 Q 510,70 700,270" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#arr-so-orange)"/>
+      <path d="M 200,150 Q 520,100 700,280" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#arr-so-orange)"/>
+      <path d="M 200,184 Q 530,130 700,290" stroke="#F5A623" stroke-width="1.5" stroke-dasharray="6,3" fill="none" marker-end="url(#arr-so-orange)"/>
+
+      <!-- ========== STG LAYER (2 tables) ========== -->
+      <rect x="240" y="260" width="200" height="130" rx="10" fill="#E8F4FD" stroke="#29B5E8" stroke-width="1.5" opacity="0.6"/>
+      <text x="340" y="278" text-anchor="middle" fill="#1976D2" font-size="11" font-weight="bold">STAGING (2)</text>
+
+      <rect x="250" y="288" width="180" height="28" rx="5" fill="#E3F2FD" stroke="#29B5E8" stroke-width="1"/>
+      <text x="340" y="307" text-anchor="middle" fill="#1976D2" font-size="9" font-weight="600">STG_WORKATO_LOG</text>
+
+      <rect x="250" y="322" width="180" height="28" rx="5" fill="#E3F2FD" stroke="#29B5E8" stroke-width="1"/>
+      <text x="340" y="341" text-anchor="middle" fill="#1976D2" font-size="9" font-weight="600">STG_BILLING_CUSTOMERS</text>
+
+      <text x="340" y="375" text-anchor="middle" fill="#1976D2" font-size="8" font-style="italic">Skip INT layer</text>
+
+      <!-- STG direct arrows to EXPORT -->
+      <path d="M 440,302 Q 570,270 700,275" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-so-cyan)"/>
+      <path d="M 440,336 Q 570,310 700,285" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-so-cyan)"/>
+
+      <!-- ========== INT LAYER (7 tables) ========== -->
+      <rect x="240" y="40" width="230" height="210" rx="10" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1.5" opacity="0.5"/>
+      <text x="355" y="58" text-anchor="middle" fill="#00838F" font-size="11" font-weight="bold">INTERMEDIATE (7)</text>
+
+      <rect x="250" y="68" width="210" height="22" rx="4" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1"/>
+      <text x="355" y="84" text-anchor="middle" fill="#00838F" font-size="8" font-weight="600">INT_SALESFORCE_ORDER (GTM)</text>
+
+      <rect x="250" y="94" width="210" height="22" rx="4" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1"/>
+      <text x="355" y="110" text-anchor="middle" fill="#00838F" font-size="8" font-weight="600">INT_SALESFORCE_CONTRACT (GTM)</text>
+
+      <rect x="250" y="120" width="210" height="22" rx="4" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1"/>
+      <text x="355" y="136" text-anchor="middle" fill="#00838F" font-size="8" font-weight="600">INT_OPPORTUNITIES (GTM)</text>
+
+      <rect x="250" y="146" width="210" height="22" rx="4" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1"/>
+      <text x="355" y="162" text-anchor="middle" fill="#00838F" font-size="8" font-weight="600">INT_SALESFORCE_APP_TO_SUB (GTM)</text>
+
+      <rect x="250" y="172" width="210" height="22" rx="4" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1"/>
+      <text x="355" y="188" text-anchor="middle" fill="#00838F" font-size="8" font-weight="600">INT_STRIPE_METERING_FEATURES (FIN)</text>
+
+      <rect x="250" y="198" width="210" height="22" rx="4" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1"/>
+      <text x="355" y="214" text-anchor="middle" fill="#00838F" font-size="8" font-weight="600">INT_SALESFORCE_ACCOUNT (COMMON)</text>
+
+      <rect x="250" y="224" width="210" height="22" rx="4" fill="#E0F7FA" stroke="#00ACC1" stroke-width="1"/>
+      <text x="355" y="240" text-anchor="middle" fill="#00838F" font-size="8" font-weight="600">INT_SNAP_STRIPE_CUSTOMER (COMMON)</text>
+
+      <!-- INT arrows to EXPORT -->
+      <line x1="460" y1="79" x2="700" y2="265" stroke="#00ACC1" stroke-width="1.5" marker-end="url(#arr-so-teal)"/>
+      <line x1="460" y1="105" x2="700" y2="268" stroke="#00ACC1" stroke-width="1.2" marker-end="url(#arr-so-teal)"/>
+      <line x1="460" y1="131" x2="700" y2="271" stroke="#00ACC1" stroke-width="1.2" marker-end="url(#arr-so-teal)"/>
+      <line x1="460" y1="157" x2="700" y2="274" stroke="#00ACC1" stroke-width="1.2" marker-end="url(#arr-so-teal)"/>
+      <line x1="460" y1="183" x2="700" y2="277" stroke="#00ACC1" stroke-width="1.2" marker-end="url(#arr-so-teal)"/>
+      <line x1="460" y1="209" x2="700" y2="280" stroke="#00ACC1" stroke-width="1.2" marker-end="url(#arr-so-teal)"/>
+      <line x1="460" y1="235" x2="700" y2="283" stroke="#00ACC1" stroke-width="1.2" marker-end="url(#arr-so-teal)"/>
+
+      <!-- ========== EXPORT SELF-REF (1 table) ========== -->
+      <rect x="530" y="400" width="170" height="36" rx="6" fill="#DCE1F9" stroke="#334BFA" stroke-width="1.5"/>
+      <text x="615" y="423" text-anchor="middle" fill="#334BFA" font-size="9" font-weight="600">NETSUITE_EXPORT_PRODUCTS</text>
+
+      <!-- Self-ref arrow to EXPORT -->
+      <path d="M 700,418 Q 730,380 740,310" stroke="#334BFA" stroke-width="1.5" stroke-dasharray="4,2" fill="none" marker-end="url(#arr-so-purple)"/>
+      <text x="755" y="365" fill="#334BFA" font-size="7" font-style="italic">intra-schema</text>
+
+      <!-- ========== CENTRAL EXPORT NODE ========== -->
+      <rect x="700" y="245" width="280" height="70" rx="10" fill="#DCE1F9" stroke="#334BFA" stroke-width="3" filter="url(#so-shadow)"/>
+      <text x="840" y="270" text-anchor="middle" fill="#334BFA" font-size="12" font-weight="bold">NETSUITE_EXPORT_SALES_ORDER</text>
+      <text x="840" y="286" text-anchor="middle" fill="#888" font-size="9">340K rows | 22.5 MB | 48 columns</text>
+      <text x="840" y="302" text-anchor="middle" fill="#E91E63" font-size="8" font-weight="600">15 upstream sources | 6+ downstream</text>
+
+      <!-- ========== DOWNSTREAM ========== -->
+      <rect x="700" y="400" width="280" height="100" rx="10" fill="#F5F5F5" stroke="#9E9E9E" stroke-width="1.5" opacity="0.6"/>
+      <text x="840" y="418" text-anchor="middle" fill="#666" font-size="10" font-weight="bold">Downstream Consumers</text>
+      <text x="840" y="436" text-anchor="middle" fill="#888" font-size="8">NETSUITE_EXPORT_CUSTOMER</text>
+      <text x="840" y="450" text-anchor="middle" fill="#888" font-size="8">NETSUITE_EXPORT_ADJUSTMENT_RECORDS</text>
+      <text x="840" y="464" text-anchor="middle" fill="#888" font-size="8">NETSUITE_EXPORT_ROCKETS</text>
+      <text x="840" y="478" text-anchor="middle" fill="#888" font-size="8">EXT_NETSUITE_EXPORT_CUSTOMER</text>
+      <text x="840" y="492" text-anchor="middle" fill="#999" font-size="7">+ 7 ad-hoc SQL queries, 1 test table</text>
+
+      <!-- Arrow EXPORT to Downstream -->
+      <line x1="840" y1="315" x2="840" y2="400" stroke="#9E9E9E" stroke-width="2" marker-end="url(#arr-so-purple)"/>
+
+      <!-- ========== LEGEND ========== -->
+      <line x1="20" y1="470" x2="55" y2="470" stroke="#F5A623" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-so-orange)"/>
+      <text x="65" y="474" fill="#666" font-size="8">RAW direct (skip STG+INT)</text>
+
+      <line x1="200" y1="470" x2="235" y2="470" stroke="#29B5E8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-so-cyan)"/>
+      <text x="245" y="474" fill="#666" font-size="8">STG direct (skip INT)</text>
+
+      <line x1="370" y1="470" x2="405" y2="470" stroke="#00ACC1" stroke-width="1.5" marker-end="url(#arr-so-teal)"/>
+      <text x="415" y="474" fill="#666" font-size="8">INT standard path</text>
+
+      <line x1="20" y1="492" x2="55" y2="492" stroke="#334BFA" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-so-purple)"/>
+      <text x="65" y="496" fill="#666" font-size="8">Intra-schema ref</text>
+
+      <line x1="200" y1="492" x2="235" y2="492" stroke="#9E9E9E" stroke-width="2"/>
+      <text x="245" y="496" fill="#666" font-size="8">Downstream consumer</text>
+    </svg>
+  </div>
+
+  <h3>Full Source Table Inventory (from Select Star)</h3>
   <table>
-    <tr><th>Layer</th><th>Table</th><th>Schema</th><th>Type</th><th>Rows</th><th>Size</th></tr>
-    <tr><td>RAW</td><td><code>ORDER_ITEM__C</code></td><td>STAGING_SALESFORCE (Fivetran)</td><td>Table</td><td>~500K</td><td>&mdash;</td></tr>
-    <tr><td>RAW</td><td><code>ORDER__C</code></td><td>STAGING_SALESFORCE (Fivetran)</td><td>Table</td><td>~55K</td><td>&mdash;</td></tr>
-    <tr><td>RAW</td><td><code>CONTRACT__C</code></td><td>STAGING_SALESFORCE (Fivetran)</td><td>Table</td><td>&mdash;</td><td>&mdash;</td></tr>
-    <tr><td>RAW</td><td><code>OPPORTUNITY__C</code></td><td>STAGING_SALESFORCE (Fivetran)</td><td>Table</td><td>&mdash;</td><td>&mdash;</td></tr>
-    <tr><td>STG</td><td><code>STG_SALESFORCE_ORDER_ITEM</code></td><td>STAGING_SALESFORCE</td><td>View</td><td>496K</td><td>0 (view)</td></tr>
-    <tr><td>STG</td><td><code>STG_SALESFORCE_ORDER</code></td><td>STAGING_SALESFORCE</td><td>View</td><td>55K</td><td>0 (view)</td></tr>
-    <tr><td>INT</td><td><code>INT_SALESFORCE_ORDER_ITEM</code></td><td>INTERMEDIATE_GTM</td><td>Table</td><td>496,065</td><td>17.9 MB</td></tr>
-    <tr><td>INT</td><td><code>INT_SALESFORCE_ORDER</code></td><td>INTERMEDIATE_GTM</td><td>Table</td><td>54,731</td><td>5.0 MB</td></tr>
-    <tr><td>EXPORT</td><td><code>NETSUITE_EXPORT_SALES_ORDER</code></td><td>SHARED_EXTERNAL_WORKATO</td><td>Transient</td><td>340,394</td><td>22.5 MB</td></tr>
-    <tr><td>CORE</td><td><code>FCT_ORDERS</code></td><td>CORE_GTM</td><td>Table</td><td>54,731</td><td>2.2 MB</td></tr>
+    <tr><th>Layer</th><th>Table</th><th>Schema</th><th>Path to Export</th></tr>
+    <tr style="background:#FFF5E6;"><td><strong>RAW</strong></td><td><code>SRQQ_QUOTE_C</code></td><td>FIVETRAN_SALESFORCE</td><td>Direct &rarr; EXPORT (skips STG &amp; INT)</td></tr>
+    <tr style="background:#FFF5E6;"><td><strong>RAW</strong></td><td><code>PRICEBOOK_2</code></td><td>FIVETRAN_SALESFORCE</td><td>Direct &rarr; EXPORT (skips STG &amp; INT)</td></tr>
+    <tr style="background:#FFF5E6;"><td><strong>RAW</strong></td><td><code>ORDER_ITEM</code></td><td>FIVETRAN_SALESFORCE</td><td>Direct &rarr; EXPORT (skips STG &amp; INT)</td></tr>
+    <tr style="background:#FFF5E6;"><td><strong>RAW</strong></td><td><code>PRICEBOOK_ENTRY</code></td><td>FIVETRAN_SALESFORCE</td><td>Direct &rarr; EXPORT (skips STG &amp; INT)</td></tr>
+    <tr style="background:#E8F4FD;"><td><strong>STG</strong></td><td><code>STG_WORKATO_LOG</code></td><td>STAGING_PRODUCT</td><td>Direct &rarr; EXPORT (skips INT)</td></tr>
+    <tr style="background:#E8F4FD;"><td><strong>STG</strong></td><td><code>STG_BILLING_CUSTOMERS</code></td><td>STAGING_BILLING</td><td>Direct &rarr; EXPORT (skips INT)</td></tr>
+    <tr style="background:#E0F7FA;"><td><strong>INT</strong></td><td><code>INT_SALESFORCE_CONTRACT</code></td><td>INTERMEDIATE_GTM</td><td>RAW &rarr; STG &rarr; INT &rarr; EXPORT</td></tr>
+    <tr style="background:#E0F7FA;"><td><strong>INT</strong></td><td><code>INT_SALESFORCE_ORDER</code></td><td>INTERMEDIATE_GTM</td><td>RAW &rarr; STG &rarr; INT &rarr; EXPORT</td></tr>
+    <tr style="background:#E0F7FA;"><td><strong>INT</strong></td><td><code>INT_OPPORTUNITIES</code></td><td>INTERMEDIATE_GTM</td><td>RAW &rarr; STG &rarr; INT &rarr; EXPORT</td></tr>
+    <tr style="background:#E0F7FA;"><td><strong>INT</strong></td><td><code>INT_SALESFORCE_APP_TO_SUBSCRIPTION</code></td><td>INTERMEDIATE_GTM</td><td>RAW &rarr; STG &rarr; INT &rarr; EXPORT</td></tr>
+    <tr style="background:#E0F7FA;"><td><strong>INT</strong></td><td><code>INT_STRIPE_METERING_FEATURES</code></td><td>INTERMEDIATE_FINANCE</td><td>RAW &rarr; STG &rarr; INT &rarr; EXPORT</td></tr>
+    <tr style="background:#E0F7FA;"><td><strong>INT</strong></td><td><code>INT_SALESFORCE_ACCOUNT</code></td><td>INTERMEDIATE_COMMON</td><td>RAW &rarr; STG &rarr; INT &rarr; EXPORT</td></tr>
+    <tr style="background:#E0F7FA;"><td><strong>INT</strong></td><td><code>INT_SNAP_STRIPE_CUSTOMER</code></td><td>INTERMEDIATE_COMMON</td><td>RAW &rarr; STG &rarr; INT &rarr; EXPORT</td></tr>
+    <tr style="background:#DCE1F9;"><td><strong>EXPORT</strong></td><td><code>NETSUITE_EXPORT_PRODUCTS</code></td><td>SHARED_EXTERNAL_WORKATO</td><td>Self-ref (intra-schema dependency)</td></tr>
   </table>
+
+  <h3>Downstream Consumers (from Select Star)</h3>
+  <table>
+    <tr><th>Consumer Table</th><th>Schema</th><th>Type</th></tr>
+    <tr><td><code>NETSUITE_EXPORT_CUSTOMER</code></td><td>SHARED_EXTERNAL_WORKATO</td><td>Export (production)</td></tr>
+    <tr><td><code>NETSUITE_EXPORT_ADJUSTMENT_RECORDS</code></td><td>SHARED_EXTERNAL_WORKATO</td><td>Export (production)</td></tr>
+    <tr><td><code>EXT_NETSUITE_EXPORT_CUSTOMER</code></td><td>SHARED_EXTERNAL_WORKATO</td><td>Export (production)</td></tr>
+    <tr><td><code>NETSUITE_EXPORT_ROCKETS</code></td><td>SHARED_EXTERNAL_WORKATO</td><td>Export (production)</td></tr>
+    <tr><td>Custom SQL Queries (7)</td><td>INTERCOM_PROD</td><td>Ad-hoc / reporting</td></tr>
+    <tr><td><code>TEST_NETSUITE_EXPORT_CUSTOMER</code></td><td>SHARED_EXTERNAL_WORKATO</td><td>Test table</td></tr>
+  </table>
+
+  <div class="callout callout-info">
+    <strong>Why the fan-in matters:</strong> If any of the 15 upstream sources has a schema change or data issue, it can break the Sales Order export. The blast radius is wider than a simple linear chain would suggest. Additionally, the downstream dependencies mean changes to <code>NETSUITE_EXPORT_SALES_ORDER</code> itself can cascade to 6+ consumer tables.
+  </div>
 
   <h3>Key Column Mapping (INT &rarr; EXPORT)</h3>
   <table>
-    <tr><th>INT_SALESFORCE_ORDER_ITEM</th><th></th><th>NETSUITE_EXPORT_SALES_ORDER</th></tr>
+    <tr><th>INT_SALESFORCE_ORDER (or related INT)</th><th></th><th>NETSUITE_EXPORT_SALES_ORDER</th></tr>
     <tr><td><code>ORDER_ITEM_ID</code></td><td>&rarr;</td><td><code>SFDC_ORDER_PRODUCT_ID</code></td></tr>
     <tr><td><code>CONTRACT_ID</code></td><td>&rarr;</td><td><code>SALESFORCE_CONTRACT_ID</code></td></tr>
     <tr><td><code>ORDER_ITEM_PRODUCT_2_ID</code></td><td>&rarr;</td><td><code>PRODUCT_2_ID</code></td></tr>
@@ -887,7 +1046,7 @@ footer {
     </div>
     <div class="layer-box layer-technical">
       <h4>Technical View</h4>
-      <p>Lineage: <code>BASE.STRIPE_INVOICES</code> (4.4M, 448 MB) &rarr; <code>STG_STRIPE_INVOICES</code> (view) &rarr; <code>INT_STRIPE_INVOICES</code> (4.4M, 297 MB) &rarr; <code>NETSUITE_EXPORT_INVOICE</code> (6.7M, 1.07 GB). Line items: <code>STG_STRIPE_INVOICE_LINES</code> (35.3M) &rarr; <code>INT_STRIPE_INVOICE_LINES</code> (35.3M, 2.0 GB). V2 table: <code>EXT_NETSUITE_EXPORT_INVOICE_V2</code> (6.6M, 695 MB).</p>
+      <p>Fan-in DAG with <strong>71 columns</strong>. Primary chain: <code>BASE.STRIPE_INVOICES</code> (4.4M) &rarr; STG &rarr; <code>INT_STRIPE_INVOICES</code> (4.4M, 297 MB), plus <code>INT_STRIPE_INVOICE_LINES</code> (35.3M, 2.0 GB). Additional fan-in sources: Salesforce contracts (<code>SALESFORCE_CONTRACT_ID</code>, <code>CONTRACT_STATUS</code>), Salesforce orders (<code>SALESFORCE_ORDER_ID</code>), Stripe subscriptions, payment intents, charges, and discount data. The export table <code>NETSUITE_EXPORT_INVOICE</code> (6.7M, 1.07 GB) expands from 4.4M source rows due to invoice line-level grain. V2 table: <code>EXT_NETSUITE_EXPORT_INVOICE_V2</code> (6.6M, 695 MB).</p>
     </div>
   </div>
 
@@ -956,7 +1115,7 @@ footer {
     </div>
     <div class="layer-box layer-technical">
       <h4>Technical View</h4>
-      <p>Direct transform: <code>BASE.STRIPE_REFUND</code> (237K rows, 16 MB) &rarr; <code>NETSUITE_EXPORT_REFUNDS</code> (1,926 rows, 0.5 MB). No intermediate table. Filtering joins against <code>NETSUITE_EXPORT_INVOICE</code> to match only refunds with corresponding NetSuite invoices.</p>
+      <p>Cross-pipeline fan-in with <strong>18 columns</strong>. Sources: <code>BASE.STRIPE_REFUND</code> (237K rows, 16 MB) + Stripe charges (<code>STRIPE_CHARGE_ID</code>) + Stripe balance transactions (<code>STRIPE_AUTOMATIC_PAYOUT_ID</code>, <code>FEE_AMOUNT</code>) + credit notes (<code>CREDIT_NOTE_ID</code>). <strong>Cross-pipeline dependency:</strong> joins against <code>NETSUITE_EXPORT_INVOICE</code> to match only refunds with corresponding NetSuite invoices. Output: <code>NETSUITE_EXPORT_REFUNDS</code> (1,926 rows, 0.5 MB) &mdash; 99.2% of source rows filtered out.</p>
     </div>
   </div>
 
@@ -968,7 +1127,7 @@ footer {
     </div>
     <div class="layer-box layer-technical">
       <h4>Technical View</h4>
-      <p>Source: Stripe invoice credit notes. Two distinct credit memo paths exist: (1) Stripe-sourced credit notes via this pipeline, and (2) amendment-driven credit memos generated by the Sales Order pipeline's RF 3.0 recipe directly in NetSuite (form 114).</p>
+      <p>Cross-pipeline fan-in with <strong>34 columns</strong>. Sources: Stripe credit notes (<code>STRIPE_CREDIT_NOTE_ID</code>) + Stripe invoices (<code>STRIPE_INVOICE_ID</code>, <code>STRIPE_INVOICE_STATUS</code>) + invoice line items (<code>STRIPE_INVOICE_LINE_ITEM</code>) + Stripe refunds (<code>REFUND_ID</code>) + Stripe charges (<code>CHARGE_ID</code>) + Salesforce contracts (<code>SALESFORCE_CONTRACT_ID</code>). Two distinct credit memo paths exist: (1) Stripe-sourced credit notes via this pipeline, and (2) amendment-driven credit memos generated by the Sales Order pipeline's RF 3.0 recipe directly in NetSuite (form 114).</p>
     </div>
   </div>
 
@@ -980,7 +1139,7 @@ footer {
     </div>
     <div class="layer-box layer-technical">
       <h4>Technical View</h4>
-      <p>Source: Stripe balance transactions. Export: <code>NETSUITE_EXPORT_CUSTOMER_CREDIT_ADJUSTMENTS</code> (20,924 rows, 1.8 MB). Known edge case: CBAs originating from manual invoices (proration/downgrade) may not sync to NetSuite due to routing debug strings in the NS ID field preventing RF 8.0 from parsing.</p>
+      <p>Cross-pipeline fan-in with <strong>14 columns</strong>. Sources: Stripe balance transactions (<code>EXTERNAL_ID</code>, <code>TYPE</code>, <code>ENDING_BALANCE</code>) + credit notes (<code>CREDIT_NOTE</code>) + invoices (<code>INVOICE_ID</code>). Export: <code>NETSUITE_EXPORT_CUSTOMER_CREDIT_ADJUSTMENTS</code> (20,924 rows, 1.8 MB). Note: uses <code>ENTITY</code> instead of <code>CUSTOMER</code> for the Stripe customer ID column. Known edge case: CBAs originating from manual invoices (proration/downgrade) may not sync to NetSuite due to routing debug strings in the NS ID field preventing RF 8.0 from parsing.</p>
     </div>
   </div>
 </section>
@@ -1053,9 +1212,19 @@ footer {
     <tr><td><code>NETSUITE_EXPORT_CREDIT_MEMO</code></td><td>Transient</td><td>&mdash;</td><td>&mdash;</td><td>Credit Memo (header)</td></tr>
     <tr><td><code>NETSUITE_EXPORT_CREDIT_MEMO_CREDIT_NOTES</code></td><td>Transient</td><td>3,849</td><td>1.1</td><td>Credit Memo (lines)</td></tr>
     <tr><td><code>NETSUITE_EXPORT_REFUNDS</code></td><td>Transient</td><td>1,926</td><td>0.5</td><td>Refund</td></tr>
+    <tr><td><code>NETSUITE_EXPORT_PRODUCTS</code></td><td>Transient</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order (upstream ref)</td></tr>
+    <tr><td><code>NETSUITE_EXPORT_ADJUSTMENT_RECORDS</code></td><td>Transient</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order (downstream)</td></tr>
+    <tr><td><code>NETSUITE_EXPORT_ROCKETS</code></td><td>Transient</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order (downstream)</td></tr>
+    <tr><td><code>EXT_NETSUITE_EXPORT_CUSTOMER</code></td><td>Transient</td><td>&mdash;</td><td>&mdash;</td><td>Customer (ext version)</td></tr>
+    <tr><td><code>TEST_NETSUITE_EXPORT_CUSTOMER</code></td><td>Transient</td><td>&mdash;</td><td>&mdash;</td><td>Customer (test)</td></tr>
+    <tr><td><code>NETSUITE_EXPORT_UNCOLLECTIBLE</code></td><td>Transient</td><td>&mdash;</td><td>&mdash;</td><td>Invoice (uncollectible)</td></tr>
+    <tr><td><code>NETSUITE_EXPORT_CREDIT_MEMO_NEGATIVE_INVOICE</code></td><td>Transient</td><td>&mdash;</td><td>&mdash;</td><td>Credit Memo (neg invoice)</td></tr>
     <tr><td><code>WORKATO_ACCOUNTS</code></td><td>Transient</td><td>29,000</td><td>&lt;1</td><td>Metadata</td></tr>
     <tr><td><code>WORKATO_LOGS</code></td><td>Transient</td><td>67,111,230</td><td>10,466</td><td>All (dedup)</td></tr>
   </table>
+  <div class="callout callout-warn">
+    <strong>Note:</strong> Tables marked with &mdash; for rows/size have not yet been queried for metadata. These were discovered via Select Star lineage (downstream consumers of NETSUITE_EXPORT_SALES_ORDER) or from the NetSuite Transaction Investigator skill's known table list.
+  </div>
 
   <h3>Intermediate Layer</h3>
   <table>
@@ -1063,8 +1232,13 @@ footer {
     <tr><td><code>INT_STRIPE_INVOICE_LINES</code></td><td>INTERMEDIATE_FINANCE</td><td>35,292,272</td><td>2,032</td><td>Invoice export</td></tr>
     <tr><td><code>INT_STRIPE_INVOICES</code></td><td>INTERMEDIATE_FINANCE</td><td>4,438,836</td><td>297.3</td><td>Invoice export</td></tr>
     <tr><td><code>INT_STRIPE_PAYMENTS</code></td><td>INTERMEDIATE_FINANCE</td><td>4,020,876</td><td>386.3</td><td>Payment export</td></tr>
-    <tr><td><code>INT_SALESFORCE_ORDER_ITEM</code></td><td>INTERMEDIATE_GTM</td><td>496,065</td><td>17.9</td><td>Sales Order export</td></tr>
+    <tr><td><code>INT_STRIPE_METERING_FEATURES</code></td><td>INTERMEDIATE_FINANCE</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order export</td></tr>
     <tr><td><code>INT_SALESFORCE_ORDER</code></td><td>INTERMEDIATE_GTM</td><td>54,731</td><td>5</td><td>Sales Order export</td></tr>
+    <tr><td><code>INT_SALESFORCE_CONTRACT</code></td><td>INTERMEDIATE_GTM</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order export</td></tr>
+    <tr><td><code>INT_OPPORTUNITIES</code></td><td>INTERMEDIATE_GTM</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order export</td></tr>
+    <tr><td><code>INT_SALESFORCE_APP_TO_SUBSCRIPTION</code></td><td>INTERMEDIATE_GTM</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order export</td></tr>
+    <tr><td><code>INT_SALESFORCE_ACCOUNT</code></td><td>INTERMEDIATE_COMMON</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order export</td></tr>
+    <tr><td><code>INT_SNAP_STRIPE_CUSTOMER</code></td><td>INTERMEDIATE_COMMON</td><td>&mdash;</td><td>&mdash;</td><td>Sales Order export</td></tr>
   </table>
 
   <h3>Core (Analytics)</h3>
@@ -1076,15 +1250,24 @@ footer {
 
   <h3>Raw / Base Sources</h3>
   <table>
-    <tr><th>Table</th><th>Schema</th><th>Rows</th><th>Size (MB)</th><th>Source System</th></tr>
-    <tr><td><code>STRIPE_INVOICES</code></td><td>BASE</td><td>4,438,836</td><td>447.5</td><td>Stripe (Fivetran)</td></tr>
-    <tr><td><code>STRIPE_CUSTOMER</code></td><td>BASE</td><td>1,827,817</td><td>98.9</td><td>Stripe (Fivetran)</td></tr>
-    <tr><td><code>STRIPE_INVOICE</code></td><td>BASE</td><td>886,141</td><td>60.5</td><td>Stripe (legacy)</td></tr>
-    <tr><td><code>STRIPE_REFUND</code></td><td>BASE</td><td>236,683</td><td>16.0</td><td>Stripe (Fivetran)</td></tr>
-    <tr><td><code>STG_SALESFORCE_ORDER_ITEM</code></td><td>STAGING_SALESFORCE</td><td>(view)</td><td>&mdash;</td><td>Salesforce (Fivetran)</td></tr>
-    <tr><td><code>STG_SALESFORCE_ORDER</code></td><td>STAGING_SALESFORCE</td><td>(view)</td><td>&mdash;</td><td>Salesforce (Fivetran)</td></tr>
-    <tr><td><code>STG_SALESFORCE_CONTRACT</code></td><td>STAGING_SALESFORCE</td><td>(view)</td><td>&mdash;</td><td>Salesforce (Fivetran)</td></tr>
+    <tr><th>Table</th><th>Schema</th><th>Rows</th><th>Size (MB)</th><th>Source System</th><th>Feeds</th></tr>
+    <tr><td><code>STRIPE_INVOICES</code></td><td>BASE</td><td>4,438,836</td><td>447.5</td><td>Stripe (Fivetran)</td><td>Invoice pipeline (via STG/INT)</td></tr>
+    <tr><td><code>STRIPE_CUSTOMER</code></td><td>BASE</td><td>1,827,817</td><td>98.9</td><td>Stripe (Fivetran)</td><td>Customer pipeline</td></tr>
+    <tr><td><code>STRIPE_INVOICE</code></td><td>BASE</td><td>886,141</td><td>60.5</td><td>Stripe (legacy)</td><td>Invoice pipeline</td></tr>
+    <tr><td><code>STRIPE_REFUND</code></td><td>BASE</td><td>236,683</td><td>16.0</td><td>Stripe (Fivetran)</td><td>Refund pipeline</td></tr>
+    <tr style="background:#FFF5E6;"><td><code>SRQQ_QUOTE_C</code></td><td>FIVETRAN_SALESFORCE</td><td>&mdash;</td><td>&mdash;</td><td>Salesforce CPQ (Fivetran)</td><td><strong>Direct &rarr; SO export</strong></td></tr>
+    <tr style="background:#FFF5E6;"><td><code>PRICEBOOK_2</code></td><td>FIVETRAN_SALESFORCE</td><td>&mdash;</td><td>&mdash;</td><td>Salesforce (Fivetran)</td><td><strong>Direct &rarr; SO export</strong></td></tr>
+    <tr style="background:#FFF5E6;"><td><code>ORDER_ITEM</code></td><td>FIVETRAN_SALESFORCE</td><td>&mdash;</td><td>&mdash;</td><td>Salesforce (Fivetran)</td><td><strong>Direct &rarr; SO export</strong></td></tr>
+    <tr style="background:#FFF5E6;"><td><code>PRICEBOOK_ENTRY</code></td><td>FIVETRAN_SALESFORCE</td><td>&mdash;</td><td>&mdash;</td><td>Salesforce (Fivetran)</td><td><strong>Direct &rarr; SO export</strong></td></tr>
+    <tr><td><code>STG_SALESFORCE_ORDER_ITEM</code></td><td>STAGING_SALESFORCE</td><td>(view)</td><td>&mdash;</td><td>Salesforce (Fivetran)</td><td>Via INT to export</td></tr>
+    <tr><td><code>STG_SALESFORCE_ORDER</code></td><td>STAGING_SALESFORCE</td><td>(view)</td><td>&mdash;</td><td>Salesforce (Fivetran)</td><td>Via INT to export</td></tr>
+    <tr><td><code>STG_SALESFORCE_CONTRACT</code></td><td>STAGING_SALESFORCE</td><td>(view)</td><td>&mdash;</td><td>Salesforce (Fivetran)</td><td>Via INT to export</td></tr>
+    <tr style="background:#E8F4FD;"><td><code>STG_WORKATO_LOG</code></td><td>STAGING_PRODUCT</td><td>&mdash;</td><td>&mdash;</td><td>Workato (Fivetran)</td><td><strong>Direct &rarr; SO export</strong></td></tr>
+    <tr style="background:#E8F4FD;"><td><code>STG_BILLING_CUSTOMERS</code></td><td>STAGING_BILLING</td><td>&mdash;</td><td>&mdash;</td><td>Billing (Fivetran)</td><td><strong>Direct &rarr; SO export</strong></td></tr>
   </table>
+  <div class="callout callout-warn">
+    <strong>Highlighted rows</strong> indicate tables that feed <strong>directly</strong> into export models, bypassing the standard STG &rarr; INT chain. This was discovered via Select Star lineage and contradicts the original staged-flow assumption.
+  </div>
 </section>
 
 <!-- ============================================================ -->

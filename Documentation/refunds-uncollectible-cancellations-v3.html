@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <title>3.0 Master Recipe - Refunds, Uncollectible Invoices, and Contract Cancellations</title>
 <style>
 :root {
@@ -110,6 +111,39 @@ nav#toc a {
 }
 nav#toc a:hover { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: rgba(51,75,250,0.3); }
 nav#toc a.active { background: var(--ic-blue-bg); color: var(--ic-blue); border-left-color: var(--ic-blue); font-weight: 600; }
+nav#toc .toc-links { flex: 1; overflow-y: auto; }
+nav#toc .toc-nav-buttons {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  background: #ffffff;
+}
+nav#toc .toc-nav-buttons a.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.82em;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  border-left: none;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  background: var(--ic-cream);
+}
+nav#toc .toc-nav-buttons a.nav-btn:hover {
+  background: var(--ic-blue-bg);
+  color: var(--ic-blue);
+  border-color: var(--ic-blue);
+}
+nav#toc .toc-nav-buttons a.nav-btn .material-icons-outlined {
+  font-size: 18px;
+}
 
 .main-content { max-width: 1100px; }
 
@@ -385,9 +419,6 @@ summary:hover { color: #2A3EC7; }
 </head>
 <body>
 
-<!-- Back to Index -->
-<a href="netsuite-index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#16100E;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#334BFA'" onmouseout="this.style.background='#16100E'">&#8592; Back to Index</a>
-<a href="index.html" style="position:fixed;top:8px;right:180px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
 
 <!-- Fixed Left Sidebar TOC -->
 <nav id="toc">
@@ -406,6 +437,7 @@ summary:hover { color: #2A3EC7; }
       <span class="brand-sub">Enterprise Systems</span>
     </div>
   </div>
+  <div class="toc-links">
   <h3>Navigation</h3>
 
   <a href="#overview" data-section="overview">1. Overview</a>
@@ -420,6 +452,11 @@ summary:hover { color: #2A3EC7; }
   <a href="#error-handling" data-section="error-handling">10. Error Handling</a>
   <a href="#operational" data-section="operational">11. Operational Stats</a>
   <a href="#appendix" data-section="appendix">12. Appendix</a>
+  </div>
+  <div class="toc-nav-buttons">
+    <a href="index.html" class="nav-btn"><span class="material-icons-outlined">home</span> Home</a>
+    <a href="netsuite-index.html" class="nav-btn"><span class="material-icons-outlined">arrow_back</span> Back to Index</a>
+  </div>
 </nav>
 
 <!-- Main Content -->
