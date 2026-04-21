@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<title>NetSuite Sales Order Revamp - Visual Guide</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card-hover: #22263a;
+    --border: #2a2e3f;
+    --text: #e2e4ea;
+    --text-dim: #8b8fa3;
+    --accent: #6c5ce7;
+    --accent-light: #a29bfe;
+    --green: #00b894;
+    --green-dim: #00b89433;
+    --red: #e17055;
+    --red-dim: #e1705533;
+    --orange: #fdcb6e;
+    --orange-dim: #fdcb6e33;
+    --blue: #74b9ff;
+    --blue-dim: #74b9ff33;
+    --cyan: #81ecec;
+    --pink: #fd79a8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+  /* Hero */
+  .hero { text-align: center; padding: 60px 0 40px; }
+  .hero h1 { font-size: 2.4em; font-weight: 800; background: linear-gradient(135deg, var(--accent-light), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+  .hero .subtitle { font-size: 1.15em; color: var(--text-dim); max-width: 700px; margin: 0 auto; }
+  .badge { display: inline-block; padding: 4px 14px; border-radius: 20px; font-size: 0.75em; font-weight: 600; margin: 16px 4px 0; }
+  .badge-purple { background: var(--accent); color: white; }
+  .badge-green { background: var(--green); color: #000; }
+  .badge-orange { background: var(--orange); color: #000; }
+
+  /* Section */
+  .section { margin: 48px 0; }
+  .section-title { font-size: 1.6em; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: white; font-size: 0.8em; font-weight: 700; }
+
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin: 16px 0; transition: border-color 0.2s; }
+  .card:hover { border-color: var(--accent); }
+  .card h3 { font-size: 1.1em; font-weight: 700; margin-bottom: 10px; }
+  .card p { color: var(--text-dim); font-size: 0.95em; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* Comparison */
+  .compare { display: grid; grid-template-columns: 1fr 60px 1fr; align-items: center; gap: 0; margin: 24px 0; }
+  .compare-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+  .compare-box.bad { border-color: var(--red); }
+  .compare-box.good { border-color: var(--green); }
+  .compare-arrow { text-align: center; font-size: 2em; color: var(--accent-light); }
+  .compare-label { font-size: 0.8em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .compare-label.red { color: var(--red); }
+  .compare-label.green { color: var(--green); }
+  @media (max-width: 768px) { .compare { grid-template-columns: 1fr; } .compare-arrow { transform: rotate(90deg); padding: 10px 0; } }
+
+  /* Flow Diagram */
+  .flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 24px 0; }
+  .flow-step { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px 28px; width: 100%; max-width: 700px; position: relative; }
+  .flow-step .step-num { position: absolute; left: -16px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85em; }
+  .flow-step h4 { font-size: 0.95em; font-weight: 700; margin-bottom: 4px; }
+  .flow-step p { font-size: 0.85em; color: var(--text-dim); }
+  .flow-arrow { width: 2px; height: 28px; background: var(--accent); position: relative; }
+  .flow-arrow::after { content: ''; position: absolute; bottom: -6px; left: -5px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--accent); }
+
+  /* Pipeline Diagram */
+  .pipeline { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 24px 0; }
+  .pipe-node { background: var(--card); border: 2px solid var(--accent); border-radius: 12px; padding: 16px 24px; text-align: center; min-width: 300px; }
+  .pipe-node h4 { font-size: 0.9em; font-weight: 700; color: var(--accent-light); }
+  .pipe-node p { font-size: 0.8em; color: var(--text-dim); margin-top: 4px; }
+  .pipe-split { display: flex; gap: 40px; align-items: flex-start; justify-content: center; position: relative; }
+  .pipe-split::before { content: ''; position: absolute; top: -14px; left: 50%; width: 2px; height: 14px; background: var(--accent); }
+  .pipe-split .pipe-node { border-color: var(--blue); }
+  .pipe-split .pipe-node h4 { color: var(--blue); }
+  .pipe-connector { width: 2px; height: 24px; background: var(--accent); }
+  .pipe-h-line { display: flex; align-items: flex-start; justify-content: center; position: relative; }
+  .pipe-h-line::before { content: ''; position: absolute; top: 0; left: calc(50% - 170px); width: 340px; height: 2px; background: var(--accent); }
+  .pipe-h-line::after { content: ''; position: absolute; top: -6px; left: 50%; margin-left: -5px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--accent); }
+
+  /* Stage boxes */
+  .stage { background: var(--card); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; padding: 24px; margin: 20px 0; }
+  .stage.green { border-left-color: var(--green); }
+  .stage.orange { border-left-color: var(--orange); }
+  .stage.blue { border-left-color: var(--blue); }
+  .stage.red { border-left-color: var(--red); }
+  .stage.pink { border-left-color: var(--pink); }
+  .stage-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .stage-badge { padding: 2px 10px; border-radius: 6px; font-size: 0.75em; font-weight: 700; }
+  .stage h4 { font-size: 1.05em; font-weight: 700; }
+
+  /* Code */
+  .code { background: #0d0f14; border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.82em; overflow-x: auto; margin: 12px 0; color: var(--cyan); line-height: 1.6; }
+  .code .comment { color: var(--text-dim); }
+  .code .keyword { color: var(--pink); }
+  .code .value { color: var(--green); }
+
+  /* Example Box */
+  .example { background: var(--blue-dim); border: 1px solid var(--blue); border-radius: 12px; padding: 20px; margin: 16px 0; }
+  .example-title { font-size: 0.8em; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+
+  /* Warning */
+  .warning { background: var(--orange-dim); border: 1px solid var(--orange); border-radius: 12px; padding: 16px 20px; margin: 16px 0; }
+  .warning-title { font-size: 0.8em; font-weight: 700; color: var(--orange); margin-bottom: 4px; }
+
+  /* Metrics */
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+  .metric { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
+  .metric .value { font-size: 1.8em; font-weight: 800; background: linear-gradient(135deg, var(--green), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .metric .label { font-size: 0.78em; color: var(--text-dim); margin-top: 4px; }
+  @media (max-width: 768px) { .metrics { grid-template-columns: 1fr 1fr; } }
+
+  /* Expandable */
+  details { margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--accent-light); padding: 8px 0; font-size: 0.95em; }
+  details summary:hover { color: var(--cyan); }
+  details[open] summary { margin-bottom: 8px; }
+
+  /* Lists */
+  ul, ol { padding-left: 20px; }
+  li { margin: 6px 0; font-size: 0.93em; }
+  li::marker { color: var(--accent-light); }
+
+  /* Highlight text */
+  .hl { color: var(--accent-light); font-weight: 600; }
+  .hl-green { color: var(--green); font-weight: 600; }
+  .hl-red { color: var(--red); font-weight: 600; }
+  .hl-orange { color: var(--orange); font-weight: 600; }
+  .hl-blue { color: var(--blue); font-weight: 600; }
+
+  /* TOC */
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px 32px; margin: 32px 0; }
+  .toc h3 { margin-bottom: 12px; font-size: 1em; }
+  .toc a { color: var(--accent-light); text-decoration: none; font-size: 0.9em; display: block; padding: 4px 0; }
+  .toc a:hover { color: var(--cyan); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88em; }
+  th { background: var(--card); color: var(--accent-light); text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--accent); font-weight: 700; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: var(--card-hover); }
+
+  /* Netting Visual */
+  .netting-visual { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+  .nv-box { padding: 16px 24px; border-radius: 12px; text-align: center; font-weight: 700; font-size: 1.1em; min-width: 140px; }
+  .nv-red { background: var(--red-dim); border: 2px solid var(--red); color: var(--red); }
+  .nv-green { background: var(--green-dim); border: 2px solid var(--green); color: var(--green); }
+  .nv-blue { background: var(--blue-dim); border: 2px solid var(--blue); color: var(--blue); }
+  .nv-plus { font-size: 1.5em; color: var(--text-dim); }
+  .nv-equals { font-size: 1.5em; color: var(--accent-light); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <h1>NetSuite Sales Order Revamp</h1>
+  <p class="subtitle">A visual guide to understanding how Intercom is fixing its Sales Order pipeline — from messy CPQ amendments to clean, finance-ready data.</p>
+  <span class="badge badge-purple">Snowflake + dbt</span>
+  <span class="badge badge-green">Netting Algorithm</span>
+  <span class="badge badge-orange">Fin Buckets</span>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>What's Inside</h3>
+  <a href="#problem">1. The Problem (Why This Matters)</a>
+  <a href="#before-after">2. Before vs After (Visual Comparison)</a>
+  <a href="#architecture">3. Architecture: Current vs Future</a>
+  <a href="#netting">4. The Netting Algorithm (5 Stages)</a>
+  <a href="#buckets">5. Fin Bucket Pipeline (4 Models)</a>
+  <a href="#edge-cases">6. Edge Cases & Gotchas</a>
+  <a href="#outcomes">7. Expected Outcomes & Metrics</a>
+  <a href="#open-items">8. Open Items</a>
+</div>
+
+<!-- Section 1: The Problem -->
+<div class="section" id="problem">
+  <div class="section-title"><span class="section-num">1</span> The Problem</div>
+
+  <div class="card">
+    <h3>What's Going Wrong?</h3>
+    <p>When a customer changes their contract (upsell, downsell, renewal), Salesforce CPQ generates a <span class="hl-red">"rip-and-replace"</span> transaction. Instead of saying "customer added 2 seats," it tears up the old order and recreates the entire thing with positive and negative lines.</p>
+  </div>
+
+  <div class="netting-visual">
+    <div class="nv-box nv-red">-3,000<br><small>resolutions removed</small></div>
+    <div class="nv-plus">+</div>
+    <div class="nv-box nv-green">+5,000<br><small>resolutions added</small></div>
+    <div class="nv-equals">=</div>
+    <div class="nv-box nv-blue">+2,000<br><small>net change (what actually happened)</small></div>
+  </div>
+
+  <p style="text-align: center; color: var(--text-dim); font-size: 0.9em; margin-bottom: 24px;">~40% of amendments are "rip-and-replace" — creating noise instead of clarity</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3><span class="hl-red">Core Issues</span></h3>
+      <ul>
+        <li>CPQ amendments generate full order replacements, not net changes</li>
+        <li>NetSuite doesn't support negative quantities for usage-based products</li>
+        <li>Multiple +/- lines create ambiguity in revenue attribution</li>
+        <li>Revenue recognition (ARM) for usage items can't be automated</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="hl-orange">Business Impact</span></h3>
+      <ul>
+        <li>Manual calculation & topside entries for usage items</li>
+        <li>Slower month-end close</li>
+        <li>Increased financial and audit risk</li>
+        <li>Finance teams manually interpret Sales Orders</li>
+        <li>Engineering relies on fragile Workato logic</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Section 2: Before vs After -->
+<div class="section" id="before-after">
+  <div class="section-title"><span class="section-num">2</span> Before vs After</div>
+
+  <div class="compare">
+    <div class="compare-box bad">
+      <div class="compare-label red">Today (Messy)</div>
+      <p style="font-size: 0.9em;">A simple upsell from 100 to 200 units shows up as:</p>
+      <div class="code">
+<span class="comment">-- NetSuite Sales Order Lines</span>
+Line 1: Product A  <span class="hl-red">-100 units</span>  ($-1,000)
+Line 2: Product A  <span class="hl-green">+200 units</span>  ($2,000)
+Line 3: Product A  <span class="hl-red">-50 units</span>   ($-500)
+Line 4: Product A  <span class="hl-green">+150 units</span>  ($1,500)
+<span class="comment">-- Finance: "wait... what actually changed?"</span>
+      </div>
+    </div>
+    <div class="compare-arrow">&rarr;</div>
+    <div class="compare-box good">
+      <div class="compare-label green">After Revamp (Clean)</div>
+      <p style="font-size: 0.9em;">The same upsell shows up as:</p>
+      <div class="code">
+<span class="comment">-- NetSuite Sales Order Lines</span>
+Line 1: Product A  <span class="hl-green">+200 units</span>  ($2,000)
+<span class="comment">-- Finance: "customer added 200 units. Done."</span>
+
+
+<span class="comment">-- Net change is clear, no interpretation needed</span>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="text-align: center;">
+    <h3>The Goal: From Interpretation to Trust</h3>
+    <p>Move from a system that requires Finance teams to <span class="hl-red">manually reconstruct what changed</span> to one that is <span class="hl-green">inherently correct and easy to trust</span>.</p>
+  </div>
+</div>
+
+<!-- Section 3: Architecture -->
+<div class="section" id="architecture">
+  <div class="section-title"><span class="section-num">3</span> Architecture: Current vs Future</div>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="color: var(--red); margin-bottom: 16px;">Current Flow (Today)</h3>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <h4>Salesforce CPQ</h4>
+          <p>Generates orders + amendments (rip-and-replace)</p>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <h4>Snowflake via dbt</h4>
+          <p>Materializes raw CPQ data into export table</p>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step" style="border-color: var(--red);">
+          <div class="step-num" style="background: var(--red);">3</div>
+          <h4>Workato <span class="hl-red">(heavy logic)</span></h4>
+          <p>Splits amendments, calculates proration, billing quantities, does business logic</p>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <h4>NetSuite</h4>
+          <p>Receives messy data, creates noisy Sales Orders</p>
+        </div>
+      </div>
+      <div class="warning">
+        <div class="warning-title">Problems</div>
+        <p style="font-size: 0.85em;">Business logic fragmented across dbt + Workato. Opaque transformations. Hard to audit. Workato runs 4x/day at 05:30, 10:30, 15:30, 20:30 with a 2hr timeout.</p>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="color: var(--green); margin-bottom: 16px;">Future Flow (Proposed)</h3>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-num">1</div>
+          <h4>Salesforce CPQ</h4>
+          <p>No changes upstream (same as today)</p>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="step-num">2</div>
+          <h4>Fivetran &rarr; Snowflake</h4>
+          <p>Raw data ingested with full fidelity</p>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step" style="border-color: var(--green);">
+          <div class="step-num" style="background: var(--green);">3</div>
+          <h4>dbt <span class="hl-green">(ALL logic here)</span></h4>
+          <p>Netting, proration, billing calcs, normalization &mdash; all centralized, testable, version-controlled</p>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="step-num">4</div>
+          <h4>Workato <span class="hl-green">(thin transport)</span></h4>
+          <p>Just moves data from Snowflake to NetSuite. Zero business logic.</p>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="step-num">5</div>
+          <h4>NetSuite</h4>
+          <p>Receives clean, net changes. No noise.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 24px;">
+    <h3>What Changes At a Glance</h3>
+    <table>
+      <tr><th>Aspect</th><th style="color: var(--red);">Before</th><th style="color: var(--green);">After</th></tr>
+      <tr><td>Business Logic</td><td>Fragmented: dbt + Workato</td><td>Centralized: dbt only</td></tr>
+      <tr><td>Transformations</td><td>Opaque, hard to audit</td><td>Transparent, testable, versioned</td></tr>
+      <tr><td>Workato Role</td><td>Heavy: calcs + routing + transport</td><td>Thin: transport only</td></tr>
+      <tr><td>NetSuite Input</td><td>Noisy +/- lines</td><td>Clean net changes</td></tr>
+      <tr><td>Reconciliation</td><td>Reactive, manual</td><td>Proactive, automated</td></tr>
+      <tr><td>Migration Risk</td><td>Workato lock-in</td><td>Easy to swap integration layer</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Section 4: Netting Algorithm -->
+<div class="section" id="netting">
+  <div class="section-title"><span class="section-num">4</span> The Netting Algorithm (5 Stages)</div>
+
+  <p style="color: var(--text-dim); margin-bottom: 20px;">The netting algorithm lives in <code style="color: var(--cyan);">ext_netsuite_export_sales_order_v2.sql</code> and transforms CPQ's rip-and-replace output into clean net changes through 5 stages:</p>
+
+  <!-- Stage 1 -->
+  <div class="stage">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--accent); color: white;">Stage 1</span>
+      <h4>Line-Level Netting</h4>
+    </div>
+    <p><strong>Purpose:</strong> Consolidate multiple CPQ lines for the same item within the same amendment into a single netted row.</p>
+
+    <div class="example">
+      <div class="example-title">How It Works</div>
+      <p>For each amendment, lines are grouped by <span class="hl">(contract, opportunity, item, date range)</span>. Then quantities and amounts are <strong>summed</strong> to get the net change.</p>
+    </div>
+
+    <div class="netting-visual" style="font-size: 0.85em;">
+      <div class="nv-box nv-red" style="padding: 12px 18px;">-3,000 qty<br>-$2,760</div>
+      <div class="nv-plus">+</div>
+      <div class="nv-box nv-green" style="padding: 12px 18px;">+5,000 qty<br>+$4,600</div>
+      <div class="nv-equals">&rarr;</div>
+      <div class="nv-box nv-blue" style="padding: 12px 18px;">+2,000 qty<br>+$1,840</div>
+    </div>
+
+    <details>
+      <summary>Technical Detail: GROUP BY &amp; Aggregation</summary>
+      <div class="code">
+<span class="keyword">GROUP BY</span> (contract_id, opportunity_id, item,
+         rev_rec_start_date, rev_rec_end_date,
+         billing params, prorate_multiplier, ...)
+
+<span class="keyword">AGGREGATE:</span>
+  actual_qty     = <span class="value">SUM(actual_qty)</span>        <span class="comment">-- net quantity</span>
+  amount         = <span class="value">ROUND(SUM(amount), 2)</span>  <span class="comment">-- net dollars</span>
+  discount_pct   = <span class="value">AVG(discount_percent)</span>   <span class="comment">-- known issue!</span>
+  unit_list_price = <span class="value">MAX(unit_list_price)</span>
+      </div>
+    </details>
+  </div>
+
+  <!-- Stage 2 -->
+  <div class="stage green">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--green); color: #000;">Stage 2</span>
+      <h4>Amendment Splitting: Future Billing vs Proration</h4>
+    </div>
+    <p><strong>Purpose:</strong> After netting, each amendment row is split into two temporal components.</p>
+
+    <div class="grid-2" style="margin-top: 16px;">
+      <div class="card" style="border-color: var(--blue);">
+        <h3 style="color: var(--blue);">Future Billing</h3>
+        <p>Full billing cycles remaining after the prorated stub. Always goes to <strong>Sales Order</strong>.</p>
+        <div class="code" style="font-size: 0.8em;">
+future_portion = total_term - prorated_portion
+future_billing_qty = future_portion / billing_freq
+        </div>
+      </div>
+      <div class="card" style="border-color: var(--orange);">
+        <h3 style="color: var(--orange);">Proration (Stub)</h3>
+        <p>The partial billing cycle at the start of the amendment. Routing depends on opp-level netting.</p>
+        <div class="code" style="font-size: 0.8em;">
+prorated_portion = total_term % billing_freq
+per_month = amount / total_term
+proration_amount = per_month * prorated_portion
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-title">Why Split?</div>
+      <p>NetSuite ARM needs the prorated stub separately because it creates a <strong>single revenue element</strong> for the partial period, while full billing cycles each create their own revenue elements on a recurring schedule.</p>
+    </div>
+  </div>
+
+  <!-- Stage 3 -->
+  <div class="stage orange">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--orange); color: #000;">Stage 3</span>
+      <h4>Opportunity-Level Routing</h4>
+    </div>
+    <p><strong>Purpose:</strong> Decide whether an opportunity's proration lines go to a <span class="hl-green">Sales Order</span> or a <span class="hl-red">Credit Memo</span>.</p>
+
+    <div class="code">
+<span class="keyword">FOR EACH</span> opportunity_id:
+  opp_total = <span class="value">SUM(proration amounts)</span>
+
+  <span class="keyword">IF</span> opp_total >= 0:
+    <span class="comment">-- Route ALL proration lines to</span> <span class="value">SALES_ORDER</span>
+  <span class="keyword">ELSE:</span>
+    <span class="comment">-- Route ALL proration lines to</span> <span class="hl-red">CREDIT_MEMO</span>
+    </div>
+
+    <div class="warning">
+      <div class="warning-title">Critical: All-or-Nothing Routing</div>
+      <p style="font-size: 0.85em;">Individual lines within an opportunity are <strong>NOT</strong> split. The <em>entire opportunity</em> goes one way based on its net total. Even if one line is positive and another negative, they all route together.</p>
+    </div>
+  </div>
+
+  <!-- Stage 4 -->
+  <div class="stage blue">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--blue); color: #000;">Stage 4</span>
+      <h4>Final Union</h4>
+    </div>
+    <p><strong>Purpose:</strong> Combine all components into the final output.</p>
+    <div class="code">
+sales_order =
+  <span class="value">new_renewal</span>              <span class="comment">-- Non-amendment orders &rarr; SALES_ORDER</span>
+  <span class="keyword">UNION ALL</span> <span class="value">future_billing</span>     <span class="comment">-- Full cycles &rarr; always SALES_ORDER</span>
+  <span class="keyword">UNION ALL</span> <span class="value">positive_proration</span> <span class="comment">-- Net-positive proration &rarr; SALES_ORDER</span>
+  <span class="keyword">UNION ALL</span> <span class="hl-red">negative_proration</span> <span class="comment">-- Net-negative proration &rarr; CREDIT_MEMO</span>
+  <span class="keyword">UNION ALL</span> <span class="value">professional_services</span>
+    </div>
+    <p style="font-size: 0.88em; color: var(--text-dim); margin-top: 8px;"><strong>Key rule:</strong> <code>future_billing</code> always goes to Sales Order regardless of opp-level netting. It represents ongoing subscription commitment, always positive.</p>
+  </div>
+
+  <!-- Stage 5 -->
+  <div class="stage pink">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--pink); color: #000;">Stage 5</span>
+      <h4>Change Type Labeling</h4>
+    </div>
+    <p><strong>Purpose:</strong> Independent of dollar netting, label each item with what type of change it represents using a running quantity total.</p>
+    <div class="code">
+<span class="keyword">FOR EACH</span> (contract_id, product), ordered by date:
+  current_qty = <span class="value">running_sum(net_qty_delta)</span>
+  prev_qty    = <span class="value">LAG(current_qty)</span>
+
+  <span class="keyword">IF</span> prev_qty IS NULL:       &rarr; <span class="value">'NEW'</span>
+  <span class="keyword">IF</span> current_qty > prev_qty: &rarr; <span class="value">'UPSELL'</span>
+  <span class="keyword">IF</span> current_qty < prev_qty: &rarr; <span class="value">'DOWNSELL'</span>
+  <span class="keyword">ELSE:</span>                       &rarr; <span class="value">'SAME'</span> <span class="comment">(price-only change)</span>
+    </div>
+  </div>
+</div>
+
+<!-- Section 5: Fin Bucket Pipeline -->
+<div class="section" id="buckets">
+  <div class="section-title"><span class="section-num">5</span> Fin Bucket Pipeline (4 Models)</div>
+
+  <div class="card">
+    <h3>What is Fin Bucket?</h3>
+    <p>When a customer opts into bucket pricing, their items (resolutions, voice, conversation) shift from <span class="hl">per-unit billing</span> to a <span class="hl-green">prepaid capacity model</span>. Instead of paying per resolution, they buy a "bucket" of, say, 5,000 resolutions per month. If they exceed the bucket, they pay overage. If they don't use it all, unused capacity expires.</p>
+  </div>
+
+  <!-- Pipeline Diagram -->
+  <div class="pipeline" style="margin: 32px 0;">
+    <div class="pipe-node">
+      <h4>ext_netsuite_export_sales_order_v2</h4>
+      <p>Source of truth for contracts & SO lines (the netting table)</p>
+    </div>
+    <div class="pipe-connector"></div>
+    <div style="display: flex; gap: 60px; justify-content: center;">
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="pipe-connector"></div>
+        <div class="pipe-node" style="border-color: var(--blue);">
+          <h4 style="color: var(--blue);">Model 1: netsuite_finbucket_usage</h4>
+          <p>"How much was consumed?"</p>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="pipe-connector"></div>
+        <div class="pipe-node" style="border-color: var(--orange);">
+          <h4 style="color: var(--orange);">Model 2: netsuite_finbucket_expiration</h4>
+          <p>"How much capacity was allocated?"</p>
+        </div>
+      </div>
+    </div>
+    <div class="pipe-connector"></div>
+    <div class="pipe-node" style="border-color: var(--green);">
+      <h4 style="color: var(--green);">Model 3: ext_netsuite_finbucket_combined</h4>
+      <p>Usage vs Cap &rarr; in-cap, overage, expired</p>
+    </div>
+    <div class="pipe-connector"></div>
+    <div class="pipe-node" style="border-color: var(--pink);">
+      <h4 style="color: var(--pink);">Model 4: ext_netsuite_finbucket_revevent</h4>
+      <p>Split into per-SO-line revenue events for NetSuite</p>
+    </div>
+  </div>
+
+  <!-- Model Details -->
+  <div class="stage blue">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--blue); color: #000;">Model 1</span>
+      <h4>Usage Model</h4>
+    </div>
+    <p><strong>Question:</strong> "How many resolutions did each customer actually use, per calendar month, within each billing period?"</p>
+    <details>
+      <summary>How it works (5 steps)</summary>
+      <ol>
+        <li><strong>Contract universe</strong> &mdash; Pulls all contracts where <code>is_fillable = true</code>, one row per contract-item pair</li>
+        <li><strong>Billing cycle generation</strong> &mdash; Uses <code>generator(rowcount => 200)</code> to create billing cycles anchored to contract start date</li>
+        <li><strong>Opt-in clipping</strong> &mdash; Drops cycles before <code>opted_in_to_buckets_at</code>, clips the first surviving cycle forward to opt-in date</li>
+        <li><strong>Calendar month slicing</strong> &mdash; Each billing cycle is sliced into calendar months (e.g., Jan 15-Apr 14 quarterly cycle &rarr; Jan 15-31, Feb 1-28, Mar 1-31, Apr 1-14)</li>
+        <li><strong>Usage join</strong> &mdash; Left-joins to Stripe meter data, sums daily usage into monthly totals</li>
+      </ol>
+      <p style="margin-top: 8px;"><strong>Output:</strong> One row per (contract, item, month) &rarr; <code>resolution_usage</code></p>
+    </details>
+  </div>
+
+  <div class="stage orange">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--orange); color: #000;">Model 2</span>
+      <h4>Expiration (Capacity Allocation) Model</h4>
+    </div>
+    <p><strong>Question:</strong> "How much prepaid capacity is allocated to each calendar month, per SO line?"</p>
+    <p style="margin-top: 8px; color: var(--orange); font-weight: 600;">This is the most complex model.</p>
+    <details>
+      <summary>Three allocation types (different math each)</summary>
+      <table>
+        <tr><th>Type</th><th>Logic</th><th>Example</th></tr>
+        <tr>
+          <td><strong>BASE</strong></td>
+          <td><code>actual_qty * MIN(billing_freq, months_in_term)</code></td>
+          <td>5,000/mo on quarterly = 15,000 cap per cycle</td>
+        </tr>
+        <tr>
+          <td><strong>PRORATED</strong></td>
+          <td>billing_qty placed directly into the overlapping monthly window</td>
+          <td>One-time partial-period allocation</td>
+        </tr>
+        <tr>
+          <td><strong>CONVERTED_FILLABLE</strong></td>
+          <td>Remainder allocation: full cycles get <code>qty * freq</code>, first partial gets remainder</td>
+          <td>Mid-cycle conversion creates awkward first period</td>
+        </tr>
+      </table>
+      <p style="margin-top: 8px;"><strong>Output:</strong> One row per (contract, item, SO_line, component, month) &rarr; <code>cap_allocated</code></p>
+    </details>
+  </div>
+
+  <div class="stage green">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--green); color: #000;">Model 3</span>
+      <h4>Combined Model</h4>
+    </div>
+    <p><strong>Question:</strong> "For each month, how much was used, how much was overage, and how much expired?"</p>
+    <details>
+      <summary>The cumulative waterfall</summary>
+      <p>The cap is <strong>per billing period, not per month</strong>. A running total determines when usage crosses from "in-cap" to "overage":</p>
+      <div class="code" style="font-size: 0.8em;">
+Customer has 15,000 quarterly cap:
+  Month 1: Used 2,000  &rarr; in_cap: 2,000  | overage: 0     | remaining: 13,000
+  Month 2: Used 8,000  &rarr; in_cap: 8,000  | overage: 0     | remaining: 5,000
+  Month 3: Used 9,000  &rarr; in_cap: 5,000  | overage: 4,000 | expired: 0
+  <span class="comment">-- Cap exhausted in month 3, 4,000 is overage</span>
+      </div>
+      <p style="margin-top: 8px;"><code>expired_cap</code> only appears on the <strong>last month</strong> of each billing period &mdash; this is when NetSuite posts "breakage" revenue for unused prepaid capacity.</p>
+    </details>
+  </div>
+
+  <div class="stage pink">
+    <div class="stage-header">
+      <span class="stage-badge" style="background: var(--pink); color: #000;">Model 4</span>
+      <h4>Revenue Event Model</h4>
+    </div>
+    <p><strong>Question:</strong> "How do we split combined totals back to individual SO lines for NetSuite revenue recognition?"</p>
+    <details>
+      <summary>Proportional allocation</summary>
+      <p>If a billing period has 15,000 cap from SO line A (10,000) and SO line B (5,000):</p>
+      <div class="code" style="font-size: 0.8em;">
+allocation_ratio = line_cap / total_period_cap
+
+Line A ratio: 10,000 / 15,000 = <span class="value">0.6667</span>
+Line B ratio:  5,000 / 15,000 = <span class="value">0.3333</span>
+
+<span class="comment">-- Creates 2 event types per SO line per month:</span>
+Usage event:      CEIL(in_cap_usage * ratio)
+Expiration event: CEIL(expired_cap * ratio)  <span class="comment">-- only on last month</span>
+
+<span class="comment">-- External ID: {so_line_id}-{month_end}-{event_type}</span>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h3>Why Is the Bucket Pipeline Complex?</h3>
+    <div class="grid-2" style="margin-top: 12px;">
+      <div>
+        <ol>
+          <li><strong>Three allocation populations</strong> with different math (BASE, PRORATED, CONVERTED_FILLABLE)</li>
+          <li><strong>Two time axes</strong> &mdash; Billing cycles vs calendar months, must slice one into the other</li>
+          <li><strong>Cumulative waterfall</strong> &mdash; Cap is per period, not per month. Running totals required.</li>
+        </ol>
+      </div>
+      <div>
+        <ol start="4">
+          <li><strong>Fan-out and re-aggregation</strong> &mdash; Expiration fans out to SO-line detail, combined rolls up, then revevent fans back out with proportional allocation</li>
+          <li><strong>Opt-in timing</strong> &mdash; Each product can have different opt-in dates per contract, creating staggered conversion points</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 6: Edge Cases -->
+<div class="section" id="edge-cases">
+  <div class="section-title"><span class="section-num">6</span> Edge Cases & Gotchas</div>
+
+  <div class="warning">
+    <div class="warning-title">Edge Case 1: Discount Averaging (Known Issue)</div>
+    <p style="font-size: 0.88em;">When netting lines with different discount rates (e.g., 9.27% and 7%), <code>AVG()</code> produces 8.135%. The true effective discount should be derived from the netted amounts. <strong>Business has acknowledged this</strong> &mdash; decision is to AVG for now if the item is returned at the same qty.</p>
+  </div>
+
+  <div class="card">
+    <h3>Edge Case 2: Free-Item-Only Opportunities</h3>
+    <p>If an opportunity contains only free items, it has no rows after netting. The INNER JOIN in <code>positive_proration</code> silently drops these &mdash; which is <span class="hl-green">correct behavior</span> since there's nothing to route.</p>
+  </div>
+
+  <div class="card">
+    <h3>Edge Case 3: Co-Term Contracts</h3>
+    <p>When contract term isn't evenly divisible by billing frequency, the last billing cycle is shorter. These may have a non-zero proration stub even for "clean" amendments.</p>
+  </div>
+
+  <div class="card">
+    <h3>Edge Case 4: Proration-Only or Future-Only Amendments</h3>
+    <table>
+      <tr><th>Condition</th><th>Result</th></tr>
+      <tr><td><code>prorated_multiplier = 0</code></td><td>No proration stub &rarr; only future_billing rows &rarr; always Sales Order</td></tr>
+      <tr><td><code>future_billing_multiplier = 0</code></td><td>Entirely prorated &rarr; routing depends on opp-level netting</td></tr>
+      <tr><td>Both zero (theoretical)</td><td>No rows produced for this amendment</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Section 7: Outcomes -->
+<div class="section" id="outcomes">
+  <div class="section-title"><span class="section-num">7</span> Expected Outcomes</div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="value">&darr;</div>
+      <div class="label">Reconciliation Mismatches Per Close</div>
+    </div>
+    <div class="metric">
+      <div class="value">&darr;</div>
+      <div class="label">Manual Journal Entries</div>
+    </div>
+    <div class="metric">
+      <div class="value">&darr;</div>
+      <div class="label">Days to Month-End Close</div>
+    </div>
+    <div class="metric">
+      <div class="value">&uarr;</div>
+      <div class="label">Usage Revenue Automated</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card" style="border-color: var(--green);">
+      <h3><span class="hl-green">1. Reduced Reconciliation Complexity</span></h3>
+      <p>SO total = Invoice total (within tolerance). No more manually netting positive/negative lines.</p>
+      <p style="margin-top: 8px; font-size: 0.85em; color: var(--text-dim);"><strong>Measure:</strong> % of invoices where SO total = Invoice total; reduction in "non-explainable deltas"</p>
+    </div>
+    <div class="card" style="border-color: var(--green);">
+      <h3><span class="hl-green">2. Usage-Based Revenue Automation</span></h3>
+      <p>Finbucket, finvoice, and future products can be automatically tracked and recognized.</p>
+      <p style="margin-top: 8px; font-size: 0.85em; color: var(--text-dim);"><strong>Measure:</strong> % of usage revenue processed without manual intervention</p>
+    </div>
+    <div class="card" style="border-color: var(--green);">
+      <h3><span class="hl-green">3. Faster Month-End Close</span></h3>
+      <p>Finance spends less time untangling data. Fewer investigation tickets during close.</p>
+      <p style="margin-top: 8px; font-size: 0.85em; color: var(--text-dim);"><strong>Measure:</strong> Time to close (days), manual journal entries, investigation tickets</p>
+    </div>
+    <div class="card" style="border-color: var(--green);">
+      <h3><span class="hl-green">4. Improved Auditability</span></h3>
+      <p>Auditors can understand contract changes from a single net view. No history reconstruction needed.</p>
+      <p style="margin-top: 8px; font-size: 0.85em; color: var(--text-dim);"><strong>Measure:</strong> % of SOs explainable from single net view; reduction in audit questions</p>
+    </div>
+  </div>
+</div>
+
+<!-- Section 8: Open Items -->
+<div class="section" id="open-items">
+  <div class="section-title"><span class="section-num">8</span> Open Items</div>
+  <div class="card">
+    <table>
+      <tr><th>Item</th><th>Status</th><th>Decision</th></tr>
+      <tr><td><strong>Discount Rates</strong></td><td><span class="hl-orange">Open</span></td><td>Using AVG for now per Jared Slesnick. True effective discount should be derived from netted amounts.</td></tr>
+      <tr><td><strong>Timezone Logic</strong></td><td><span class="hl-orange">Open</span></td><td>Business still deciding. Leaving as-is for now.</td></tr>
+      <tr><td><strong>List Price</strong></td><td><span class="hl-orange">Open</span></td><td>Currently calculated from amount + discount. Tiered block pricing may be revisited later.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- Footer -->
+<div style="text-align: center; padding: 40px 0 20px; color: var(--text-dim); font-size: 0.8em;">
+  <p>NetSuite Sales Order Revamp - Visual Guide</p>
+  <p>Source: <code>Netsuite SO Revamp.docx</code> | Generated April 2026</p>
+</div>
+
+</div>
+</body>
+</html>

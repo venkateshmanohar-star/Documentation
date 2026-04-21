@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <title>NetSuite Integration — Recipe Documentation</title>
 <style>
   :root {
@@ -340,10 +341,43 @@
     .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
     .header { background: var(--ic-dark); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
+  .fixed-nav-buttons {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .fixed-nav-buttons a.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: all 0.15s ease;
+    border: 1px solid var(--ic-blue-bg, #DCE1F9);
+    color: var(--ic-dark, #16100E);
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .fixed-nav-buttons a.nav-btn:hover {
+    background: var(--ic-blue-bg, #DCE1F9);
+    color: var(--ic-blue, #334BFA);
+    border-color: var(--ic-blue, #334BFA);
+  }
+  .fixed-nav-buttons .material-icons-outlined { font-size: 18px; }
 </style>
 </head>
 <body>
-<a href="index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
+
+<div class="fixed-nav-buttons">
+  <a href="index.html" class="nav-btn"><span class="material-icons-outlined">home</span> Home</a>
+</div>
 
 <div class="header">
   <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:8px;">
@@ -391,6 +425,25 @@
 </div>
 
 <div class="grid" id="card-grid">
+
+  <!-- Sales Order Revamp Guide -->
+  <a class="card" href="netsuite-so-revamp-guide.html" data-search="sales order revamp guide v2 migration new architecture so creation" data-category="order" style="border-left: 3px solid var(--accent, #334BFA);">
+    <div class="card-header">
+      <span class="card-rec" style="background:#334BFA;color:white;">NEW</span>
+      <span class="card-id">Revamp Guide</span>
+    </div>
+    <div class="card-title">Sales Order Revamp &mdash; Visual Guide</div>
+    <div class="card-summary">Comprehensive visual guide for the NetSuite Sales Order revamp. Covers the new architecture, migration strategy, before/after comparisons, and implementation roadmap for the SO creation pipeline.</div>
+    <div class="card-tags">
+      <span class="tag tag-netsuite">NetSuite</span>
+      <span class="tag tag-snowflake">Snowflake</span>
+      <span class="tag tag-master">Architecture</span>
+    </div>
+    <div class="card-footer">
+      <div class="card-formats"><span class="fmt-badge fmt-html">HTML</span></div>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </a>
 
   <!-- 0.0 Scheduled Master -->
   <a class="card" href="scheduled-master-items-sales-orders-v3.html" data-search="0.0 scheduled master items sales orders 58628330 orchestrator cron" data-category="master">
