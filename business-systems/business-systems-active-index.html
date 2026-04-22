@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <meta name="author" content="venkatesh.manohar">
   <title>Business Systems — Active Recipes Documentation Index</title>
   <style>
@@ -293,10 +294,43 @@
       .controls { display: none; }
       .card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
     }
+    .fixed-nav-buttons {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .fixed-nav-buttons a.nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85em;
+      font-weight: 600;
+      transition: all 0.15s ease;
+      border: 1px solid var(--ic-blue-bg, #DCE1F9);
+      color: var(--ic-dark, #16100E);
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .fixed-nav-buttons a.nav-btn:hover {
+      background: var(--ic-blue-bg, #DCE1F9);
+      color: var(--ic-blue, #334BFA);
+      border-color: var(--ic-blue, #334BFA);
+    }
+    .fixed-nav-buttons .material-icons-outlined { font-size: 18px; }
   </style>
 </head>
 <body>
-<a href="../index.html" style="position:fixed;top:8px;right:16px;z-index:1001;background:#334BFA;color:white;padding:6px 16px;border-radius:20px;text-decoration:none;font-size:0.85em;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.1);transition:background 0.15s ease;" onmouseover="this.style.background='#16100E'" onmouseout="this.style.background='#334BFA'">&#8962; Home</a>
+
+<div class="fixed-nav-buttons">
+  <a href="../index.html" class="nav-btn"><span class="material-icons-outlined">home</span> Home</a>
+</div>
 
 <div class="header">
   <div class="header-logo">
